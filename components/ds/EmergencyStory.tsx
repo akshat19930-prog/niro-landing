@@ -1,30 +1,21 @@
 import { Icon, type IconName } from "./Icon";
 import { WhatsAppShowcase, type ChatMessage } from "./WhatsAppShowcase";
 
-const BEATS: { time: string; place: string; text: string; icon: IconName }[] = [
+const STEPS: { title: string; text: string; icon: IconName }[] = [
   {
-    time: "2:47 AM",
-    place: "Jersey City",
-    text: "Your phone lights the ceiling. A missed call from home is the worst kind of light.",
-    icon: "clock",
-  },
-  {
-    time: "2:47 AM",
-    place: "Niro",
-    text: "We're already awake. Your associate Priya is calling the Pune ambulance line while you're still reading this.",
     icon: "phone",
+    title: "Emergency trigger",
+    text: "You call, a parent calls, or it fires automatically from partner hardware — a smartwatch or a fall-detection pendant.",
   },
   {
-    time: "3:10 AM",
-    place: "Pune",
-    text: "Papa is in the car, seatbelt on, a familiar voice beside him. You approve the hospital from your bed with one tap.",
     icon: "heart-pulse",
+    title: "Instant check-in & ambulance",
+    text: "We call back within moments to understand the situation and dispatch an ambulance.",
   },
   {
-    time: "6:30 AM",
-    place: "Your kitchen",
-    text: 'Coffee. A voice note: "He\'s admitted, stable, resting. Reports attached. I\'ll stay till morning rounds."',
-    icon: "check-circle",
+    icon: "user-check",
+    title: "On the ground, on your terms",
+    text: "Our concierge reaches the hospital you designated, handles the paperwork, steadies an anxious parent, and does exactly as you say — or as you pre-defined.",
   },
 ];
 
@@ -93,8 +84,7 @@ export function EmergencyStory() {
               lineHeight: 1.6,
             }}
           >
-            The call you dread comes when you can do the least. This is the one night we
-            were built for.
+            We&apos;ll be there, acting fast, on your behalf.
           </p>
           <div
             style={{
@@ -119,10 +109,9 @@ export function EmergencyStory() {
                 margin: 0,
               }}
             >
-              Every family sets an emergency protocol with us up front — blood group,
-              preferred hospital, who to call first. So the plan exists before the night
-              it&apos;s needed, and we share our written response commitment for your city
-              before you ever use it.
+              You set an emergency protocol with us up front — blood group, ready
+              documents, which hospital and which doctor. The plan exists before it&apos;s
+              needed, and we&apos;re on the ground the moment it is.
             </p>
           </div>
         </div>
@@ -144,7 +133,7 @@ export function EmergencyStory() {
               gap: "var(--space-5)",
             }}
           >
-            {BEATS.map((b, i) => (
+            {STEPS.map((step, i) => (
               <li key={i} style={{ display: "flex", gap: 18, position: "relative" }}>
                 <div
                   style={{
@@ -167,9 +156,9 @@ export function EmergencyStory() {
                       border: "1px solid rgba(255,255,255,0.12)",
                     }}
                   >
-                    <Icon name={b.icon} size={22} />
+                    <Icon name={step.icon} size={22} />
                   </span>
-                  {i < BEATS.length - 1 && (
+                  {i < STEPS.length - 1 && (
                     <span
                       style={{
                         width: 1,
@@ -184,32 +173,24 @@ export function EmergencyStory() {
                 <div style={{ paddingBottom: 4 }}>
                   <div
                     style={{
-                      display: "flex",
-                      alignItems: "baseline",
-                      gap: 10,
-                      marginBottom: 5,
+                      fontSize: "var(--text-xs)",
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      color: "var(--gold-300)",
+                      marginBottom: 6,
                     }}
                   >
-                    <span
-                      style={{
-                        fontFamily: "var(--font-display)",
-                        fontSize: "var(--text-lg)",
-                        color: "#fff",
-                        fontVariantNumeric: "tabular-nums",
-                      }}
-                    >
-                      {b.time}
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "var(--text-xs)",
-                        letterSpacing: "0.06em",
-                        textTransform: "uppercase",
-                        color: "var(--gold-300)",
-                      }}
-                    >
-                      {b.place}
-                    </span>
+                    Step {i + 1}
+                  </div>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "var(--text-lg)",
+                      color: "#fff",
+                      marginBottom: 6,
+                    }}
+                  >
+                    {step.title}
                   </div>
                   <p
                     style={{
@@ -219,7 +200,7 @@ export function EmergencyStory() {
                       maxWidth: 460,
                     }}
                   >
-                    {b.text}
+                    {step.text}
                   </p>
                 </div>
               </li>

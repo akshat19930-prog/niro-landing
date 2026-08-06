@@ -9,7 +9,6 @@ import {
   STEPS,
   HOW_MESSAGES,
   HANDLE_GROUPS,
-  STORIES,
   TESTIMONIALS_SHORT,
 } from "@/lib/content";
 
@@ -20,15 +19,6 @@ const h2Style = {
   color: "var(--text-strong)",
   fontWeight: 500,
 } as const;
-
-const microLabel = {
-  fontSize: 11,
-  fontWeight: 700,
-  textTransform: "uppercase" as const,
-  letterSpacing: "0.06em",
-  color: "var(--text-muted)",
-  marginBottom: 4,
-};
 
 /* ---- The Mirror ---- */
 export function Mirror() {
@@ -178,8 +168,9 @@ export function WhatWeHandle() {
     >
       <div style={CONTAINER}>
         <Eyebrow>What we handle</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "16px 0 44px" }}>
-          Everything that needs a person, not an app.
+        <h2 style={{ ...h2Style, margin: "16px 0 44px", maxWidth: 760 }}>
+          Everything that&apos;s hard — or that your family doesn&apos;t like spending time
+          doing.
         </h2>
         <div
           style={{
@@ -358,65 +349,11 @@ function TestimonialCard({
   );
 }
 
-function StoryCard({
-  name,
-  route,
-  situation,
-  action,
-  result,
-}: (typeof STORIES)[number]) {
-  return (
-    <div style={{ ...proofCardBase, gap: 0 }}>
-      <div
-        style={{
-          fontSize: "var(--text-xs)",
-          fontWeight: 700,
-          textTransform: "uppercase",
-          letterSpacing: "var(--tracking-wide)",
-          color: "var(--accent-strong)",
-          marginBottom: 14,
-        }}
-      >
-        {name} · {route}
-      </div>
-      <div style={{ marginBottom: 12 }}>
-        <div style={microLabel}>Situation</div>
-        <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", lineHeight: 1.5 }}>
-          {situation}
-        </div>
-      </div>
-      <div style={{ marginBottom: 12 }}>
-        <div style={microLabel}>What Niro did</div>
-        <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", lineHeight: 1.5 }}>
-          {action}
-        </div>
-      </div>
-      <div>
-        <div style={microLabel}>How it ended</div>
-        <div
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--brand)",
-            fontWeight: 600,
-            lineHeight: 1.5,
-          }}
-        >
-          {result}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ---- Proof: testimonials + case studies, one auto-scrolling strip ---- */
+/* ---- Proof: beta-member testimonials, one auto-scrolling strip ---- */
 export function Proof() {
-  // Testimonials (with photo placeholders) + case studies, duplicated once so
-  // the horizontal marquee loops seamlessly.
-  const cards = [
-    ...TESTIMONIALS_SHORT.map((t) => ({ kind: "t" as const, ...t })),
-    ...STORIES.map((s) => ({ kind: "s" as const, ...s })),
-  ];
-  const track = [...cards, ...cards];
+  // Beta-member testimonials (with photo placeholders), duplicated once so the
+  // horizontal marquee loops seamlessly.
+  const track = [...TESTIMONIALS_SHORT, ...TESTIMONIALS_SHORT];
 
   return (
     <section
@@ -441,27 +378,16 @@ export function Proof() {
           — without asking a favour that can quietly backfire.
         </p>
       </div>
-      <div className="marquee" aria-label="Beta family testimonials and case studies">
+      <div className="marquee" aria-label="Beta family testimonials">
         <div className="marquee-track">
-          {track.map((c, i) =>
-            c.kind === "t" ? (
-              <TestimonialCard
-                key={`t-${i}`}
-                name={c.name}
-                location={c.location}
-                quote={c.quote}
-              />
-            ) : (
-              <StoryCard
-                key={`s-${i}`}
-                name={c.name}
-                route={c.route}
-                situation={c.situation}
-                action={c.action}
-                result={c.result}
-              />
-            )
-          )}
+          {track.map((t, i) => (
+            <TestimonialCard
+              key={`t-${i}`}
+              name={t.name}
+              location={t.location}
+              quote={t.quote}
+            />
+          ))}
         </div>
       </div>
     </section>

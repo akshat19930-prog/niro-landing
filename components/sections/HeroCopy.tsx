@@ -21,7 +21,7 @@ export function HeroCopy() {
 
   return (
     <>
-      <Eyebrow>{hero.tag}</Eyebrow>
+      {hero.tag && <Eyebrow>{hero.tag}</Eyebrow>}
       <h1
         style={{
           fontFamily: "var(--font-display)",
