@@ -68,12 +68,12 @@ export const MIRROR: { icon: IconName; title: string; text: string }[] = [
   {
     icon: "sunrise",
     title: "3 a.m. timezone math",
-    text: "Your EPF claim, a dormant bank account, a utility bill in Dad's name — all of it only moves during Indian office hours, which is the dead of your night.",
+    text: "The impossible EPFO claim, a dormant bank account, a utility bill issue troubling Dad — all of it only moves during Indian office hours, which is the dead of your night.",
   },
   {
     icon: "home",
-    title: "Hidden problems at home",
-    text: "The maid who stopped showing up, the AC that's been broken for weeks — the things they play down on calls so you won't worry.",
+    title: "The problems they hide",
+    text: "The delinquent, unverified maid, the AC that's been broken for weeks — stuff they struggle with but play down so you won't worry.",
   },
   {
     icon: "map-pin",
