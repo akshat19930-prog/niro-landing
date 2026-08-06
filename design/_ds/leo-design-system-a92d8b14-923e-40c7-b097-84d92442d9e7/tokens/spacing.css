@@ -1,0 +1,16 @@
+/* ===== Leo — Spacing tokens (4px base) ===== */
+:root {
+  --space-1: 0.25rem;  /* 4 */
+  --space-2: 0.5rem;   /* 8 */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.5rem;   /* 24 */
+  --space-6: 2rem;     /* 32 */
+  --space-7: 3rem;     /* 48 */
+  --space-8: 4rem;     /* 64 */
+  --space-9: 6rem;     /* 96 */
+
+  --container: 1120px;
+  --container-narrow: 640px;
+  --gutter: 1.25rem;   /* mobile page gutter */
+}

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/leo-design-system-a92d8b14-923e-40c7-b097-84d92442d9e7/fonts/fonts.css">
+  <link rel="stylesheet" href="_ds/leo-design-system-a92d8b14-923e-40c7-b097-84d92442d9e7/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/leo-design-system-a92d8b14-923e-40c7-b097-84d92442d9e7/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/leo-design-system-a92d8b14-923e-40c7-b097-84d92442d9e7/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/leo-design-system-a92d8b14-923e-40c7-b097-84d92442d9e7/tokens/radii.css">
+  <link rel="stylesheet" href="_ds/leo-design-system-a92d8b14-923e-40c7-b097-84d92442d9e7/tokens/elevation.css">
+  <link rel="stylesheet" href="_ds/leo-design-system-a92d8b14-923e-40c7-b097-84d92442d9e7/tokens/motion.css">
+  <link rel="stylesheet" href="_ds/leo-design-system-a92d8b14-923e-40c7-b097-84d92442d9e7/tokens/base.css">
+  <link rel="stylesheet" href="_ds/leo-design-system-a92d8b14-923e-40c7-b097-84d92442d9e7/styles.css">
+  <script src="_ds/leo-design-system-a92d8b14-923e-40c7-b097-84d92442d9e7/_ds_bundle.js"></script>
+  <script src="./image-slot.js"></script>
+  <style>
+    body{margin:0}
+    a{color:var(--brand);}
+    a:hover{color:var(--brand-hover);}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  </style>
+</helmet>
+
+<div style="background:var(--bg-page);min-height:100vh;font-family:var(--font-sans);color:var(--text-body);overflow-x:hidden">
+
+<x-import component-from-global-scope="LeoDesignSystem_a92d8b.Nav" cta="Join the waitlist" onCta="{{goToJoin}}" hint-size="100%,64px"></x-import>
+
+<section data-screen-label="Hero" style="padding:64px var(--gutter) 48px">
+  <div style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:48px;align-items:center">
+    <div>
+      <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Eyebrow" hint-size="auto,20px">{{heroTag}}</x-import>
+      <h1 style="font-family:var(--font-display);font-size:var(--text-4xl);line-height:var(--leading-tight);letter-spacing:var(--tracking-tight);color:var(--text-strong);margin:20px 0 18px;font-weight:500">{{heroH}}</h1>
+      <p style="font-size:var(--text-md);line-height:var(--leading-body);color:var(--text-body);max-width:520px;margin:0 0 30px">{{heroS}}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:40px">
+        <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Button" variant="primary" size="lg" onClick="{{goToJoin}}" hint-size="auto,56px">Join the waitlist</x-import>
+      </div>
+      <x-import component-from-global-scope="LeoDesignSystem_a92d8b.TrustBar" items="{{trustItems}}" hint-size="100%,120px"></x-import>
+    </div>
+    <div>
+      <image-slot id="hero-photo" shape="rounded" radius="24" placeholder="Father reading the newspaper on a balcony, warm morning light, Tier-2 home" style="width:100%;height:460px;display:block"></image-slot>
+      <p style="font-size:var(--text-xs);color:var(--text-muted);margin-top:10px">Art direction: unstaged domestic warmth, honest interiors — no stock-photo gloss.</p>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="The Mirror" style="padding:80px var(--gutter);background:var(--bg-inset)">
+  <div style="max-width:var(--container);margin:0 auto">
+    <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Eyebrow" hint-size="auto,20px">Sound familiar</x-import>
+    <h2 style="font-family:var(--font-display);font-size:var(--text-2xl);color:var(--text-strong);margin:16px 0 40px;max-width:680px;font-weight:500">You didn't leave them. You left the country. From here, that's a hard difference to feel.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
+      <sc-for list="{{mirror}}" as="m" hint-placeholder-count="3">
+        <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Card" hint-size="100%,220px">
+          <span style="display:inline-flex;width:44px;height:44px;border-radius:12px;background:var(--brand-soft);color:var(--brand);align-items:center;justify-content:center;margin-bottom:18px">
+            <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Icon" name="{{m.icon}}" size="22" hint-size="22px,22px"></x-import>
+          </span>
+          <div style="font-size:var(--text-lg);font-weight:600;color:var(--text-strong);margin-bottom:8px">{{m.title}}</div>
+          <div style="font-size:var(--text-base);color:var(--text-body);line-height:1.55">{{m.text}}</div>
+        </x-import>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="How it works" style="padding:88px var(--gutter)">
+  <div style="max-width:var(--container);margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:56px;align-items:start">
+    <div>
+      <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Eyebrow" hint-size="auto,20px">How it works</x-import>
+      <h2 style="font-family:var(--font-display);font-size:var(--text-2xl);color:var(--text-strong);margin:16px 0 8px;font-weight:500">Talk to Leo like a friend who happens to live near your parents.</h2>
+      <div style="display:flex;flex-direction:column;gap:30px;margin-top:36px">
+        <sc-for list="{{steps}}" as="st" hint-placeholder-count="3">
+          <div style="display:flex;gap:20px">
+            <span style="font-family:var(--font-display);font-size:var(--text-xl);color:var(--accent-strong);flex-shrink:0;width:44px">{{st.n}}</span>
+            <div>
+              <div style="font-size:var(--text-lg);font-weight:600;color:var(--text-strong);margin-bottom:6px">{{st.title}}</div>
+              <div style="font-size:var(--text-base);color:var(--text-body);line-height:1.55;max-width:420px">{{st.text}}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="justify-self:center;width:100%;max-width:380px">
+      <x-import component-from-global-scope="LeoDesignSystem_a92d8b.WhatsAppShowcase" caption="An actual conversation, shared with the family's permission." hint-size="100%,480px"></x-import>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="What we handle" style="padding:88px var(--gutter);background:var(--bg-inset)">
+  <div style="max-width:var(--container);margin:0 auto">
+    <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Eyebrow" hint-size="auto,20px">What we handle</x-import>
+    <h2 style="font-family:var(--font-display);font-size:var(--text-2xl);color:var(--text-strong);margin:16px 0 44px;font-weight:500">Everything that needs a person, not an app.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px">
+      <sc-for list="{{handleGroups}}" as="group" hint-placeholder-count="3">
+        <div>
+          <div style="font-size:var(--text-sm);font-weight:700;letter-spacing:var(--tracking-wide);text-transform:uppercase;color:var(--accent-strong);margin-bottom:22px">{{group.name}}</div>
+          <div style="display:flex;flex-direction:column;gap:22px">
+            <sc-for list="{{group.items}}" as="it" hint-placeholder-count="3">
+              <div style="display:flex;gap:14px;align-items:flex-start">
+                <span style="display:inline-flex;width:38px;height:38px;border-radius:10px;background:var(--surface-card);border:1px solid var(--border);color:var(--brand);align-items:center;justify-content:center;flex-shrink:0">
+                  <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Icon" name="{{it.icon}}" size="19" hint-size="19px,19px"></x-import>
+                </span>
+                <div>
+                  <div style="font-weight:600;color:var(--text-strong);font-size:var(--text-base)">{{it.t}}</div>
+                  <div style="font-size:var(--text-sm);color:var(--text-muted);margin-top:3px;line-height:1.5">{{it.d}}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<x-import component-from-global-scope="LeoDesignSystem_a92d8b.EmergencyStory" hint-size="100%,720px"></x-import>
+
+<section data-screen-label="User stories" style="padding:88px var(--gutter)">
+  <div style="max-width:var(--container);margin:0 auto">
+    <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Eyebrow" hint-size="auto,20px">Small, true stories</x-import>
+    <h2 style="font-family:var(--font-display);font-size:var(--text-2xl);color:var(--text-strong);margin:16px 0 44px;font-weight:500">The tasks that actually happened.</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px">
+      <sc-for list="{{stories}}" as="s" hint-placeholder-count="3">
+        <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Card" hover="{{true}}" hint-size="100%,340px">
+          <div style="font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:var(--tracking-wide);color:var(--accent-strong);margin-bottom:16px">{{s.name}} · {{s.route}}</div>
+          <div style="margin-bottom:14px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:4px">Situation</div>
+            <div style="font-size:var(--text-sm);color:var(--text-body);line-height:1.55">{{s.situation}}</div>
+          </div>
+          <div style="margin-bottom:14px">
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:4px">What Leo did</div>
+            <div style="font-size:var(--text-sm);color:var(--text-body);line-height:1.55">{{s.action}}</div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:4px">How it ended</div>
+            <div style="font-size:var(--text-sm);color:var(--brand);font-weight:600;line-height:1.55">{{s.result}}</div>
+          </div>
+        </x-import>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section data-screen-label="Testimonials" style="padding:88px var(--gutter);background:var(--bg-inset)">
+  <div style="max-width:var(--container);margin:0 auto">
+    <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Eyebrow" hint-size="auto,20px">From beta families</x-import>
+    <h2 style="font-family:var(--font-display);font-size:var(--text-2xl);color:var(--text-strong);margin:16px 0 8px;font-weight:500">Real words from families using Leo today.</h2>
+    <p style="font-size:var(--text-sm);color:var(--text-muted);font-style:italic;margin:0 0 44px">These are placeholder-labeled beta quotes — swap in verbatim testimonials before launch.</p>
+    <div style="max-width:640px;margin:0 auto 36px">
+      <x-import component-from-global-scope="LeoDesignSystem_a92d8b.ParentVoiceCard" hinglish="Beta abroad hai, par uska aadmi yahan hai. Mujhe kabhi akela nahi lagta." translation="My child is abroad, but their person is here. I never feel alone." name="Kaushalya" relation="Mother, Chandigarh · Beta member" hint-size="100%,300px"></x-import>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px">
+      <sc-for list="{{testimonialsShort}}" as="t" hint-placeholder-count="4">
+        <div>
+          <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+            <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Badge" tone="neutral" hint-size="auto,26px">Beta member</x-import>
+          </div>
+          <x-import component-from-global-scope="LeoDesignSystem_a92d8b.WhatsAppQuoteCard" quote="{{t.quote}}" name="{{t.name}}" location="{{t.location}}" hint-size="100%,220px"></x-import>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="join" data-screen-label="Join the waitlist" style="padding:88px var(--gutter)">
+  <div style="max-width:520px;margin:0 auto">
+    <sc-if value="{{isFormStep}}" hint-placeholder-val="{{true}}">
+      <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Eyebrow" hint-size="auto,20px">Step 1 of 2</x-import>
+      <h2 style="font-family:var(--font-display);font-size:var(--text-2xl);color:var(--text-strong);margin:16px 0 10px;font-weight:500">Join the waitlist</h2>
+      <p style="font-size:var(--text-md);color:var(--text-body);line-height:1.6;margin:0 0 32px">One membership, one associate, everything covered. No card today — just your email to hold your family's place.</p>
+      <form onSubmit="{{submitEmail}}" style="display:flex;flex-direction:column;gap:20px">
+        <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Input" id="email-input" label="Email" type="email" placeholder="you@company.com" value="{{email}}" onChange="{{setEmail}}" hint-size="100%,72px"></x-import>
+        <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Button" type="submit" variant="primary" size="lg" full="{{true}}" hint-size="100%,56px">Join the waitlist</x-import>
+      </form>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:18px;font-size:var(--text-xs);color:var(--text-muted)">
+        <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Icon" name="lock" size="14" hint-size="14px,14px"></x-import>
+        No payment, ever, to join the list.
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isTasksStep}}" hint-placeholder-val="{{false}}">
+      <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Eyebrow" hint-size="auto,20px">Step 2 of 2</x-import>
+      <h2 style="font-family:var(--font-display);font-size:var(--text-2xl);color:var(--text-strong);margin:16px 0 10px;font-weight:500">Pick your free first task</h2>
+      <p style="font-size:var(--text-md);color:var(--text-body);line-height:1.6;margin:0 0 24px">We'll do this one on us, before you pay anything.</p>
+      <x-import component-from-global-scope="LeoDesignSystem_a92d8b.TaskPicker" tasks="{{taskDefs}}" value="{{selectedTask}}" onChange="{{pickTask}}" hint-size="100%,400px"></x-import>
+
+      <sc-if value="{{hasSelection}}" hint-placeholder-val="{{false}}">
+        <div style="margin-top:28px">
+          <div style="font-size:var(--text-sm);font-weight:600;color:var(--text-strong);margin-bottom:12px">Also interested in (optional)</div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <sc-for list="{{interestOptions}}" as="opt" hint-placeholder-count="3">
+              <button onClick="{{opt.toggle}}" style="border:none;background:none;padding:0;cursor:pointer">
+                <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Badge" tone="{{opt.tone}}" hint-size="auto,30px">{{opt.label}}</x-import>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <div style="margin-top:32px">
+        <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Button" variant="primary" size="lg" full="{{true}}" disabled="{{continueDisabled}}" onClick="{{continueToConfirm}}" hint-size="100%,56px">Continue</x-import>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isDoneStep}}" hint-placeholder-val="{{false}}">
+      <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Card" hint-size="100%,420px">
+        <span style="display:inline-flex;width:56px;height:56px;border-radius:50%;background:var(--brand-soft);color:var(--brand);align-items:center;justify-content:center;margin-bottom:18px">
+          <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Icon" name="check-circle" size="28" hint-size="28px,28px"></x-import>
+        </span>
+        <h2 style="font-family:var(--font-display);font-size:var(--text-2xl);color:var(--text-strong);margin:0 0 10px;font-weight:500">You're #{{waitlistPosition}} on the list</h2>
+        <p style="font-size:var(--text-md);color:var(--text-body);line-height:1.6;margin:0 0 28px">We'll start with: <strong style="color:var(--text-strong)">{{selectedTaskLabel}}</strong>. Move up the list — every friend who joins with your link moves your family up.</p>
+        <div style="display:flex;gap:10px;margin-bottom:16px">
+          <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Input" value="{{referralLink}}" readOnly="{{true}}" style="flex:1" hint-size="auto,48px"></x-import>
+          <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Button" variant="secondary" onClick="{{copyReferral}}" hint-size="auto,48px">Copy link</x-import>
+        </div>
+        <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Button" as="a" href="{{waLink}}" target="_blank" variant="primary" full="{{true}}" hint-size="100%,52px">
+          <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Icon" name="message-circle" size="18" hint-size="18px,18px"></x-import>
+          Share on WhatsApp
+        </x-import>
+      </x-import>
+    </sc-if>
+  </div>
+</section>
+
+<sc-if value="{{showPricingTeaser}}" hint-placeholder-val="{{true}}">
+  <section data-screen-label="Pricing" style="padding:88px var(--gutter);background:var(--bg-inset)">
+    <div style="max-width:var(--container);margin:0 auto">
+      <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Eyebrow" hint-size="auto,20px">Membership</x-import>
+      <h2 style="font-family:var(--font-display);font-size:var(--text-2xl);color:var(--text-strong);margin:16px 0 36px;font-weight:500">Simple pricing. Cancel anytime.</h2>
+      <x-import component-from-global-scope="LeoDesignSystem_a92d8b.PricingCard" onChoose="{{goToJoin}}" hint-size="100%,420px"></x-import>
+    </div>
+  </section>
+</sc-if>
+
+<section data-screen-label="FAQ" style="padding:88px var(--gutter)">
+  <div style="max-width:var(--container-narrow);margin:0 auto">
+    <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Eyebrow" hint-size="auto,20px">Questions</x-import>
+    <h2 style="font-family:var(--font-display);font-size:var(--text-2xl);color:var(--text-strong);margin:16px 0 36px;font-weight:500">Before you join</h2>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <sc-for list="{{faq}}" as="f" hint-placeholder-count="6">
+        <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Card" padded="{{false}}" hint-size="100%,80px">
+          <button onClick="{{f.toggle}}" style="width:100%;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 24px;background:none;border:none;cursor:pointer;text-align:left;font-family:var(--font-sans)">
+            <span style="font-size:var(--text-md);font-weight:600;color:var(--text-strong)">{{f.q}}</span>
+            <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Icon" name="chevron-right" size="18" style="{{f.chevronStyle}}" hint-size="18px,18px"></x-import>
+          </button>
+          <sc-if value="{{f.isOpen}}" hint-placeholder-val="{{false}}">
+            <div style="padding:0 24px 22px">
+              <sc-if value="{{f.special}}" hint-placeholder-val="{{false}}">
+                <span style="display:inline-block;margin-bottom:10px">
+                  <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Badge" tone="brand" hint-size="auto,26px">Never.</x-import>
+                </span>
+              </sc-if>
+              <div style="font-size:var(--text-base);color:var(--text-body);line-height:1.6;max-width:560px">{{f.a}}</div>
+            </div>
+          </sc-if>
+        </x-import>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<div style="background:var(--forest-950);padding:16px var(--gutter);text-align:center">
+  <span style="font-size:var(--text-xs);color:rgba(255,255,255,0.6)">Associates on the ground across India · Serving families in the US &amp; UAE.</span>
+</div>
+<x-import component-from-global-scope="LeoDesignSystem_a92d8b.Footer" hint-size="100%,320px"></x-import>
+
+<sc-if value="{{showStickyCta}}" hint-placeholder-val="{{false}}">
+  <div style="position:fixed;bottom:0;left:0;right:0;padding:12px 16px;background:var(--surface-card);border-top:1px solid var(--border);box-shadow:0 -4px 20px rgba(0,0,0,0.10);z-index:60">
+    <x-import component-from-global-scope="LeoDesignSystem_a92d8b.Button" variant="primary" full="{{true}}" onClick="{{goToJoin}}" hint-size="100%,52px">Join the waitlist</x-import>
+  </div>
+</sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440}, &quot;heroVariant&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;default&quot;: &quot;4&quot;, &quot;options&quot;: [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;], &quot;tsType&quot;: &quot;string&quot;, &quot;section&quot;: &quot;Hero&quot;}, &quot;showPricingTeaser&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Sections&quot;}, &quot;stickyCta&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Sections&quot;}, &quot;waitlistPosition&quot;: {&quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 1847, &quot;min&quot;: 1, &quot;max&quot;: 99999, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Waitlist&quot;}}">
+class Component extends DCLogic {
+  state = {
+    step: "form",
+    email: "",
+    selectedTask: null,
+    alsoInterested: [],
+    faqOpen: 0,
+    isMobile: false,
+    variant: "4",
+  };
+
+  constructor(props) {
+    super(props);
+    let v = null;
+    try {
+      v = new URLSearchParams(window.location.search).get("v");
+    } catch (e) {}
+    this.state.variant = (v && ["1", "2", "3", "4"].includes(v)) ? v : String(props.heroVariant || "4");
+  }
+
+  componentDidMount() {
+    this._onResize = () => this.setState({ isMobile: window.innerWidth <= 640 });
+    this._onResize();
+    window.addEventListener("resize", this._onResize);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("resize", this._onResize);
+  }
+
+  goToJoin = () => {
+    const el = document.getElementById("join");
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 16;
+      window.scrollTo({ top, behavior: "smooth" });
+    }
+  };
+
+  submitEmail = (e) => {
+    e.preventDefault();
+    if (!this.state.email || this.state.email.indexOf("@") === -1) return;
+    this.setState({ step: "tasks" });
+  };
+  setEmail = (e) => this.setState({ email: e.target.value });
+  pickTask = (id) => this.setState((s) => ({ selectedTask: id, alsoInterested: s.alsoInterested.filter((x) => x !== id) }));
+  toggleInterest = (id) => this.setState((s) => ({
+    alsoInterested: s.alsoInterested.includes(id) ? s.alsoInterested.filter((x) => x !== id) : s.alsoInterested.concat([id]),
+  }));
+  continueToConfirm = () => { if (this.state.selectedTask) this.setState({ step: "done" }); };
+  toggleFaq = (i) => this.setState((s) => ({ faqOpen: s.faqOpen === i ? null : i }));
+  copyReferral = () => {
+    const link = this.referralLink();
+    if (navigator.clipboard) navigator.clipboard.writeText("https://" + link);
+  };
+  referralLink() {
+    const slug = (this.state.email || "friend").split("@")[0].replace(/[^a-z0-9]/gi, "") || "friend";
+    return "leo.family/join?ref=" + encodeURIComponent(slug);
+  }
+
+  renderVals() {
+    const HERO = {
+      "1": { tag: "Peace of mind", h: "Their health, watched over — even from here.", s: "A named associate handles doctor visits, emergencies, and the 2am calls, so you don't have to be in the room to know they're safe." },
+      "2": { tag: "Off your plate", h: "The bills, the paperwork, the mental load — off your plate.", s: "Leo's associates chase the electricity board, the passport office, and the plumber, so your calls home can just be calls home." },
+      "3": { tag: "A real person, there", h: "A real person, walking beside them.", s: "Meet your family's named, verified associate in India — at the passport office, the hospital, wherever they need someone in the room." },
+      "4": { tag: "One membership. Everything covered.", h: "Your family's own person in India.", s: "One membership. A named associate for errands, bills, appointments, and emergencies — so you can be there, from anywhere." },
+    };
+    const hero = HERO[this.state.variant] || HERO["4"];
+
+    const trustItems = [
+      { icon: "shield-check", text: "Named & verified concierges", sub: "Introduced by photo before day one" },
+      { icon: "lock", text: "No passwords or OTPs, ever", sub: "We will never ask. Full stop." },
+      { icon: "user-check", text: "Built by NRIs", sub: "We lived this before we built it" },
+      { icon: "camera", text: "Every task closed with proof", sub: "Photos, receipts, a written note" },
+    ];
+
+    const mirror = [
+      { icon: "sunrise", title: "3am, timezone math", text: "The phone rings at an hour that's daytime there and dead of night here. You do the math before you even answer." },
+      { icon: "file-text", title: "The bill nobody can fix", text: "An electricity bill in your father's name, a portal that wants an OTP sent to a number that no longer exists." },
+      { icon: "heart-pulse", title: "The appointment someone should attend", text: "A cardiology follow-up on a Tuesday morning. Someone should sit in that waiting room. It's rarely you." },
+    ];
+
+    const steps = [
+      { n: "01", title: "Join the family group", text: "Leo joins your family's WhatsApp thread — no new app to install, nothing for your parents to learn." },
+      { n: "02", title: "Ask anything, any way", text: "Text or send a voice note, in English, Hindi, or Tamil — whatever's natural. Leo understands all of it." },
+      { n: "03", title: "A named person makes it happen", text: "Not a bot reply. Priya, or Arjun, or Meena — a real associate calls, visits, and reports back with proof." },
+    ];
+
+    const handleGroups = [
+      { name: "Protect", items: [
+        { icon: "shield-check", t: "Parents' Cyber-Fraud Risk Score", d: "Ongoing scam checks & alerts, in plain language." },
+        { icon: "heart-pulse", t: "Verified emergency response", d: "Hospital runs and ambulance calls, someone there in minutes." },
+        { icon: "user-check", t: "Verified domestic help", d: "Background-checked, introduced by name and photo." },
+      ]},
+      { name: "Handle", items: [
+        { icon: "file-text", t: "Bill audits & payments", d: "Electricity, gas, KYC — chased down and closed." },
+        { icon: "home", t: "Appliance & home repairs", d: "A visit, a fix, photos of the finished job." },
+        { icon: "wallet", t: "Passport & government paperwork", d: "Appointments booked, forms filed, queues stood in." },
+      ]},
+      { name: "Delight", items: [
+        { icon: "gift", t: "Birthdays, remembered", d: "Flowers or sweets on the doorstep, on the day." },
+        { icon: "home", t: "Ghar ka khana, shipped", d: "A tiffin from home, packed for the journey abroad." },
+        { icon: "camera", t: "Photo memories, curated", d: "A weekly photo or two, just because you asked." },
+      ]},
+    ];
+
+    const stories = [
+      { name: "Ankush", route: "Boston ↔ Chandigarh", situation: "His father's ₹6,400 electricity bill had gone unpaid for two cycles — the portal wanted an OTP sent to a number that no longer worked.", action: "Leo's associate went to the office in person, paid the bill, and got the connection re-verified under his father's name.", result: "Fixed by the next morning. Ankush found out from a voice note, not a disconnection notice." },
+      { name: "Meera", route: "Edison, NJ ↔ Lucknow", situation: "Her mother's EPF withdrawal had been stuck for eight months — three bank branches, no one giving a straight answer.", action: "Leo's associate tracked the claim through the EPFO office and corrected a bank-seeding mismatch nobody had flagged.", result: "₹4.1L released three weeks later. Meera keeps the confirmation screenshot pinned in the family group." },
+      { name: "Farah", route: "Dubai ↔ Hyderabad", situation: "Her parents needed a passport renewal before visiting her — no slots for six weeks, and neither of them drives anymore.", action: "Leo's associate booked the Tatkaal slot, drove them there, and stood in line so they didn't have to.", result: "New passports in nine days. Farah booked their tickets that same week." },
+    ];
+
+    const testimonialsShort = [
+      { name: "Priyanka", location: "Fremont ↔ Chandigarh", quote: "I used to call Papa every day just to check he was okay. Now I call him because I want to talk about cricket." },
+      { name: "Rahul", location: "Austin ↔ Lucknow", quote: "Fixed a gas connection issue in two days that I couldn't get anywhere with in two months, from here." },
+      { name: "Anjali", location: "Dubai ↔ Jaipur", quote: "They sent Amma's blood pressure readings every week for a month without me even asking. That's the part that got me." },
+      { name: "Vivek", location: "Boston ↔ Patna", quote: "No app, no login. Just a WhatsApp thread. My parents didn't have to change anything." },
+    ];
+
+    const faqData = [
+      { q: "Will you ever ask for OTPs or passwords?", a: "Never. Not once, not for any reason. Leo's associates will never ask your parents — or you — for a password, OTP, PIN, or card number. If someone claiming to be Leo asks for one, it isn't Leo.", special: true },
+      { q: "What does it cost?", a: "$69 a month, or $49 a month billed annually. One membership covers unlimited everyday tasks and one dedicated associate for your family. Emergencies are always included — never billed as extras." },
+      { q: "Which cities are you in today?", a: "We open one city at a time so every family gets an associate who actually knows them. Live today in Chandigarh, Lucknow, and Hyderabad, with Pune, Jaipur, and Patna opening this year." },
+      { q: "How are associates verified?", a: "Every associate passes a background check, an in-person interview, and a supervised trial period before they're introduced to your family — by name and photo, before their first task." },
+      { q: "What if I want to cancel?", a: "Cancel anytime, no questions asked. Your first 30 days are fully refundable — we'd rather earn the second month than lock you into the first." },
+      { q: "Do my parents need to install anything?", a: "No. Everything happens over WhatsApp — a group they're probably already using with the rest of the family. Nothing new to learn, nothing to download." },
+    ];
+    const faq = faqData.map((f, i) => ({
+      q: f.q, a: f.a, special: !!f.special,
+      isOpen: this.state.faqOpen === i,
+      toggle: () => this.toggleFaq(i),
+      chevronStyle: { transform: this.state.faqOpen === i ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 200ms ease", flexShrink: 0 },
+    }));
+
+    const taskDefs = [
+      { id: "epf", icon: "wallet", label: "Recover stuck EPF / PF", note: "We track the claim in person until it's released." },
+      { id: "help", icon: "user-check", label: "Verify or find domestic help", note: "Background-checked, introduced by name and photo." },
+      { id: "money", icon: "file-text", label: "India Money Calendar", note: "A full bill audit, plus reminders so nothing lapses again." },
+      { id: "fraud", icon: "shield-check", label: "Parents' Cyber-Fraud Risk Score", note: "A plain-language read on where they're exposed." },
+    ];
+    const interestOptions = taskDefs
+      .filter((t) => t.id !== this.state.selectedTask)
+      .map((t) => ({
+        id: t.id, label: t.label,
+        tone: this.state.alsoInterested.includes(t.id) ? "brand" : "neutral",
+        toggle: () => this.toggleInterest(t.id),
+      }));
+    const selectedTaskLabel = (taskDefs.find((t) => t.id === this.state.selectedTask) || {}).label || "";
+
+    const referralLink = this.referralLink();
+    const waLink = "https://wa.me/?text=" + encodeURIComponent(
+      "I found Leo — they handle my parents' errands, bills, and emergencies in India, over WhatsApp. Thought you'd want this too: https://" + referralLink
+    );
+
+    return {
+      heroTag: hero.tag, heroH: hero.h, heroS: hero.s,
+      trustItems, mirror, steps, handleGroups, stories, testimonialsShort, faq,
+      taskDefs, selectedTask: this.state.selectedTask, pickTask: this.pickTask,
+      interestOptions, hasSelection: !!this.state.selectedTask, selectedTaskLabel,
+      continueDisabled: !this.state.selectedTask,
+      isFormStep: this.state.step === "form",
+      isTasksStep: this.state.step === "tasks",
+      isDoneStep: this.state.step === "done",
+      email: this.state.email, setEmail: this.setEmail, submitEmail: this.submitEmail,
+      continueToConfirm: this.continueToConfirm,
+      goToJoin: this.goToJoin,
+      showStickyCta: this.state.isMobile && (this.props.stickyCta ?? true) && this.state.step !== "done",
+      waitlistPosition: this.props.waitlistPosition || 1847,
+      referralLink, copyReferral: this.copyReferral, waLink,
+      showPricingTeaser: this.props.showPricingTeaser ?? true,
+    };
+  }
+}
+
+</script>
+</body>
+</html>

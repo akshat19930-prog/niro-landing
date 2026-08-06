@@ -1,0 +1,108 @@
+/* ===== Leo — Color tokens ===== */
+:root {
+  /* --- Base scales --- */
+
+  /* Forest (primary) — deep, grounding green */
+  --forest-950: #0C1F18;
+  --forest-900: #10281F;
+  --forest-800: #16362A;
+  --forest-700: #1E4536; /* primary */
+  --forest-600: #2A5A47;
+  --forest-500: #3B7359;
+  --forest-400: #5A9078;
+  --forest-300: #8FB6A3;
+  --forest-200: #C2D8CD;
+  --forest-100: #E2EEE8;
+
+  /* Gold (accent — burnished, from Indian material culture). Use < 10%. */
+  --gold-700: #7E561C;
+  --gold-600: #9A6E28;
+  --gold-500: #B8863B; /* burnished gold */
+  --gold-400: #CC9E52;
+  --gold-300: #E0BE84;
+  --gold-100: #F1E3C6;
+
+  /* Warm neutrals — ivory & sand */
+  --ivory: #F6F1E7;
+  --sand-50:  #FCFAF4;
+  --sand-100: #EFE7D6;
+  --sand-200: #E5D9C2;
+  --sand-300: #D8C9AC;
+
+  /* Warm inks */
+  --ink-900: #191A16;
+  --ink-700: #33352D;
+  --ink-500: #5C5E52;
+  --ink-400: #767869;
+
+  /* Support (quiet, warm-leaning) */
+  --success: #2A6B4F;
+  --danger:  #A6432E;
+  --info:    #37634F;
+
+  /* WhatsApp chat surface (product motif) */
+  --wa-bg:    #E9E2D3;
+  --wa-in:    #FFFFFF;
+  --wa-out:   #DDEAD0;
+  --wa-out-dark: #123C2C;
+
+  /* ===== Semantic aliases — LIGHT (default) ===== */
+  --bg-page:        var(--ivory);
+  --bg-inset:       var(--sand-100);
+  --surface-card:   #FFFFFF;
+  --surface-raised: var(--sand-50);
+  --surface-brand:  var(--forest-700);
+
+  --text-strong:  var(--ink-900);
+  --text-body:    var(--ink-700);
+  --text-muted:   var(--ink-400);
+  --text-on-brand: var(--ivory);
+  --text-on-accent: var(--forest-950);
+
+  --brand:        var(--forest-700);
+  --brand-hover:  var(--forest-800);
+  --brand-press:  var(--forest-900);
+  --brand-soft:   var(--forest-100);
+  --accent:       var(--gold-500);
+  --accent-strong:var(--gold-600); /* accent used as small text — meets AA on ivory */
+  --accent-soft:  var(--gold-100);
+
+  --border:       rgba(25, 26, 22, 0.12);
+  --border-strong:rgba(25, 26, 22, 0.22);
+  --ring:         rgba(30, 69, 54, 0.35);
+
+  color-scheme: light;
+}
+
+/* ===== Semantic aliases — DARK (the "2:47 AM" register) ===== */
+[data-theme="dark"] {
+  --bg-page:        var(--forest-950);
+  --bg-inset:       #0A1A14;
+  --surface-card:   #14291F;
+  --surface-raised: #1A3327;
+  --surface-brand:  var(--forest-800);
+
+  --text-strong:  #F3EEE2;
+  --text-body:    #CBD4CB;
+  --text-muted:   #8F9C92;
+  --text-on-brand: #F3EEE2;
+  --text-on-accent: var(--forest-950);
+
+  --brand:        var(--forest-400);
+  --brand-hover:  var(--forest-300);
+  --brand-press:  var(--forest-200);
+  --brand-soft:   rgba(90, 144, 120, 0.16);
+  --accent:       var(--gold-400);
+  --accent-strong:var(--gold-300);
+  --accent-soft:  rgba(204, 158, 82, 0.14);
+
+  --border:       rgba(255, 255, 255, 0.12);
+  --border-strong:rgba(255, 255, 255, 0.22);
+  --ring:         rgba(204, 158, 82, 0.45);
+
+  --wa-in:  #1B3327;
+  --wa-out: var(--wa-out-dark);
+  --wa-bg:  #0E2019;
+
+  color-scheme: dark;
+}

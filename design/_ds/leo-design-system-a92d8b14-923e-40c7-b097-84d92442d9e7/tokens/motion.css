@@ -1,0 +1,15 @@
+/* ===== Leo — Motion tokens =====
+   Calm. 200–300ms. No bounce, no overshoot. Movement is small and warm. */
+:root {
+  --dur-fast: 160ms;  /* @kind other */
+  --dur-base: 240ms;  /* @kind other */
+  --dur-slow: 320ms;  /* @kind other */
+
+  --ease-calm: cubic-bezier(0.22, 0.61, 0.24, 1);  /* @kind other — gentle ease-out */
+  --ease-inout: cubic-bezier(0.4, 0.1, 0.2, 1);  /* @kind other */
+
+  --lift: translateY(-2px);  /* @kind other — hover lift, subtle only */
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur-base: 0ms; --dur-slow: 0ms; }
+}

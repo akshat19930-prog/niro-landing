@@ -1,0 +1,9 @@
+/* ===== Leo — Radius tokens ===== */
+:root {
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;   /* buttons, inputs */
+  --radius-lg: 20px;   /* cards */
+  --radius-xl: 28px;   /* feature panels */
+  --radius-pill: 999px;
+}

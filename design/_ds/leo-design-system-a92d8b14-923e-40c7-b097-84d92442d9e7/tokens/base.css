@@ -1,0 +1,28 @@
+/* ===== Leo — Base element defaults ===== */
+:root {
+  /* @kind other */
+  --jaali: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Cg fill='none' stroke='%231E4536' stroke-opacity='0.06' stroke-width='1'%3E%3Cpath d='M24 0l24 24-24 24L0 24z'/%3E%3Cpath d='M24 12l12 12-12 12-12-12z'/%3E%3C/g%3E%3C/svg%3E");
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--text-strong);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin: 0;
+}
+p { margin: 0; }
+a { color: var(--brand); text-decoration: none; transition: color var(--dur-fast) var(--ease-calm); }
+a:hover { color: var(--brand-hover); text-decoration: underline; text-underline-offset: 3px; }
+::selection { background: var(--accent-soft); color: var(--ink-900); }

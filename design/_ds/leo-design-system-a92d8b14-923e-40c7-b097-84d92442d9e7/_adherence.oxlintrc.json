@@ -1,0 +1,402 @@
+{
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "rules": {
+    "react/forbid-elements": [
+      "warn",
+      {
+        "forbid": []
+      }
+    ],
+    "no-restricted-imports": [
+      "warn",
+      {
+        "patterns": [
+          {
+            "group": [
+              "components/core/**",
+              "components/forms/**",
+              "components/navigation/**",
+              "components/product/**",
+              "ui_kits/landing/**"
+            ],
+            "message": "Import design-system components from 'index.js', not component internals."
+          }
+        ]
+      }
+    ],
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "Literal[value=/#[0-9a-fA-F]{3,8}\\b/]",
+        "message": "Raw hex color — use a design-system color token via var()."
+      },
+      {
+        "selector": "Literal[value=/\\b\\d+px\\b/]",
+        "message": "Raw px value — use a design-system spacing token via var()."
+      },
+      {
+        "selector": "Literal[value=/font-family\\s*:\\s*(?!['\\\"]?(?:Newsreader|Hanken Grotesk))/i]",
+        "message": "Font not provided by the design system. Available: Newsreader, Hanken Grotesk."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute > JSXIdentifier[name!=/^(?:tone|icon|children|key|ref|className|style|children)$/]",
+        "message": "<Badge> doesn't accept that prop. Declared props: tone, icon, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Badge'] > JSXAttribute[name.name='tone'] > Literal[value!=/^(?:neutral|brand|accent|success|solid)$/]",
+        "message": "<Badge> tone must be one of 'neutral' | 'brand' | 'accent' | 'success' | 'solid'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute > JSXIdentifier[name!=/^(?:variant|size|full|icon|iconRight|as|children|key|ref|className|style|children)$/]",
+        "message": "<Button> doesn't accept that prop. Declared props: variant, size, full, icon, iconRight, as, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='variant'] > Literal[value!=/^(?:primary|secondary|quiet|accent)$/]",
+        "message": "<Button> variant must be one of 'primary' | 'secondary' | 'quiet' | 'accent'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Button'] > JSXAttribute[name.name='size'] > Literal[value!=/^(?:sm|md|lg)$/]",
+        "message": "<Button> size must be one of 'sm' | 'md' | 'lg'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute > JSXIdentifier[name!=/^(?:padded|hover|tone|children|key|ref|className|style|children)$/]",
+        "message": "<Card> doesn't accept that prop. Declared props: padded, hover, tone, children."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Card'] > JSXAttribute[name.name='tone'] > Literal[value!=/^(?:default|inset|brand|outline)$/]",
+        "message": "<Card> tone must be one of 'default' | 'inset' | 'brand' | 'outline'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='DepositCTA'] > JSXAttribute > JSXIdentifier[name!=/^(?:city|spots|taken|onReserve|key|ref|className|style|children)$/]",
+        "message": "<DepositCTA> doesn't accept that prop. Declared props: city, spots, taken, onReserve."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Icon'] > JSXAttribute > JSXIdentifier[name!=/^(?:name|size|strokeWidth|key|ref|className|style|children)$/]",
+        "message": "<Icon> doesn't accept that prop. Declared props: name, size, strokeWidth."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Input'] > JSXAttribute > JSXIdentifier[name!=/^(?:label|hint|error|icon|key|ref|className|style|children)$/]",
+        "message": "<Input> doesn't accept that prop. Declared props: label, hint, error, icon."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='Wordmark'] > JSXAttribute > JSXIdentifier[name!=/^(?:size|dark|key|ref|className|style|children)$/]",
+        "message": "<Wordmark> doesn't accept that prop. Declared props: size, dark."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='ParentVoiceCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:hinglish|translation|name|relation|key|ref|className|style|children)$/]",
+        "message": "<ParentVoiceCard> doesn't accept that prop. Declared props: hinglish, translation, name, relation."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='PledgeInterstitial'] > JSXAttribute > JSXIdentifier[name!=/^(?:city|onConfirm|onBack|key|ref|className|style|children)$/]",
+        "message": "<PledgeInterstitial> doesn't accept that prop. Declared props: city, onConfirm, onBack."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='PricingCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:onChoose|key|ref|className|style|children)$/]",
+        "message": "<PricingCard> doesn't accept that prop. Declared props: onChoose."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='TaskOption'] > JSXAttribute > JSXIdentifier[name!=/^(?:id|icon|label|note|key|ref|className|style|children)$/]",
+        "message": "<TaskOption> doesn't accept that prop. Declared props: id, icon, label, note."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='TrustItem'] > JSXAttribute > JSXIdentifier[name!=/^(?:icon|text|sub|key|ref|className|style|children)$/]",
+        "message": "<TrustItem> doesn't accept that prop. Declared props: icon, text, sub."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='WhatsAppQuoteCard'] > JSXAttribute > JSXIdentifier[name!=/^(?:quote|name|location|time|key|ref|className|style|children)$/]",
+        "message": "<WhatsAppQuoteCard> doesn't accept that prop. Declared props: quote, name, location, time."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='WAMessage'] > JSXAttribute > JSXIdentifier[name!=/^(?:from|type|text|sender|badge|dur|played|time|key|ref|className|style|children)$/]",
+        "message": "<WAMessage> doesn't accept that prop. Declared props: from, type, text, sender, badge, dur, played, time."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='WAMessage'] > JSXAttribute[name.name='from'] > Literal[value!=/^(?:you|leo)$/]",
+        "message": "<WAMessage> from must be one of 'you' | 'leo'."
+      },
+      {
+        "selector": "JSXOpeningElement[name.name='WAMessage'] > JSXAttribute[name.name='type'] > Literal[value!=/^(?:text|voice)$/]",
+        "message": "<WAMessage> type must be one of 'text' | 'voice'."
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/index.js"
+      ],
+      "rules": {
+        "no-restricted-imports": "off"
+      }
+    }
+  ],
+  "x-omelette": {
+    "components": {
+      "Badge": {
+        "replaces": []
+      },
+      "Button": {
+        "replaces": []
+      },
+      "Card": {
+        "replaces": []
+      },
+      "DepositCTA": {
+        "replaces": []
+      },
+      "EmergencyStory": {
+        "replaces": []
+      },
+      "Footer": {
+        "replaces": []
+      },
+      "Icon": {
+        "replaces": []
+      },
+      "Input": {
+        "replaces": []
+      },
+      "Wordmark": {
+        "replaces": []
+      },
+      "ParentVoiceCard": {
+        "replaces": []
+      },
+      "PledgeInterstitial": {
+        "replaces": []
+      },
+      "PricingCard": {
+        "replaces": []
+      },
+      "TaskOption": {
+        "replaces": []
+      },
+      "TrustItem": {
+        "replaces": []
+      },
+      "WhatsAppQuoteCard": {
+        "replaces": []
+      },
+      "WAMessage": {
+        "replaces": []
+      }
+    },
+    "tokens": [
+      "--accent",
+      "--accent-soft",
+      "--accent-strong",
+      "--bg-inset",
+      "--bg-page",
+      "--border",
+      "--border-strong",
+      "--brand",
+      "--brand-hover",
+      "--brand-press",
+      "--brand-soft",
+      "--container",
+      "--container-narrow",
+      "--danger",
+      "--dur-base",
+      "--dur-fast",
+      "--dur-slow",
+      "--ease-calm",
+      "--ease-inout",
+      "--font-display",
+      "--font-sans",
+      "--forest-100",
+      "--forest-200",
+      "--forest-300",
+      "--forest-400",
+      "--forest-500",
+      "--forest-600",
+      "--forest-700",
+      "--forest-800",
+      "--forest-900",
+      "--forest-950",
+      "--gold-100",
+      "--gold-300",
+      "--gold-400",
+      "--gold-500",
+      "--gold-600",
+      "--gold-700",
+      "--gutter",
+      "--info",
+      "--ink-400",
+      "--ink-500",
+      "--ink-700",
+      "--ink-900",
+      "--ivory",
+      "--jaali",
+      "--leading-body",
+      "--leading-snug",
+      "--leading-tight",
+      "--lift",
+      "--radius-lg",
+      "--radius-md",
+      "--radius-pill",
+      "--radius-sm",
+      "--radius-xl",
+      "--radius-xs",
+      "--ring",
+      "--sand-100",
+      "--sand-200",
+      "--sand-300",
+      "--sand-50",
+      "--shadow-1",
+      "--shadow-2",
+      "--shadow-3",
+      "--shadow-brand",
+      "--shadow-inset",
+      "--space-1",
+      "--space-2",
+      "--space-3",
+      "--space-4",
+      "--space-5",
+      "--space-6",
+      "--space-7",
+      "--space-8",
+      "--space-9",
+      "--success",
+      "--surface-brand",
+      "--surface-card",
+      "--surface-raised",
+      "--text-2xl",
+      "--text-3xl",
+      "--text-4xl",
+      "--text-base",
+      "--text-body",
+      "--text-lg",
+      "--text-md",
+      "--text-muted",
+      "--text-on-accent",
+      "--text-on-brand",
+      "--text-sm",
+      "--text-strong",
+      "--text-xl",
+      "--text-xs",
+      "--tracking-normal",
+      "--tracking-tight",
+      "--tracking-wide",
+      "--wa-bg",
+      "--wa-in",
+      "--wa-out",
+      "--wa-out-dark",
+      "--weight-bold",
+      "--weight-medium",
+      "--weight-regular",
+      "--weight-semibold"
+    ],
+    "tokenKinds": {
+      "--forest-950": "color",
+      "--forest-900": "color",
+      "--forest-800": "color",
+      "--forest-700": "color",
+      "--forest-600": "color",
+      "--forest-500": "color",
+      "--forest-400": "color",
+      "--forest-300": "color",
+      "--forest-200": "color",
+      "--forest-100": "color",
+      "--gold-700": "color",
+      "--gold-600": "color",
+      "--gold-500": "color",
+      "--gold-400": "color",
+      "--gold-300": "color",
+      "--gold-100": "color",
+      "--ivory": "color",
+      "--sand-50": "color",
+      "--sand-100": "color",
+      "--sand-200": "color",
+      "--sand-300": "color",
+      "--ink-900": "color",
+      "--ink-700": "color",
+      "--ink-500": "color",
+      "--ink-400": "color",
+      "--success": "color",
+      "--danger": "color",
+      "--info": "color",
+      "--wa-bg": "color",
+      "--wa-in": "color",
+      "--wa-out": "color",
+      "--wa-out-dark": "color",
+      "--bg-page": "color",
+      "--bg-inset": "color",
+      "--surface-card": "color",
+      "--surface-raised": "color",
+      "--surface-brand": "color",
+      "--text-strong": "font",
+      "--text-body": "font",
+      "--text-muted": "font",
+      "--text-on-brand": "font",
+      "--text-on-accent": "font",
+      "--brand": "color",
+      "--brand-hover": "color",
+      "--brand-press": "color",
+      "--brand-soft": "color",
+      "--accent": "color",
+      "--accent-strong": "color",
+      "--accent-soft": "color",
+      "--border": "color",
+      "--border-strong": "color",
+      "--ring": "color",
+      "--font-display": "font",
+      "--font-sans": "font",
+      "--text-xs": "font",
+      "--text-sm": "font",
+      "--text-base": "font",
+      "--text-md": "font",
+      "--text-lg": "font",
+      "--text-xl": "font",
+      "--text-2xl": "font",
+      "--text-3xl": "font",
+      "--text-4xl": "font",
+      "--leading-tight": "font",
+      "--leading-snug": "font",
+      "--leading-body": "font",
+      "--tracking-tight": "font",
+      "--tracking-normal": "font",
+      "--tracking-wide": "font",
+      "--weight-regular": "font",
+      "--weight-medium": "font",
+      "--weight-semibold": "font",
+      "--weight-bold": "font",
+      "--space-1": "spacing",
+      "--space-2": "spacing",
+      "--space-3": "spacing",
+      "--space-4": "spacing",
+      "--space-5": "spacing",
+      "--space-6": "spacing",
+      "--space-7": "spacing",
+      "--space-8": "spacing",
+      "--space-9": "spacing",
+      "--container": "spacing",
+      "--container-narrow": "spacing",
+      "--gutter": "spacing",
+      "--radius-xs": "radius",
+      "--radius-sm": "radius",
+      "--radius-md": "radius",
+      "--radius-lg": "radius",
+      "--radius-xl": "radius",
+      "--radius-pill": "radius",
+      "--shadow-1": "shadow",
+      "--shadow-2": "shadow",
+      "--shadow-3": "shadow",
+      "--shadow-brand": "shadow",
+      "--shadow-inset": "shadow",
+      "--dur-fast": "other",
+      "--dur-base": "other",
+      "--dur-slow": "other",
+      "--ease-calm": "other",
+      "--ease-inout": "other",
+      "--lift": "other",
+      "--jaali": "other"
+    },
+    "fontFamilies": [
+      "Hanken Grotesk",
+      "Newsreader"
+    ]
+  }
+}
