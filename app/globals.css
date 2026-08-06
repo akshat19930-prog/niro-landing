@@ -1,0 +1,318 @@
+@import "./tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base element defaults (ported from the design system's base.css). */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    margin: 0;
+    background: var(--bg-page);
+    color: var(--text-body);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--leading-body);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    color: var(--text-strong);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    margin: 0;
+  }
+  p {
+    margin: 0;
+  }
+  a {
+    color: var(--brand);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-calm);
+  }
+  a:hover {
+    color: var(--brand-hover);
+  }
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--ink-900);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+/* The join section is scrolled to from nav / hero / sticky CTA; keep the
+   heading clear of the sticky nav (matches the prototype's -16px offset). */
+#join {
+  scroll-margin-top: 80px;
+}
+
+/* =====================================================================
+   Component styles — ported from the design-system bundle. Hover/focus are
+   authored as CSS (not inline handlers) so DS components stay static server
+   components. Base values for hover-affected properties live here too, so
+   nothing inline shadows the :hover rules.
+
+   NOTE: authored as plain CSS (not inside @layer components) on purpose —
+   class names like `btn-primary` are built dynamically (`btn-${variant}`) and
+   never appear literally in source, so Tailwind would tree-shake them out of a
+   component layer. Plain CSS is always emitted.
+   ===================================================================== */
+/* ---- Button ---- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: var(--font-sans);
+    font-weight: var(--weight-semibold);
+    line-height: 1;
+    letter-spacing: 0.005em;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      background var(--dur-fast) var(--ease-calm),
+      color var(--dur-fast) var(--ease-calm),
+      transform var(--dur-fast) var(--ease-calm),
+      box-shadow var(--dur-fast) var(--ease-calm),
+      border-color var(--dur-fast) var(--ease-calm);
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .btn-sm {
+    padding: 10px 16px;
+    font-size: var(--text-sm);
+    min-height: 40px;
+  }
+  .btn-md {
+    padding: 13px 22px;
+    font-size: var(--text-base);
+    min-height: 48px;
+  }
+  .btn-lg {
+    padding: 16px 28px;
+    font-size: var(--text-md);
+    min-height: 56px;
+  }
+  .btn-full {
+    width: 100%;
+  }
+  .btn-primary {
+    background: var(--brand);
+    color: var(--text-on-brand);
+    box-shadow: var(--shadow-brand);
+  }
+  .btn-primary:not(:disabled):not([aria-disabled="true"]):hover {
+    background: var(--brand-hover);
+    color: var(--text-on-brand);
+    transform: var(--lift);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--brand);
+    border-color: var(--border-strong);
+  }
+  .btn-secondary:not(:disabled):hover {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+    transform: var(--lift);
+  }
+  .btn-quiet {
+    background: transparent;
+    color: var(--text-body);
+  }
+  .btn-quiet:not(:disabled):hover {
+    color: var(--brand);
+    transform: var(--lift);
+  }
+  .btn-accent {
+    background: var(--accent);
+    color: var(--text-on-accent);
+    box-shadow: var(--shadow-2);
+  }
+  .btn-accent:not(:disabled):hover {
+    background: var(--accent-strong);
+    transform: var(--lift);
+  }
+
+  /* ---- Nav pill CTA ---- */
+  .nav-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--text-on-brand);
+    background: var(--brand);
+    border: none;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: var(--shadow-1);
+    transition:
+      background var(--dur-fast) var(--ease-calm),
+      transform var(--dur-fast) var(--ease-calm);
+  }
+  .nav-cta:hover {
+    background: var(--brand-hover);
+    color: var(--text-on-brand);
+    transform: var(--lift);
+  }
+
+  /* ---- Card ---- */
+  .card {
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2);
+    transition:
+      transform var(--dur-base) var(--ease-calm),
+      box-shadow var(--dur-base) var(--ease-calm);
+  }
+  .card-hover:hover {
+    transform: var(--lift);
+    box-shadow: var(--shadow-3);
+  }
+
+  /* ---- Input ---- */
+  .ds-input {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 16px;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--text-strong);
+    background: var(--surface-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-md);
+    outline: none;
+    transition:
+      border-color var(--dur-fast) var(--ease-calm),
+      box-shadow var(--dur-fast) var(--ease-calm);
+  }
+  .ds-input:focus {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 4px var(--ring);
+  }
+  .ds-input.has-error {
+    border-color: var(--danger);
+  }
+
+  /* ---- Footer links ---- */
+  .footer-link {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-calm);
+  }
+  .footer-link:hover {
+    color: #f3eee2;
+  }
+
+  /* ---- Task picker card ---- */
+  .task-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 72px;
+    padding: 16px 18px;
+    text-align: left;
+    cursor: pointer;
+    background: var(--surface-card);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-1);
+    transition: all var(--dur-base) var(--ease-calm);
+    font-family: var(--font-sans);
+  }
+  .task-card:hover:not(.task-card-on) {
+    border-color: var(--border-strong);
+    transform: var(--lift);
+  }
+  .task-card-on {
+    background: var(--brand-soft);
+    border-color: var(--brand);
+    box-shadow: var(--shadow-2);
+  }
+
+  /* ---- Interest chip (multi-select) ---- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-semibold);
+    letter-spacing: 0.02em;
+    border-radius: var(--radius-pill);
+    line-height: 1.4;
+    cursor: pointer;
+    transition: all var(--dur-fast) var(--ease-calm);
+  }
+
+  /* ---- Pricing / accent CTA link ---- */
+  .price-cta {
+    width: 100%;
+    min-height: 50px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all var(--dur-fast) var(--ease-calm);
+  }
+  .price-cta-plain {
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    color: var(--brand);
+  }
+  .price-cta-plain:hover {
+    background: var(--brand-soft);
+    transform: var(--lift);
+  }
+  .price-cta-hl {
+    border: none;
+    background: var(--gold-400);
+    color: var(--forest-950);
+  }
+  .price-cta-hl:hover {
+    background: var(--gold-300);
+    transform: var(--lift);
+  }
+
+/* ---- Sticky mobile CTA — narrow viewports only ---- */
+.sticky-cta {
+  display: block;
+}
+@media (min-width: 641px) {
+  .sticky-cta {
+    display: none;
+  }
+}

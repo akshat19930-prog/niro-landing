@@ -1,0 +1,387 @@
+import { Card } from "@/components/ds/Card";
+import { Badge } from "@/components/ds/Badge";
+import { Eyebrow } from "@/components/ds/Eyebrow";
+import { Icon } from "@/components/ds/Icon";
+import { WhatsAppShowcase } from "@/components/ds/WhatsAppShowcase";
+import { WhatsAppQuoteCard } from "@/components/ds/WhatsAppQuoteCard";
+import { ParentVoiceCard } from "@/components/ds/ParentVoiceCard";
+import { PricingCard } from "@/components/ds/PricingCard";
+import {
+  MIRROR,
+  STEPS,
+  HOW_MESSAGES,
+  HANDLE_GROUPS,
+  STORIES,
+  PARENT_VOICE,
+  TESTIMONIALS_SHORT,
+} from "@/lib/content";
+
+const CONTAINER = { maxWidth: "var(--container)", margin: "0 auto" } as const;
+const h2Style = {
+  fontFamily: "var(--font-display)",
+  fontSize: "var(--text-2xl)",
+  color: "var(--text-strong)",
+  fontWeight: 500,
+} as const;
+
+const microLabel = {
+  fontSize: 11,
+  fontWeight: 700,
+  textTransform: "uppercase" as const,
+  letterSpacing: "0.06em",
+  color: "var(--text-muted)",
+  marginBottom: 4,
+};
+
+/* ---- The Mirror ---- */
+export function Mirror() {
+  return (
+    <section
+      data-screen-label="The Mirror"
+      style={{ padding: "80px var(--gutter)", background: "var(--bg-inset)" }}
+    >
+      <div style={CONTAINER}>
+        <Eyebrow>Sound familiar</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "16px 0 40px", maxWidth: 680 }}>
+          You didn&apos;t leave them. You left the country. From here, that&apos;s a hard
+          difference to feel.
+        </h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 24,
+          }}
+        >
+          {MIRROR.map((m) => (
+            <Card key={m.title}>
+              <span
+                style={{
+                  display: "inline-flex",
+                  width: 44,
+                  height: 44,
+                  borderRadius: 12,
+                  background: "var(--brand-soft)",
+                  color: "var(--brand)",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: 18,
+                }}
+              >
+                <Icon name={m.icon} size={22} />
+              </span>
+              <div
+                style={{
+                  fontSize: "var(--text-lg)",
+                  fontWeight: 600,
+                  color: "var(--text-strong)",
+                  marginBottom: 8,
+                }}
+              >
+                {m.title}
+              </div>
+              <div
+                style={{
+                  fontSize: "var(--text-base)",
+                  color: "var(--text-body)",
+                  lineHeight: 1.55,
+                }}
+              >
+                {m.text}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---- How it works ---- */
+export function HowItWorks() {
+  return (
+    <section data-screen-label="How it works" style={{ padding: "88px var(--gutter)" }}>
+      <div
+        style={{
+          ...CONTAINER,
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))",
+          gap: 56,
+          alignItems: "start",
+        }}
+      >
+        <div>
+          <Eyebrow>How it works</Eyebrow>
+          <h2 style={{ ...h2Style, margin: "16px 0 8px" }}>
+            Talk to Niro like a friend who happens to live near your parents.
+          </h2>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 30,
+              marginTop: 36,
+            }}
+          >
+            {STEPS.map((st) => (
+              <div key={st.n} style={{ display: "flex", gap: 20 }}>
+                <span
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "var(--text-xl)",
+                    color: "var(--accent-strong)",
+                    flexShrink: 0,
+                    width: 44,
+                  }}
+                >
+                  {st.n}
+                </span>
+                <div>
+                  <div
+                    style={{
+                      fontSize: "var(--text-lg)",
+                      fontWeight: 600,
+                      color: "var(--text-strong)",
+                      marginBottom: 6,
+                    }}
+                  >
+                    {st.title}
+                  </div>
+                  <div
+                    style={{
+                      fontSize: "var(--text-base)",
+                      color: "var(--text-body)",
+                      lineHeight: 1.55,
+                      maxWidth: 420,
+                    }}
+                  >
+                    {st.text}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
+          <WhatsAppShowcase
+            messages={HOW_MESSAGES}
+            caption="An actual conversation, shared with the family's permission."
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---- What we handle ---- */
+export function WhatWeHandle() {
+  return (
+    <section
+      data-screen-label="What we handle"
+      style={{ padding: "88px var(--gutter)", background: "var(--bg-inset)" }}
+    >
+      <div style={CONTAINER}>
+        <Eyebrow>What we handle</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "16px 0 44px" }}>
+          Everything that needs a person, not an app.
+        </h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: 40,
+          }}
+        >
+          {HANDLE_GROUPS.map((group) => (
+            <div key={group.name}>
+              <div
+                style={{
+                  fontSize: "var(--text-sm)",
+                  fontWeight: 700,
+                  letterSpacing: "var(--tracking-wide)",
+                  textTransform: "uppercase",
+                  color: "var(--accent-strong)",
+                  marginBottom: 22,
+                }}
+              >
+                {group.name}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+                {group.items.map((it) => (
+                  <div key={it.t} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+                    <span
+                      style={{
+                        display: "inline-flex",
+                        width: 38,
+                        height: 38,
+                        borderRadius: 10,
+                        background: "var(--surface-card)",
+                        border: "1px solid var(--border)",
+                        color: "var(--brand)",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <Icon name={it.icon} size={19} />
+                    </span>
+                    <div>
+                      <div
+                        style={{
+                          fontWeight: 600,
+                          color: "var(--text-strong)",
+                          fontSize: "var(--text-base)",
+                        }}
+                      >
+                        {it.t}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "var(--text-sm)",
+                          color: "var(--text-muted)",
+                          marginTop: 3,
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {it.d}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---- User stories ---- */
+export function UserStories() {
+  return (
+    <section data-screen-label="User stories" style={{ padding: "88px var(--gutter)" }}>
+      <div style={CONTAINER}>
+        <Eyebrow>Small, true stories</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "16px 0 44px" }}>The tasks that actually happened.</h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: 24,
+          }}
+        >
+          {STORIES.map((s) => (
+            <Card key={s.name} hover>
+              <div
+                style={{
+                  fontSize: "var(--text-xs)",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "var(--tracking-wide)",
+                  color: "var(--accent-strong)",
+                  marginBottom: 16,
+                }}
+              >
+                {s.name} · {s.route}
+              </div>
+              <div style={{ marginBottom: 14 }}>
+                <div style={microLabel}>Situation</div>
+                <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", lineHeight: 1.55 }}>
+                  {s.situation}
+                </div>
+              </div>
+              <div style={{ marginBottom: 14 }}>
+                <div style={microLabel}>What Niro did</div>
+                <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", lineHeight: 1.55 }}>
+                  {s.action}
+                </div>
+              </div>
+              <div>
+                <div style={microLabel}>How it ended</div>
+                <div
+                  style={{
+                    fontSize: "var(--text-sm)",
+                    color: "var(--brand)",
+                    fontWeight: 600,
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {s.result}
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---- Testimonials ---- */
+export function Testimonials() {
+  return (
+    <section
+      data-screen-label="Testimonials"
+      style={{ padding: "88px var(--gutter)", background: "var(--bg-inset)" }}
+    >
+      <div style={CONTAINER}>
+        <Eyebrow>From beta families</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "16px 0 8px" }}>
+          Real words from families using Niro today.
+        </h2>
+        <p
+          style={{
+            fontSize: "var(--text-sm)",
+            color: "var(--text-muted)",
+            fontStyle: "italic",
+            margin: "0 0 44px",
+          }}
+        >
+          These are placeholder-labeled beta quotes — swap in verbatim testimonials before
+          launch.
+        </p>
+        <div style={{ maxWidth: 640, margin: "0 auto 36px" }}>
+          <ParentVoiceCard
+            hinglish={PARENT_VOICE.hinglish}
+            translation={PARENT_VOICE.translation}
+            name={PARENT_VOICE.name}
+            relation={PARENT_VOICE.relation}
+          />
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: 20,
+          }}
+        >
+          {TESTIMONIALS_SHORT.map((t) => (
+            <div key={t.name}>
+              <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
+                <Badge tone="neutral">Beta member</Badge>
+              </div>
+              <WhatsAppQuoteCard quote={t.quote} name={t.name} location={t.location} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---- Pricing teaser ---- */
+export function Pricing() {
+  return (
+    <section
+      data-screen-label="Pricing"
+      style={{ padding: "88px var(--gutter)", background: "var(--bg-inset)" }}
+    >
+      <div style={CONTAINER}>
+        <Eyebrow>Membership</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "16px 0 36px" }}>Simple pricing. Cancel anytime.</h2>
+        <PricingCard />
+      </div>
+    </section>
+  );
+}
