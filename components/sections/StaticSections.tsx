@@ -3,8 +3,6 @@ import { Badge } from "@/components/ds/Badge";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
 import { WhatsAppShowcase } from "@/components/ds/WhatsAppShowcase";
-import { WhatsAppQuoteCard } from "@/components/ds/WhatsAppQuoteCard";
-import { ParentVoiceCard } from "@/components/ds/ParentVoiceCard";
 import { PricingCard } from "@/components/ds/PricingCard";
 import {
   MIRROR,
@@ -12,7 +10,6 @@ import {
   HOW_MESSAGES,
   HANDLE_GROUPS,
   STORIES,
-  PARENT_VOICE,
   TESTIMONIALS_SHORT,
 } from "@/lib/content";
 
@@ -43,7 +40,7 @@ export function Mirror() {
       <div style={CONTAINER}>
         <Eyebrow>Sound familiar</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 40px", maxWidth: 680 }}>
-          Your India to-do list is hard enough. They just don&apos;t tell you about theirs.
+          Your India to-do list is hard enough. Parents just don&apos;t tell you about theirs.
         </h2>
         <div
           style={{
@@ -256,78 +253,180 @@ export function WhatWeHandle() {
   );
 }
 
-/* ---- User stories ---- */
-export function UserStories() {
+/* ---- Proof cards (used in the auto-scrolling combined section) ---- */
+const proofCardBase = {
+  width: 320,
+  flexShrink: 0,
+  marginRight: 20,
+  background: "var(--surface-card)",
+  border: "1px solid var(--border)",
+  borderRadius: "var(--radius-lg)",
+  boxShadow: "var(--shadow-2)",
+  padding: "var(--space-5)",
+  display: "flex",
+  flexDirection: "column" as const,
+  whiteSpace: "normal" as const,
+} as const;
+
+/** Circular photo placeholder for a testimonial (swap for a real headshot). */
+function AvatarPlaceholder() {
   return (
-    <section data-screen-label="User stories" style={{ padding: "88px var(--gutter)" }}>
-      <div style={CONTAINER}>
-        <Eyebrow>Small, true stories</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "16px 0 44px" }}>The tasks that actually happened.</h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: 24,
-          }}
-        >
-          {STORIES.map((s) => (
-            <Card key={s.name} hover>
-              <div
-                style={{
-                  fontSize: "var(--text-xs)",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "var(--tracking-wide)",
-                  color: "var(--accent-strong)",
-                  marginBottom: 16,
-                }}
-              >
-                {s.name} · {s.route}
-              </div>
-              <div style={{ marginBottom: 14 }}>
-                <div style={microLabel}>Situation</div>
-                <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", lineHeight: 1.55 }}>
-                  {s.situation}
-                </div>
-              </div>
-              <div style={{ marginBottom: 14 }}>
-                <div style={microLabel}>What Niro did</div>
-                <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", lineHeight: 1.55 }}>
-                  {s.action}
-                </div>
-              </div>
-              <div>
-                <div style={microLabel}>How it ended</div>
-                <div
-                  style={{
-                    fontSize: "var(--text-sm)",
-                    color: "var(--brand)",
-                    fontWeight: 600,
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {s.result}
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </section>
+    <div
+      role="img"
+      aria-label="Photo placeholder"
+      style={{
+        width: 52,
+        height: 52,
+        borderRadius: "50%",
+        flexShrink: 0,
+        position: "relative",
+        overflow: "hidden",
+        background: "linear-gradient(150deg,#EAD9B8,#C9986A)",
+        boxShadow: "var(--shadow-1)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <span
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "var(--jaali)",
+          backgroundSize: "34px",
+          opacity: 0.4,
+        }}
+      />
+      <Icon
+        name="camera"
+        size={16}
+        style={{ color: "rgba(255,255,255,0.92)", position: "relative" }}
+      />
+    </div>
   );
 }
 
-/* ---- Testimonials ---- */
-export function Testimonials() {
+function TestimonialCard({
+  name,
+  location,
+  quote,
+}: {
+  name: string;
+  location: string;
+  quote: string;
+}) {
+  return (
+    <div style={{ ...proofCardBase, gap: 14 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <AvatarPlaceholder />
+        <div style={{ lineHeight: 1.35 }}>
+          <div
+            style={{ fontWeight: 600, color: "var(--text-strong)", fontSize: "var(--text-base)" }}
+          >
+            {name}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              fontSize: "var(--text-sm)",
+              color: "var(--text-muted)",
+              marginTop: 2,
+            }}
+          >
+            <Icon name="map-pin" size={13} /> {location}
+          </div>
+        </div>
+      </div>
+      <p
+        style={{
+          fontSize: "var(--text-base)",
+          color: "var(--text-body)",
+          lineHeight: 1.55,
+          margin: 0,
+          flex: 1,
+        }}
+      >
+        &ldquo;{quote}&rdquo;
+      </p>
+      <div>
+        <Badge tone="neutral">Beta member</Badge>
+      </div>
+    </div>
+  );
+}
+
+function StoryCard({
+  name,
+  route,
+  situation,
+  action,
+  result,
+}: (typeof STORIES)[number]) {
+  return (
+    <div style={{ ...proofCardBase, gap: 0 }}>
+      <div
+        style={{
+          fontSize: "var(--text-xs)",
+          fontWeight: 700,
+          textTransform: "uppercase",
+          letterSpacing: "var(--tracking-wide)",
+          color: "var(--accent-strong)",
+          marginBottom: 14,
+        }}
+      >
+        {name} · {route}
+      </div>
+      <div style={{ marginBottom: 12 }}>
+        <div style={microLabel}>Situation</div>
+        <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", lineHeight: 1.5 }}>
+          {situation}
+        </div>
+      </div>
+      <div style={{ marginBottom: 12 }}>
+        <div style={microLabel}>What Niro did</div>
+        <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", lineHeight: 1.5 }}>
+          {action}
+        </div>
+      </div>
+      <div>
+        <div style={microLabel}>How it ended</div>
+        <div
+          style={{
+            fontSize: "var(--text-sm)",
+            color: "var(--brand)",
+            fontWeight: 600,
+            lineHeight: 1.5,
+          }}
+        >
+          {result}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---- Proof: testimonials + case studies, one auto-scrolling strip ---- */
+export function Proof() {
+  // Testimonials (with photo placeholders) + case studies, duplicated once so
+  // the horizontal marquee loops seamlessly.
+  const cards = [
+    ...TESTIMONIALS_SHORT.map((t) => ({ kind: "t" as const, ...t })),
+    ...STORIES.map((s) => ({ kind: "s" as const, ...s })),
+  ];
+  const track = [...cards, ...cards];
+
   return (
     <section
-      data-screen-label="Testimonials"
-      style={{ padding: "88px var(--gutter)", background: "var(--bg-inset)" }}
+      data-screen-label="From beta families"
+      style={{ padding: "88px 0", background: "var(--bg-inset)", overflow: "hidden" }}
     >
-      <div style={CONTAINER}>
+      <div style={{ ...CONTAINER, padding: "0 var(--gutter)" }}>
         <Eyebrow>From beta families</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 8px" }}>
-          Real words from families using Niro today.
+          Real families. Real tasks. Real relief.
         </h2>
         <p
           style={{
@@ -335,35 +434,34 @@ export function Testimonials() {
             color: "var(--text-body)",
             lineHeight: 1.6,
             maxWidth: 620,
-            margin: "0 0 44px",
+            margin: "0 0 36px",
           }}
         >
           They didn&apos;t lack people who could help. They lacked help they could rely on
           — without asking a favour that can quietly backfire.
         </p>
-        <div style={{ maxWidth: 640, margin: "0 auto 36px" }}>
-          <ParentVoiceCard
-            hinglish={PARENT_VOICE.hinglish}
-            translation={PARENT_VOICE.translation}
-            name={PARENT_VOICE.name}
-            relation={PARENT_VOICE.relation}
-          />
-        </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: 20,
-          }}
-        >
-          {TESTIMONIALS_SHORT.map((t) => (
-            <div key={t.name}>
-              <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
-                <Badge tone="neutral">Beta member</Badge>
-              </div>
-              <WhatsAppQuoteCard quote={t.quote} name={t.name} location={t.location} />
-            </div>
-          ))}
+      </div>
+      <div className="marquee" aria-label="Beta family testimonials and case studies">
+        <div className="marquee-track">
+          {track.map((c, i) =>
+            c.kind === "t" ? (
+              <TestimonialCard
+                key={`t-${i}`}
+                name={c.name}
+                location={c.location}
+                quote={c.quote}
+              />
+            ) : (
+              <StoryCard
+                key={`s-${i}`}
+                name={c.name}
+                route={c.route}
+                situation={c.situation}
+                action={c.action}
+                result={c.result}
+              />
+            )
+          )}
         </div>
       </div>
     </section>

@@ -7,8 +7,7 @@ import {
   Mirror,
   HowItWorks,
   WhatWeHandle,
-  UserStories,
-  Testimonials,
+  Proof,
   Pricing,
 } from "@/components/sections/StaticSections";
 import { JoinFlow } from "@/components/sections/JoinFlow";
@@ -25,8 +24,7 @@ export default function Page() {
         <HowItWorks />
         <WhatWeHandle />
         <EmergencyStory />
-        <UserStories />
-        <Testimonials />
+        <Proof />
         <JoinFlow />
         <Pricing />
         <Faq />

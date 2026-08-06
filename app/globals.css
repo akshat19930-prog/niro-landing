@@ -316,3 +316,47 @@
     display: none;
   }
 }
+
+/* ---- Auto side-scrolling proof strip (testimonials + case studies) ----
+   Two identical halves; translateX(-50%) loops seamlessly. Pauses on hover;
+   reduced-motion turns it into a normal horizontal scroll. */
+.marquee {
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  align-items: stretch;
+  padding: 10px 0;
+  animation: marquee-scroll 80s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}
