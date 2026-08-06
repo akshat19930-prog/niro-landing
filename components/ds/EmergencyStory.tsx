@@ -96,6 +96,35 @@ export function EmergencyStory() {
             The call you dread comes when you can do the least. This is the one night we
             were built for.
           </p>
+          <div
+            style={{
+              display: "flex",
+              gap: 12,
+              alignItems: "flex-start",
+              marginTop: 22,
+              padding: "14px 16px",
+              borderRadius: "var(--radius-md)",
+              background: "rgba(255,255,255,0.05)",
+              border: "1px solid rgba(255,255,255,0.12)",
+            }}
+          >
+            <span style={{ color: "var(--gold-300)", flexShrink: 0, marginTop: 1 }}>
+              <Icon name="shield-check" size={20} />
+            </span>
+            <p
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "rgba(255,255,255,0.82)",
+                lineHeight: 1.55,
+                margin: 0,
+              }}
+            >
+              Every family sets an emergency protocol with us up front — blood group,
+              preferred hospital, who to call first. So the plan exists before the night
+              it&apos;s needed, and we share our written response commitment for your city
+              before you ever use it.
+            </p>
+          </div>
         </div>
         <div
           style={{

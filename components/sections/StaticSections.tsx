@@ -332,14 +332,15 @@ export function Testimonials() {
         </h2>
         <p
           style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--text-muted)",
-            fontStyle: "italic",
+            fontSize: "var(--text-md)",
+            color: "var(--text-body)",
+            lineHeight: 1.6,
+            maxWidth: 620,
             margin: "0 0 44px",
           }}
         >
-          These are placeholder-labeled beta quotes — swap in verbatim testimonials before
-          launch.
+          They didn&apos;t lack people who could help. They lacked help they could rely on
+          — without asking a favour that can quietly backfire.
         </p>
         <div style={{ maxWidth: 640, margin: "0 auto 36px" }}>
           <ParentVoiceCard
@@ -379,7 +380,19 @@ export function Pricing() {
     >
       <div style={CONTAINER}>
         <Eyebrow>Membership</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "16px 0 36px" }}>Simple pricing. Cancel anytime.</h2>
+        <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>Simple pricing. Cancel anytime.</h2>
+        <p
+          style={{
+            fontSize: "var(--text-md)",
+            color: "var(--text-body)",
+            lineHeight: 1.6,
+            maxWidth: 620,
+            margin: "0 0 36px",
+          }}
+        >
+          Less than half the cost of one untrained live-in helper — for a vetted person who
+          handles everything, and emergencies that are always included. Start monthly.
+        </p>
         <PricingCard />
       </div>
     </section>

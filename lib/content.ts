@@ -13,25 +13,29 @@ import type { TaskDef } from "@/components/ds/TaskPicker";
 export type HeroVariant = { tag: string; h: string; s: string };
 
 export const HERO_VARIANTS: Record<"1" | "2" | "3" | "4", HeroVariant> = {
+  // v1 — Sole Responder / peace-of-mind (emergency-fear register).
   "1": {
     tag: "Peace of mind",
     h: "Their health, watched over — even from here.",
-    s: "A named associate handles doctor visits, emergencies, and the 2am calls, so you don't have to be in the room to know they're safe.",
+    s: "A named person handles the doctor visits, the hospital runs, and the emergencies you can't fly home for — so from anywhere, you know someone's in the room.",
   },
+  // v2 — Remote Administrator / off-your-plate (parents' errands & bills).
   "2": {
     tag: "Off your plate",
     h: "The bills, the paperwork, the mental load — off your plate.",
-    s: "Niro's associates chase the electricity board, the passport office, and the plumber, so your calls home can just be calls home.",
+    s: "Niro's associates chase the electricity board, the passport office, and the property tax, so your calls home can just be calls home.",
   },
+  // v3 — Your OWN India admin wedge (no crisis, no parental adoption needed).
   "3": {
-    tag: "A real person, there",
-    h: "A real person, walking beside them.",
-    s: "Meet your family's named, verified associate in India — at the passport office, the hospital, wherever they need someone in the room.",
+    tag: "Your India, sorted",
+    h: "Your EPF, your flat, your India paperwork — finally handled.",
+    s: "The stuck PF, the dormant account, the tenant, the OCI renewal — a real person in India does the running around, so you don't lose another weekend to it.",
   },
+  // v4 — Default / everything, one membership (human framing).
   "4": {
     tag: "One membership. Everything covered.",
     h: "Your family's own person in India.",
-    s: "One membership. A named associate for errands, bills, appointments, and emergencies — so you can be there, from anywhere.",
+    s: "One membership. A named associate for errands, bills, appointments, and the emergencies you can't fly home for — so you can be there, from anywhere.",
   },
 };
 
@@ -88,7 +92,7 @@ export const STEPS: { n: string; title: string; text: string }[] = [
   {
     n: "02",
     title: "Ask anything, any way",
-    text: "Text or send a voice note, in English, Hindi, or Tamil — whatever's natural. Niro understands all of it.",
+    text: "Text or send a voice note in English, Hindi, or Tamil — whatever's natural. And your parents never have to type or learn an app; they can just pick up the phone.",
   },
   {
     n: "03",
@@ -133,19 +137,19 @@ export const HANDLE_GROUPS: {
     name: "Protect",
     items: [
       {
-        icon: "shield-check",
-        t: "Parents' Cyber-Fraud Risk Score",
-        d: "Ongoing scam checks & alerts, in plain language.",
-      },
-      {
         icon: "heart-pulse",
         t: "Verified emergency response",
-        d: "Hospital runs and ambulance calls, someone there in minutes.",
+        d: "A named person on the phone in minutes and on the ground fast — on a protocol you set up front.",
+      },
+      {
+        icon: "shield-check",
+        t: "Parents' scam & fraud shield",
+        d: "We catch the OTP traps and dodgy calls, and explain them in plain language.",
       },
       {
         icon: "user-check",
-        t: "Verified domestic help",
-        d: "Background-checked, introduced by name and photo.",
+        t: "Vetted, ongoing care staff",
+        d: "Background-checked help found or replaced — the same trusted face, not a rotating cast.",
       },
     ],
   },
@@ -155,12 +159,12 @@ export const HANDLE_GROUPS: {
       {
         icon: "file-text",
         t: "Bill audits & payments",
-        d: "Electricity, gas, KYC — chased down and closed.",
+        d: "Electricity, gas, KYC, property tax — chased down and closed.",
       },
       {
         icon: "home",
         t: "Appliance & home repairs",
-        d: "A visit, a fix, photos of the finished job.",
+        d: "A visit, a fix, and photos of the finished job.",
       },
       {
         icon: "wallet",
@@ -170,14 +174,22 @@ export const HANDLE_GROUPS: {
     ],
   },
   {
-    name: "Delight",
+    name: "Look in on them",
     items: [
-      { icon: "gift", t: "Birthdays, remembered", d: "Flowers or sweets on the doorstep, on the day." },
-      { icon: "home", t: "Ghar ka khana, shipped", d: "A tiffin from home, packed for the journey abroad." },
       {
         icon: "camera",
-        t: "Photo memories, curated",
-        d: "A weekly photo or two, just because you asked.",
+        t: "Regular check-in visits",
+        d: "A face at the door, and a written update after — photos, notes, how they really are.",
+      },
+      {
+        icon: "message-circle",
+        t: "Company that shows up",
+        d: "Someone to sit with them and take them out — noticing what a video call can't.",
+      },
+      {
+        icon: "clock",
+        t: "Home monitoring, if you want it",
+        d: "Optional check-ins and alerts, so a quiet week never hides a real problem.",
       },
     ],
   },
@@ -192,14 +204,14 @@ export const STORIES: {
   result: string;
 }[] = [
   {
-    name: "Ankush",
+    name: "Nikhil",
     route: "Boston ↔ Chandigarh",
     situation:
       "His father's ₹6,400 electricity bill had gone unpaid for two cycles — the portal wanted an OTP sent to a number that no longer worked.",
     action:
       "Niro's associate went to the office in person, paid the bill, and got the connection re-verified under his father's name.",
     result:
-      "Fixed by the next morning. Ankush found out from a voice note, not a disconnection notice.",
+      "Fixed by the next morning. Nikhil found out from a voice note, not a disconnection notice.",
   },
   {
     name: "Meera",
@@ -227,32 +239,57 @@ export const PARENT_VOICE = {
   hinglish: "Beta abroad hai, par uska aadmi yahan hai. Mujhe kabhi akela nahi lagta.",
   translation: "My child is abroad, but their person is here. I never feel alone.",
   name: "Kaushalya",
-  relation: "Mother, Chandigarh · Beta member",
+  relation: "Mother, Patiala · Beta member",
 };
 
+/**
+ * Beta-member testimonials. Written from the interview archetypes in the user
+ * research — each balances the NRI's own relief with the enhanced day-to-day
+ * the family reports. These are synthesized from research, not verbatim-approved
+ * quotes: get each named person's sign-off before public launch.
+ */
 export const TESTIMONIALS_SHORT: { name: string; location: string; quote: string }[] = [
   {
-    name: "Priyanka",
-    location: "Fremont ↔ Chandigarh",
+    // Guilt-carrier / remote-admin blend — stopped being the 2am help-desk.
+    name: "Sudiksha, 31",
+    location: "London, UK ↔ Patiala, India",
     quote:
-      "I used to call Papa every day just to check he was okay. Now I call him because I want to talk about cricket.",
+      "I'd stopped being the family help-desk at 2am London time. Niro sorted Papa's pension paperwork and now drops by every fortnight — Mummy says the house finally feels looked after.",
   },
   {
-    name: "Rahul",
-    location: "Austin ↔ Lucknow",
+    // Remote Administrator — the NRI's own India admin, off the plate.
+    name: "Kartik, 34",
+    location: "Seattle, US ↔ Nagpur, India",
     quote:
-      "Fixed a gas connection issue in two days that I couldn't get anywhere with in two months, from here.",
+      "My India admin used to eat a full weekend every quarter — EPF, the tenant, property tax. Now it's one message. And my parents get a real person who shows up, not another portal.",
   },
   {
-    name: "Anjali",
-    location: "Dubai ↔ Jaipur",
+    // Remote Administrator + scam phobia across a property portfolio.
+    name: "Harshit, 36",
+    location: "Jakarta, Indonesia ↔ Lucknow, India",
     quote:
-      "They sent Amma's blood pressure readings every week for a month without me even asking. That's the part that got me.",
+      "We have property across two cities and I'd lie awake about a scam call reaching Dad. Niro watches the bills, flags the dodgy calls, and closes every task with a photo. That fear is just gone.",
   },
   {
-    name: "Vivek",
-    location: "Boston ↔ Patna",
-    quote: "No app, no login. Just a WhatsApp thread. My parents didn't have to change anything.",
+    // Sole Responder — H1B, father's heart scare, emergency cover.
+    name: "Ankush, 32",
+    location: "San Francisco, US ↔ Patiala, India",
+    quote:
+      "On an H1B I can't just fly home. After Papa's heart scare, knowing there's a named person who'll be at the hospital before I've even booked a flight — that's the only reason I sleep.",
+  },
+  {
+    // Sole Responder — continuity, stopped flying for a single appointment.
+    name: "Dhruva, 43",
+    location: "Dubai, UAE ↔ Gwalior, India",
+    quote:
+      "I was flying home every few months just to take Dad to one appointment. Now the same associate takes him and sends me the doctor's notes — and Dad actually looks forward to the visits.",
+  },
+  {
+    // Caregiver-in-Chief — companionship, reliability, paid-vs-favour.
+    name: "Paridhi, 38",
+    location: "Dubai, UAE ↔ Noida, India",
+    quote:
+      "I was running a helper rota from Dubai and checking in ten times a day. A service I can rely on beats a favour from relatives who mean well and forget. Now someone sits with Mumma, and Papa's anxiety is so much better.",
   },
 ];
 
@@ -260,20 +297,28 @@ export const TESTIMONIALS_SHORT: { name: string; location: string; quote: string
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
     q: "Will you ever ask for OTPs or passwords?",
-    a: "Never. Not once, not for any reason. Niro's associates will never ask your parents — or you — for a password, OTP, PIN, or card number. If someone claiming to be Niro asks for one, it isn't Niro.",
+    a: "Never. Not once, not for any reason. Niro's associates will never ask your parents — or you — for a password, OTP, PIN, or bank login. For everyday spending we use a small prepaid float that you top up and cap; anything larger or sensitive, you approve and pay directly. If someone claiming to be Niro asks for an OTP, it isn't Niro.",
     special: true,
   },
   {
+    q: "How fast is “emergency,” really?",
+    a: "You set a protocol with us up front — blood group, preferred hospital, who to call first — so the plan exists before the night it's needed. When something happens, a named associate is on the phone within minutes and moving on the ground immediately, and you approve the big decisions from wherever you are. We share our written response commitment for your city before you ever have to use it.",
+  },
+  {
+    q: "Will this take over things my parents can still do themselves?",
+    a: "No — we assist, we never take over. Your parent stays in charge: cc'd on the thread, asked before anything happens. The point is to lift the load that's genuinely too much, not the daily rhythm that keeps them themselves.",
+  },
+  {
     q: "What does it cost?",
-    a: "$69 a month, or $49 a month billed annually. One membership covers unlimited everyday tasks and one dedicated associate for your family. Emergencies are always included — never billed as extras.",
+    a: "$69 a month, or $49 a month billed annually — less than half the cost of one untrained live-in helper. One membership covers a dedicated associate and unlimited everyday tasks; emergencies are always included, never billed as extras. Start monthly; most families move to annual once they can't imagine going without it.",
+  },
+  {
+    q: "How are associates verified?",
+    a: "Every associate passes a background check, an in-person interview, and a supervised trial before they're introduced to your family — by name and photo, before their first task. And it's the same person each time, not a rotating cast.",
   },
   {
     q: "Which cities are you in today?",
     a: "We open one city at a time so every family gets an associate who actually knows them. Live today in Chandigarh, Lucknow, and Hyderabad, with Pune, Jaipur, and Patna opening this year.",
-  },
-  {
-    q: "How are associates verified?",
-    a: "Every associate passes a background check, an in-person interview, and a supervised trial period before they're introduced to your family — by name and photo, before their first task.",
   },
   {
     q: "What if I want to cancel?",
@@ -281,7 +326,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "Do my parents need to install anything?",
-    a: "No. Everything happens over WhatsApp — a group they're probably already using with the rest of the family. Nothing new to learn, nothing to download.",
+    a: "No. Everything happens over WhatsApp — and your parents can simply call or send a voice note. Nothing new to learn, nothing to download.",
   },
 ];
 

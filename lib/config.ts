@@ -19,7 +19,7 @@ export const WAITLIST_ENDPOINT = process.env.NEXT_PUBLIC_WAITLIST_ENDPOINT ?? ""
 
 /** Public site origin used to build referral links. */
 export const SITE_ORIGIN =
-  process.env.NEXT_PUBLIC_SITE_ORIGIN ?? "https://niro.family";
+  process.env.NEXT_PUBLIC_SITE_ORIGIN ?? "https://tellniro.com";
 
 /** Fallback waitlist position shown when no backend returns one. */
 export const FALLBACK_WAITLIST_POSITION = 1847;
