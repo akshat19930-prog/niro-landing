@@ -112,7 +112,7 @@ export function HowItWorks() {
         <div>
           <Eyebrow>How it works</Eyebrow>
           <h2 style={{ ...h2Style, margin: "16px 0 8px" }}>
-            Talk to Niro like a friend who happens to live near your parents.
+            Niro is your 24/7 house manager, concierge &amp; your presence in India.
           </h2>
           <div
             style={{

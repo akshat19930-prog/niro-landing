@@ -86,18 +86,18 @@ export const MIRROR: { icon: IconName; title: string; text: string }[] = [
 export const STEPS: { n: string; title: string; text: string }[] = [
   {
     n: "01",
-    title: "Join the family group",
-    text: "Niro joins your family's WhatsApp thread — no new app to install, nothing for your parents to learn.",
+    title: "Runs on WhatsApp",
+    text: "Niro creates a WhatsApp family thread, where you and your parents give it tasks.",
   },
   {
     n: "02",
     title: "Ask anything, any way",
-    text: "Text or send a voice note in English, Hindi, or Tamil — whatever's natural. And your parents never have to type or learn an app; they can just pick up the phone.",
+    text: "Text, send a voice note in English, Hindi, or Tamil, or even call — whatever's natural. Easy for your parents.",
   },
   {
     n: "03",
-    title: "A named person makes it happen",
-    text: "Not a bot reply. Priya, or Arjun, or Meena — a real associate calls, visits, and reports back with proof.",
+    title: "Humans at your service",
+    text: "A dedicated house manager completes your tasks. Outsource the stuff you and your parents don't like doing.",
   },
 ];
 
