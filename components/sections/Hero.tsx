@@ -1,8 +1,6 @@
 import { Button } from "@/components/ds/Button";
-import { TrustBar } from "@/components/ds/TrustBar";
 import { PhotoPlaceholder } from "@/components/ds/PhotoPlaceholder";
 import { HeroCopy } from "./HeroCopy";
-import { TRUST_ITEMS } from "@/lib/content";
 
 /** Hero — two-column, stacks under ~680px via auto-fit. Copy is ad-matched
  *  (client HeroCopy); everything else is static. Single CTA to #join. */
@@ -45,14 +43,12 @@ export function Hero() {
               flexWrap: "wrap",
               gap: 14,
               alignItems: "center",
-              marginBottom: 40,
             }}
           >
             <Button href="#join" size="lg">
               Join the waitlist
             </Button>
           </div>
-          <TrustBar items={TRUST_ITEMS} />
         </div>
         <div>
           <PhotoPlaceholder caption="Father reading the newspaper on a balcony, warm morning light, Tier-2 home" />

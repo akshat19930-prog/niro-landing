@@ -31,11 +31,11 @@ export const HERO_VARIANTS: Record<"1" | "2" | "3" | "4", HeroVariant> = {
     h: "Your EPF, your flat, your India paperwork — finally handled.",
     s: "The stuck PF, the dormant account, the tenant, the OCI renewal — a real person in India does the running around, so you don't lose another weekend to it.",
   },
-  // v4 — Default / everything, one membership (human framing).
+  // v4 — Default / "home manager" ROI + task-offload framing.
   "4": {
     tag: "One membership. Everything covered.",
-    h: "Your family's own person in India.",
-    s: "One membership. A named associate for errands, bills, appointments, and the emergencies you can't fly home for — so you can be there, from anywhere.",
+    h: "Your family's home manager in India.",
+    s: "A home manager for NRI families: bills, chores, repairs, and government paperwork — taken off your plate, and your parents'.",
   },
 };
 

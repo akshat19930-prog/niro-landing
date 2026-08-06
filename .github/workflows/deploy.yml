@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - main
-      - claude/niro-landing-page-5im4it
   workflow_dispatch:
 
 # Required for GitHub Pages deployments via Actions.
