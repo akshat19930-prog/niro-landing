@@ -296,37 +296,36 @@ export const TESTIMONIALS_SHORT: { name: string; location: string; quote: string
 /* ---- FAQ (first item is the trust moment) ---- */
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
-    q: "Will you ever ask for OTPs or passwords?",
-    a: "Never. Not once, not for any reason. Niro's associates will never ask your parents — or you — for a password, OTP, PIN, or bank login. For everyday spending we use a small prepaid float that you top up and cap; anything larger or sensitive, you approve and pay directly. If someone claiming to be Niro asks for an OTP, it isn't Niro.",
-    special: true,
+    q: "Is Niro a human manager?",
+    a: "Every family is allocated a dedicated remote family manager, who is a Niro employee. Some tasks may be completed by Niro's AI, as per your instructions.",
   },
   {
-    q: "How fast is “emergency,” really?",
-    a: "You set a protocol with us up front — blood group, preferred hospital, who to call first — so the plan exists before the night it's needed. When something happens, a named associate is on the phone within minutes and moving on the ground immediately, and you approve the big decisions from wherever you are. We share our written response commitment for your city before you ever have to use it.",
+    q: "How fast is the emergency response, really?",
+    a: "Check-in calls are instant, and ambulance dispatch is within 3 minutes. We're working to define city-level SLAs.",
   },
   {
-    q: "Will this take over things my parents can still do themselves?",
-    a: "No — we assist, we never take over. Your parent stays in charge: cc'd on the thread, asked before anything happens. The point is to lift the load that's genuinely too much, not the daily rhythm that keeps them themselves.",
+    q: "Are all tasks covered under the monthly membership cost?",
+    a: "No — some tasks that require us to work with vendors (for example, EPFO recovery or document work) will be chargeable. Charges are always declared upfront, before we pick up the task.",
   },
   {
-    q: "What does it cost?",
-    a: "$69 a month, or $49 a month billed annually — less than half the cost of one untrained live-in helper. One membership covers a dedicated associate and unlimited everyday tasks; emergencies are always included, never billed as extras. Start monthly; most families move to annual once they can't imagine going without it.",
+    q: "Does Niro take decisions on its own?",
+    a: "No. Niro simply understands what you need and does what it takes to fulfil it the best way. Even when it recommends something proactively, it waits for your go-ahead.",
   },
   {
-    q: "How are associates verified?",
-    a: "Every associate passes a background check, an in-person interview, and a supervised trial before they're introduced to your family — by name and photo, before their first task. And it's the same person each time, not a rotating cast.",
+    q: "Is my family's data safe with Niro?",
+    a: "Yes — and here's exactly how. We never ask for OTPs, passwords, PINs, or bank logins — not ever, and anyone who does isn't us. We work only on documents you choose to share; never through access to your email, phone, or accounts. Everything is encrypted in transit and at rest, sensitive documents are visible only to the team handling that task, and we operate under India's DPDP Act with GDPR-aligned practices for members abroad. Your data is never sold. Leave Niro, and your family's records are permanently deleted within 30 days. Questions? hello@tellniro.com reaches the founders.",
   },
   {
-    q: "Which cities are you in today?",
-    a: "We open one city at a time so every family gets an associate who actually knows them. Live today in Chandigarh, Lucknow, and Hyderabad, with Pune, Jaipur, and Patna opening this year.",
-  },
-  {
-    q: "What if I want to cancel?",
-    a: "Cancel anytime, no questions asked. Your first 30 days are fully refundable — we'd rather earn the second month than lock you into the first.",
+    q: "Which cities are you serviceable in today?",
+    a: "We're currently in beta in a select set of cities, and will publish our list of launch cities soon.",
   },
   {
     q: "Do my parents need to install anything?",
-    a: "No. Everything happens over WhatsApp — and your parents can simply call or send a voice note. Nothing new to learn, nothing to download.",
+    a: "No. For your parents, everything runs over a WhatsApp group and calls. You get an app that acts as the interface, data vault, and payments platform for the membership.",
+  },
+  {
+    q: "What is the price, and is there a free trial?",
+    a: "While we're on the waitlist, we'll launch with a 'first task free' offer, and membership will be priced between $50 and $99 a month.",
   },
 ];
 
