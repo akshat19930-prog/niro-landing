@@ -67,18 +67,18 @@ export const TRUST_ITEMS: TrustItem[] = [
 export const MIRROR: { icon: IconName; title: string; text: string }[] = [
   {
     icon: "sunrise",
-    title: "3am, timezone math",
-    text: "The phone rings at an hour that's daytime there and dead of night here. You do the math before you even answer.",
+    title: "3 a.m. timezone math",
+    text: "Your EPF claim, a dormant bank account, a utility bill in Dad's name — all of it only moves during Indian office hours, which is the dead of your night.",
   },
   {
-    icon: "file-text",
-    title: "The bill nobody can fix",
-    text: "An electricity bill in your father's name, a portal that wants an OTP sent to a number that no longer exists.",
+    icon: "home",
+    title: "Hidden problems at home",
+    text: "The maid who stopped showing up, the AC that's been broken for weeks — the things they play down on calls so you won't worry.",
   },
   {
     icon: "heart-pulse",
-    title: "The appointment someone should attend",
-    text: "A cardiology follow-up on a Tuesday morning. Someone should sit in that waiting room. It's rarely you.",
+    title: "The “wish I was there” moments",
+    text: "A hospital admission, a passport renewal, a Tatkaal slot no one can reach — when being 12,000 km away costs the most.",
   },
 ];
 

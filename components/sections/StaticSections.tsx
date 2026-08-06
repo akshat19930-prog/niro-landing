@@ -43,8 +43,7 @@ export function Mirror() {
       <div style={CONTAINER}>
         <Eyebrow>Sound familiar</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 40px", maxWidth: 680 }}>
-          You didn&apos;t leave them. You left the country. From here, that&apos;s a hard
-          difference to feel.
+          Your India to-do list is hard enough. They just don&apos;t tell you about theirs.
         </h2>
         <div
           style={{
