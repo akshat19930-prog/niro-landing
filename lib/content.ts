@@ -76,9 +76,9 @@ export const MIRROR: { icon: IconName; title: string; text: string }[] = [
     text: "The maid who stopped showing up, the AC that's been broken for weeks — the things they play down on calls so you won't worry.",
   },
   {
-    icon: "heart-pulse",
-    title: "The “wish I was there” moments",
-    text: "A hospital admission, a passport renewal, a Tatkaal slot no one can reach — when being 12,000 km away costs the most.",
+    icon: "map-pin",
+    title: "The moments you can't phone in",
+    text: "A medical emergency, a visa appointment, a parent travelling alone — the times a phone call isn't enough, and you can't be on the next flight home.",
   },
 ];
 
