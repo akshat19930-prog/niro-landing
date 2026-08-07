@@ -1,5 +1,5 @@
-import { Button } from "@/components/ds/Button";
 import { ChatVideo } from "@/components/ds/ChatVideo";
+import { JoinCta } from "@/components/ds/JoinCta";
 import { HERO_QUOTE } from "@/lib/content";
 import { HeroCopy } from "./HeroCopy";
 
@@ -40,9 +40,7 @@ export function Hero() {
           <HeroCopy />
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
-              <Button href="#join" size="lg">
-                Join the waitlist
-              </Button>
+              <JoinCta className="btn btn-primary btn-lg">Join the waitlist</JoinCta>
             </div>
             {/* Price anchor + reward + no-card reassurance — the reasons a cold
                 visitor spends an email. */}

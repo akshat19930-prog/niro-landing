@@ -1,17 +1,18 @@
 import { Wordmark } from "./Wordmark";
+import { JoinCta } from "./JoinCta";
 
 /**
  * Minimal top nav — wordmark left, one CTA right, nothing else competes.
- * Sticky, translucent + backdrop-blur. The CTA is an anchor to #join so it
- * smooth-scrolls with zero JS.
+ * Sticky, translucent + backdrop-blur. The CTA opens the join modal (home);
+ * on a standalone page pass `ctaHref` to render a plain link back home instead.
  */
 export function Nav({
   cta = "Join the waitlist",
-  href = "#join",
+  ctaHref,
   dark = false,
 }: {
   cta?: string;
-  href?: string;
+  ctaHref?: string;
   dark?: boolean;
 }) {
   return (
@@ -40,9 +41,13 @@ export function Nav({
         <a href="/" aria-label="Niro — home" style={{ display: "inline-flex" }}>
           <Wordmark dark={dark} />
         </a>
-        <a href={href} className="nav-cta">
-          {cta}
-        </a>
+        {ctaHref ? (
+          <a href={ctaHref} className="nav-cta">
+            {cta}
+          </a>
+        ) : (
+          <JoinCta className="nav-cta">{cta}</JoinCta>
+        )}
       </div>
     </header>
   );

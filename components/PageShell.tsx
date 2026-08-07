@@ -6,7 +6,7 @@ import { Footer } from "@/components/ds/Footer";
 export function PageShell({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <Nav href="/#join" />
+      <Nav ctaHref="/#join" />
       <main>{children}</main>
       <Footer />
     </>
