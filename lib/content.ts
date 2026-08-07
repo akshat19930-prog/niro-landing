@@ -150,6 +150,17 @@ export const HERO_MESSAGES: ChatMessage[] = [
   { from: "you", type: "text", text: "Huge relief — thank you 🙏", time: "5:03 PM" },
 ];
 
+/* ---- Single hero pull-quote — early social proof, above the product detail.
+   Concrete and money-related (not elder-care), and the same person appears in
+   the testimonials section below for consistency. ---- */
+export const HERO_QUOTE = {
+  quote:
+    "Recovered ₹4L of my EPF that had been stuck for eight years — I'd completely given up on it.",
+  name: "Abhishek, 43",
+  location: "Dubai ↔ Gwalior",
+  photo: "/people/abhishek.jpg",
+};
+
 /* ---- What we handle ---- */
 export const HANDLE_GROUPS: {
   name: string;

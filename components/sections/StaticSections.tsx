@@ -164,7 +164,7 @@ export function WhatWeHandle() {
   return (
     <section
       data-screen-label="What we handle"
-      style={{ padding: "88px var(--gutter)", background: "var(--bg-inset)" }}
+      style={{ padding: "88px var(--gutter)", background: "var(--bg-page)" }}
     >
       <div style={CONTAINER}>
         <Eyebrow>What we handle</Eyebrow>

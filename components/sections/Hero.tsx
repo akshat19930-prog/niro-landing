@@ -1,7 +1,7 @@
 import { Button } from "@/components/ds/Button";
 import { WhatsAppShowcase } from "@/components/ds/WhatsAppShowcase";
 import { TrustBar } from "@/components/ds/TrustBar";
-import { HERO_MESSAGES, TRUST_ITEMS } from "@/lib/content";
+import { HERO_MESSAGES, TRUST_ITEMS, HERO_QUOTE } from "@/lib/content";
 import { HeroCopy } from "./HeroCopy";
 
 /** Hero — two-column, stacks under ~680px via auto-fit. Copy is ad-matched
@@ -58,6 +58,55 @@ export function Hero() {
             </div>
             <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
               Membership from $55/mo · cancel anytime · 20-second signup
+            </div>
+            {/* One genuine pull-quote — early social proof before the product
+                detail, without asking the full testimonial section to work up
+                here (and without a fabricated stat). */}
+            <div
+              style={{
+                display: "flex",
+                gap: 12,
+                alignItems: "center",
+                marginTop: 6,
+                maxWidth: 440,
+              }}
+            >
+              <div
+                role="img"
+                aria-label={`${HERO_QUOTE.name.split(",")[0]}, beta member`}
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: "50%",
+                  flexShrink: 0,
+                  backgroundColor: "var(--gold-200, #EAD9B8)",
+                  backgroundImage: `url("${HERO_QUOTE.photo}"), linear-gradient(150deg,#EAD9B8,#C9986A)`,
+                  backgroundSize: "cover, cover",
+                  backgroundPosition: "center, center",
+                  backgroundRepeat: "no-repeat, no-repeat",
+                  boxShadow: "var(--shadow-1)",
+                }}
+              />
+              <div style={{ lineHeight: 1.4 }}>
+                <div
+                  style={{
+                    fontSize: "var(--text-sm)",
+                    color: "var(--text-body)",
+                    fontStyle: "italic",
+                  }}
+                >
+                  &ldquo;{HERO_QUOTE.quote}&rdquo;
+                </div>
+                <div
+                  style={{
+                    fontSize: "var(--text-xs)",
+                    color: "var(--text-muted)",
+                    marginTop: 2,
+                  }}
+                >
+                  {HERO_QUOTE.name} · {HERO_QUOTE.location}
+                </div>
+              </div>
             </div>
           </div>
         </div>
