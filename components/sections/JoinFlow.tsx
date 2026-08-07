@@ -9,12 +9,13 @@ import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { TaskPicker, type TaskDef } from "@/components/ds/TaskPicker";
 import { useJoin } from "@/components/JoinProvider";
-import { TASK_DEFS, PLANS, type Plan } from "@/lib/content";
+import { TASK_DEFS, PLANS, MEMBERSHIP_SINGLE, type Plan } from "@/lib/content";
 import {
   getStoredUtm,
   track,
   newEventId,
   type Utm,
+  type PricingArm,
 } from "@/lib/analytics";
 import {
   WAITLIST_ENDPOINT,
@@ -55,6 +56,8 @@ async function submitSignup(payload: {
   email: string;
   utm: Utm;
   eventId: string;
+  /** Pricing-experiment cell — carried through so signups split by arm. */
+  arm: PricingArm;
   primaryTaskId?: string | null;
   alsoInterestedIds?: string[];
   planId?: string | null;
@@ -211,7 +214,9 @@ function PlanCard({
 }
 
 export function JoinFlow() {
-  const { step, setStep } = useJoin();
+  const { step, setStep, arm } = useJoin();
+  // Arm B collapses the two SKUs into a single $99 membership offer.
+  const plans = arm === "B" ? [MEMBERSHIP_SINGLE] : PLANS;
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | undefined>();
@@ -255,9 +260,9 @@ export function JoinFlow() {
 
     const utm = getStoredUtm();
     // Fire the browser pixel Lead event; backend forwards the CAPI twin (same eventId).
-    track("Lead", { content_name: "waitlist_email" }, eventId);
+    track("Lead", { content_name: "waitlist_email", arm }, eventId);
 
-    const res = await submitSignup({ email, utm, eventId });
+    const res = await submitSignup({ email, utm, eventId, arm });
     setResult(res);
     setSubmitting(false);
     setStep("tasks");
@@ -280,13 +285,14 @@ export function JoinFlow() {
     const utm = getStoredUtm();
     track(
       "SubmitApplication",
-      { primary_task_id: selectedTask, also_interested_ids: alsoInterested },
+      { primary_task_id: selectedTask, also_interested_ids: alsoInterested, arm },
       eventId
     );
     void submitSignup({
       email,
       utm,
       eventId,
+      arm,
       primaryTaskId: selectedTask,
       alsoInterestedIds: alsoInterested,
     });
@@ -296,11 +302,12 @@ export function JoinFlow() {
   // Plan step → confirmation. `plan` may be null when the visitor skips.
   function finishWithPlan(plan: string | null) {
     const utm = getStoredUtm();
-    if (plan) track("AddPaymentInfo", { plan_id: plan }, eventId);
+    if (plan) track("AddPaymentInfo", { plan_id: plan, arm }, eventId);
     void submitSignup({
       email,
       utm,
       eventId,
+      arm,
       primaryTaskId: selectedTask,
       alsoInterestedIds: alsoInterested,
       planId: plan,
@@ -442,7 +449,9 @@ export function JoinFlow() {
         {step === "plan" && (
           <>
             <Eyebrow>Step 3 of 3</Eyebrow>
-            <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>Choose your membership</h2>
+            <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>
+              {arm === "B" ? "Your Niro membership" : "Choose your membership"}
+            </h2>
             <p
               style={{
                 fontSize: "var(--text-md)",
@@ -451,19 +460,23 @@ export function JoinFlow() {
                 margin: "0 0 24px",
               }}
             >
-              No charge today — this just reserves your spot and tells us which fits your
-              family.
+              {arm === "B"
+                ? "No charge today — this just reserves your spot."
+                : "No charge today — this just reserves your spot and tells us which fits your family."}
             </p>
             <div
               role="radiogroup"
               style={{
                 display: "grid",
                 gap: 14,
-                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gridTemplateColumns:
+                  plans.length === 1
+                    ? "1fr"
+                    : "repeat(auto-fit, minmax(220px, 1fr))",
                 alignItems: "start",
               }}
             >
-              {PLANS.map((plan) => (
+              {plans.map((plan) => (
                 <PlanCard
                   key={plan.id}
                   plan={plan}

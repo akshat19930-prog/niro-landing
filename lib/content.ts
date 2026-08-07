@@ -379,6 +379,27 @@ export const PLANS: Plan[] = [
   },
 ];
 
+/**
+ * Single-SKU offer for the pricing experiment's arm B — one $99 "Niro
+ * membership" with the full benefit set spelled out (no tier to compare
+ * against, so Lite's essentials are folded in explicitly).
+ */
+export const MEMBERSHIP_SINGLE: Plan = {
+  id: "prime",
+  name: "Niro membership",
+  price: "$99",
+  per: "/month",
+  sub: "Your family, fully covered",
+  features: [
+    "Dedicated family manager + WhatsApp group for tasks",
+    "Unlimited tasks",
+    "Emergency response — Niro's concierge present on the ground with your family",
+    "Cyber-fraud cover — insurance up to ₹20L, monitoring & education",
+    "$10/mo wellness credits — tests, physio & more",
+  ],
+  highlight: true,
+};
+
 /* ---- First-task picker (order is randomized per visitor at runtime) ---- */
 export const TASK_DEFS: TaskDef[] = [
   {
