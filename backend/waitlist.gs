@@ -22,8 +22,10 @@
 
 // ---- Config -----------------------------------------------------------------
 var SHEET_NAME = "waitlist";
-// Vanity starting position shown to the first signup; grows with each signup.
-var BASE_POSITION = 1800;
+// Starting position for the Sheet's internal "position" column; grows with each
+// signup. (The site's confirmation shows its own number, so this is cosmetic for
+// the Sheet — no need to redeploy the script just to change it.)
+var BASE_POSITION = 320;
 
 // ---- Entry points -----------------------------------------------------------
 function doPost(e) {

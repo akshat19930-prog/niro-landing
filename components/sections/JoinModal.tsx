@@ -153,7 +153,6 @@ export function JoinModal() {
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | undefined>();
-  const [submitting, setSubmitting] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<string | null>("prime");
   const [result, setResult] = useState<SignupResult | null>(null);
   const [copied, setCopied] = useState(false);
@@ -172,19 +171,21 @@ export function JoinModal() {
 
   if (!open) return null;
 
-  async function submitEmail(e: React.FormEvent) {
+  function submitEmail(e: React.FormEvent) {
     e.preventDefault();
     if (!email || email.indexOf("@") === -1) {
       setError("Please enter a valid email.");
       return;
     }
     setError(undefined);
-    setSubmitting(true);
     const utm = getStoredUtm();
     track("Lead", { content_name: "waitlist_email", arm }, eventId);
-    const res = await submitSignup({ email, utm, eventId, arm });
-    setResult(res);
-    setSubmitting(false);
+    // Show the confirmation number instantly and advance — do NOT block the UI
+    // on the Apps Script round-trip (302 redirect + cold start can take seconds).
+    // The email is still captured; keepalive lets the POST finish in the
+    // background even as the user moves through the flow.
+    setResult({ position: FALLBACK_WAITLIST_POSITION, referralCode: slugFromEmail(email) });
+    void submitSignup({ email, utm, eventId, arm });
     setStep("plan");
   }
 
@@ -239,8 +240,8 @@ export function JoinModal() {
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
               />
-              <Button type="submit" size="lg" full disabled={submitting}>
-                {submitting ? "Joining…" : "Join the waitlist"}
+              <Button type="submit" size="lg" full>
+                Join the waitlist
               </Button>
             </form>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 16, fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
