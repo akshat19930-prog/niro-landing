@@ -248,7 +248,13 @@ export const PARENT_VOICE = {
  * the family reports. These are synthesized from research, not verbatim-approved
  * quotes: get each named person's sign-off before public launch.
  */
-export const TESTIMONIALS_SHORT: { name: string; location: string; quote: string }[] = [
+export const TESTIMONIALS_SHORT: {
+  name: string;
+  location: string;
+  quote: string;
+  /** Optional headshot path under /public. Falls back to the placeholder avatar. */
+  photo?: string;
+}[] = [
   {
     name: "Sudiksha, 31",
     location: "Dallas, US ↔ Patiala, India",
@@ -259,31 +265,34 @@ export const TESTIMONIALS_SHORT: { name: string; location: string; quote: string
     name: "Kartik, 34",
     location: "Seattle, US ↔ Nagpur, India",
     quote:
-      "I'd been dreading some document-attestation work for my PR. Niro got it done in a breeze — no time-zone battles, no losing my mind.",
+      "Mom can't book a cab on the apps. I used to book one for her from the US every time she had to travel and Dad was away — now she just sends Niro a voice note and it happens.",
   },
   {
-    name: "Harshit, 36",
+    name: "Mayank, 36",
     location: "New York, US ↔ Lucknow, India",
     quote:
       "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now — and I worry far less about the cyber-fraud that targets senior citizens.",
   },
   {
-    name: "Ankur, 32",
+    name: "Vaibhav, 32",
     location: "San Francisco, US ↔ Patiala, India",
     quote:
       "On an H1B, I can't just fly home. After Papa's heart scare, knowing there's a named person who'll be at the hospital — with full context, acting on our behalf — is what lets me sleep.",
+    photo: "/people/vaibhav.jpg",
   },
   {
-    name: "Dhruva, 43",
+    name: "Abhishek, 43",
     location: "Dubai, UAE ↔ Gwalior, India",
     quote:
       "They recovered ₹4L of my EPFO that had been stuck for eight years — I'd completely given up on it. And Mom now gets at-home massages on a fortnightly rhythm I set up once.",
+    photo: "/people/abhishek.jpg",
   },
   {
-    name: "Niharika, 38",
+    name: "Pavas, 38",
     location: "Dubai, UAE ↔ Noida, India",
     quote:
       "Mom lives alone, and I wanted her to be able to visit — but the passport and visa process isn't something she can do alone, and asking my cousin for the same favour again and again felt awkward. Niro handled the whole thing and even accompanied her on the appointment date. Can't wait to see her here in September!",
+    photo: "/people/pavas.jpg",
   },
 ];
 

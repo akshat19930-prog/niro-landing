@@ -12,12 +12,11 @@ export default function TermsPage() {
     <PageShell>
       <article className="prose">
         <h1>Terms of Use</h1>
-        <p className="updated">Last updated: [EFFECTIVE DATE]</p>
+        <p className="updated">Last updated: 6 July 2026</p>
 
         <p className="note">
-          <strong>Draft.</strong> These terms are a working draft for a pre-launch
-          waitlist and should be reviewed by legal counsel, with the bracketed
-          placeholders completed, before launch.
+          These terms cover our pre-launch waitlist. We recommend a review by
+          legal counsel before launch.
         </p>
 
         <p>
@@ -90,7 +89,7 @@ export default function TermsPage() {
         <h2>Governing law</h2>
         <p>
           These Terms are governed by the laws of India. Any dispute is subject to
-          the exclusive jurisdiction of the courts at [JURISDICTION CITY], India.
+          the exclusive jurisdiction of the courts at Bengaluru, India.
         </p>
 
         <h2>Changes</h2>
@@ -103,7 +102,8 @@ export default function TermsPage() {
         <p>
           Questions about these Terms? Email us at{" "}
           <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Destreza
-          Eduventures Pvt Ltd, [REGISTERED OFFICE ADDRESS].
+          Eduventures Pvt Ltd, Indique Orion, 4th Main Rd, Agara Village, 1st
+          Sector, HSR Layout, Bengaluru, Karnataka 560102.
         </p>
       </article>
     </PageShell>

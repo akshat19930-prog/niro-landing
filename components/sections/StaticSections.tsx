@@ -297,19 +297,45 @@ function AvatarPlaceholder() {
   );
 }
 
+/** Real circular headshot for a testimonial. Rendered as a background image
+ *  layered over the gradient placeholder, so a missing file degrades to the
+ *  placeholder gracefully (no broken-image icon) — static export, no JS. */
+function AvatarPhoto({ src, name }: { src: string; name: string }) {
+  return (
+    <div
+      role="img"
+      aria-label={`${name.split(",")[0]}, beta member`}
+      style={{
+        width: 52,
+        height: 52,
+        borderRadius: "50%",
+        flexShrink: 0,
+        boxShadow: "var(--shadow-1)",
+        backgroundColor: "var(--gold-200, #EAD9B8)",
+        backgroundImage: `url("${src}"), linear-gradient(150deg,#EAD9B8,#C9986A)`,
+        backgroundSize: "cover, cover",
+        backgroundPosition: "center, center",
+        backgroundRepeat: "no-repeat, no-repeat",
+      }}
+    />
+  );
+}
+
 function TestimonialCard({
   name,
   location,
   quote,
+  photo,
 }: {
   name: string;
   location: string;
   quote: string;
+  photo?: string;
 }) {
   return (
     <div style={{ ...proofCardBase, gap: 14 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <AvatarPlaceholder />
+        {photo ? <AvatarPhoto src={photo} name={name} /> : <AvatarPlaceholder />}
         <div style={{ lineHeight: 1.35 }}>
           <div
             style={{ fontWeight: 600, color: "var(--text-strong)", fontSize: "var(--text-base)" }}
@@ -385,6 +411,7 @@ export function Proof() {
               name={t.name}
               location={t.location}
               quote={t.quote}
+              photo={t.photo}
             />
           ))}
         </div>

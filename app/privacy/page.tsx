@@ -12,13 +12,11 @@ export default function PrivacyPage() {
     <PageShell>
       <article className="prose">
         <h1>Privacy Policy</h1>
-        <p className="updated">Last updated: [EFFECTIVE DATE]</p>
+        <p className="updated">Last updated: 6 July 2026</p>
 
         <p className="note">
-          <strong>Draft.</strong> This policy is a working draft prepared for a
-          pre-launch waitlist. It should be reviewed by legal counsel and the
-          bracketed placeholders completed before Niro begins advertising or
-          onboarding paying members.
+          This policy covers our pre-launch waitlist. We recommend a review by
+          legal counsel before onboarding paying members.
         </p>
 
         <p>
@@ -127,12 +125,12 @@ export default function PrivacyPage() {
           revised version here with a new date.
         </p>
 
-        <h2>Contact &amp; grievances</h2>
+        <h2>Contact</h2>
         <p>
-          For any privacy question or request, contact our Grievance Officer,{" "}
-          [GRIEVANCE OFFICER NAME], at{" "}
-          <a href="mailto:privacy@tellniro.com">privacy@tellniro.com</a>.
-          Destreza Eduventures Pvt Ltd, [REGISTERED OFFICE ADDRESS].
+          For any privacy question or request, email us at{" "}
+          <a href="mailto:privacy@tellniro.com">privacy@tellniro.com</a>. Destreza
+          Eduventures Pvt Ltd, Indique Orion, 4th Main Rd, Agara Village, 1st
+          Sector, HSR Layout, Bengaluru, Karnataka 560102.
         </p>
       </article>
     </PageShell>
