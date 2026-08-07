@@ -15,7 +15,11 @@ export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "";
  * server-side using the same `eventId` for dedup with the browser pixel.
  * When unset, the flow simulates a response locally so the funnel is testable.
  */
-export const WAITLIST_ENDPOINT = process.env.NEXT_PUBLIC_WAITLIST_ENDPOINT ?? "";
+export const WAITLIST_ENDPOINT =
+  process.env.NEXT_PUBLIC_WAITLIST_ENDPOINT ||
+  // Google Apps Script Web App (writes signups to a Sheet). Public endpoint, so
+  // safe to commit. A repo Actions variable of the same name overrides this.
+  "https://script.google.com/macros/s/AKfycbwFnBAz3ZFXKr3D13KtKqOyATFW2TVb5gIFOJfch6GJwLbABYzWoMntnvPFl8m2Qunl_A/exec";
 
 /** Public site origin used to build referral links. */
 export const SITE_ORIGIN =
