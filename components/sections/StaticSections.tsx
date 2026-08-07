@@ -29,7 +29,8 @@ export function Mirror() {
       <div style={CONTAINER}>
         <Eyebrow>Sound familiar</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 40px", maxWidth: 680 }}>
-          Your India to-do list is hard enough. Parents just don&apos;t tell you about theirs
+          Your India to-do list is hard enough, &amp; parents don&apos;t even tell you about
+          theirs
         </h2>
         <div
           style={{
