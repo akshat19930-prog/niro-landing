@@ -44,7 +44,8 @@ export function Hero() {
                 Join the waitlist
               </Button>
             </div>
-            {/* Reward for clicking — the reason a cold visitor spends an email. */}
+            {/* Price anchor + reward + no-card reassurance — the reasons a cold
+                visitor spends an email. */}
             <div
               style={{
                 fontSize: "var(--text-sm)",
@@ -52,7 +53,7 @@ export function Hero() {
                 color: "var(--brand)",
               }}
             >
-              First task free — join the waitlist without paying.
+              Membership starts at $55/mo. First task free. Join the waitlist without a card.
             </div>
             {/* One genuine pull-quote — early social proof before the product
                 detail, without asking the full testimonial section to work up

@@ -155,7 +155,7 @@ export const HERO_MESSAGES: ChatMessage[] = [
    the testimonials section below for consistency. ---- */
 export const HERO_QUOTE = {
   quote:
-    "Recovered ₹4L of my EPF that had been stuck for eight years — I'd completely given up on it.",
+    "Niro recovered for me ₹4L of my EPF that had been stuck for eight years — I'd completely given up on it.",
   name: "Abhishek, 43",
   location: "Dubai ↔ Gwalior",
   photo: "/people/abhishek.jpg",
