@@ -280,6 +280,7 @@ export const TESTIMONIALS_SHORT: {
     location: "Seattle, US ↔ Nagpur, India",
     quote:
       "Mom can't book a cab on the apps. I used to book one for her from the US every time she had to travel and Dad was away — now she just sends Niro a voice note and it happens.",
+    photo: "/people/kartik.jpg",
   },
   {
     name: "Mayank, 36",
