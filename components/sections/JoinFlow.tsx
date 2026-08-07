@@ -220,7 +220,8 @@ export function JoinFlow() {
   const [tasks, setTasks] = useState<TaskDef[]>(TASK_DEFS);
   const [selectedTask, setSelectedTask] = useState<string | null>(null);
   const [alsoInterested, setAlsoInterested] = useState<string[]>([]);
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  // Prime pre-selected (nudges the higher tier).
+  const [selectedPlan, setSelectedPlan] = useState<string | null>("prime");
 
   const [result, setResult] = useState<SignupResult | null>(null);
   const [copied, setCopied] = useState(false);
@@ -242,9 +243,6 @@ export function JoinFlow() {
     return `https://wa.me/?text=${encodeURIComponent(text)}`;
   }, [referralUrl]);
 
-  const selectedTaskLabel =
-    tasks.find((t) => t.id === selectedTask)?.label ?? "";
-  const selectedPlanName = PLANS.find((p) => p.id === selectedPlan)?.name ?? "";
 
   async function submitEmail(e: React.FormEvent) {
     e.preventDefault();
@@ -532,14 +530,8 @@ export function JoinFlow() {
                 margin: "0 0 28px",
               }}
             >
-              We&apos;ll start with{" "}
-              <strong style={{ color: "var(--text-strong)" }}>{selectedTaskLabel}</strong>
-              {selectedPlanName ? (
-                <>
-                  , on <strong style={{ color: "var(--text-strong)" }}>{selectedPlanName}</strong>
-                </>
-              ) : null}
-              . Move up the list — every friend who joins with your link moves your family up.
+              Share with your friends to move up the waitlist — every join with your link
+              moves your family up.
             </p>
             <div style={{ display: "flex", gap: 10, marginBottom: 16, alignItems: "stretch" }}>
               <div style={{ flex: 1 }}>

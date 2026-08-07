@@ -365,8 +365,7 @@ export const PLANS: Plan[] = [
     lead: "Everything in Lite, plus",
     features: [
       "Unlimited tasks",
-      "Emergency response — our own person at the hospital, admission handled",
-      "Fortnightly proactive check-in calls",
+      "Emergency response — Niro's concierge present on the ground with your family",
       "Cyber-fraud cover — insurance up to ₹20L, monitoring & education",
       "$10/mo wellness credits — tests, physio & more",
     ],
