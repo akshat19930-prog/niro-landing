@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { captureUtm } from "@/lib/analytics";
 
-export type Step = "form" | "tasks" | "done";
+export type Step = "form" | "tasks" | "plan" | "done";
 
 type JoinCtx = {
   step: Step;

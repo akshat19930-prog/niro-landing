@@ -329,6 +329,52 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
 ];
 
+/* ---- Membership plans (shown inside the join flow after email) ---- */
+export type Plan = {
+  id: "lite" | "prime";
+  name: string;
+  price: string;
+  per: string;
+  sub: string;
+  lead?: string;
+  features: string[];
+  highlight: boolean;
+  badge?: string;
+};
+
+export const PLANS: Plan[] = [
+  {
+    id: "lite",
+    name: "Niro Lite",
+    price: "$55",
+    per: "/month",
+    sub: "The essentials, covered",
+    features: [
+      "Family WhatsApp group for tasks",
+      "8 tasks included",
+      "Emergency response — ambulance partner + 24/7 remote coordination",
+    ],
+    highlight: false,
+  },
+  {
+    id: "prime",
+    name: "Niro Prime",
+    price: "$99",
+    per: "/month",
+    sub: "Your family, fully covered",
+    lead: "Everything in Lite, plus",
+    features: [
+      "Unlimited tasks",
+      "Emergency response — our own person at the hospital, admission handled",
+      "Fortnightly proactive check-in calls",
+      "Cyber-fraud cover — insurance up to ₹20L, monitoring & education",
+      "$10/mo wellness credits — tests, physio & more",
+    ],
+    highlight: true,
+    badge: "Most popular",
+  },
+];
+
 /* ---- First-task picker (order is randomized per visitor at runtime) ---- */
 export const TASK_DEFS: TaskDef[] = [
   {

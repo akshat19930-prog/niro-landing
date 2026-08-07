@@ -3,7 +3,6 @@ import { Badge } from "@/components/ds/Badge";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
 import { WhatsAppShowcase } from "@/components/ds/WhatsAppShowcase";
-import { PricingCard } from "@/components/ds/PricingCard";
 import {
   MIRROR,
   STEPS,
@@ -394,30 +393,3 @@ export function Proof() {
   );
 }
 
-/* ---- Pricing teaser ---- */
-export function Pricing() {
-  return (
-    <section
-      data-screen-label="Pricing"
-      style={{ padding: "88px var(--gutter)", background: "var(--bg-inset)" }}
-    >
-      <div style={CONTAINER}>
-        <Eyebrow>Membership</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>Monthly pricing, cancel anytime</h2>
-        <p
-          style={{
-            fontSize: "var(--text-md)",
-            color: "var(--text-body)",
-            lineHeight: 1.6,
-            maxWidth: 620,
-            margin: "0 0 36px",
-          }}
-        >
-          Convenience and peace for you and your family. Less than half the cost of a
-          full-time butler.
-        </p>
-        <PricingCard />
-      </div>
-    </section>
-  );
-}

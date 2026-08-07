@@ -8,7 +8,6 @@ import {
   HowItWorks,
   WhatWeHandle,
   Proof,
-  Pricing,
 } from "@/components/sections/StaticSections";
 import { JoinFlow } from "@/components/sections/JoinFlow";
 import { Faq } from "@/components/sections/Faq";
@@ -26,7 +25,6 @@ export default function Page() {
         <EmergencyStory />
         <Proof />
         <JoinFlow />
-        <Pricing />
         <Faq />
       </main>
 
