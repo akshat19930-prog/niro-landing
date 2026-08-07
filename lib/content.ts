@@ -31,11 +31,12 @@ export const HERO_VARIANTS: Record<"1" | "2" | "3" | "4", HeroVariant> = {
     h: "Your EPF, your flat, your India paperwork — finally handled",
     s: "The stuck PF, the dormant account, the tenant, the OCI renewal — a real person in India does the running around, so you don't lose another weekend to it.",
   },
-  // v4 — Default / "home manager" ROI + task-offload framing (no eyebrow).
+  // v4 — Default / outcome-led hook (general-purpose, not elder-care; pays off
+  // the hero WhatsApp win). No eyebrow.
   "4": {
     tag: "",
-    h: "Your family's 24/7 India home manager",
-    s: "A home manager for NRI families: bills, chores, repairs, and government paperwork — taken off your plate, and your parents'.",
+    h: "Everything back home you can't be there to handle — handled",
+    s: "Bills, repairs, paperwork, emergencies. One person in India who gets it done for your parents and for you — over WhatsApp.",
   },
 };
 
