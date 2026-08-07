@@ -128,6 +128,27 @@ export const HOW_MESSAGES: ChatMessage[] = [
   { from: "you", type: "text", text: "Thank you. Genuinely.", time: "8:21 AM" },
 ];
 
+/* ---- Hero WhatsApp teaser — a short, everyday, non-medical task so the very
+   first impression reads "general-purpose home manager", not elder care. The
+   fuller flow (and the medical example) lives in the How-it-works section. */
+export const HERO_MESSAGES: ChatMessage[] = [
+  {
+    from: "you",
+    type: "text",
+    text: "Papa's electricity bill is overdue — can you sort it?",
+    time: "9:02 AM",
+  },
+  {
+    from: "leo",
+    sender: "Niro",
+    badge: "your associate: Priya",
+    type: "text",
+    text: "Paid ₹2,340 just now — receipt's in the group. I've set up auto-pay so it won't lapse again. ✅",
+    time: "9:06 AM",
+  },
+  { from: "you", type: "text", text: "Perfect, thank you 🙏", time: "9:07 AM" },
+];
+
 /* ---- What we handle ---- */
 export const HANDLE_GROUPS: {
   name: string;

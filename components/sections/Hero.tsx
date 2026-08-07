@@ -1,5 +1,6 @@
 import { Button } from "@/components/ds/Button";
-import { PhotoPlaceholder } from "@/components/ds/PhotoPlaceholder";
+import { WhatsAppShowcase } from "@/components/ds/WhatsAppShowcase";
+import { HERO_MESSAGES } from "@/lib/content";
 import { HeroCopy } from "./HeroCopy";
 
 /** Hero — two-column, stacks under ~680px via auto-fit. Copy is ad-matched
@@ -50,18 +51,8 @@ export function Hero() {
             </Button>
           </div>
         </div>
-        <div>
-          <PhotoPlaceholder caption="Father reading the newspaper on a balcony, warm morning light, Tier-2 home" />
-          <p
-            style={{
-              fontSize: "var(--text-xs)",
-              color: "var(--text-muted)",
-              marginTop: 10,
-            }}
-          >
-            Art direction: unstaged domestic warmth, honest interiors — no stock-photo
-            gloss.
-          </p>
+        <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
+          <WhatsAppShowcase messages={HERO_MESSAGES} />
         </div>
       </div>
     </section>
