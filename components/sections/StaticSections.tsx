@@ -382,11 +382,11 @@ export function Proof() {
 
   return (
     <section
-      data-screen-label="From beta families"
+      data-screen-label="From beta access families"
       style={{ padding: "88px 0", background: "var(--bg-inset)", overflow: "hidden" }}
     >
       <div style={{ ...CONTAINER, padding: "0 var(--gutter)" }}>
-        <Eyebrow>From beta families</Eyebrow>
+        <Eyebrow>From beta access families</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 8px" }}>
           Real families. Real tasks. Real relief
         </h2>

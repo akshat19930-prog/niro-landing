@@ -42,8 +42,8 @@ export function Footer() {
                 color: "#9AA79E",
               }}
             >
-              Your family&apos;s presence in India. A calm, capable friend who happens to
-              have world-class technology.
+              Niro: your presence in India — a go-getter home manager to get things
+              done for you and your family.
             </p>
           </div>
           <nav style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
