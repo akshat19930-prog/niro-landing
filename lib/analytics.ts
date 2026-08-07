@@ -64,6 +64,72 @@ export function getStoredUtm(): Utm {
   }
 }
 
+/* =====================================================================
+   Pricing experiment — 2-arm test, 50/50 split.
+     A (50%): both SKUs shown side by side (Lite + Prime)
+     B (50%): a single $99 "Niro membership" SKU
+   The arm is assigned once and persisted in localStorage so a returning
+   visitor always sees the same offer (a requirement for a clean pricing
+   read). `?arm=a` / `?arm=b` overrides for QA. The arm rides along on every
+   pixel event and the signup payload so results can be split by cell.
+   ===================================================================== */
+export type PricingArm = "A" | "B";
+
+const ARM_STORAGE_KEY = "niro_pricing_arm";
+/** Share of traffic routed to arm A (both SKUs). Remainder goes to B. */
+const ARM_A_SHARE = 0.5;
+
+function normalizeArm(v: string | null | undefined): PricingArm | null {
+  if (!v) return null;
+  const s = v.trim().toUpperCase();
+  return s === "A" || s === "B" ? s : null;
+}
+
+/**
+ * Return this visitor's pricing arm, assigning + persisting one on first call.
+ * Precedence: explicit `?arm=` override → already-stored arm → fresh 60/40 draw.
+ * Client-only (uses localStorage + Math.random); returns "A" during SSR.
+ */
+export function assignArm(): PricingArm {
+  if (typeof window === "undefined") return "A";
+
+  // QA override — pin the arm (also persist it so navigation stays consistent).
+  const override = normalizeArm(new URLSearchParams(window.location.search).get("arm"));
+  if (override) {
+    try {
+      localStorage.setItem(ARM_STORAGE_KEY, override);
+    } catch {
+      /* storage unavailable — non-fatal, arm still returned for this view */
+    }
+    return override;
+  }
+
+  let stored: PricingArm | null = null;
+  try {
+    stored = normalizeArm(localStorage.getItem(ARM_STORAGE_KEY));
+  } catch {
+    stored = null;
+  }
+  if (stored) return stored;
+
+  const arm: PricingArm = Math.random() < ARM_A_SHARE ? "A" : "B";
+  try {
+    localStorage.setItem(ARM_STORAGE_KEY, arm);
+  } catch {
+    /* storage unavailable — visitor still gets an arm for this session */
+  }
+  return arm;
+}
+
+export function getStoredArm(): PricingArm {
+  if (typeof window === "undefined") return "A";
+  try {
+    return normalizeArm(localStorage.getItem(ARM_STORAGE_KEY)) ?? "A";
+  } catch {
+    return "A";
+  }
+}
+
 /** Fire a Meta Pixel event if the pixel is loaded. Safe no-op otherwise. */
 export function track(
   event: string,

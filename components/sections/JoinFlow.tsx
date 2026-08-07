@@ -9,12 +9,13 @@ import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { TaskPicker, type TaskDef } from "@/components/ds/TaskPicker";
 import { useJoin } from "@/components/JoinProvider";
-import { TASK_DEFS } from "@/lib/content";
+import { TASK_DEFS, PLANS, MEMBERSHIP_SINGLE, type Plan } from "@/lib/content";
 import {
   getStoredUtm,
   track,
   newEventId,
   type Utm,
+  type PricingArm,
 } from "@/lib/analytics";
 import {
   WAITLIST_ENDPOINT,
@@ -55,8 +56,11 @@ async function submitSignup(payload: {
   email: string;
   utm: Utm;
   eventId: string;
+  /** Pricing-experiment cell — carried through so signups split by arm. */
+  arm: PricingArm;
   primaryTaskId?: string | null;
   alsoInterestedIds?: string[];
+  planId?: string | null;
 }): Promise<SignupResult> {
   const fallback: SignupResult = {
     position: FALLBACK_WAITLIST_POSITION,
@@ -80,8 +84,139 @@ async function submitSignup(payload: {
   }
 }
 
+/** Selectable membership card used in the plan step. */
+function PlanCard({
+  plan,
+  selected,
+  onSelect,
+}: {
+  plan: Plan;
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  const dark = plan.highlight;
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      role="radio"
+      aria-checked={selected}
+      style={{
+        position: "relative",
+        textAlign: "left",
+        cursor: "pointer",
+        width: "100%",
+        background: dark ? "var(--forest-700)" : "var(--surface-card)",
+        color: dark ? "var(--ivory)" : "var(--text-body)",
+        border: `2px solid ${
+          selected ? (dark ? "var(--gold-400)" : "var(--brand)") : dark ? "var(--forest-700)" : "var(--border)"
+        }`,
+        borderRadius: "var(--radius-xl)",
+        padding: "var(--space-5)",
+        boxShadow: selected ? "var(--shadow-3)" : dark ? "var(--shadow-brand)" : "var(--shadow-2)",
+        transition: "border-color var(--dur-fast) var(--ease-calm), box-shadow var(--dur-fast) var(--ease-calm)",
+        fontFamily: "var(--font-sans)",
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+        <div
+          style={{
+            fontSize: "var(--text-sm)",
+            fontWeight: 600,
+            letterSpacing: "var(--tracking-wide)",
+            textTransform: "uppercase",
+            color: dark ? "var(--gold-300)" : "var(--accent-strong)",
+          }}
+        >
+          {plan.name}
+        </div>
+        {/* selection indicator */}
+        <span
+          style={{
+            width: 22,
+            height: 22,
+            borderRadius: "50%",
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border: `2px solid ${selected ? (dark ? "var(--gold-400)" : "var(--brand)") : "var(--border-strong)"}`,
+            background: selected ? (dark ? "var(--gold-400)" : "var(--brand)") : "transparent",
+            color: dark ? "var(--forest-950)" : "var(--ivory)",
+          }}
+        >
+          {selected && <Icon name="check" size={12} strokeWidth={3} />}
+        </span>
+      </div>
+      <div style={{ marginTop: 8, display: "flex", alignItems: "baseline", gap: 4 }}>
+        <span
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: 34,
+            fontWeight: 600,
+            color: dark ? "#fff" : "var(--text-strong)",
+            lineHeight: 1,
+          }}
+        >
+          {plan.price}
+        </span>
+        <span style={{ fontSize: "var(--text-sm)", color: dark ? "rgba(255,255,255,0.7)" : "var(--text-muted)" }}>
+          {plan.per}
+        </span>
+      </div>
+      <div
+        style={{
+          marginTop: 4,
+          fontSize: "var(--text-sm)",
+          color: dark ? "var(--gold-300)" : "var(--brand)",
+          fontWeight: 500,
+        }}
+      >
+        {plan.sub}
+      </div>
+      {plan.lead && (
+        <div
+          style={{
+            marginTop: 14,
+            fontSize: "var(--text-xs)",
+            fontWeight: 600,
+            color: dark ? "rgba(255,255,255,0.92)" : "var(--text-strong)",
+          }}
+        >
+          {plan.lead}
+        </div>
+      )}
+      <ul
+        style={{
+          listStyle: "none",
+          padding: 0,
+          margin: plan.lead ? "8px 0 0" : "14px 0 0",
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        {plan.features.map((f) => (
+          <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-xs)" }}>
+            <Icon
+              name="check-circle"
+              size={15}
+              style={{ marginTop: 1, flexShrink: 0, color: dark ? "var(--gold-300)" : "var(--brand)" }}
+            />
+            <span style={{ color: dark ? "rgba(255,255,255,0.92)" : "var(--text-body)", lineHeight: 1.4 }}>
+              {f}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </button>
+  );
+}
+
 export function JoinFlow() {
-  const { step, setStep } = useJoin();
+  const { step, setStep, arm } = useJoin();
+  // Arm B collapses the two SKUs into a single $99 membership offer.
+  const plans = arm === "B" ? [MEMBERSHIP_SINGLE] : PLANS;
 
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | undefined>();
@@ -90,6 +225,8 @@ export function JoinFlow() {
   const [tasks, setTasks] = useState<TaskDef[]>(TASK_DEFS);
   const [selectedTask, setSelectedTask] = useState<string | null>(null);
   const [alsoInterested, setAlsoInterested] = useState<string[]>([]);
+  // Prime pre-selected (nudges the higher tier).
+  const [selectedPlan, setSelectedPlan] = useState<string | null>("prime");
 
   const [result, setResult] = useState<SignupResult | null>(null);
   const [copied, setCopied] = useState(false);
@@ -111,8 +248,6 @@ export function JoinFlow() {
     return `https://wa.me/?text=${encodeURIComponent(text)}`;
   }, [referralUrl]);
 
-  const selectedTaskLabel =
-    tasks.find((t) => t.id === selectedTask)?.label ?? "";
 
   async function submitEmail(e: React.FormEvent) {
     e.preventDefault();
@@ -125,9 +260,9 @@ export function JoinFlow() {
 
     const utm = getStoredUtm();
     // Fire the browser pixel Lead event; backend forwards the CAPI twin (same eventId).
-    track("Lead", { content_name: "waitlist_email" }, eventId);
+    track("Lead", { content_name: "waitlist_email", arm }, eventId);
 
-    const res = await submitSignup({ email, utm, eventId });
+    const res = await submitSignup({ email, utm, eventId, arm });
     setResult(res);
     setSubmitting(false);
     setStep("tasks");
@@ -144,21 +279,38 @@ export function JoinFlow() {
     );
   }
 
-  async function continueToConfirm() {
+  function continueToPlan() {
     if (!selectedTask) return;
-    // Attach the task selections to the signup (best-effort) + pixel event.
+    // Capture task selections (best-effort) + pixel event, then ask about plan.
     const utm = getStoredUtm();
     track(
       "SubmitApplication",
-      { primary_task_id: selectedTask, also_interested_ids: alsoInterested },
+      { primary_task_id: selectedTask, also_interested_ids: alsoInterested, arm },
       eventId
     );
     void submitSignup({
       email,
       utm,
       eventId,
+      arm,
       primaryTaskId: selectedTask,
       alsoInterestedIds: alsoInterested,
+    });
+    setStep("plan");
+  }
+
+  // Plan step → confirmation. `plan` may be null when the visitor skips.
+  function finishWithPlan(plan: string | null) {
+    const utm = getStoredUtm();
+    if (plan) track("AddPaymentInfo", { plan_id: plan, arm }, eventId);
+    void submitSignup({
+      email,
+      utm,
+      eventId,
+      arm,
+      primaryTaskId: selectedTask,
+      alsoInterestedIds: alsoInterested,
+      planId: plan,
     });
     setStep("done");
   }
@@ -181,7 +333,7 @@ export function JoinFlow() {
         {/* Step 1 — email */}
         {step === "form" && (
           <>
-            <Eyebrow>Step 1 of 2</Eyebrow>
+            <Eyebrow>Step 1 of 3</Eyebrow>
             <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>Join the waitlist</h2>
             <p
               style={{
@@ -228,7 +380,7 @@ export function JoinFlow() {
         {/* Step 2 — first task picker */}
         {step === "tasks" && (
           <>
-            <Eyebrow>Step 2 of 2</Eyebrow>
+            <Eyebrow>Step 2 of 3</Eyebrow>
             <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>Pick your free first task</h2>
             <p
               style={{
@@ -286,14 +438,82 @@ export function JoinFlow() {
             )}
 
             <div style={{ marginTop: 32 }}>
-              <Button size="lg" full disabled={!selectedTask} onClick={continueToConfirm}>
+              <Button size="lg" full disabled={!selectedTask} onClick={continueToPlan}>
                 Continue
               </Button>
             </div>
           </>
         )}
 
-        {/* Step 3 — confirmation */}
+        {/* Step 3 — choose plan (no charge; a WTP signal for the smoke test) */}
+        {step === "plan" && (
+          <>
+            <Eyebrow>Step 3 of 3</Eyebrow>
+            <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>
+              {arm === "B" ? "Your Niro membership" : "Choose your membership"}
+            </h2>
+            <p
+              style={{
+                fontSize: "var(--text-md)",
+                color: "var(--text-body)",
+                lineHeight: 1.6,
+                margin: "0 0 24px",
+              }}
+            >
+              {arm === "B"
+                ? "No charge today — this just reserves your spot."
+                : "No charge today — this just reserves your spot and tells us which fits your family."}
+            </p>
+            <div
+              role="radiogroup"
+              style={{
+                display: "grid",
+                gap: 14,
+                gridTemplateColumns:
+                  plans.length === 1
+                    ? "1fr"
+                    : "repeat(auto-fit, minmax(220px, 1fr))",
+                alignItems: "start",
+              }}
+            >
+              {plans.map((plan) => (
+                <PlanCard
+                  key={plan.id}
+                  plan={plan}
+                  selected={selectedPlan === plan.id}
+                  onSelect={() => setSelectedPlan(plan.id)}
+                />
+              ))}
+            </div>
+            <div style={{ marginTop: 28 }}>
+              <Button
+                size="lg"
+                full
+                disabled={!selectedPlan}
+                onClick={() => finishWithPlan(selectedPlan)}
+              >
+                Reserve my spot
+              </Button>
+            </div>
+            <button
+              onClick={() => finishWithPlan(null)}
+              style={{
+                display: "block",
+                margin: "16px auto 0",
+                background: "none",
+                border: "none",
+                color: "var(--text-muted)",
+                fontSize: "var(--text-sm)",
+                cursor: "pointer",
+                fontFamily: "var(--font-sans)",
+              }}
+            >
+              I&apos;ll decide later
+            </button>
+          </>
+        )}
+
+        {/* Confirmation */}
         {step === "done" && (
           <Card>
             <span
@@ -323,9 +543,8 @@ export function JoinFlow() {
                 margin: "0 0 28px",
               }}
             >
-              We&apos;ll start with:{" "}
-              <strong style={{ color: "var(--text-strong)" }}>{selectedTaskLabel}</strong>. Move
-              up the list — every friend who joins with your link moves your family up.
+              Share with your friends to move up the waitlist — every join with your link
+              moves your family up.
             </p>
             <div style={{ display: "flex", gap: 10, marginBottom: 16, alignItems: "stretch" }}>
               <div style={{ flex: 1 }}>

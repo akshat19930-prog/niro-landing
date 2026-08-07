@@ -1,12 +1,17 @@
 import { Wordmark } from "./Wordmark";
 
-const cols = [
-  { head: "Niro", links: ["How it works", "Pricing", "For your parents", "Our associates"] },
-  { head: "Company", links: ["Our story", "Careers", "Press", "Contact"] },
-  { head: "Legal", links: ["Terms", "Privacy", "Refund Policy", "Data & security"] },
+/**
+ * Minimal footer for the waitlist stage. Only the links a page that captures
+ * emails + runs a tracking pixel actually needs: About, Privacy, Terms,
+ * Contact. Privacy/Terms/About are placeholders (#) until content is written.
+ */
+const links: { label: string; href: string }[] = [
+  { label: "About", href: "/about/" },
+  { label: "Privacy", href: "/privacy/" },
+  { label: "Terms", href: "/terms/" },
+  { label: "Contact", href: "mailto:hello@tellniro.com" },
 ];
 
-/** Niro footer — quiet, warm, legal links. */
 export function Footer() {
   const year = new Date().getFullYear();
   return (
@@ -22,11 +27,12 @@ export function Footer() {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: "var(--space-7)",
+            gap: "var(--space-6)",
             justifyContent: "space-between",
+            alignItems: "flex-start",
           }}
         >
-          <div style={{ maxWidth: 300 }}>
+          <div style={{ maxWidth: 320 }}>
             <Wordmark dark size={30} />
             <p
               style={{
@@ -36,59 +42,27 @@ export function Footer() {
                 color: "#9AA79E",
               }}
             >
-              Your family&apos;s presence in India. A calm, capable friend who
-              happens to have world-class technology.
+              Niro: your presence in India — a go-getter home manager to get things
+              done for you and your family.
             </p>
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-7)" }}>
-            {cols.map((c) => (
-              <nav
-                key={c.head}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 12,
-                  minWidth: 130,
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "var(--text-xs)",
-                    fontWeight: "var(--weight-semibold)",
-                    letterSpacing: "var(--tracking-wide)",
-                    textTransform: "uppercase",
-                    color: "var(--accent-strong)",
-                  }}
-                >
-                  {c.head}
-                </span>
-                {c.links.map((l) => (
-                  <a key={l} href="#" className="footer-link">
-                    {l}
-                  </a>
-                ))}
-              </nav>
+          <nav style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
+            {links.map((l) => (
+              <a key={l.label} href={l.href} className="footer-link">
+                {l.label}
+              </a>
             ))}
-          </div>
+          </nav>
         </div>
         <div
           style={{
             marginTop: "var(--space-7)",
             paddingTop: "var(--space-5)",
             borderTop: "1px solid rgba(255,255,255,0.10)",
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 12,
-            justifyContent: "space-between",
-            alignItems: "center",
           }}
         >
           <span style={{ fontSize: "var(--text-xs)", color: "#7C8A80" }}>
-            © {year} Niro Family Concierge, Inc. Serving families across the US
-            &amp; UAE.
-          </span>
-          <span style={{ fontSize: "var(--text-xs)", color: "#7C8A80" }}>
-            Made with care, 12,000 km apart.
+            © {year} Destreza Eduventures Pvt Ltd
           </span>
         </div>
       </div>

@@ -3,16 +3,11 @@ import { Badge } from "@/components/ds/Badge";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
 import { WhatsAppShowcase } from "@/components/ds/WhatsAppShowcase";
-import { WhatsAppQuoteCard } from "@/components/ds/WhatsAppQuoteCard";
-import { ParentVoiceCard } from "@/components/ds/ParentVoiceCard";
-import { PricingCard } from "@/components/ds/PricingCard";
 import {
   MIRROR,
   STEPS,
   HOW_MESSAGES,
   HANDLE_GROUPS,
-  STORIES,
-  PARENT_VOICE,
   TESTIMONIALS_SHORT,
 } from "@/lib/content";
 
@@ -24,15 +19,6 @@ const h2Style = {
   fontWeight: 500,
 } as const;
 
-const microLabel = {
-  fontSize: 11,
-  fontWeight: 700,
-  textTransform: "uppercase" as const,
-  letterSpacing: "0.06em",
-  color: "var(--text-muted)",
-  marginBottom: 4,
-};
-
 /* ---- The Mirror ---- */
 export function Mirror() {
   return (
@@ -43,8 +29,8 @@ export function Mirror() {
       <div style={CONTAINER}>
         <Eyebrow>Sound familiar</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 40px", maxWidth: 680 }}>
-          You didn&apos;t leave them. You left the country. From here, that&apos;s a hard
-          difference to feel.
+          Your India to-do list is hard enough, &amp; parents don&apos;t even tell you about
+          theirs
         </h2>
         <div
           style={{
@@ -113,7 +99,7 @@ export function HowItWorks() {
         <div>
           <Eyebrow>How it works</Eyebrow>
           <h2 style={{ ...h2Style, margin: "16px 0 8px" }}>
-            Talk to Niro like a friend who happens to live near your parents.
+            Niro is your 24/7 house manager, concierge &amp; your presence in India
           </h2>
           <div
             style={{
@@ -178,12 +164,13 @@ export function WhatWeHandle() {
   return (
     <section
       data-screen-label="What we handle"
-      style={{ padding: "88px var(--gutter)", background: "var(--bg-inset)" }}
+      style={{ padding: "88px var(--gutter)", background: "var(--bg-page)" }}
     >
       <div style={CONTAINER}>
         <Eyebrow>What we handle</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "16px 0 44px" }}>
-          Everything that needs a person, not an app.
+        <h2 style={{ ...h2Style, margin: "16px 0 44px", maxWidth: 760 }}>
+          Everything that&apos;s hard — or that your family doesn&apos;t like spending time
+          doing
         </h2>
         <div
           style={{
@@ -257,113 +244,176 @@ export function WhatWeHandle() {
   );
 }
 
-/* ---- User stories ---- */
-export function UserStories() {
+/* ---- Proof cards (used in the auto-scrolling combined section) ---- */
+const proofCardBase = {
+  width: 320,
+  flexShrink: 0,
+  marginRight: 20,
+  background: "var(--surface-card)",
+  border: "1px solid var(--border)",
+  borderRadius: "var(--radius-lg)",
+  boxShadow: "var(--shadow-2)",
+  padding: "var(--space-5)",
+  display: "flex",
+  flexDirection: "column" as const,
+  whiteSpace: "normal" as const,
+} as const;
+
+/** Circular photo placeholder for a testimonial (swap for a real headshot). */
+function AvatarPlaceholder() {
   return (
-    <section data-screen-label="User stories" style={{ padding: "88px var(--gutter)" }}>
-      <div style={CONTAINER}>
-        <Eyebrow>Small, true stories</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "16px 0 44px" }}>The tasks that actually happened.</h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-            gap: 24,
-          }}
-        >
-          {STORIES.map((s) => (
-            <Card key={s.name} hover>
-              <div
-                style={{
-                  fontSize: "var(--text-xs)",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "var(--tracking-wide)",
-                  color: "var(--accent-strong)",
-                  marginBottom: 16,
-                }}
-              >
-                {s.name} · {s.route}
-              </div>
-              <div style={{ marginBottom: 14 }}>
-                <div style={microLabel}>Situation</div>
-                <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", lineHeight: 1.55 }}>
-                  {s.situation}
-                </div>
-              </div>
-              <div style={{ marginBottom: 14 }}>
-                <div style={microLabel}>What Niro did</div>
-                <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", lineHeight: 1.55 }}>
-                  {s.action}
-                </div>
-              </div>
-              <div>
-                <div style={microLabel}>How it ended</div>
-                <div
-                  style={{
-                    fontSize: "var(--text-sm)",
-                    color: "var(--brand)",
-                    fontWeight: 600,
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {s.result}
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </section>
+    <div
+      role="img"
+      aria-label="Photo placeholder"
+      style={{
+        width: 52,
+        height: 52,
+        borderRadius: "50%",
+        flexShrink: 0,
+        position: "relative",
+        overflow: "hidden",
+        background: "linear-gradient(150deg,#EAD9B8,#C9986A)",
+        boxShadow: "var(--shadow-1)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <span
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: "var(--jaali)",
+          backgroundSize: "34px",
+          opacity: 0.4,
+        }}
+      />
+      <Icon
+        name="camera"
+        size={16}
+        style={{ color: "rgba(255,255,255,0.92)", position: "relative" }}
+      />
+    </div>
   );
 }
 
-/* ---- Testimonials ---- */
-export function Testimonials() {
+/** Real circular headshot for a testimonial. Rendered as a background image
+ *  layered over the gradient placeholder, so a missing file degrades to the
+ *  placeholder gracefully (no broken-image icon) — static export, no JS. */
+function AvatarPhoto({ src, name }: { src: string; name: string }) {
+  return (
+    <div
+      role="img"
+      aria-label={`${name.split(",")[0]}, beta member`}
+      style={{
+        width: 52,
+        height: 52,
+        borderRadius: "50%",
+        flexShrink: 0,
+        boxShadow: "var(--shadow-1)",
+        backgroundColor: "var(--gold-200, #EAD9B8)",
+        backgroundImage: `url("${src}"), linear-gradient(150deg,#EAD9B8,#C9986A)`,
+        backgroundSize: "cover, cover",
+        backgroundPosition: "center, center",
+        backgroundRepeat: "no-repeat, no-repeat",
+      }}
+    />
+  );
+}
+
+function TestimonialCard({
+  name,
+  location,
+  quote,
+  photo,
+}: {
+  name: string;
+  location: string;
+  quote: string;
+  photo?: string;
+}) {
+  return (
+    <div style={{ ...proofCardBase, gap: 14 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        {photo ? <AvatarPhoto src={photo} name={name} /> : <AvatarPlaceholder />}
+        <div style={{ lineHeight: 1.35 }}>
+          <div
+            style={{ fontWeight: 600, color: "var(--text-strong)", fontSize: "var(--text-base)" }}
+          >
+            {name}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 5,
+              fontSize: "var(--text-sm)",
+              color: "var(--text-muted)",
+              marginTop: 2,
+            }}
+          >
+            <Icon name="map-pin" size={13} /> {location}
+          </div>
+        </div>
+      </div>
+      <p
+        style={{
+          fontSize: "var(--text-base)",
+          color: "var(--text-body)",
+          lineHeight: 1.55,
+          margin: 0,
+          flex: 1,
+        }}
+      >
+        &ldquo;{quote}&rdquo;
+      </p>
+      <div>
+        <Badge tone="neutral">Beta member</Badge>
+      </div>
+    </div>
+  );
+}
+
+/* ---- Proof: beta-member testimonials, one auto-scrolling strip ---- */
+export function Proof() {
+  // Beta-member testimonials (with photo placeholders), duplicated once so the
+  // horizontal marquee loops seamlessly.
+  const track = [...TESTIMONIALS_SHORT, ...TESTIMONIALS_SHORT];
+
   return (
     <section
-      data-screen-label="Testimonials"
-      style={{ padding: "88px var(--gutter)", background: "var(--bg-inset)" }}
+      data-screen-label="From beta access families"
+      style={{ padding: "88px 0", background: "var(--bg-inset)", overflow: "hidden" }}
     >
-      <div style={CONTAINER}>
-        <Eyebrow>From beta families</Eyebrow>
+      <div style={{ ...CONTAINER, padding: "0 var(--gutter)" }}>
+        <Eyebrow>From beta access families</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 8px" }}>
-          Real words from families using Niro today.
+          Real families. Real tasks. Real relief
         </h2>
         <p
           style={{
             fontSize: "var(--text-md)",
             color: "var(--text-body)",
             lineHeight: 1.6,
-            maxWidth: 620,
-            margin: "0 0 44px",
+            maxWidth: 640,
+            margin: "0 0 36px",
           }}
         >
-          They didn&apos;t lack people who could help. They lacked help they could rely on
-          — without asking a favour that can quietly backfire.
+          Niro launched in beta three months ago — here&apos;s what our early beta-access
+          members have got done through us.
         </p>
-        <div style={{ maxWidth: 640, margin: "0 auto 36px" }}>
-          <ParentVoiceCard
-            hinglish={PARENT_VOICE.hinglish}
-            translation={PARENT_VOICE.translation}
-            name={PARENT_VOICE.name}
-            relation={PARENT_VOICE.relation}
-          />
-        </div>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: 20,
-          }}
-        >
-          {TESTIMONIALS_SHORT.map((t) => (
-            <div key={t.name}>
-              <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}>
-                <Badge tone="neutral">Beta member</Badge>
-              </div>
-              <WhatsAppQuoteCard quote={t.quote} name={t.name} location={t.location} />
-            </div>
+      </div>
+      <div className="marquee" aria-label="Beta family testimonials">
+        <div className="marquee-track">
+          {track.map((t, i) => (
+            <TestimonialCard
+              key={`t-${i}`}
+              name={t.name}
+              location={t.location}
+              quote={t.quote}
+              photo={t.photo}
+            />
           ))}
         </div>
       </div>
@@ -371,30 +421,3 @@ export function Testimonials() {
   );
 }
 
-/* ---- Pricing teaser ---- */
-export function Pricing() {
-  return (
-    <section
-      data-screen-label="Pricing"
-      style={{ padding: "88px var(--gutter)", background: "var(--bg-inset)" }}
-    >
-      <div style={CONTAINER}>
-        <Eyebrow>Membership</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>Simple pricing. Cancel anytime.</h2>
-        <p
-          style={{
-            fontSize: "var(--text-md)",
-            color: "var(--text-body)",
-            lineHeight: 1.6,
-            maxWidth: 620,
-            margin: "0 0 36px",
-          }}
-        >
-          Less than half the cost of one untrained live-in helper — for a vetted person who
-          handles everything, and emergencies that are always included. Start monthly.
-        </p>
-        <PricingCard />
-      </div>
-    </section>
-  );
-}

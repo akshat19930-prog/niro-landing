@@ -7,9 +7,7 @@ import {
   Mirror,
   HowItWorks,
   WhatWeHandle,
-  UserStories,
-  Testimonials,
-  Pricing,
+  Proof,
 } from "@/components/sections/StaticSections";
 import { JoinFlow } from "@/components/sections/JoinFlow";
 import { Faq } from "@/components/sections/Faq";
@@ -23,27 +21,16 @@ export default function Page() {
         <Hero />
         <Mirror />
         <HowItWorks />
+        {/* Proof sits right after the mechanism — it answers "does this really
+            work?" at peak skepticism, and is seen by far more visitors than
+            when it lived near the bottom. */}
+        <Proof />
         <WhatWeHandle />
         <EmergencyStory />
-        <UserStories />
-        <Testimonials />
         <JoinFlow />
-        <Pricing />
         <Faq />
       </main>
 
-      {/* One-line reassurance strip above the footer. */}
-      <div
-        style={{
-          background: "var(--forest-950)",
-          padding: "16px var(--gutter)",
-          textAlign: "center",
-        }}
-      >
-        <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.6)" }}>
-          Associates on the ground across India · Serving families in the US &amp; UAE.
-        </span>
-      </div>
       <Footer />
 
       <StickyCta />

@@ -1,8 +1,7 @@
 import { Button } from "@/components/ds/Button";
-import { TrustBar } from "@/components/ds/TrustBar";
-import { PhotoPlaceholder } from "@/components/ds/PhotoPlaceholder";
+import { ChatVideo } from "@/components/ds/ChatVideo";
+import { HERO_QUOTE } from "@/lib/content";
 import { HeroCopy } from "./HeroCopy";
-import { TRUST_ITEMS } from "@/lib/content";
 
 /** Hero — two-column, stacks under ~680px via auto-fit. Copy is ad-matched
  *  (client HeroCopy); everything else is static. Single CTA to #join. */
@@ -39,33 +38,76 @@ export function Hero() {
       >
         <div>
           <HeroCopy />
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 14,
-              alignItems: "center",
-              marginBottom: 40,
-            }}
-          >
-            <Button href="#join" size="lg">
-              Join the waitlist
-            </Button>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
+              <Button href="#join" size="lg">
+                Join the waitlist
+              </Button>
+            </div>
+            {/* Price anchor + reward + no-card reassurance — the reasons a cold
+                visitor spends an email. */}
+            <div
+              style={{
+                fontSize: "var(--text-sm)",
+                fontWeight: 600,
+                color: "var(--brand)",
+              }}
+            >
+              Membership starts at $55/mo. First task free. Join the waitlist without a card.
+            </div>
+            {/* One genuine pull-quote — early social proof before the product
+                detail, without asking the full testimonial section to work up
+                here (and without a fabricated stat). */}
+            <div
+              style={{
+                display: "flex",
+                gap: 12,
+                alignItems: "center",
+                marginTop: 6,
+                maxWidth: 440,
+              }}
+            >
+              <div
+                role="img"
+                aria-label={`${HERO_QUOTE.name.split(",")[0]}, beta member`}
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: "50%",
+                  flexShrink: 0,
+                  backgroundColor: "var(--gold-200, #EAD9B8)",
+                  backgroundImage: `url("${HERO_QUOTE.photo}"), linear-gradient(150deg,#EAD9B8,#C9986A)`,
+                  backgroundSize: "cover, cover",
+                  backgroundPosition: "center, center",
+                  backgroundRepeat: "no-repeat, no-repeat",
+                  boxShadow: "var(--shadow-1)",
+                }}
+              />
+              <div style={{ lineHeight: 1.4 }}>
+                <div
+                  style={{
+                    fontSize: "var(--text-sm)",
+                    color: "var(--text-body)",
+                    fontStyle: "italic",
+                  }}
+                >
+                  &ldquo;{HERO_QUOTE.quote}&rdquo;
+                </div>
+                <div
+                  style={{
+                    fontSize: "var(--text-xs)",
+                    color: "var(--text-muted)",
+                    marginTop: 2,
+                  }}
+                >
+                  {HERO_QUOTE.name} · {HERO_QUOTE.location}
+                </div>
+              </div>
+            </div>
           </div>
-          <TrustBar items={TRUST_ITEMS} />
         </div>
-        <div>
-          <PhotoPlaceholder caption="Father reading the newspaper on a balcony, warm morning light, Tier-2 home" />
-          <p
-            style={{
-              fontSize: "var(--text-xs)",
-              color: "var(--text-muted)",
-              marginTop: 10,
-            }}
-          >
-            Art direction: unstaged domestic warmth, honest interiors — no stock-photo
-            gloss.
-          </p>
+        <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
+          <ChatVideo />
         </div>
       </div>
     </section>

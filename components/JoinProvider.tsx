@@ -1,27 +1,34 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { captureUtm } from "@/lib/analytics";
+import { captureUtm, assignArm, type PricingArm } from "@/lib/analytics";
 
-export type Step = "form" | "tasks" | "done";
+export type Step = "form" | "tasks" | "plan" | "done";
 
 type JoinCtx = {
   step: Step;
   setStep: (s: Step) => void;
+  /** Pricing-experiment cell for this visitor (see assignArm). */
+  arm: PricingArm;
 };
 
 const Ctx = createContext<JoinCtx | null>(null);
 
-/** Shares the join-flow step across the page (join section + sticky CTA) and
- *  captures UTM attribution once on first load. */
+/** Shares the join-flow step across the page (join section + sticky CTA),
+ *  captures UTM attribution, and assigns the pricing-experiment arm once on
+ *  first load. */
 export function JoinProvider({ children }: { children: React.ReactNode }) {
   const [step, setStep] = useState<Step>("form");
+  // "A" until the client effect assigns the real arm; the plan step (where the
+  // arm matters) is only reached after user interaction, well after this runs.
+  const [arm, setArm] = useState<PricingArm>("A");
 
   useEffect(() => {
     captureUtm();
+    setArm(assignArm());
   }, []);
 
-  return <Ctx.Provider value={{ step, setStep }}>{children}</Ctx.Provider>;
+  return <Ctx.Provider value={{ step, setStep, arm }}>{children}</Ctx.Provider>;
 }
 
 export function useJoin(): JoinCtx {
