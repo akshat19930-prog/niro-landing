@@ -28,18 +28,6 @@ export default function Page() {
         <Faq />
       </main>
 
-      {/* One-line reassurance strip above the footer. */}
-      <div
-        style={{
-          background: "var(--forest-950)",
-          padding: "16px var(--gutter)",
-          textAlign: "center",
-        }}
-      >
-        <span style={{ fontSize: "var(--text-xs)", color: "rgba(255,255,255,0.6)" }}>
-          Associates on the ground across India · Serving families in the US &amp; UAE.
-        </span>
-      </div>
       <Footer />
 
       <StickyCta />
