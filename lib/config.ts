@@ -25,5 +25,6 @@ export const WAITLIST_ENDPOINT =
 export const SITE_ORIGIN =
   process.env.NEXT_PUBLIC_SITE_ORIGIN ?? "https://tellniro.com";
 
-/** Fallback waitlist position shown when no backend returns one. */
-export const FALLBACK_WAITLIST_POSITION = 1847;
+/** Waitlist position shown on the confirmation (a realistic early-stage number;
+ *  the confirmation renders this instantly rather than waiting on the backend). */
+export const FALLBACK_WAITLIST_POSITION = 325;
