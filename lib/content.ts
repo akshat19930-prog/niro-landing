@@ -304,11 +304,11 @@ export const TESTIMONIALS_SHORT: {
     photo: "/people/abhishek.jpg",
   },
   {
-    name: "Pavas, 38",
+    name: "Nikita, 38",
     location: "Dubai, UAE ↔ Noida, India",
     quote:
       "Mom lives alone, and I wanted her to be able to visit — but the passport and visa process isn't something she can do alone, and asking my cousin for the same favour again and again felt awkward. Niro handled the whole thing and even accompanied her on the appointment date. Can't wait to see her here in September!",
-    photo: "/people/pavas.jpg",
+    photo: "/people/nikita.jpg",
   },
 ];
 
