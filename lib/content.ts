@@ -260,6 +260,7 @@ export const TESTIMONIALS_SHORT: {
     location: "Dallas, US ↔ Patiala, India",
     quote:
       "I automated Papa's quarterly blood tests and finally recovered my stuck EPFO money. When the maid absconded, Papa had a verified replacement in minutes — he's even set up birthday reminders for his whole circle. He's loving it!",
+    photo: "/people/sudiksha.jpg",
   },
   {
     name: "Kartik, 34",
@@ -272,6 +273,7 @@ export const TESTIMONIALS_SHORT: {
     location: "New York, US ↔ Lucknow, India",
     quote:
       "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now — and I worry far less about the cyber-fraud that targets senior citizens.",
+    photo: "/people/mayank.jpg",
   },
   {
     name: "Vaibhav, 32",
