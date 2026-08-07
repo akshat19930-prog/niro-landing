@@ -226,7 +226,7 @@ export function EmergencyStory() {
           >
             <WhatsAppShowcase
               title="Niro <> Ankit Family"
-              status="Ankit, Priya, Kunal"
+              status="Ankit, Priya, Kunal, Papa, Amma"
               messages={NIGHT_MESSAGES}
             />
           </div>
