@@ -147,6 +147,24 @@ export function HowItWorks() {
               </div>
             ))}
           </div>
+          {/* Membership + reassurance, moved here from the hero. */}
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              marginTop: 36,
+              padding: "12px 16px",
+              borderRadius: "var(--radius-pill)",
+              background: "var(--brand-soft)",
+              color: "var(--brand)",
+              fontSize: "var(--text-sm)",
+              fontWeight: 600,
+            }}
+          >
+            <Icon name="check-circle" size={16} />
+            Membership from $55/mo · cancel anytime · free to join the waitlist
+          </div>
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
           <WhatsAppShowcase

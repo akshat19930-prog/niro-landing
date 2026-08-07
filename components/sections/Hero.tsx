@@ -1,7 +1,6 @@
 import { Button } from "@/components/ds/Button";
 import { ChatVideo } from "@/components/ds/ChatVideo";
-import { TrustBar } from "@/components/ds/TrustBar";
-import { TRUST_ITEMS, HERO_QUOTE } from "@/lib/content";
+import { HERO_QUOTE } from "@/lib/content";
 import { HeroCopy } from "./HeroCopy";
 
 /** Hero — two-column, stacks under ~680px via auto-fit. Copy is ad-matched
@@ -45,8 +44,7 @@ export function Hero() {
                 Join the waitlist
               </Button>
             </div>
-            {/* Reward for clicking + reassurance + price anchor — the three
-                things a cold visitor needs before they'll spend an email. */}
+            {/* Reward for clicking — the reason a cold visitor spends an email. */}
             <div
               style={{
                 fontSize: "var(--text-sm)",
@@ -54,10 +52,7 @@ export function Hero() {
                 color: "var(--brand)",
               }}
             >
-              Your first task is on us — no card to join.
-            </div>
-            <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
-              Membership from $55/mo · cancel anytime · 20-second signup
+              First task free — join the waitlist without paying.
             </div>
             {/* One genuine pull-quote — early social proof before the product
                 detail, without asking the full testimonial section to work up
@@ -113,18 +108,6 @@ export function Hero() {
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
           <ChatVideo />
         </div>
-      </div>
-
-      {/* Trust strip — first proof a cold, ad-sourced visitor sees, right under
-          the hero. Legible even if the page is screenshotted from an ad. */}
-      <div
-        style={{
-          maxWidth: "var(--container)",
-          margin: "40px auto 0",
-          position: "relative",
-        }}
-      >
-        <TrustBar items={TRUST_ITEMS} />
       </div>
     </section>
   );
