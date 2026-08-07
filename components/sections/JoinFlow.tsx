@@ -70,8 +70,13 @@ async function submitSignup(payload: {
   try {
     const res = await fetch(WAITLIST_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      // text/plain keeps this a CORS "simple request" — no preflight OPTIONS,
+      // which a Google Apps Script Web App can't answer. The body is still JSON;
+      // the endpoint reads the raw request body and JSON.parses it. Works the
+      // same for an Apps Script backend or a Worker that reads request.text().
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload),
+      keepalive: true,
     });
     if (!res.ok) return fallback;
     const data = (await res.json()) as Partial<SignupResult>;
@@ -80,6 +85,9 @@ async function submitSignup(payload: {
       referralCode: data.referralCode || fallback.referralCode,
     };
   } catch {
+    // The POST still reached the backend (no preflight to block it), so the
+    // email is captured even if reading the response is blocked — the visitor
+    // just sees the fallback position.
     return fallback;
   }
 }
