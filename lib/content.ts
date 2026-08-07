@@ -16,25 +16,25 @@ export const HERO_VARIANTS: Record<"1" | "2" | "3" | "4", HeroVariant> = {
   // v1 — Sole Responder / peace-of-mind (emergency-fear register).
   "1": {
     tag: "Peace of mind",
-    h: "Their health, watched over — even from here.",
+    h: "Their health, watched over — even from here",
     s: "A named person handles the doctor visits, the hospital runs, and the emergencies you can't fly home for — so from anywhere, you know someone's in the room.",
   },
   // v2 — Remote Administrator / off-your-plate (parents' errands & bills).
   "2": {
     tag: "Off your plate",
-    h: "The bills, the paperwork, the mental load — off your plate.",
+    h: "The bills, the paperwork, the mental load — off your plate",
     s: "Niro's associates chase the electricity board, the passport office, and the property tax, so your calls home can just be calls home.",
   },
   // v3 — Your OWN India admin wedge (no crisis, no parental adoption needed).
   "3": {
     tag: "Your India, sorted",
-    h: "Your EPF, your flat, your India paperwork — finally handled.",
+    h: "Your EPF, your flat, your India paperwork — finally handled",
     s: "The stuck PF, the dormant account, the tenant, the OCI renewal — a real person in India does the running around, so you don't lose another weekend to it.",
   },
   // v4 — Default / "home manager" ROI + task-offload framing (no eyebrow).
   "4": {
     tag: "",
-    h: "Your family's 24/7 India home manager.",
+    h: "Your family's 24/7 India home manager",
     s: "A home manager for NRI families: bills, chores, repairs, and government paperwork — taken off your plate, and your parents'.",
   },
 };

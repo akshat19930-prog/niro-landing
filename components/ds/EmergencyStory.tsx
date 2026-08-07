@@ -75,7 +75,7 @@ export function EmergencyStory() {
             2:47 AM promise
           </div>
           <h2 style={{ fontSize: "var(--text-3xl)", color: "#fff", margin: "16px 0 14px" }}>
-            Emergencies don&apos;t check the time zone.
+            Emergencies don&apos;t check the time zone
           </h2>
           <p
             style={{

@@ -30,7 +30,7 @@ export function Mirror() {
       <div style={CONTAINER}>
         <Eyebrow>Sound familiar</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 40px", maxWidth: 680 }}>
-          Your India to-do list is hard enough. Parents just don&apos;t tell you about theirs.
+          Your India to-do list is hard enough. Parents just don&apos;t tell you about theirs
         </h2>
         <div
           style={{
@@ -99,7 +99,7 @@ export function HowItWorks() {
         <div>
           <Eyebrow>How it works</Eyebrow>
           <h2 style={{ ...h2Style, margin: "16px 0 8px" }}>
-            Niro is your 24/7 house manager, concierge &amp; your presence in India.
+            Niro is your 24/7 house manager, concierge &amp; your presence in India
           </h2>
           <div
             style={{
@@ -170,7 +170,7 @@ export function WhatWeHandle() {
         <Eyebrow>What we handle</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 44px", maxWidth: 760 }}>
           Everything that&apos;s hard — or that your family doesn&apos;t like spending time
-          doing.
+          doing
         </h2>
         <div
           style={{
@@ -363,7 +363,7 @@ export function Proof() {
       <div style={{ ...CONTAINER, padding: "0 var(--gutter)" }}>
         <Eyebrow>From beta families</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 8px" }}>
-          Real families. Real tasks. Real relief.
+          Real families. Real tasks. Real relief
         </h2>
         <p
           style={{
@@ -403,7 +403,7 @@ export function Pricing() {
     >
       <div style={CONTAINER}>
         <Eyebrow>Membership</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>Simple pricing. Cancel anytime.</h2>
+        <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>Simple pricing. Cancel anytime</h2>
         <p
           style={{
             fontSize: "var(--text-md)",
