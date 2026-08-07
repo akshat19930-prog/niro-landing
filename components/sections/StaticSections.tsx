@@ -369,12 +369,12 @@ export function Proof() {
             fontSize: "var(--text-md)",
             color: "var(--text-body)",
             lineHeight: 1.6,
-            maxWidth: 620,
+            maxWidth: 640,
             margin: "0 0 36px",
           }}
         >
-          They didn&apos;t lack people who could help. They lacked help they could rely on
-          — without asking a favour that can quietly backfire.
+          Niro launched in beta three months ago — here&apos;s what our early beta-access
+          members have got done through us.
         </p>
       </div>
       <div className="marquee" aria-label="Beta family testimonials">

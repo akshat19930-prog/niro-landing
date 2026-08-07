@@ -250,46 +250,40 @@ export const PARENT_VOICE = {
  */
 export const TESTIMONIALS_SHORT: { name: string; location: string; quote: string }[] = [
   {
-    // Guilt-carrier / remote-admin blend — stopped being the 2am help-desk.
     name: "Sudiksha, 31",
-    location: "London, UK ↔ Patiala, India",
+    location: "Dallas, US ↔ Patiala, India",
     quote:
-      "I'd stopped being the family help-desk at 2am London time. Niro sorted Papa's pension paperwork and now drops by every fortnight — Mummy says the house finally feels looked after.",
+      "I automated Papa's quarterly blood tests and finally recovered my stuck EPFO money. When the maid absconded, Papa had a verified replacement in minutes — he's even set up birthday reminders for his whole circle. He's loving it!",
   },
   {
-    // Remote Administrator — the NRI's own India admin, off the plate.
     name: "Kartik, 34",
     location: "Seattle, US ↔ Nagpur, India",
     quote:
-      "My India admin used to eat a full weekend every quarter — EPF, the tenant, property tax. Now it's one message. And my parents get a real person who shows up, not another portal.",
+      "I'd been dreading some document-attestation work for my PR. Niro got it done in a breeze — no time-zone battles, no losing my mind.",
   },
   {
-    // Remote Administrator + scam phobia across a property portfolio.
     name: "Harshit, 36",
-    location: "Jakarta, Indonesia ↔ Lucknow, India",
+    location: "New York, US ↔ Lucknow, India",
     quote:
-      "We have property across two cities and I'd lie awake about a scam call reaching Dad. Niro watches the bills, flags the dodgy calls, and closes every task with a photo. That fear is just gone.",
+      "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now — and I worry far less about the cyber-fraud that targets senior citizens.",
   },
   {
-    // Sole Responder — H1B, father's heart scare, emergency cover.
-    name: "Ankush, 32",
+    name: "Ankur, 32",
     location: "San Francisco, US ↔ Patiala, India",
     quote:
-      "On an H1B I can't just fly home. After Papa's heart scare, knowing there's a named person who'll be at the hospital before I've even booked a flight — that's the only reason I sleep.",
+      "On an H1B, I can't just fly home. After Papa's heart scare, knowing there's a named person who'll be at the hospital — with full context, acting on our behalf — is what lets me sleep.",
   },
   {
-    // Sole Responder — continuity, stopped flying for a single appointment.
     name: "Dhruva, 43",
     location: "Dubai, UAE ↔ Gwalior, India",
     quote:
-      "I was flying home every few months just to take Dad to one appointment. Now the same associate takes him and sends me the doctor's notes — and Dad actually looks forward to the visits.",
+      "They recovered ₹4L of my EPFO that had been stuck for eight years — I'd completely given up on it. And Mom now gets at-home massages on a fortnightly rhythm I set up once.",
   },
   {
-    // Caregiver-in-Chief — companionship, reliability, paid-vs-favour.
-    name: "Paridhi, 38",
+    name: "Niharika, 38",
     location: "Dubai, UAE ↔ Noida, India",
     quote:
-      "I was running a helper rota from Dubai and checking in ten times a day. A service I can rely on beats a favour from relatives who mean well and forget. Now someone sits with Mumma, and Papa's anxiety is so much better.",
+      "Mom lives alone, and I wanted her to be able to visit — but the passport and visa process isn't something she can do alone, and asking my cousin for the same favour again and again felt awkward. Niro handled the whole thing and even accompanied her on the appointment date. Can't wait to see her here in September!",
   },
 ];
 
