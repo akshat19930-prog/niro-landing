@@ -403,7 +403,7 @@ export function Pricing() {
     >
       <div style={CONTAINER}>
         <Eyebrow>Membership</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>Simple pricing. Cancel anytime</h2>
+        <h2 style={{ ...h2Style, margin: "16px 0 10px" }}>Monthly pricing, cancel anytime</h2>
         <p
           style={{
             fontSize: "var(--text-md)",
@@ -413,8 +413,8 @@ export function Pricing() {
             margin: "0 0 36px",
           }}
         >
-          Less than half the cost of one untrained live-in helper — for a vetted person who
-          handles everything, and emergencies that are always included. Start monthly.
+          Convenience and peace for you and your family. Less than half the cost of a
+          full-time butler.
         </p>
         <PricingCard />
       </div>

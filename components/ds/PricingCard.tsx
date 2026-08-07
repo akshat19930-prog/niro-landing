@@ -6,50 +6,55 @@ type Plan = {
   price: string;
   per: string;
   sub: string;
+  lead?: string;
   features: string[];
   highlight: boolean;
+  badge?: string;
 };
 
 const plans: Plan[] = [
   {
-    id: "monthly",
-    name: "Monthly",
-    price: "$69",
+    id: "lite",
+    name: "Niro Lite",
+    price: "$55",
     per: "/month",
-    sub: "Cancel anytime. No lock-in.",
+    sub: "The essentials, covered",
     features: [
-      "Unlimited everyday tasks",
-      "One dedicated associate",
-      "Voice-note updates",
-      "Every task closed with proof",
+      "Family WhatsApp group for tasks",
+      "8 tasks included",
+      "Emergency response — ambulance partner + 24/7 remote coordination",
     ],
     highlight: false,
   },
   {
-    id: "annual",
-    name: "Annual",
-    price: "$590",
-    per: "/year",
-    sub: "Two months on us — $49/mo.",
+    id: "prime",
+    name: "Niro Prime",
+    price: "$99",
+    per: "/month",
+    sub: "Your family, fully covered",
+    lead: "Everything in Lite, plus",
     features: [
-      "Everything in Monthly",
-      "Priority on emergencies",
-      "Quarterly parent well-being call",
-      "Locked price for life",
+      "Unlimited tasks",
+      "Emergency response — our own person at the hospital, admission handled",
+      "Fortnightly proactive check-in calls",
+      "Cyber-fraud cover — insurance up to ₹20L, monitoring & education",
+      "$10/mo wellness credits — tests, physio & more",
     ],
     highlight: true,
+    badge: "Most popular",
   },
 ];
 
-/** Monthly + annual side by side, annual highlighted, refund promise inline.
- *  CTAs anchor to #join (single conversion goal). */
+/** Niro Lite vs Niro Prime, monthly. Both CTAs go to the single #join flow;
+ *  risk-reversal is "first task free · cancel anytime" (no refund promise). */
 export function PricingCard({ href = "#join" }: { href?: string }) {
   return (
     <div
       style={{
         display: "grid",
         gap: 16,
-        gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+        alignItems: "start",
       }}
     >
       {plans.map((p) => (
@@ -67,7 +72,7 @@ export function PricingCard({ href = "#join" }: { href?: string }) {
             boxShadow: p.highlight ? "var(--shadow-brand)" : "var(--shadow-2)",
           }}
         >
-          {p.highlight && (
+          {p.badge && (
             <span
               style={{
                 position: "absolute",
@@ -83,7 +88,7 @@ export function PricingCard({ href = "#join" }: { href?: string }) {
                 borderRadius: 999,
               }}
             >
-              Best value
+              {p.badge}
             </span>
           )}
           <div
@@ -128,11 +133,24 @@ export function PricingCard({ href = "#join" }: { href?: string }) {
           >
             {p.sub}
           </div>
+
+          {p.lead && (
+            <div
+              style={{
+                marginTop: 20,
+                fontSize: "var(--text-sm)",
+                fontWeight: 600,
+                color: p.highlight ? "rgba(255,255,255,0.92)" : "var(--text-strong)",
+              }}
+            >
+              {p.lead}
+            </div>
+          )}
           <ul
             style={{
               listStyle: "none",
               padding: 0,
-              margin: "20px 0",
+              margin: p.lead ? "10px 0 20px" : "20px 0",
               display: "flex",
               flexDirection: "column",
               gap: 11,
@@ -153,6 +171,7 @@ export function PricingCard({ href = "#join" }: { href?: string }) {
                   size={18}
                   style={{
                     marginTop: 1,
+                    flexShrink: 0,
                     color: p.highlight ? "var(--gold-300)" : "var(--brand)",
                   }}
                 />
@@ -168,8 +187,7 @@ export function PricingCard({ href = "#join" }: { href?: string }) {
             href={href}
             className={`price-cta ${p.highlight ? "price-cta-hl" : "price-cta-plain"}`}
           >
-            Reserve at {p.price}
-            {p.per}
+            Join the waitlist
           </a>
           <div
             style={{
@@ -182,8 +200,8 @@ export function PricingCard({ href = "#join" }: { href?: string }) {
               color: p.highlight ? "rgba(255,255,255,0.72)" : "var(--text-muted)",
             }}
           >
-            <Icon name="shield-check" size={14} />
-            30-day full refund. No questions, ever.
+            <Icon name="check-circle" size={14} />
+            First task free · cancel anytime
           </div>
         </div>
       ))}
