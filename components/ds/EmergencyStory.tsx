@@ -25,22 +25,35 @@ const NIGHT_MESSAGES: ChatMessage[] = [
     sender: "Niro",
     badge: "assoc: Priya",
     type: "text",
-    text: "I've got this. Ambulance dispatched to the flat — ETA 9 minutes. I'm on the line with them now.",
-    time: "2:49 AM",
+    text: "We talked on call, Ankush. Papa is having chest discomfort, and the ambulance is dispatched — should reach in ~10 mins. Taking them to Apollo, as you recommended.",
+    time: "2:47 AM",
   },
-  {
-    from: "you",
-    type: "text",
-    text: "I'm 12,000 km away and shaking. Please.",
-    time: "2:50 AM",
-  },
-  { from: "leo", sender: "Niro", type: "voice", dur: "0:18", played: 0.6, time: "2:51 AM" },
   {
     from: "leo",
     sender: "Niro",
     type: "text",
-    text: "He's in the car. I'm with him. Breathe — you don't have to do this alone tonight.",
-    time: "3:04 AM",
+    text: "Our associate Kunal will be at the hospital to handle everything and support Amma. Sharing his details here.",
+    time: "2:48 AM",
+  },
+  {
+    from: "you",
+    type: "text",
+    text: "Keep me posted here pls — you have all the documents?",
+    time: "2:49 AM",
+  },
+  {
+    from: "leo",
+    sender: "Niro",
+    type: "text",
+    text: "All sorted — I'll fetch them from your app's vault, as you permitted.",
+    time: "2:50 AM",
+  },
+  {
+    from: "leo",
+    sender: "Niro",
+    type: "text",
+    text: "Ambulance's reached. I've intimated your family doctor too. Talk soon 🙏",
+    time: "2:58 AM",
   },
 ];
 
@@ -209,9 +222,9 @@ export function EmergencyStory() {
           <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
             <WhatsAppShowcase
               dark
-              status="online · 2:51 AM"
+              title="Niro <> Ankush Family"
+              status="You, Priya, Kunal"
               messages={NIGHT_MESSAGES}
-              caption="An actual night. Shared with the family's permission."
             />
           </div>
         </div>
