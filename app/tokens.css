@@ -182,6 +182,45 @@
   color-scheme: dark;
 }
 
+/* Explicit light reset — lets a subtree force the light palette even inside a
+   dark section (e.g. the emergency WhatsApp card within the 2:47 AM story). */
+[data-theme="light"] {
+  --bg-page: var(--ivory);
+  --bg-inset: var(--sand-100);
+  --surface-card: #ffffff;
+  --surface-raised: var(--sand-50);
+  --surface-brand: var(--forest-700);
+
+  --text-strong: var(--ink-900);
+  --text-body: var(--ink-700);
+  --text-muted: var(--ink-400);
+  --text-on-brand: var(--ivory);
+  --text-on-accent: var(--forest-950);
+
+  --brand: var(--forest-700);
+  --brand-hover: var(--forest-800);
+  --brand-press: var(--forest-900);
+  --brand-soft: var(--forest-100);
+  --accent: var(--gold-500);
+  --accent-strong: var(--gold-600);
+  --accent-soft: var(--gold-100);
+
+  --border: rgba(25, 26, 22, 0.12);
+  --border-strong: rgba(25, 26, 22, 0.22);
+  --ring: rgba(30, 69, 54, 0.35);
+
+  --wa-bg: #e9e2d3;
+  --wa-in: #ffffff;
+  --wa-out: #ddead0;
+
+  --shadow-1: 0 1px 2px rgba(25, 26, 22, 0.06), 0 1px 3px rgba(25, 26, 22, 0.05);
+  --shadow-2: 0 2px 6px rgba(25, 26, 22, 0.06), 0 8px 20px rgba(25, 26, 22, 0.07);
+  --shadow-3: 0 6px 14px rgba(25, 26, 22, 0.08), 0 20px 44px rgba(25, 26, 22, 0.1);
+  --shadow-brand: 0 10px 30px rgba(30, 69, 54, 0.22);
+
+  color-scheme: light;
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root {
     --dur-fast: 0ms;

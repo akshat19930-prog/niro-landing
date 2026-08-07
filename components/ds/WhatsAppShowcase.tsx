@@ -65,7 +65,7 @@ function Bubble({ m, dark }: { m: ChatMessage; dark?: boolean }) {
         position: "relative",
       }}
     >
-      {!out && m.sender && (
+      {m.sender && (
         <div
           style={{
             fontSize: 12.5,

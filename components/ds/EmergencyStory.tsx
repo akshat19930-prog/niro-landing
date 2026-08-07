@@ -25,7 +25,7 @@ const NIGHT_MESSAGES: ChatMessage[] = [
     sender: "Niro",
     badge: "assoc: Priya",
     type: "text",
-    text: "We talked on call, Ankush. Papa is having chest discomfort, and the ambulance is dispatched — should reach in ~10 mins. Taking them to Apollo, as you recommended.",
+    text: "We talked on call, Ankit. Papa is having chest discomfort, and the ambulance is dispatched — should reach in ~10 mins. Taking them to Apollo, as you recommended.",
     time: "2:47 AM",
   },
   {
@@ -37,6 +37,7 @@ const NIGHT_MESSAGES: ChatMessage[] = [
   },
   {
     from: "you",
+    sender: "Ankit",
     type: "text",
     text: "Keep me posted here pls — you have all the documents?",
     time: "2:49 AM",
@@ -219,11 +220,13 @@ export function EmergencyStory() {
               </li>
             ))}
           </ol>
-          <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
+          <div
+            data-theme="light"
+            style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}
+          >
             <WhatsAppShowcase
-              dark
-              title="Niro <> Ankush Family"
-              status="You, Priya, Kunal"
+              title="Niro <> Ankit Family"
+              status="Ankit, Priya, Kunal"
               messages={NIGHT_MESSAGES}
             />
           </div>
