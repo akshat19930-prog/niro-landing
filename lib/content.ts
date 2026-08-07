@@ -206,26 +206,6 @@ export const HANDLE_GROUPS: {
       },
     ],
   },
-  {
-    name: "Upgrade their lifestyle",
-    items: [
-      {
-        icon: "camera",
-        t: "Regular check-ins",
-        d: "Staying on top of anything at home that needs resolving.",
-      },
-      {
-        icon: "message-circle",
-        t: "Hassle-free living",
-        d: "A cab, a driver, a reliable at-home physio or massage — a WhatsApp text away.",
-      },
-      {
-        icon: "star",
-        t: "Privileges",
-        d: "Airport-lounge access and other perks they'll love, unlocked with membership.",
-      },
-    ],
-  },
 ];
 
 /* ---- User stories (illustrative figures — confirm before launch) ---- */
