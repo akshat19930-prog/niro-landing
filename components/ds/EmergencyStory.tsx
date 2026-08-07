@@ -32,7 +32,7 @@ const NIGHT_MESSAGES: ChatMessage[] = [
     from: "leo",
     sender: "Niro",
     type: "text",
-    text: "Our associate Kunal will be at the hospital to handle everything and support Amma. Sharing his details here.",
+    text: "Our associate Kunal will be at the hospital to handle everything and support Amma. Adding him on this group for now.",
     time: "2:48 AM",
   },
   {
