@@ -37,7 +37,9 @@ export function Nav({
           gap: 16,
         }}
       >
-        <Wordmark dark={dark} />
+        <a href="/" aria-label="Niro — home" style={{ display: "inline-flex" }}>
+          <Wordmark dark={dark} />
+        </a>
         <a href={href} className="nav-cta">
           {cta}
         </a>

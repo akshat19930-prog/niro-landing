@@ -317,6 +317,141 @@
   }
 }
 
+/* ---- Prose (legal / content pages) ---- */
+.prose {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px var(--gutter) 96px;
+}
+.prose h1 {
+  font-size: var(--text-2xl);
+  margin: 0 0 6px;
+}
+.prose .updated {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin: 0 0 32px;
+}
+.prose h2 {
+  font-size: var(--text-lg);
+  margin: 34px 0 8px;
+}
+.prose h3 {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-strong);
+  margin: 20px 0 6px;
+}
+.prose p,
+.prose li {
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--text-body);
+}
+.prose p {
+  margin: 0 0 14px;
+}
+.prose ul {
+  margin: 0 0 14px;
+  padding-left: 20px;
+}
+.prose li {
+  margin: 0 0 6px;
+}
+.prose a {
+  color: var(--brand);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose strong {
+  color: var(--text-strong);
+}
+/* A button rendered inside prose (e.g. the About CTA) must keep its own
+   colours — override the generic .prose a link styling. */
+.prose a.btn-primary {
+  color: var(--text-on-brand);
+  text-decoration: none;
+}
+.prose a.btn-primary:hover {
+  color: var(--text-on-brand);
+}
+.prose .note {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin: 0 0 24px;
+}
+
+/* ---- Founder cards (About page) ---- */
+.founder-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin: 16px 0 8px;
+}
+@media (max-width: 560px) {
+  .founder-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.founder-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 22px;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+}
+.founder-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-pill);
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.01em;
+}
+.founder-name {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--text-strong);
+  margin: 0;
+}
+.founder-role {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin: 0 0 2px !important;
+}
+.founder-bio {
+  font-size: var(--text-sm) !important;
+  line-height: 1.65 !important;
+  color: var(--text-body);
+  margin: 0 !important;
+}
+.founder-link {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--brand);
+  text-decoration: none !important;
+  margin-top: 2px;
+}
+.founder-link:hover {
+  color: var(--brand-hover);
+}
+
 /* ---- Auto side-scrolling proof strip (testimonials + case studies) ----
    Two identical halves; translateX(-50%) loops seamlessly. Pauses on hover;
    reduced-motion turns it into a normal horizontal scroll. */

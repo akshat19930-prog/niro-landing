@@ -6,9 +6,9 @@ import { Wordmark } from "./Wordmark";
  * Contact. Privacy/Terms/About are placeholders (#) until content is written.
  */
 const links: { label: string; href: string }[] = [
-  { label: "About", href: "#" },
-  { label: "Privacy", href: "#" },
-  { label: "Terms", href: "#" },
+  { label: "About", href: "/about/" },
+  { label: "Privacy", href: "/privacy/" },
+  { label: "Terms", href: "/terms/" },
   { label: "Contact", href: "mailto:hello@tellniro.com" },
 ];
 
