@@ -1,18 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ds/Button";
+import { JoinCta } from "@/components/ds/JoinCta";
 import { useJoin } from "@/components/JoinProvider";
 
 /**
- * Fixed bottom CTA for narrow viewports. Visibility is a CSS breakpoint
- * (≤640px) per the design-system note. It hides once the visitor has entered
- * the join flow (task picker / confirmation) — showing a "Join the waitlist"
- * bar while they're already mid-flow is redundant and would overlap the
- * flow's own Continue button.
+ * Fixed bottom CTA for narrow viewports (≤640px, via CSS). Opens the join
+ * modal. Hidden while the modal is open (it would sit behind the overlay) and
+ * once the visitor has joined.
  */
 export function StickyCta() {
-  const { step } = useJoin();
-  if (step !== "form") return null;
+  const { open, step } = useJoin();
+  if (open || step === "done") return null;
 
   return (
     <div
@@ -29,9 +27,7 @@ export function StickyCta() {
         zIndex: 60,
       }}
     >
-      <Button href="#join" full>
-        Join the waitlist
-      </Button>
+      <JoinCta className="btn btn-primary btn-md btn-full">Join the waitlist</JoinCta>
     </div>
   );
 }

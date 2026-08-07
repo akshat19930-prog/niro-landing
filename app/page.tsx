@@ -9,7 +9,7 @@ import {
   WhatWeHandle,
   Proof,
 } from "@/components/sections/StaticSections";
-import { JoinFlow } from "@/components/sections/JoinFlow";
+import { JoinModal } from "@/components/sections/JoinModal";
 import { Faq } from "@/components/sections/Faq";
 import { StickyCta } from "@/components/sections/StickyCta";
 
@@ -27,13 +27,13 @@ export default function Page() {
         <Proof />
         <WhatWeHandle />
         <EmergencyStory />
-        <JoinFlow />
         <Faq />
       </main>
 
       <Footer />
 
       <StickyCta />
+      <JoinModal />
     </JoinProvider>
   );
 }
