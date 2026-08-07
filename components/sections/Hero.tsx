@@ -1,7 +1,7 @@
 import { Button } from "@/components/ds/Button";
-import { WhatsAppShowcase } from "@/components/ds/WhatsAppShowcase";
+import { ChatVideo } from "@/components/ds/ChatVideo";
 import { TrustBar } from "@/components/ds/TrustBar";
-import { HERO_MESSAGES, TRUST_ITEMS, HERO_QUOTE } from "@/lib/content";
+import { TRUST_ITEMS, HERO_QUOTE } from "@/lib/content";
 import { HeroCopy } from "./HeroCopy";
 
 /** Hero — two-column, stacks under ~680px via auto-fit. Copy is ad-matched
@@ -111,7 +111,7 @@ export function Hero() {
           </div>
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
-          <WhatsAppShowcase messages={HERO_MESSAGES} />
+          <ChatVideo />
         </div>
       </div>
 
