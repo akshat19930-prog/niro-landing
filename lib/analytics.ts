@@ -65,9 +65,9 @@ export function getStoredUtm(): Utm {
 }
 
 /* =====================================================================
-   Pricing experiment — 2-arm test, 60/40 split.
-     A (60%): both SKUs shown side by side (Lite + Prime)
-     B (40%): a single $99 "Niro membership" SKU
+   Pricing experiment — 2-arm test, 50/50 split.
+     A (50%): both SKUs shown side by side (Lite + Prime)
+     B (50%): a single $99 "Niro membership" SKU
    The arm is assigned once and persisted in localStorage so a returning
    visitor always sees the same offer (a requirement for a clean pricing
    read). `?arm=a` / `?arm=b` overrides for QA. The arm rides along on every
@@ -77,7 +77,7 @@ export type PricingArm = "A" | "B";
 
 const ARM_STORAGE_KEY = "niro_pricing_arm";
 /** Share of traffic routed to arm A (both SKUs). Remainder goes to B. */
-const ARM_A_SHARE = 0.6;
+const ARM_A_SHARE = 0.5;
 
 function normalizeArm(v: string | null | undefined): PricingArm | null {
   if (!v) return null;
