@@ -14,7 +14,7 @@ export function TrustBar({
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(min(220px, 100%), 1fr))",
         gap: "var(--space-4)",
         padding: "var(--space-5)",
         background: dark ? "rgba(255,255,255,0.04)" : "var(--surface-card)",
