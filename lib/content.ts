@@ -135,7 +135,7 @@ export const HERO_MESSAGES: ChatMessage[] = [
   {
     from: "you",
     type: "text",
-    text: "Papa's electricity bill is overdue — can you sort it?",
+    text: "Papa's electricity bill shows massive overcharges — can you sort it out?",
     time: "9:02 AM",
   },
   {
@@ -143,10 +143,10 @@ export const HERO_MESSAGES: ChatMessage[] = [
     sender: "Niro",
     badge: "your associate: Priya",
     type: "text",
-    text: "Paid ₹2,340 just now — receipt's in the group. I've set up auto-pay so it won't lapse again. ✅",
-    time: "9:06 AM",
+    text: "Filed a dispute with the electricity board and got the meter re-checked — it was a faulty reading. Bill corrected from ₹19,600 to ₹2,150, excess adjusted to next month. ✅",
+    time: "4:48 PM",
   },
-  { from: "you", type: "text", text: "Perfect, thank you 🙏", time: "9:07 AM" },
+  { from: "you", type: "text", text: "Huge relief — thank you 🙏", time: "5:03 PM" },
 ];
 
 /* ---- What we handle ---- */
