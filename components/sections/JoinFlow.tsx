@@ -480,7 +480,7 @@ export function JoinFlow() {
                 gridTemplateColumns:
                   plans.length === 1
                     ? "1fr"
-                    : "repeat(auto-fit, minmax(220px, 1fr))",
+                    : "repeat(auto-fit, minmax(min(220px, 100%), 1fr))",
                 alignItems: "start",
               }}
             >

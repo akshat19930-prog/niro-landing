@@ -70,7 +70,7 @@ export function EmergencyStory() {
             padding: 0,
             display: "grid",
             gap: "var(--space-5)",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))",
           }}
         >
           {STEPS.map((step, i) => (

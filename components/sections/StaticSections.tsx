@@ -35,7 +35,7 @@ export function Mirror() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))",
             gap: 24,
           }}
         >
@@ -91,7 +91,7 @@ export function HowItWorks() {
         style={{
           ...CONTAINER,
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(380px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(380px, 100%), 1fr))",
           gap: 56,
           alignItems: "start",
         }}
@@ -175,7 +175,7 @@ export function WhatWeHandle() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))",
             gap: 40,
           }}
         >

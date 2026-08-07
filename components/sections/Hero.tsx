@@ -31,7 +31,7 @@ export function Hero() {
           margin: "0 auto",
           position: "relative",
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(340px, 100%), 1fr))",
           gap: 48,
           alignItems: "center",
         }}
