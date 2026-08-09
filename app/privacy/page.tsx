@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Niro",
+  title: "Privacy Policy - Niro",
   description:
     "How Niro (Destreza Eduventures Pvt Ltd) collects, uses, and protects your information.",
 };
@@ -30,21 +30,21 @@ export default function PrivacyPage() {
         <h2>What we collect</h2>
         <ul>
           <li>
-            <strong>Your email address</strong> — so we can contact you about early
+            <strong>Your email address</strong> - so we can contact you about early
             access.
           </li>
           <li>
-            <strong>What you tell us you need</strong> — the task categories you
+            <strong>What you tell us you need</strong> - the task categories you
             select and any plan preference, so we understand demand and can tailor
             our first conversation with you.
           </li>
           <li>
-            <strong>Campaign attribution</strong> — how you arrived (UTM tags,
+            <strong>Campaign attribution</strong> - how you arrived (UTM tags,
             referral code, and ad-click identifiers such as Meta&apos;s{" "}
             <em>fbclid</em>), so we can measure which messages resonate.
           </li>
           <li>
-            <strong>Basic device and usage data</strong> — collected automatically
+            <strong>Basic device and usage data</strong> - collected automatically
             through cookies and similar technologies (see below).
           </li>
         </ul>
@@ -82,8 +82,8 @@ export default function PrivacyPage() {
         <h2>Who we share it with</h2>
         <p>
           We do not sell your personal data. We share it only with service providers
-          who help us operate — for example, our website host, email tooling, and
-          Meta for advertising measurement — and only to the extent they need it.
+          who help us operate - for example, our website host, email tooling, and
+          Meta for advertising measurement - and only to the extent they need it.
           These providers may process data outside India; where they do, we take
           reasonable steps to ensure it remains protected. We may also disclose
           information if required by law.

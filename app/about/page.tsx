@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
 
 export const metadata: Metadata = {
-  title: "About Niro — Your family's own person in India",
+  title: "About Niro - Your family's own person in India",
   description:
     "Why we built Niro, and the team behind it. Operated by Destreza Eduventures Pvt Ltd.",
 };
@@ -27,7 +27,7 @@ const FOUNDERS: Founder[] = [
     name: "Paarth Dhar",
     monogram: "PD",
     role: "Co-founder",
-    bio: "12 years building consumer startups across fintech (VP, Growth at AngelOne) and ecommerce. Second-time founder — exited his first company to AngelOne.",
+    bio: "12 years building consumer startups across fintech (VP, Growth at AngelOne) and ecommerce. Second-time founder - exited his first company to AngelOne.",
     linkedin: "https://www.linkedin.com/in/paarthdhar/",
   },
 ];
@@ -43,7 +43,7 @@ export default function AboutPage() {
           behind. But distance has a quiet cost. The EPFO claim that never
           resolves. The plumber who needs someone to be home. The hospital visit
           you hear about only after it&apos;s over. Your parents don&apos;t call
-          because they don&apos;t want to worry you — so you carry a low hum of
+          because they don&apos;t want to worry you - so you carry a low hum of
           guilt instead.
         </p>
 
@@ -53,14 +53,14 @@ export default function AboutPage() {
           </strong>{" "}
           One membership gives your parents a named, capable associate for the
           errands, bills, appointments, and emergencies that are hard to manage
-          from another time zone — so you can be there, from anywhere. Not an app
+          from another time zone - so you can be there, from anywhere. Not an app
           that adds another thing to your list. A person who takes things off it.
         </p>
 
         <h2>Why we&apos;re building it</h2>
         <p>
           We&apos;ve spent our careers building consumer products that earn trust
-          with people&apos;s health and money — the two things families worry about
+          with people&apos;s health and money - the two things families worry about
           most. We kept meeting the same person: a successful professional abroad,
           quietly stretched thin managing a household 8,000 km away, with no one to
           hand it to. We built Niro for them, and for our own families.

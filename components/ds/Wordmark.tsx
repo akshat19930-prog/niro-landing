@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 
 /**
- * Niro wordmark — lowercase "niro" in the display serif, forest green, with a
+ * Niro wordmark - lowercase "niro" in the display serif, forest green, with a
  * burnished-gold teardrop in place of the dot on the "i" (matches the brand
  * logo). Reproduced as text + inline SVG so it stays crisp at any size and
  * recolours for the dark footer (ivory on dark, gold teardrop throughout).

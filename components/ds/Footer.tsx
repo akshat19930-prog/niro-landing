@@ -42,7 +42,7 @@ export function Footer() {
                 color: "#9AA79E",
               }}
             >
-              Niro: your presence in India — a go-getter home manager to get things
+              Niro: your presence in India - a go-getter home manager to get things
               done for you and your family.
             </p>
           </div>

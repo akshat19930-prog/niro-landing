@@ -5,7 +5,7 @@ import "./globals.css";
 
 /**
  * Fonts are self-hosted: next/font downloads the woff2 files at build time and
- * serves them from our own origin — no runtime Google Fonts request, best LCP
+ * serves them from our own origin - no runtime Google Fonts request, best LCP
  * on mobile. Each exposes a CSS variable that tokens.css maps to --font-*.
  */
 const newsreader = Newsreader({
@@ -24,11 +24,11 @@ const hanken = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Niro — Your family's own person in India",
+  title: "Niro - Your family's own person in India",
   description:
-    "One membership. A named associate for your parents' errands, bills, appointments, and emergencies — so you can be there, from anywhere.",
+    "One membership. A named associate for your parents' errands, bills, appointments, and emergencies - so you can be there, from anywhere.",
   openGraph: {
-    title: "Niro — Your family's own person in India",
+    title: "Niro - Your family's own person in India",
     description:
       "A named associate for errands, bills, appointments, and emergencies. Join the waitlist.",
     type: "website",

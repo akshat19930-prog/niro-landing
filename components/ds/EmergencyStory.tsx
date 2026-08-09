@@ -18,7 +18,7 @@ const STEPS: { title: string; text: string; icon: IconName }[] = [
   },
 ];
 
-/** Emergency-story section (dark) — the 2:47 AM promise, kept tight. */
+/** Emergency-story section (dark) - the 2:47 AM promise, kept tight. */
 export function EmergencyStory() {
   return (
     <section
@@ -58,7 +58,7 @@ export function EmergencyStory() {
               lineHeight: 1.6,
             }}
           >
-            You set the protocol up front — blood group, documents, hospital, doctor. The
+            You set the protocol up front - blood group, documents, hospital, doctor. The
             plan exists before it&apos;s needed, and we&apos;re on the ground the moment it
             is.
           </p>

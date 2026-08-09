@@ -169,7 +169,7 @@ export function WhatWeHandle() {
       <div style={CONTAINER}>
         <Eyebrow>What we handle</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 44px", maxWidth: 760 }}>
-          Everything that&apos;s hard — or that your family doesn&apos;t like spending time
+          Everything that&apos;s hard - or that your family doesn&apos;t like spending time
           doing
         </h2>
         <div
@@ -300,7 +300,7 @@ function AvatarPlaceholder() {
 
 /** Real circular headshot for a testimonial. Rendered as a background image
  *  layered over the gradient placeholder, so a missing file degrades to the
- *  placeholder gracefully (no broken-image icon) — static export, no JS. */
+ *  placeholder gracefully (no broken-image icon) - static export, no JS. */
 function AvatarPhoto({ src, name }: { src: string; name: string }) {
   return (
     <div
@@ -400,7 +400,7 @@ export function Proof() {
             margin: "0 0 36px",
           }}
         >
-          Niro launched in beta three months ago — here&apos;s what our early beta-access
+          Niro launched in beta three months ago - here&apos;s what our early beta-access
           members have got done through us.
         </p>
       </div>

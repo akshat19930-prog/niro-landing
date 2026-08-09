@@ -1,7 +1,7 @@
 /**
  * Runtime configuration, all via NEXT_PUBLIC_* env vars so the static export
  * can be rebuilt per environment without code changes. Every value is
- * optional — the page fully works in "smoke-test / no backend" mode, which is
+ * optional - the page fully works in "smoke-test / no backend" mode, which is
  * how it ships until the waitlist API and Meta assets are wired.
  */
 

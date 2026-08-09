@@ -3,7 +3,7 @@ import { JoinCta } from "@/components/ds/JoinCta";
 import { HERO_QUOTE } from "@/lib/content";
 import { HeroCopy } from "./HeroCopy";
 
-/** Hero — two-column, stacks under ~680px via auto-fit. Copy is ad-matched
+/** Hero - two-column, stacks under ~680px via auto-fit. Copy is ad-matched
  *  (client HeroCopy); everything else is static. Single CTA to #join. */
 export function Hero() {
   return (
@@ -42,7 +42,7 @@ export function Hero() {
             <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
               <JoinCta className="btn btn-primary btn-lg">Join the waitlist</JoinCta>
             </div>
-            {/* Price anchor + reward + no-card reassurance — the reasons a cold
+            {/* Price anchor + reward + no-card reassurance - the reasons a cold
                 visitor spends an email. */}
             <div
               style={{
@@ -53,7 +53,7 @@ export function Hero() {
             >
               Membership starts at $55/mo. First task free. Join the waitlist without a card.
             </div>
-            {/* One genuine pull-quote — early social proof before the product
+            {/* One genuine pull-quote - early social proof before the product
                 detail, without asking the full testimonial section to work up
                 here (and without a fabricated stat). */}
             <div

@@ -7,7 +7,7 @@ import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
 import { FAQ } from "@/lib/content";
 
-/** FAQ accordion — single panel open at a time; first item open by default. */
+/** FAQ accordion - single panel open at a time; first item open by default. */
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
