@@ -43,7 +43,6 @@ function doPost(e) {
     var eventId = String(data.eventId || "");
     var email = String(data.email || "").trim().toLowerCase();
     var utm = data.utm || {};
-    var interests = (data.alsoInterestedIds || []).join("|");
 
     var values = sheet.getDataRange().getValues();
     var rowIndex = -1; // 1-based sheet row
@@ -58,26 +57,28 @@ function doPost(e) {
 
     var referralCode;
     var position;
+    // Column indexes (1-based) matching HEADER.
+    var C_REFCODE = 13, C_POSITION = 14;
 
     if (rowIndex === -1) {
-      // New signup.
+      // New signup. Order must match HEADER.
       referralCode = slugFromEmail_(email);
       position = BASE_POSITION + Math.max(0, sheet.getLastRow()); // header = 1
       sheet.appendRow([
         new Date(), eventId, email, data.arm || "",
-        data.primaryTaskId || "", interests, data.planId || "",
+        data.pitch || "", data.ref || "", data.planId || "",
         utm.utm_source || "", utm.utm_medium || "", utm.utm_campaign || "",
         utm.utm_content || "", utm.fbclid || "", referralCode, position
       ]);
     } else {
       // Existing signup - enrich the row, keep its position/referralCode.
       var row = values[rowIndex - 1];
-      referralCode = row[12] || slugFromEmail_(email);
-      position = row[13] || (BASE_POSITION + rowIndex);
+      referralCode = row[C_REFCODE - 1] || slugFromEmail_(email);
+      position = row[C_POSITION - 1] || (BASE_POSITION + rowIndex);
       if (email) sheet.getRange(rowIndex, 3).setValue(email);
       if (data.arm) sheet.getRange(rowIndex, 4).setValue(data.arm);
-      if (data.primaryTaskId) sheet.getRange(rowIndex, 5).setValue(data.primaryTaskId);
-      if (data.alsoInterestedIds) sheet.getRange(rowIndex, 6).setValue(interests);
+      if (data.pitch) sheet.getRange(rowIndex, 5).setValue(data.pitch);
+      if (data.ref) sheet.getRange(rowIndex, 6).setValue(data.ref);
       if (data.planId) sheet.getRange(rowIndex, 7).setValue(data.planId);
     }
 
@@ -94,16 +95,22 @@ function doGet() {
 }
 
 // ---- Helpers ----------------------------------------------------------------
+var HEADER = [
+  "timestamp", "eventId", "email", "arm", "pitch", "ref",
+  "planId", "utm_source", "utm_medium", "utm_campaign", "utm_content",
+  "fbclid", "referralCode", "position"
+];
+
 function getSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) sheet = ss.insertSheet(SHEET_NAME);
+  // Always keep the header row in sync (migrates older sheets that predate the
+  // pitch/ref columns; trailing new columns just stay blank for old rows).
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow([
-      "timestamp", "eventId", "email", "arm", "primaryTaskId",
-      "alsoInterestedIds", "planId", "utm_source", "utm_medium",
-      "utm_campaign", "utm_content", "fbclid", "referralCode", "position"
-    ]);
+    sheet.appendRow(HEADER);
+  } else {
+    sheet.getRange(1, 1, 1, HEADER.length).setValues([HEADER]);
   }
   return sheet;
 }
