@@ -14,7 +14,7 @@ const UTM_KEYS = [
   "utm_campaign",
   "utm_content",
   "utm_term",
-  // Meta / Google ad click identifiers — pitch-cell attribution depends on these.
+  // Meta / Google ad click identifiers - pitch-cell attribution depends on these.
   "fbclid",
   "gclid",
 ] as const;
@@ -23,7 +23,7 @@ const UTM_STORAGE_KEY = "niro_utm";
 
 /**
  * Read attribution params from the current URL and persist them (first-touch
- * wins — the ad-matched landing param set that brought the visitor in). Call
+ * wins - the ad-matched landing param set that brought the visitor in). Call
  * once on mount. Returns the merged, persisted UTM map.
  */
 export function captureUtm(): Utm {
@@ -49,7 +49,7 @@ export function captureUtm(): Utm {
     try {
       sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(merged));
     } catch {
-      /* storage may be unavailable (private mode) — non-fatal */
+      /* storage may be unavailable (private mode) - non-fatal */
     }
   }
   return merged;
@@ -65,7 +65,7 @@ export function getStoredUtm(): Utm {
 }
 
 /* =====================================================================
-   Pricing experiment — 2-arm test, 50/50 split.
+   Pricing experiment - 2-arm test, 50/50 split.
      A (50%): both SKUs shown side by side (Lite + Prime)
      B (50%): a single $99 "Niro membership" SKU
    The arm is assigned once and persisted in localStorage so a returning
@@ -93,13 +93,13 @@ function normalizeArm(v: string | null | undefined): PricingArm | null {
 export function assignArm(): PricingArm {
   if (typeof window === "undefined") return "A";
 
-  // QA override — pin the arm (also persist it so navigation stays consistent).
+  // QA override - pin the arm (also persist it so navigation stays consistent).
   const override = normalizeArm(new URLSearchParams(window.location.search).get("arm"));
   if (override) {
     try {
       localStorage.setItem(ARM_STORAGE_KEY, override);
     } catch {
-      /* storage unavailable — non-fatal, arm still returned for this view */
+      /* storage unavailable - non-fatal, arm still returned for this view */
     }
     return override;
   }
@@ -116,7 +116,7 @@ export function assignArm(): PricingArm {
   try {
     localStorage.setItem(ARM_STORAGE_KEY, arm);
   } catch {
-    /* storage unavailable — visitor still gets an arm for this session */
+    /* storage unavailable - visitor still gets an arm for this session */
   }
   return arm;
 }

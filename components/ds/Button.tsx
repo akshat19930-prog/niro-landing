@@ -4,7 +4,7 @@ type Variant = "primary" | "secondary" | "quiet" | "accent";
 type Size = "sm" | "md" | "lg";
 
 /**
- * Niro Button — primary (forest), secondary (outline), quiet (text), accent
+ * Niro Button - primary (forest), secondary (outline), quiet (text), accent
  * (gold). Renders as <button> or, when `href` is given, as an <a> so CTAs can
  * smooth-scroll to #join with zero JS. Human labels only, never "Submit".
  */

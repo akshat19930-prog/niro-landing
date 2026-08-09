@@ -8,7 +8,7 @@ import { META_PIXEL_ID } from "@/lib/config";
  * so local/preview builds stay clean. Fires PageView on load; the Lead event
  * is fired from the join flow with an eventID for CAPI de-duplication.
  * The Conversion API (CAPI) itself is server-side and belongs on the waitlist
- * backend that receives the signup POST — see lib/config.ts.
+ * backend that receives the signup POST - see lib/config.ts.
  */
 export function MetaPixel() {
   if (!META_PIXEL_ID) return null;

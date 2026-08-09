@@ -1,6 +1,6 @@
 import type { CSSProperties, InputHTMLAttributes, ReactNode } from "react";
 
-/** Niro text field — warm, generous, calm focus ring (focus handled in CSS). */
+/** Niro text field - warm, generous, calm focus ring (focus handled in CSS). */
 export function Input({
   label,
   hint,

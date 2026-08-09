@@ -13,7 +13,7 @@ const tones: Record<Tone, CSSProperties> = {
   outline: { background: "transparent", border: "1px solid var(--border-strong)" },
 };
 
-/** Niro surface card — soft warm shadow, generous radius. Optional hover-lift. */
+/** Niro surface card - soft warm shadow, generous radius. Optional hover-lift. */
 export function Card({
   children,
   padded = true,

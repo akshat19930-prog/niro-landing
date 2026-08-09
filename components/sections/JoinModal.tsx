@@ -147,7 +147,7 @@ function PlanCard({ plan, selected, onSelect }: { plan: Plan; selected: boolean;
   );
 }
 
-/** The join modal — a focused interstitial (no page-scroll displacement). */
+/** The join modal - a focused interstitial (no page-scroll displacement). */
 export function JoinModal() {
   const { open, setOpen, step, setStep, arm } = useJoin();
 
@@ -165,7 +165,7 @@ export function JoinModal() {
     [result]
   );
   const waLink = useMemo(() => {
-    const text = `I found Niro — they handle my parents' errands, bills, and emergencies in India, over WhatsApp. Thought you'd want this too: ${referralUrl}`;
+    const text = `I found Niro - they handle my parents' errands, bills, and emergencies in India, over WhatsApp. Thought you'd want this too: ${referralUrl}`;
     return `https://wa.me/?text=${encodeURIComponent(text)}`;
   }, [referralUrl]);
 
@@ -180,7 +180,7 @@ export function JoinModal() {
     setError(undefined);
     const utm = getStoredUtm();
     track("Lead", { content_name: "waitlist_email", arm }, eventId);
-    // Show the confirmation number instantly and advance — do NOT block the UI
+    // Show the confirmation number instantly and advance - do NOT block the UI
     // on the Apps Script round-trip (302 redirect + cold start can take seconds).
     // The email is still captured; keepalive lets the POST finish in the
     // background even as the user moves through the flow.
@@ -226,7 +226,7 @@ export function JoinModal() {
             <Eyebrow>Step 1 of 2</Eyebrow>
             <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>Join the waitlist</h2>
             <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 24px" }}>
-              First task free — no card to join. Just your email to hold your family&apos;s
+              First task free - no card to join. Just your email to hold your family&apos;s
               place.
             </p>
             <form onSubmit={submitEmail} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
@@ -259,8 +259,8 @@ export function JoinModal() {
             </h2>
             <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 22px" }}>
               {arm === "B"
-                ? "No charge today — this just reserves your spot."
-                : "No charge today — this just reserves your spot and tells us which fits your family."}
+                ? "No charge today - this just reserves your spot."
+                : "No charge today - this just reserves your spot and tells us which fits your family."}
             </p>
             <div
               role="radiogroup"
@@ -319,7 +319,7 @@ export function JoinModal() {
               You&apos;re #{(result?.position ?? FALLBACK_WAITLIST_POSITION).toLocaleString()} on the list
             </h2>
             <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 24px" }}>
-              Share with your friends to move up the waitlist — every join with your link
+              Share with your friends to move up the waitlist - every join with your link
               moves your family up.
             </p>
             <div style={{ display: "flex", gap: 10, marginBottom: 16, alignItems: "stretch" }}>

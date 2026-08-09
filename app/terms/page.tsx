@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
 
 export const metadata: Metadata = {
-  title: "Terms of Use — Niro",
+  title: "Terms of Use - Niro",
   description:
     "The terms that govern your use of the Niro website and waitlist.",
 };
@@ -57,7 +57,7 @@ export default function TermsPage() {
 
         <h2>Acceptable use</h2>
         <p>
-          You agree not to misuse the Site — including attempting to disrupt it,
+          You agree not to misuse the Site - including attempting to disrupt it,
           access it without authorisation, submit false or others&apos; information
           without consent, or use it for any unlawful purpose.
         </p>

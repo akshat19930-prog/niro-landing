@@ -2,7 +2,7 @@ import { Icon, type IconName } from "./Icon";
 
 export type TaskDef = { id: string; icon: IconName; label: string; note: string };
 
-/** Task-picker — single-select radio cards. "What would you hand off first?" */
+/** Task-picker - single-select radio cards. "What would you hand off first?" */
 export function TaskPicker({
   tasks,
   value,

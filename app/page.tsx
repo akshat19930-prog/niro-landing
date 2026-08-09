@@ -21,7 +21,7 @@ export default function Page() {
         <Hero />
         <Mirror />
         <HowItWorks />
-        {/* Proof sits right after the mechanism — it answers "does this really
+        {/* Proof sits right after the mechanism - it answers "does this really
             work?" at peak skepticism, and is seen by far more visitors than
             when it lived near the bottom. */}
         <Proof />

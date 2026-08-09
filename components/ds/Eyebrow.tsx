@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 
-/** All-caps tracked eyebrow label with a short gold rule — sits above titles. */
+/** All-caps tracked eyebrow label with a short gold rule - sits above titles. */
 export function Eyebrow({
   children,
   style,

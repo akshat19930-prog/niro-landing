@@ -2,7 +2,7 @@ import { Wordmark } from "./Wordmark";
 import { JoinCta } from "./JoinCta";
 
 /**
- * Minimal top nav — wordmark left, one CTA right, nothing else competes.
+ * Minimal top nav - wordmark left, one CTA right, nothing else competes.
  * Sticky, translucent + backdrop-blur. The CTA opens the join modal (home);
  * on a standalone page pass `ctaHref` to render a plain link back home instead.
  */
@@ -38,7 +38,7 @@ export function Nav({
           gap: 16,
         }}
       >
-        <a href="/" aria-label="Niro — home" style={{ display: "inline-flex" }}>
+        <a href="/" aria-label="Niro - home" style={{ display: "inline-flex" }}>
           <Wordmark dark={dark} />
         </a>
         {ctaHref ? (

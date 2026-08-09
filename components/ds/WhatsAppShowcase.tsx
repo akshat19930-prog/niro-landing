@@ -141,7 +141,7 @@ function Bubble({ m, dark }: { m: ChatMessage; dark?: boolean }) {
 }
 
 /**
- * WhatsApp-conversation showcase — the hero proof format. Native-feeling but
+ * WhatsApp-conversation showcase - the hero proof format. Native-feeling but
  * elevated: sender label, voice-note bubbles, read receipts.
  */
 export function WhatsAppShowcase({

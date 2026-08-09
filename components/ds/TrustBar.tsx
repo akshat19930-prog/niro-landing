@@ -2,7 +2,7 @@ import { Icon, type IconName } from "./Icon";
 
 export type TrustItem = { icon: IconName; text: string; sub: string };
 
-/** Trust bar — the four promises. Legible even as a cropped ad screenshot. */
+/** Trust bar - the four promises. Legible even as a cropped ad screenshot. */
 export function TrustBar({
   items,
   dark = false,
