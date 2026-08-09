@@ -65,6 +65,46 @@ export function getStoredUtm(): Utm {
 }
 
 /* =====================================================================
+   Pitch cell (?v=1..4, the ad-matched hero variant) + referrer (?ref=code).
+   Captured first-touch alongside UTM so every signup can be sliced by pitch
+   cell (the core smoke-test read) and referrals can be attributed (K-factor).
+   ===================================================================== */
+export type Attribution = { pitch: string; ref: string };
+const ATTR_STORAGE_KEY = "niro_attr";
+
+export function captureAttribution(): Attribution {
+  if (typeof window === "undefined") return { pitch: "4", ref: "" };
+  let stored: Partial<Attribution> = {};
+  try {
+    stored = JSON.parse(sessionStorage.getItem(ATTR_STORAGE_KEY) || "{}");
+  } catch {
+    stored = {};
+  }
+  const params = new URLSearchParams(window.location.search);
+  const vParam = params.get("v");
+  const pitch =
+    vParam && ["1", "2", "3", "4"].includes(vParam) ? vParam : stored.pitch || "4";
+  const ref = params.get("ref") || stored.ref || "";
+  const merged: Attribution = { pitch, ref };
+  try {
+    sessionStorage.setItem(ATTR_STORAGE_KEY, JSON.stringify(merged));
+  } catch {
+    /* storage unavailable - non-fatal */
+  }
+  return merged;
+}
+
+export function getStoredAttribution(): Attribution {
+  if (typeof window === "undefined") return { pitch: "4", ref: "" };
+  try {
+    const a = JSON.parse(sessionStorage.getItem(ATTR_STORAGE_KEY) || "{}");
+    return { pitch: a.pitch || "4", ref: a.ref || "" };
+  } catch {
+    return { pitch: "4", ref: "" };
+  }
+}
+
+/* =====================================================================
    Pricing experiment - 2-arm test, 50/50 split.
      A (50%): both SKUs shown side by side (Lite + Prime)
      B (50%): a single $99 "Niro membership" SKU

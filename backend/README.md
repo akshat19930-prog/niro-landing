@@ -36,6 +36,29 @@ Expected response: `{ "position": <number>, "referralCode": "<string>" }`.
 4. GitHub repo → **Settings → Secrets and variables → Actions → Variables** →
    add `NEXT_PUBLIC_WAITLIST_ENDPOINT` = the `/exec` URL. Re-run the deploy.
 
+## Reporting (`report.gs`) — twice-daily email
+
+`report.gs` lives in the **same** Apps Script project as `waitlist.gs` (add it as
+a second file). It reads the `waitlist` sheet, pulls Meta metrics via the
+Marketing API, and emails the smoke-test report at 09:00 and 18:00.
+
+Setup:
+1. Add `report.gs` as a second file in the Apps Script editor. Fill `CONFIG`:
+   `RECIPIENTS`, `META_ACCESS_TOKEN` (ads_read), `META_AD_ACCOUNT_ID`
+   (`act_…`), `BUDGET_USD`, `TEST_START`, `TEST_DAYS`.
+2. **Ad-naming convention (required for per-pitch CPL):** each Meta ad's name
+   must contain its cell token `P1`–`P4`, and its destination URL must carry the
+   matching `?v=1`–`4`. That's how Sheet signups (the `pitch`/`v` column) join to
+   Meta spend (the ad). Keep `Pn` ⇔ `?v=n` consistent.
+3. Run `setupTriggers()` once (authorize) to install the 09:00 + 18:00 triggers.
+   Run `sendReport()` once to test.
+
+Without a Meta token it still sends the full Sheet-side report (signups, pitch
+mix, arm, plan, referral) and marks Meta-derived rows "n/a".
+
+The signup payload now also carries `pitch` (the `?v` cell) and `ref` (the
+referrer code) — the sheet has matching columns.
+
 ## Notes
 
 - If reading the response is ever blocked by CORS, the row is **still written**

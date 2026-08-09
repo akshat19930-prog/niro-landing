@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { captureUtm, assignArm, type PricingArm } from "@/lib/analytics";
+import { captureUtm, captureAttribution, assignArm, type PricingArm } from "@/lib/analytics";
 
 /** Waitlist flow: email → membership → confirmation. (No task step.) */
 export type Step = "form" | "plan" | "done";
@@ -29,6 +29,7 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     captureUtm();
+    captureAttribution();
     setArm(assignArm());
   }, []);
 

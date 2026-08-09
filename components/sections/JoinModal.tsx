@@ -8,7 +8,14 @@ import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
 import { PLANS, MEMBERSHIP_SINGLE, type Plan } from "@/lib/content";
-import { getStoredUtm, track, newEventId, type Utm, type PricingArm } from "@/lib/analytics";
+import {
+  getStoredUtm,
+  getStoredAttribution,
+  track,
+  newEventId,
+  type Utm,
+  type PricingArm,
+} from "@/lib/analytics";
 import { WAITLIST_ENDPOINT, SITE_ORIGIN, FALLBACK_WAITLIST_POSITION } from "@/lib/config";
 
 const h2Style = {
@@ -31,6 +38,9 @@ async function submitSignup(payload: {
   utm: Utm;
   eventId: string;
   arm: PricingArm;
+  /** Ad-matched pitch cell (?v) and referrer (?ref), for pitch + K-factor reads. */
+  pitch: string;
+  ref: string;
   planId?: string | null;
 }): Promise<SignupResult> {
   const fallback: SignupResult = {
@@ -179,20 +189,22 @@ export function JoinModal() {
     }
     setError(undefined);
     const utm = getStoredUtm();
-    track("Lead", { content_name: "waitlist_email", arm }, eventId);
+    const { pitch, ref } = getStoredAttribution();
+    track("Lead", { content_name: "waitlist_email", arm, pitch }, eventId);
     // Show the confirmation number instantly and advance - do NOT block the UI
     // on the Apps Script round-trip (302 redirect + cold start can take seconds).
     // The email is still captured; keepalive lets the POST finish in the
     // background even as the user moves through the flow.
     setResult({ position: FALLBACK_WAITLIST_POSITION, referralCode: slugFromEmail(email) });
-    void submitSignup({ email, utm, eventId, arm });
+    void submitSignup({ email, utm, eventId, arm, pitch, ref });
     setStep("plan");
   }
 
   function finishWithPlan(plan: string | null) {
     const utm = getStoredUtm();
+    const { pitch, ref } = getStoredAttribution();
     if (plan) track("AddPaymentInfo", { plan_id: plan, arm }, eventId);
-    void submitSignup({ email, utm, eventId, arm, planId: plan });
+    void submitSignup({ email, utm, eventId, arm, pitch, ref, planId: plan });
     setStep("done");
   }
 
