@@ -16,6 +16,7 @@ import {
   type Utm,
   type PricingArm,
 } from "@/lib/analytics";
+import { logEvent } from "@/lib/track";
 import { WAITLIST_ENDPOINT, SITE_ORIGIN, FALLBACK_WAITLIST_POSITION } from "@/lib/config";
 
 const h2Style = {
@@ -190,6 +191,7 @@ export function JoinModal() {
     setError(undefined);
     const utm = getStoredUtm();
     const { pitch, ref } = getStoredAttribution();
+    logEvent("email_entered");
     track("Lead", { content_name: "waitlist_email", arm, pitch }, eventId);
     // Show the confirmation number instantly and advance - do NOT block the UI
     // on the Apps Script round-trip (302 redirect + cold start can take seconds).
@@ -203,7 +205,10 @@ export function JoinModal() {
   function finishWithPlan(plan: string | null) {
     const utm = getStoredUtm();
     const { pitch, ref } = getStoredAttribution();
-    if (plan) track("AddPaymentInfo", { plan_id: plan, arm }, eventId);
+    if (plan) {
+      logEvent("reserve_clicked", { plan: plan });
+      track("AddPaymentInfo", { plan_id: plan, arm }, eventId);
+    }
     void submitSignup({ email, utm, eventId, arm, pitch, ref, planId: plan });
     setStep("done");
   }
