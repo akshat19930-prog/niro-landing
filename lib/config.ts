@@ -5,8 +5,10 @@
  * how it ships until the waitlist API and Meta assets are wired.
  */
 
-/** Meta Pixel ID. When unset, no pixel loads and events are no-ops. */
-export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "";
+/** Meta Pixel ID. Public value (visible in page source), so safe to commit; a
+ *  repo Actions variable of the same name overrides it. */
+export const META_PIXEL_ID =
+  process.env.NEXT_PUBLIC_META_PIXEL_ID || "1711474783446227";
 
 /**
  * Waitlist API endpoint. Receives the signup payload (email + UTM + tasks +
