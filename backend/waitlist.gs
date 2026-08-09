@@ -27,18 +27,27 @@ var SHEET_NAME = "waitlist";
 // the Sheet — no need to redeploy the script just to change it.)
 var BASE_POSITION = 320;
 
+var EVENTS_SHEET = "events";
+var EVENTS_HEADER = ["timestamp", "date", "event", "arm", "pitch", "sid", "durationMs", "engaged"];
+
 // ---- Entry points -----------------------------------------------------------
 function doPost(e) {
+  var data = {};
+  try {
+    data = JSON.parse((e && e.postData && e.postData.contents) || "{}");
+  } catch (parseErr) {
+    data = {};
+  }
+
+  // Funnel/session beacons go to the events tab (no lock — high volume, append
+  // is fine, and we never read them back in the same request).
+  if (data.type === "event") {
+    return logEventRow_(data);
+  }
+
   var lock = LockService.getScriptLock();
   lock.waitLock(30000); // serialize writes so positions/dedupe stay consistent
   try {
-    var data = {};
-    try {
-      data = JSON.parse((e && e.postData && e.postData.contents) || "{}");
-    } catch (parseErr) {
-      data = {};
-    }
-
     var sheet = getSheet_();
     var eventId = String(data.eventId || "");
     var email = String(data.email || "").trim().toLowerCase();
@@ -113,6 +122,28 @@ function getSheet_() {
     sheet.getRange(1, 1, 1, HEADER.length).setValues([HEADER]);
   }
   return sheet;
+}
+
+function logEventRow_(data) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(EVENTS_SHEET);
+    if (!sheet) {
+      sheet = ss.insertSheet(EVENTS_SHEET);
+      sheet.appendRow(EVENTS_HEADER);
+    }
+    var when = data.ts ? new Date(Number(data.ts)) : new Date();
+    var date = Utilities.formatDate(when, ss.getSpreadsheetTimeZone(), "yyyy-MM-dd");
+    sheet.appendRow([
+      when, date, String(data.event || ""), String(data.arm || ""),
+      String(data.pitch || ""), String(data.sid || ""),
+      data.durationMs != null ? Number(data.durationMs) : "",
+      data.engaged != null ? Number(data.engaged) : ""
+    ]);
+    return json_({ ok: true });
+  } catch (err) {
+    return json_({ error: String(err) });
+  }
 }
 
 function slugFromEmail_(email) {

@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { captureUtm, captureAttribution, assignArm, type PricingArm } from "@/lib/analytics";
+import { startSession } from "@/lib/track";
 
 /** Waitlist flow: email → membership → confirmation. (No task step.) */
 export type Step = "form" | "plan" | "done";
@@ -31,6 +32,7 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
     captureUtm();
     captureAttribution();
     setArm(assignArm());
+    startSession();
   }, []);
 
   // Lock body scroll while the modal is open so the page behind doesn't move.
