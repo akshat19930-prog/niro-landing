@@ -10,6 +10,13 @@
 export const META_PIXEL_ID =
   process.env.NEXT_PUBLIC_META_PIXEL_ID || "1711474783446227";
 
+/** PostHog (heatmaps, scrollmaps, session replay, autocapture). Project API key
+ *  (starts "phc_"); public/client-side by design. When unset, PostHog doesn't
+ *  load. Host is US by default — use "https://eu.i.posthog.com" for an EU project. */
+export const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY || "";
+export const POSTHOG_HOST =
+  process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";
+
 /**
  * Waitlist API endpoint. Receives the signup payload (email + UTM + tasks +
  * eventId) as JSON POST. It should (a) persist the signup, (b) return

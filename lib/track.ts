@@ -14,6 +14,34 @@
 import { WAITLIST_ENDPOINT } from "./config";
 import { getStoredArm, getStoredAttribution } from "./analytics";
 
+declare global {
+  interface Window {
+    posthog?: {
+      capture: (event: string, props?: Record<string, unknown>) => void;
+      register: (props: Record<string, unknown>) => void;
+    };
+  }
+}
+
+// Funnel events also sent to PostHog (for funnels/heatmap segmentation); the
+// session lifecycle events (exposure/session_end) are left to PostHog's own
+// pageview/pageleave capture.
+const PH_FORWARD: Record<string, true> = {
+  join_initiated: true,
+  email_entered: true,
+  reserve_clicked: true,
+};
+
+/** Register the pricing arm + pitch as PostHog super-properties, so heatmaps
+ *  and funnels can be filtered by cell. Safe no-op if PostHog isn't loaded. */
+export function registerAnalytics(arm: string, pitch: string): void {
+  try {
+    window.posthog?.register({ arm: arm, pitch: pitch });
+  } catch {
+    /* PostHog not loaded / not configured */
+  }
+}
+
 const SID_KEY = "niro_sid";
 const START_KEY = "niro_sstart";
 const ENG_KEY = "niro_eng";
@@ -66,6 +94,15 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
     }
   } catch {
     /* non-fatal */
+  }
+
+  // Mirror funnel events to PostHog for funnels + heatmap segmentation.
+  if (PH_FORWARD[event]) {
+    try {
+      window.posthog?.capture(event, { arm: getStoredArm(), pitch });
+    } catch {
+      /* PostHog not loaded */
+    }
   }
 }
 
