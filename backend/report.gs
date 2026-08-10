@@ -134,7 +134,10 @@ function metaGet_(url) {
   return body.data || [];
 }
 function cellFromName_(name) {
-  var mm = String(name || "").match(/\bP([1-4])\b/i) || String(name).match(/\bv([1-4])\b/i);
+  // Matches P1..P4 (or v1..v4) as a token even when followed by _/-/text, e.g.
+  // "P1_english", "Niro-P3-hindi", "v2". Requires a boundary before the P/v and
+  // no trailing digit (so P4 != P40).
+  var mm = String(name || "").match(/(?:^|[^a-z0-9])[pv]\s*([1-4])(?![0-9])/i);
   return mm ? mm[1] : "?";
 }
 function num_(x) { return Number(x) || 0; }
@@ -159,7 +162,11 @@ function buildModel_(data, meta) {
   // Bucket events + signups by date.
   var evByDate = {}, suByDate = {};
   data.events.forEach(function (e) {
-    var d = e.date || dateStr_(e.timestamp);
+    // e.date may come back as a Date object (Sheets coerces the "yyyy-MM-dd"
+    // text into a date value on read), so always normalize through dateStr_()
+    // to a string key that matches the column dates. Fall back to timestamp.
+    var raw = (e.date !== "" && e.date != null) ? e.date : e.timestamp;
+    var d = dateStr_(raw);
     (evByDate[d] = evByDate[d] || []).push(e);
   });
   data.signups.forEach(function (s) {
