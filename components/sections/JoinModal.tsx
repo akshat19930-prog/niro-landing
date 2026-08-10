@@ -32,6 +32,28 @@ function slugFromEmail(email: string): string {
   );
 }
 
+/** Requires local@domain.tld with a real TLD - rejects "kk@gm", "a@b", trailing
+ *  dots, and spaces. Not RFC-exhaustive, but catches the fat-finger junk that a
+ *  bare "contains @" check lets through. */
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+/** Obvious placeholders people type while testing the flow. Kept out of the
+ *  waitlist so QA sweeps don't look like real signups. Match on the whole
+ *  address or the domain. */
+const PLACEHOLDER_EMAILS = new Set([
+  "john.doe@gmail.com",
+  "johndoe@gmail.com",
+  "jane.doe@gmail.com",
+  "test@test.com",
+  "test@gmail.com",
+]);
+const PLACEHOLDER_DOMAINS = new Set(["example.com", "test.com", "mailinator.com"]);
+
+function isPlaceholderEmail(email: string): boolean {
+  const domain = email.split("@")[1] || "";
+  return PLACEHOLDER_EMAILS.has(email) || PLACEHOLDER_DOMAINS.has(domain);
+}
+
 type SignupResult = { position: number; referralCode: string };
 
 async function submitSignup(payload: {
@@ -184,11 +206,17 @@ export function JoinModal() {
 
   function submitEmail(e: React.FormEvent) {
     e.preventDefault();
-    if (!email || email.indexOf("@") === -1) {
-      setError("Please enter a valid email.");
+    const clean = email.trim().toLowerCase();
+    if (!EMAIL_RE.test(clean)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (isPlaceholderEmail(clean)) {
+      setError("That looks like a placeholder - please use your real email.");
       return;
     }
     setError(undefined);
+    setEmail(clean); // store the normalized address (trimmed + lowercased)
     const utm = getStoredUtm();
     const { pitch, ref } = getStoredAttribution();
     logEvent("email_entered");
@@ -197,8 +225,8 @@ export function JoinModal() {
     // on the Apps Script round-trip (302 redirect + cold start can take seconds).
     // The email is still captured; keepalive lets the POST finish in the
     // background even as the user moves through the flow.
-    setResult({ position: FALLBACK_WAITLIST_POSITION, referralCode: slugFromEmail(email) });
-    void submitSignup({ email, utm, eventId, arm, pitch, ref });
+    setResult({ position: FALLBACK_WAITLIST_POSITION, referralCode: slugFromEmail(clean) });
+    void submitSignup({ email: clean, utm, eventId, arm, pitch, ref });
     setStep("plan");
   }
 
