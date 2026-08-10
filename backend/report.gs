@@ -35,6 +35,15 @@ var CONFIG = {
   TEST_DAYS: 12,
   DATE_COLS: 5,                     // trailing day columns before MTD
 
+  // Excluded from reported signups/CPL (QA + placeholders). Add your own
+  // testing address here so your walkthroughs never count as leads. Match is
+  // case-insensitive; a leading "@" entry excludes a whole domain.
+  TEST_EMAILS: [
+    "john.doe@gmail.com", "johndoe@gmail.com", "jane.doe@gmail.com",
+    "test@test.com", "test@gmail.com", "kk@gm",
+    "@example.com", "@test.com", "@mailinator.com"
+  ],
+
   PITCH_LABELS: {
     "1": "P1 · Peace of mind",
     "2": "P2 · Off your plate",
@@ -100,6 +109,22 @@ function dateStr_(v) {
   return Utilities.formatDate(d, CONFIG.TIMEZONE, "yyyy-MM-dd");
 }
 
+/** True for QA/placeholder addresses (exact match or "@domain" entry in
+ *  CONFIG.TEST_EMAILS), so they don't count as real signups. */
+function isTestEmail_(email) {
+  var e = String(email || "").trim().toLowerCase();
+  if (!e) return false;
+  var domain = "@" + (e.split("@")[1] || "");
+  var list = CONFIG.TEST_EMAILS || [];
+  for (var i = 0; i < list.length; i++) {
+    var entry = String(list[i]).trim().toLowerCase();
+    if (!entry) continue;
+    if (entry.charAt(0) === "@") { if (entry === domain) return true; }
+    else if (entry === e) return true;
+  }
+  return false;
+}
+
 function fetchMetaDaily_() {
   if (!CONFIG.META_ACCESS_TOKEN || !CONFIG.META_AD_ACCOUNT_ID) return null;
   try {
@@ -148,9 +173,12 @@ function buildModel_(data, meta) {
   var tz = CONFIG.TIMEZONE;
 
   // Only rows with a real email are signups (defends against any stray blank
-  // rows, e.g. from an older waitlist.gs that mis-handled event beacons).
+  // rows, e.g. from an older waitlist.gs that mis-handled event beacons), and
+  // exclude obvious QA/placeholder addresses so test sweeps don't inflate leads
+  // or CPL. Raw rows stay in the sheet - this only affects reported metrics.
   data.signups = data.signups.filter(function (s) {
-    return String(s.email || "").trim() !== "";
+    var email = String(s.email || "").trim().toLowerCase();
+    return email !== "" && !isTestEmail_(email);
   });
 
   // Column dates: last DATE_COLS days (oldest..today).
