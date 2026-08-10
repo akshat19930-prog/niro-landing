@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { captureUtm, captureAttribution, assignArm, type PricingArm } from "@/lib/analytics";
-import { startSession } from "@/lib/track";
+import { startSession, registerAnalytics } from "@/lib/track";
 
 /** Waitlist flow: email → membership → confirmation. (No task step.) */
 export type Step = "form" | "plan" | "done";
@@ -30,8 +30,10 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     captureUtm();
-    captureAttribution();
-    setArm(assignArm());
+    const attr = captureAttribution();
+    const assigned = assignArm();
+    setArm(assigned);
+    registerAnalytics(assigned, attr.pitch);
     startSession();
   }, []);
 
