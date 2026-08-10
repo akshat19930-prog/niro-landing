@@ -13,7 +13,9 @@ export const META_PIXEL_ID =
 /** PostHog (heatmaps, scrollmaps, session replay, autocapture). Project API key
  *  (starts "phc_"); public/client-side by design. When unset, PostHog doesn't
  *  load. Host is US by default — use "https://eu.i.posthog.com" for an EU project. */
-export const POSTHOG_KEY = process.env.NEXT_PUBLIC_POSTHOG_KEY || "";
+export const POSTHOG_KEY =
+  process.env.NEXT_PUBLIC_POSTHOG_KEY ||
+  "phc_uoQigF2AUD9BNMFfHE2EsYxtdPccYEpC77cNj5rfc7XQ";
 export const POSTHOG_HOST =
   process.env.NEXT_PUBLIC_POSTHOG_HOST || "https://us.i.posthog.com";
 
