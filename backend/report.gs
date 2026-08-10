@@ -144,6 +144,12 @@ function buildModel_(data, meta) {
   var now = new Date();
   var tz = CONFIG.TIMEZONE;
 
+  // Only rows with a real email are signups (defends against any stray blank
+  // rows, e.g. from an older waitlist.gs that mis-handled event beacons).
+  data.signups = data.signups.filter(function (s) {
+    return String(s.email || "").trim() !== "";
+  });
+
   // Column dates: last DATE_COLS days (oldest..today).
   var cols = [];
   for (var i = CONFIG.DATE_COLS - 1; i >= 0; i--) {

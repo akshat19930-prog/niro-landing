@@ -64,6 +64,12 @@ function doPost(e) {
       }
     }
 
+    // Never create a blank row: a genuine signup always carries an email. This
+    // also protects against stray/bot POSTs and any beacon reaching this path.
+    if (rowIndex === -1 && !email) {
+      return json_({ ignored: true });
+    }
+
     var referralCode;
     var position;
     // Column indexes (1-based) matching HEADER.
