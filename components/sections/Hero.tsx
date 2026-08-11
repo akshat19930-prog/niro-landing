@@ -52,7 +52,7 @@ export function Hero() {
                 color: "var(--brand)",
               }}
             >
-              Membership starts at $55/mo. First task free. Join the waitlist without a card.
+              Membership starts at $55/mo. First task free. No card to join.
             </div>
             {/* One genuine pull-quote - early social proof before the product
                 detail, without asking the full testimonial section to work up
