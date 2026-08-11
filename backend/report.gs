@@ -26,12 +26,12 @@ var CONFIG = {
   RECIPIENTS: "akshat.19930@gmail.com, paarthdhar@gmail.com",
   TIMEZONE: "Asia/Kolkata",
 
-  META_ACCESS_TOKEN: "",            // long-lived token with ads_read
-  META_AD_ACCOUNT_ID: "",           // e.g. "act_1234567890"
+  META_ACCESS_TOKEN: "",            // PASTE your System User token here (ads_read). Secret - never commit it.
+  META_AD_ACCOUNT_ID: "act_2246578592783321",  // Niro ad account (verified)
   META_API_VERSION: "v19.0",
 
   BUDGET_USD: 2500,
-  TEST_START: "2026-08-12",         // yyyy-mm-dd
+  TEST_START: "2026-08-07",         // yyyy-mm-dd (ads began 8 Aug; captures all spend in MTD)
   TEST_DAYS: 12,
   DATE_COLS: 5,                     // trailing day columns before MTD
 
