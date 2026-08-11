@@ -30,7 +30,7 @@ var CONFIG = {
   META_AD_ACCOUNT_ID: "act_2246578592783321",  // Niro ad account (verified)
   META_API_VERSION: "v19.0",
 
-  BUDGET_USD: 2500,
+  BUDGET_INR: 207500,               // ~$2,500 at 83/USD - set to your real INR ad budget
   TEST_START: "2026-08-07",         // yyyy-mm-dd (ads began 8 Aug; captures all spend in MTD)
   TEST_DAYS: 12,
   DATE_COLS: 5,                     // trailing day columns before MTD
@@ -52,7 +52,7 @@ var CONFIG = {
   },
 
   GATES: {
-    cpl:    { good: 12, warn: 22, dir: "lower" },   // $
+    cpl:    { good: 1000, warn: 1850, dir: "lower" },  // ₹ (was $12/$22; ad spend is INR)
     bounce: { good: 45, warn: 65, dir: "lower" },   // %
     lp2res: { good: 8,  warn: 3,  dir: "higher" }   // % LP -> reserve
   }
@@ -167,15 +167,17 @@ function cellFromName_(name) {
   return mm ? mm[1] : "?";
 }
 function num_(x) { return Number(x) || 0; }
-/** Sum Meta "lead" results from an insights actions[] array (covers the pixel
- *  Lead action_type variants). Returns 0 if none. */
+/** Meta lead count from an insights actions[] array. Meta reports the SAME lead
+ *  under several action_types (lead, onsite_web_lead, offsite_conversion.fb_pixel_lead,
+ *  offsite_lead_add_20_s_calls) - all the same value - so summing them multiplies
+ *  the true count. Use the canonical "lead" action_type only. */
 function metaLeads_(actions) {
   if (!actions || !actions.length) return 0;
-  var n = 0;
+  var found = 0;
   actions.forEach(function (a) {
-    if (String(a.action_type || "").indexOf("lead") !== -1) n += num_(a.value);
+    if (String(a.action_type) === "lead") found = num_(a.value);
   });
-  return n;
+  return found;
 }
 
 // ------------------------------ model ------------------------------
@@ -256,7 +258,7 @@ function buildModel_(data, meta) {
     totalSignups: data.signups.length,
     newSignups: prev ? Math.max(0, data.signups.length - prev.totalSignups) : data.signups.length,
     dayNum: dayNum, daysLeft: Math.max(0, CONFIG.TEST_DAYS - dayNum),
-    spendMTD: mtd.spend, budget: CONFIG.BUDGET_USD
+    spendMTD: mtd.spend, budget: CONFIG.BUDGET_INR
   };
 }
 function nextDay_(yyyymmdd) {
@@ -318,7 +320,10 @@ function chip_(txt, status) {
   if (!c) return txt;
   return '<span style="color:' + c + ';font-weight:600">' + txt + "</span>";
 }
-function money_(n) { return n ? "$" + (Math.round(n * 100) / 100) : "$0"; }
+function money_(n) {
+  if (!n) return "₹0";
+  return "₹" + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 function pct_(n) { return (Math.round(n * 10) / 10) + "%"; }
 function dur_(sec) {
   if (!sec) return "—";
