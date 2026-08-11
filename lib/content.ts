@@ -52,6 +52,28 @@ export function resolveVariant(v: string | null): keyof typeof HERO_VARIANTS {
     : DEFAULT_VARIANT;
 }
 
+/* ---- Hero "ask" ticker: first-person tasks people text Niro (Duckbill-style
+   breadth cue that drives the first scroll). Order is optimized, not as-given:
+   open with the converting money/admin angle + one ultra-relatable emotional
+   ask (cab for mom), then interleave admin and parents-care so the first few
+   bubbles already show the full breadth. Light copy cleanup for one consistent
+   "ask" voice. ---- */
+export const ASK_TASKS: string[] = [
+  "Recover my stuck EPFO money",
+  "Book a cab for mom when she sends a voice note",
+  "Get my OCI renewal done",
+  "Run quarterly blood tests for parents",
+  "Sort dad's electricity overbill issue",
+  "Find a verified replacement maid for parents",
+  "Reactivate my dormant NRO account, no branch visit",
+  "Run fortnightly physio for mom",
+  "Get my degree apostilled & couriered abroad",
+  "Find a backup caretaker for my Nani",
+  "Manage the visa process for parents",
+  "Get dad quotes from reliable house-painting vendors",
+  "Accompany parents to their visa appointment",
+];
+
 /* ---- Trust strip (under hero CTA) ---- */
 export const TRUST_ITEMS: TrustItem[] = [
   {

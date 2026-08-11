@@ -1,4 +1,5 @@
 import { ChatVideo } from "@/components/ds/ChatVideo";
+import { AskTicker } from "@/components/ds/AskTicker";
 import { HERO_QUOTE } from "@/lib/content";
 import { HeroCopy } from "./HeroCopy";
 
@@ -88,6 +89,7 @@ export function Hero() {
               </div>
             </div>
           </div>
+          <AskTicker />
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
           <ChatVideo />
