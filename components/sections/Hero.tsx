@@ -38,7 +38,11 @@ export function Hero() {
       >
         <div>
           <HeroCopy />
-          <AskTicker />
+          {/* Mobile: ticker sits in-column, in the first fold. On desktop it's
+              hidden here in favour of the full-width band below the grid. */}
+          <div className="hero-ticker-inline">
+            <AskTicker />
+          </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {/* One genuine pull-quote - early social proof before the product
                 detail, without asking the full testimonial section to work up
@@ -94,6 +98,14 @@ export function Hero() {
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
           <ChatVideo />
         </div>
+      </div>
+      {/* Desktop: the ticker runs full container width across the bottom of the
+          fold (hidden on mobile, where the in-column version above is used). */}
+      <div
+        className="hero-ticker-wide"
+        style={{ maxWidth: "var(--container)", margin: "0 auto", position: "relative" }}
+      >
+        <AskTicker />
       </div>
     </section>
   );

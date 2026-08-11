@@ -50,7 +50,7 @@ export function Faq() {
                 >
                   <span
                     style={{
-                      fontSize: "var(--text-md)",
+                      fontSize: "var(--text-base)",
                       fontWeight: 600,
                       color: "var(--text-strong)",
                     }}
@@ -76,7 +76,7 @@ export function Faq() {
                     )}
                     <div
                       style={{
-                        fontSize: "var(--text-base)",
+                        fontSize: "var(--text-sm)",
                         color: "var(--text-body)",
                         lineHeight: 1.6,
                         maxWidth: 560,

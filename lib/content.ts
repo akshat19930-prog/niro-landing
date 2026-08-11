@@ -208,7 +208,7 @@ export const HANDLE_GROUPS: {
       {
         icon: "shield-check",
         t: "Cyber-fraud protection",
-        d: "Prevent and monitor cyber-fraud risk with our unique product, Chakra.",
+        d: "Prevent and monitor cyber-fraud risk with the senior citizens in your family.",
       },
     ],
   },
@@ -341,6 +341,10 @@ export const TESTIMONIALS_SHORT: {
 /* ---- FAQ (first item is the trust moment) ---- */
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
+    q: "What is the membership pricing?",
+    a: "While your first task is free, monthly membership pricing ranges between US $55 to $99, depending on your plan.",
+  },
+  {
     q: "Is Niro a human manager?",
     a: "Every family is allocated a dedicated remote family manager, who is a Niro employee. Some tasks may be completed by Niro's AI, as per your instructions.",
   },
@@ -367,10 +371,6 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
     q: "Do my parents need to install anything?",
     a: "No. For your parents, everything runs over a WhatsApp group and calls. You get an app that acts as the interface, data vault, and payments platform for the membership.",
-  },
-  {
-    q: "What is the price, and is there a free trial?",
-    a: "While we're on the waitlist, we'll launch with a 'first task free' offer, and membership will be priced between $50 and $99 a month.",
   },
 ];
 
