@@ -12,7 +12,7 @@ import { ASK_TASKS } from "@/lib/content";
 export function AskTicker() {
   const track = [...ASK_TASKS, ...ASK_TASKS];
   return (
-    <div style={{ marginTop: 24 }}>
+    <div style={{ marginTop: 18 }}>
       <div
         style={{
           display: "flex",

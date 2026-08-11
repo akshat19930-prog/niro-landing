@@ -9,7 +9,7 @@ export function Hero() {
   return (
     <section
       data-screen-label="Hero"
-      style={{ padding: "64px var(--gutter) 48px", position: "relative", overflow: "hidden" }}
+      style={{ padding: "32px var(--gutter) 44px", position: "relative", overflow: "hidden" }}
     >
       <div
         aria-hidden="true"
@@ -38,6 +38,7 @@ export function Hero() {
       >
         <div>
           <HeroCopy />
+          <AskTicker />
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {/* One genuine pull-quote - early social proof before the product
                 detail, without asking the full testimonial section to work up
@@ -89,7 +90,6 @@ export function Hero() {
               </div>
             </div>
           </div>
-          <AskTicker />
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
           <ChatVideo />

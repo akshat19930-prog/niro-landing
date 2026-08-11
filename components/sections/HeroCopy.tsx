@@ -29,7 +29,7 @@ export function HeroCopy() {
           lineHeight: "var(--leading-tight)",
           letterSpacing: "var(--tracking-tight)",
           color: "var(--text-strong)",
-          margin: "20px 0 18px",
+          margin: "12px 0 14px",
           fontWeight: 500,
         }}
       >
@@ -41,7 +41,7 @@ export function HeroCopy() {
           lineHeight: "var(--leading-body)",
           color: "var(--text-body)",
           maxWidth: 520,
-          margin: "0 0 30px",
+          margin: "0 0 18px",
         }}
       >
         {hero.s}
