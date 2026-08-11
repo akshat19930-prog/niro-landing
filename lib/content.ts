@@ -40,7 +40,11 @@ export const HERO_VARIANTS: Record<"1" | "2" | "3" | "4", HeroVariant> = {
   },
 };
 
-export const DEFAULT_VARIANT = "4" as const;
+// Default hero for traffic without a valid ?v= (organic, referral, or a
+// mis-tagged ad that dropped its ?v=). Set to v3 - the "your own India admin"
+// angle - which was the best performer and reads more concretely to cold
+// visitors than the generic v4. Correctly-tagged ad traffic is unaffected.
+export const DEFAULT_VARIANT = "3" as const;
 
 export function resolveVariant(v: string | null): keyof typeof HERO_VARIANTS {
   return v && ["1", "2", "3", "4"].includes(v)
