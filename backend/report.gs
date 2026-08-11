@@ -140,12 +140,13 @@ function fetchMetaDaily_() {
       byDate[d.date_start] = { spend: num_(d.spend), impr: num_(d.impressions), clicks: num_(d.clicks) };
     });
 
-    var ads = metaGet_(base + "?level=ad&time_range=" + range + "&fields=ad_name," + f + "&limit=500");
+    var ads = metaGet_(base + "?level=ad&time_range=" + range + "&fields=ad_name,actions," + f + "&limit=500");
     var byCell = {};
     ads.forEach(function (a) {
       var c = cellFromName_(a.ad_name);
-      if (!byCell[c]) byCell[c] = { spend: 0 };
+      if (!byCell[c]) byCell[c] = { spend: 0, leads: 0 };
       byCell[c].spend += num_(a.spend);
+      byCell[c].leads += metaLeads_(a.actions);
     });
     return { byDate: byDate, byCell: byCell };
   } catch (err) {
@@ -166,6 +167,16 @@ function cellFromName_(name) {
   return mm ? mm[1] : "?";
 }
 function num_(x) { return Number(x) || 0; }
+/** Sum Meta "lead" results from an insights actions[] array (covers the pixel
+ *  Lead action_type variants). Returns 0 if none. */
+function metaLeads_(actions) {
+  if (!actions || !actions.length) return 0;
+  var n = 0;
+  actions.forEach(function (a) {
+    if (String(a.action_type || "").indexOf("lead") !== -1) n += num_(a.value);
+  });
+  return n;
+}
 
 // ------------------------------ model ------------------------------
 function buildModel_(data, meta) {
@@ -223,12 +234,17 @@ function buildModel_(data, meta) {
   // A/B split over MTD
   var ab = { A: computeArm_(data.events, "A", meta), B: computeArm_(data.events, "B", meta) };
 
-  // Pitch leaderboard (signups by pitch, spend from Meta byCell)
+  // Pitch leaderboard. Spend + leads come from Meta (per-ad, matched to cell by
+  // ad name); CPL = Meta spend / Meta leads for that cell - self-consistent and
+  // immune to any ?v= attribution drift in the sheet's pitch column. "Signups"
+  // still shows the sheet's own count for that pitch, for cross-reference.
   var pitch = ["1", "2", "3", "4"].map(function (c) {
     var su = data.signups.filter(function (s) { return String(s.pitch || "4") === c; }).length;
-    var sp = (meta && meta.byCell && meta.byCell[c]) ? meta.byCell[c].spend : 0;
-    return { cell: c, label: CONFIG.PITCH_LABELS[c], signups: su, spend: sp, cpl: su ? sp / su : 0 };
-  }).sort(function (a, b) { return b.signups - a.signups; });
+    var cell = (meta && meta.byCell && meta.byCell[c]) ? meta.byCell[c] : null;
+    var sp = cell ? cell.spend : 0;
+    var leads = cell ? cell.leads : 0;
+    return { cell: c, label: CONFIG.PITCH_LABELS[c], signups: su, spend: sp, leads: leads, cpl: leads ? sp / leads : 0 };
+  }).sort(function (a, b) { return b.leads - a.leads; });
 
   var start = new Date(CONFIG.TEST_START + "T00:00:00");
   var dayNum = Math.max(1, Math.ceil((now - start) / 86400000));
@@ -391,13 +407,14 @@ function renderHtml_(m) {
   h.push('<h3 style="font-size:14px;margin:22px 0 6px">Pitch leaderboard</h3>');
   h.push('<table style="border-collapse:collapse;width:100%"><tr>');
   h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Cell</th>');
-  h.push(th_("Signups")); h.push(th_("Spend")); h.push(th_("CPL"));
+  h.push(th_("Signups")); h.push(th_("Spend")); h.push(th_("Leads")); h.push(th_("CPL"));
   h.push('</tr>');
   m.pitch.forEach(function (p) {
     h.push("<tr>" +
       '<td style="padding:6px 9px;border-bottom:1px solid #eee;font:12.5px/1.4 -apple-system;color:#1a2b22">' + p.label + "</td>" +
       td_(p.signups, "text-align:right") +
       td_(m.meta_ok ? money_(p.spend) : na_(), "text-align:right") +
+      td_(m.meta_ok ? p.leads : na_(), "text-align:right") +
       td_(m.meta_ok && p.cpl ? money_(p.cpl) : na_(), "text-align:right") + "</tr>");
   });
   h.push('</table>');
