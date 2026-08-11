@@ -22,11 +22,11 @@ export function Mirror() {
   return (
     <section
       data-screen-label="The Mirror"
-      style={{ padding: "80px var(--gutter)", background: "var(--bg-inset)" }}
+      style={{ padding: "60px var(--gutter)", background: "var(--bg-inset)" }}
     >
       <div style={CONTAINER}>
         <Eyebrow>Sound familiar</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "16px 0 40px", maxWidth: 680 }}>
+        <h2 style={{ ...h2Style, margin: "16px 0 28px", maxWidth: 680 }}>
           Your India to-do list is hard enough, &amp; parents don&apos;t even tell you about
           theirs
         </h2>
@@ -84,67 +84,52 @@ export function Mirror() {
 /* ---- How it works ---- */
 export function HowItWorks() {
   return (
-    <section data-screen-label="How it works" style={{ padding: "88px var(--gutter)" }}>
-      <div
-        style={{
-          ...CONTAINER,
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(380px, 100%), 1fr))",
-          gap: 56,
-          alignItems: "start",
-        }}
-      >
-        <div>
-          <Eyebrow>How it works</Eyebrow>
-          <h2 style={{ ...h2Style, margin: "16px 0 8px" }}>
-            Niro is your 24/7 house manager, concierge &amp; your presence in India
-          </h2>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 30,
-              marginTop: 36,
-            }}
-          >
-            {STEPS.map((st) => (
-              <div key={st.n} style={{ display: "flex", gap: 20 }}>
-                <span
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: "var(--text-xl)",
-                    color: "var(--accent-strong)",
-                    flexShrink: 0,
-                    width: 44,
-                  }}
-                >
-                  {st.n}
-                </span>
-                <div>
-                  <div
-                    style={{
-                      fontSize: "var(--text-lg)",
-                      fontWeight: 600,
-                      color: "var(--text-strong)",
-                      marginBottom: 6,
-                    }}
-                  >
-                    {st.title}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "var(--text-base)",
-                      color: "var(--text-body)",
-                      lineHeight: 1.55,
-                      maxWidth: 420,
-                    }}
-                  >
-                    {st.text}
-                  </div>
-                </div>
+    <section data-screen-label="How it works" style={{ padding: "64px var(--gutter)" }}>
+      <div style={CONTAINER}>
+        <Eyebrow>How it works</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "16px 0 0", maxWidth: 760 }}>
+          Niro is your 24/7 house manager, concierge &amp; your presence in India
+        </h2>
+        <div
+          style={{
+            marginTop: 40,
+            display: "grid",
+            gap: 32,
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))",
+          }}
+        >
+          {STEPS.map((st) => (
+            <div key={st.n}>
+              <span
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "var(--text-xl)",
+                  color: "var(--accent-strong)",
+                }}
+              >
+                {st.n}
+              </span>
+              <div
+                style={{
+                  fontSize: "var(--text-lg)",
+                  fontWeight: 600,
+                  color: "var(--text-strong)",
+                  margin: "10px 0 6px",
+                }}
+              >
+                {st.title}
               </div>
-            ))}
-          </div>
+              <div
+                style={{
+                  fontSize: "var(--text-base)",
+                  color: "var(--text-body)",
+                  lineHeight: 1.55,
+                }}
+              >
+                {st.text}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -156,7 +141,7 @@ export function WhatWeHandle() {
   return (
     <section
       data-screen-label="What we handle"
-      style={{ padding: "88px var(--gutter)", background: "var(--bg-page)" }}
+      style={{ padding: "64px var(--gutter)", background: "var(--bg-page)" }}
     >
       <div style={CONTAINER}>
         <Eyebrow>What we handle</Eyebrow>
@@ -376,7 +361,7 @@ export function Proof() {
   return (
     <section
       data-screen-label="From beta access families"
-      style={{ padding: "88px 0", background: "var(--bg-inset)", overflow: "hidden" }}
+      style={{ padding: "64px 0", background: "var(--bg-inset)", overflow: "hidden" }}
     >
       <div style={{ ...CONTAINER, padding: "0 var(--gutter)" }}>
         <Eyebrow>From beta access families</Eyebrow>

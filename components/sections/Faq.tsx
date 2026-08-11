@@ -12,7 +12,7 @@ export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section data-screen-label="FAQ" style={{ padding: "88px var(--gutter)" }}>
+    <section data-screen-label="FAQ" style={{ padding: "64px var(--gutter)" }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow>Questions</Eyebrow>
         <h2
