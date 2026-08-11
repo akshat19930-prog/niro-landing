@@ -1,15 +1,21 @@
 import { Wordmark } from "./Wordmark";
+import { SUPPORT_WHATSAPP } from "@/lib/config";
 
 /**
- * Minimal footer for the waitlist stage. Only the links a page that captures
- * emails + runs a tracking pixel actually needs: About, Privacy, Terms,
- * Contact. Privacy/Terms/About are placeholders (#) until content is written.
+ * Minimal footer for the waitlist stage. "Contact us" opens a WhatsApp chat to
+ * our support line; the rest are the site's legal/about pages.
  */
-const links: { label: string; href: string }[] = [
+const links: { label: string; href: string; external?: boolean }[] = [
   { label: "About", href: "/about/" },
   { label: "Privacy", href: "/privacy/" },
   { label: "Terms", href: "/terms/" },
-  { label: "Contact", href: "mailto:hello@tellniro.com" },
+  {
+    label: "Contact us",
+    href: `https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent(
+      "Hi Niro, I have a question."
+    )}`,
+    external: true,
+  },
 ];
 
 export function Footer() {
@@ -48,7 +54,14 @@ export function Footer() {
           </div>
           <nav style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
             {links.map((l) => (
-              <a key={l.label} href={l.href} className="footer-link">
+              <a
+                key={l.label}
+                href={l.href}
+                className="footer-link"
+                {...(l.external
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
                 {l.label}
               </a>
             ))}
