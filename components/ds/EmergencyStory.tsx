@@ -4,7 +4,7 @@ const STEPS: { title: string; text: string; icon: IconName }[] = [
   {
     icon: "phone",
     title: "Trigger",
-    text: "You, a parent, or a connected smartwatch or fall-detection pendant raises the alert.",
+    text: "You, a parent, or a fall-detection device raises the alert.",
   },
   {
     icon: "heart-pulse",
@@ -14,7 +14,7 @@ const STEPS: { title: string; text: string; icon: IconName }[] = [
   {
     icon: "user-check",
     title: "On the ground",
-    text: "Our concierge reaches your chosen hospital, handles the paperwork, and stays with your parent.",
+    text: "Our concierge reaches the hospital, handles the paperwork, and stays with your parent.",
   },
 ];
 
@@ -28,11 +28,11 @@ export function EmergencyStory() {
         background:
           "radial-gradient(120% 80% at 80% 0%, #12281F 0%, var(--forest-950) 55%, #060F0B 100%)",
         color: "var(--text-body)",
-        padding: "var(--space-9) var(--gutter)",
+        padding: "var(--space-8) var(--gutter)",
       }}
     >
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
-        <div style={{ maxWidth: 640, marginBottom: "var(--space-7)" }}>
+        <div style={{ maxWidth: 620, marginBottom: "var(--space-6)" }}>
           <div
             style={{
               display: "inline-flex",
@@ -48,19 +48,18 @@ export function EmergencyStory() {
             <span style={{ width: 18, height: 1, background: "var(--gold-400)" }} /> The
             2:47 AM promise
           </div>
-          <h2 style={{ fontSize: "var(--text-3xl)", color: "#fff", margin: "16px 0 14px" }}>
+          <h2 style={{ fontSize: "var(--text-3xl)", color: "#fff", margin: "12px 0 10px" }}>
             Emergencies don&apos;t check the time zone
           </h2>
           <p
             style={{
               fontSize: "var(--text-md)",
               color: "rgba(255,255,255,0.78)",
-              lineHeight: 1.6,
+              lineHeight: 1.55,
             }}
           >
-            You set the protocol up front - blood group, documents, hospital, doctor. The
-            plan exists before it&apos;s needed, and we&apos;re on the ground the moment it
-            is.
+            Set the protocol up front - blood group, documents, hospital. When it&apos;s
+            needed, we&apos;re already on the ground.
           </p>
         </div>
         <ol
@@ -77,7 +76,7 @@ export function EmergencyStory() {
             <li
               key={i}
               style={{
-                padding: "var(--space-5)",
+                padding: "var(--space-4)",
                 borderRadius: "var(--radius-lg)",
                 background: "rgba(255,255,255,0.05)",
                 border: "1px solid rgba(255,255,255,0.12)",
@@ -100,21 +99,10 @@ export function EmergencyStory() {
               </span>
               <div
                 style={{
-                  fontSize: "var(--text-xs)",
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: "var(--gold-300)",
-                  margin: "16px 0 6px",
-                }}
-              >
-                Step {i + 1}
-              </div>
-              <div
-                style={{
                   fontFamily: "var(--font-display)",
                   fontSize: "var(--text-lg)",
                   color: "#fff",
-                  marginBottom: 6,
+                  margin: "14px 0 6px",
                 }}
               >
                 {step.title}

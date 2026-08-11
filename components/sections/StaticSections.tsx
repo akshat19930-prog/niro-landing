@@ -2,11 +2,9 @@ import { Card } from "@/components/ds/Card";
 import { Badge } from "@/components/ds/Badge";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
-import { WhatsAppShowcase } from "@/components/ds/WhatsAppShowcase";
 import {
   MIRROR,
   STEPS,
-  HOW_MESSAGES,
   HANDLE_GROUPS,
   TESTIMONIALS_SHORT,
 } from "@/lib/content";
@@ -147,12 +145,6 @@ export function HowItWorks() {
               </div>
             ))}
           </div>
-        </div>
-        <div style={{ justifySelf: "center", width: "100%", maxWidth: 380 }}>
-          <WhatsAppShowcase
-            messages={HOW_MESSAGES}
-            caption="An actual conversation, shared with the family's permission."
-          />
         </div>
       </div>
     </section>
