@@ -8,16 +8,7 @@ import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
 import { PLANS, MEMBERSHIP_SINGLE, type Plan } from "@/lib/content";
-import {
-  getStoredUtm,
-  getStoredAttribution,
-  track,
-  newEventId,
-  type Utm,
-  type PricingArm,
-} from "@/lib/analytics";
-import { logEvent } from "@/lib/track";
-import { WAITLIST_ENDPOINT, SITE_ORIGIN, FALLBACK_WAITLIST_POSITION } from "@/lib/config";
+import { FALLBACK_WAITLIST_POSITION } from "@/lib/config";
 
 const h2Style = {
   fontFamily: "var(--font-display)",
@@ -25,69 +16,6 @@ const h2Style = {
   color: "var(--text-strong)",
   fontWeight: 500,
 } as const;
-
-function slugFromEmail(email: string): string {
-  return (
-    (email || "friend").split("@")[0].replace(/[^a-z0-9]/gi, "").toLowerCase() || "friend"
-  );
-}
-
-/** Requires local@domain.tld with a real TLD - rejects "kk@gm", "a@b", trailing
- *  dots, and spaces. Not RFC-exhaustive, but catches the fat-finger junk that a
- *  bare "contains @" check lets through. */
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-/** Obvious placeholders people type while testing the flow. Kept out of the
- *  waitlist so QA sweeps don't look like real signups. Match on the whole
- *  address or the domain. */
-const PLACEHOLDER_EMAILS = new Set([
-  "john.doe@gmail.com",
-  "johndoe@gmail.com",
-  "jane.doe@gmail.com",
-  "test@test.com",
-  "test@gmail.com",
-]);
-const PLACEHOLDER_DOMAINS = new Set(["example.com", "test.com", "mailinator.com"]);
-
-function isPlaceholderEmail(email: string): boolean {
-  const domain = email.split("@")[1] || "";
-  return PLACEHOLDER_EMAILS.has(email) || PLACEHOLDER_DOMAINS.has(domain);
-}
-
-type SignupResult = { position: number; referralCode: string };
-
-async function submitSignup(payload: {
-  email: string;
-  utm: Utm;
-  eventId: string;
-  arm: PricingArm;
-  /** Ad-matched pitch cell (?v) and referrer (?ref), for pitch + K-factor reads. */
-  pitch: string;
-  ref: string;
-  planId?: string | null;
-}): Promise<SignupResult> {
-  const fallback: SignupResult = {
-    position: FALLBACK_WAITLIST_POSITION,
-    referralCode: slugFromEmail(payload.email),
-  };
-  if (!WAITLIST_ENDPOINT) return fallback;
-  try {
-    const res = await fetch(WAITLIST_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload),
-      keepalive: true,
-    });
-    if (!res.ok) return fallback;
-    const data = (await res.json()) as Partial<SignupResult>;
-    return {
-      position: typeof data.position === "number" ? data.position : fallback.position,
-      referralCode: data.referralCode || fallback.referralCode,
-    };
-  } catch {
-    return fallback;
-  }
-}
 
 /** Selectable membership card. */
 function PlanCard({ plan, selected, onSelect }: { plan: Plan; selected: boolean; onSelect: () => void }) {
@@ -180,23 +108,18 @@ function PlanCard({ plan, selected, onSelect }: { plan: Plan; selected: boolean;
   );
 }
 
-/** The join modal - a focused interstitial (no page-scroll displacement). */
+/** The join modal - a focused interstitial (no page-scroll displacement).
+ *  Email capture + submission live in JoinProvider, so the hero inline form and
+ *  this modal share one submission and one eventId. */
 export function JoinModal() {
-  const { open, setOpen, step, setStep, arm } = useJoin();
+  const { open, setOpen, step, arm, email, setEmail, result, referralUrl, submitEmail, submitPlan } = useJoin();
 
-  const [email, setEmail] = useState("");
   const [error, setError] = useState<string | undefined>();
   const [selectedPlan, setSelectedPlan] = useState<string | null>("prime");
-  const [result, setResult] = useState<SignupResult | null>(null);
   const [copied, setCopied] = useState(false);
-  const [eventId] = useState(() => newEventId());
 
   const plans = arm === "B" ? [MEMBERSHIP_SINGLE] : PLANS;
 
-  const referralUrl = useMemo(
-    () => (result ? `${SITE_ORIGIN}/?ref=${encodeURIComponent(result.referralCode)}` : ""),
-    [result]
-  );
   const waLink = useMemo(() => {
     const text = `I found Niro - they handle my parents' errands, bills, and emergencies in India, over WhatsApp. Thought you'd want this too: ${referralUrl}`;
     return `https://wa.me/?text=${encodeURIComponent(text)}`;
@@ -204,41 +127,10 @@ export function JoinModal() {
 
   if (!open) return null;
 
-  function submitEmail(e: React.FormEvent) {
+  function onEmailSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const clean = email.trim().toLowerCase();
-    if (!EMAIL_RE.test(clean)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-    if (isPlaceholderEmail(clean)) {
-      setError("That looks like a placeholder - please use your real email.");
-      return;
-    }
-    setError(undefined);
-    setEmail(clean); // store the normalized address (trimmed + lowercased)
-    const utm = getStoredUtm();
-    const { pitch, ref } = getStoredAttribution();
-    logEvent("email_entered");
-    track("Lead", { content_name: "waitlist_email", arm, pitch }, eventId);
-    // Show the confirmation number instantly and advance - do NOT block the UI
-    // on the Apps Script round-trip (302 redirect + cold start can take seconds).
-    // The email is still captured; keepalive lets the POST finish in the
-    // background even as the user moves through the flow.
-    setResult({ position: FALLBACK_WAITLIST_POSITION, referralCode: slugFromEmail(clean) });
-    void submitSignup({ email: clean, utm, eventId, arm, pitch, ref });
-    setStep("plan");
-  }
-
-  function finishWithPlan(plan: string | null) {
-    const utm = getStoredUtm();
-    const { pitch, ref } = getStoredAttribution();
-    if (plan) {
-      logEvent("reserve_clicked", { plan: plan });
-      track("AddPaymentInfo", { plan_id: plan, arm }, eventId);
-    }
-    void submitSignup({ email, utm, eventId, arm, pitch, ref, planId: plan });
-    setStep("done");
+    const err = submitEmail(email);
+    setError(err || undefined);
   }
 
   async function copyReferral() {
@@ -274,7 +166,7 @@ export function JoinModal() {
               First task free - no card to join. Just your email to hold your family&apos;s
               place.
             </p>
-            <form onSubmit={submitEmail} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            <form onSubmit={onEmailSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
               <Input
                 id="email-input"
                 label="Email"
@@ -321,12 +213,12 @@ export function JoinModal() {
               ))}
             </div>
             <div style={{ marginTop: 24 }}>
-              <Button size="lg" full disabled={!selectedPlan} onClick={() => finishWithPlan(selectedPlan)}>
+              <Button size="lg" full disabled={!selectedPlan} onClick={() => submitPlan(selectedPlan)}>
                 Reserve my spot
               </Button>
             </div>
             <button
-              onClick={() => finishWithPlan(null)}
+              onClick={() => submitPlan(null)}
               style={{
                 display: "block",
                 margin: "14px auto 0",

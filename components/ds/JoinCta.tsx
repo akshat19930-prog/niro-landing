@@ -1,7 +1,6 @@
 "use client";
 
 import { useJoinOptional } from "@/components/JoinProvider";
-import { logEvent } from "@/lib/track";
 
 /**
  * Opens the join modal. Renders a <button> styled by `className` (reuses the
@@ -28,17 +27,7 @@ export function JoinCta({
   }
 
   return (
-    <button
-      type="button"
-      className={className}
-      style={style}
-      onClick={() => {
-        logEvent("join_initiated");
-        // Reopen at the confirmation if they already joined; otherwise start fresh.
-        if (join.step !== "done") join.setStep("form");
-        join.setOpen(true);
-      }}
-    >
+    <button type="button" className={className} style={style} onClick={join.openForm}>
       {children}
     </button>
   );
