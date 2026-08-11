@@ -183,7 +183,7 @@ export function JoinModal() {
                 id="email-input"
                 label="Email"
                 type="email"
-                placeholder="you@company.com"
+                placeholder="you@email.com"
                 value={email}
                 error={error}
                 onChange={(e) => setEmail(e.target.value)}
