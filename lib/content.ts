@@ -99,7 +99,7 @@ export const MIRROR: { icon: IconName; title: string; text: string }[] = [
   },
   {
     icon: "home",
-    title: "The problems they hide",
+    title: "Problems the parents hide",
     text: "The delinquent, unverified maid, the AC that's been broken for weeks - stuff they struggle with but play down so you won't worry.",
   },
   {
