@@ -610,3 +610,19 @@
   color: var(--gold-300);
   flex-shrink: 0;
 }
+/* Ticker placement: in-column on mobile (in the fold), full-width band below the
+   hero grid on desktop so it runs broader across the fold. */
+.hero-ticker-inline {
+  display: block;
+}
+.hero-ticker-wide {
+  display: none;
+}
+@media (min-width: 760px) {
+  .hero-ticker-inline {
+    display: none;
+  }
+  .hero-ticker-wide {
+    display: block;
+  }
+}
