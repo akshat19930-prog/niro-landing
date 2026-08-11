@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card } from "@/components/ds/Card";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
@@ -119,6 +119,18 @@ export function JoinModal() {
   const [copied, setCopied] = useState(false);
 
   const plans = arm === "B" ? [MEMBERSHIP_SINGLE] : PLANS;
+
+  // Put the cursor in the email field the moment the modal opens at the email
+  // step, so the visitor can type straight away. A tiny delay lets the overlay
+  // paint first (and the body scroll-lock settle) before we take focus.
+  useEffect(() => {
+    if (!open || step !== "form") return;
+    const t = setTimeout(() => {
+      const el = document.getElementById("email-input") as HTMLInputElement | null;
+      el?.focus();
+    }, 60);
+    return () => clearTimeout(t);
+  }, [open, step]);
 
   const waLink = useMemo(() => {
     const text = `I found Niro - they handle my parents' errands, bills, and emergencies in India, over WhatsApp. Thought you'd want this too: ${referralUrl}`;
