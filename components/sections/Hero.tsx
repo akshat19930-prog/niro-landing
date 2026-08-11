@@ -1,5 +1,4 @@
 import { ChatVideo } from "@/components/ds/ChatVideo";
-import { JoinCta } from "@/components/ds/JoinCta";
 import { HERO_QUOTE } from "@/lib/content";
 import { HeroCopy } from "./HeroCopy";
 
@@ -39,20 +38,6 @@ export function Hero() {
         <div>
           <HeroCopy />
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
-              <JoinCta className="btn btn-primary btn-lg">Join the waitlist</JoinCta>
-            </div>
-            {/* Price anchor + reward + no-card reassurance - the reasons a cold
-                visitor spends an email. */}
-            <div
-              style={{
-                fontSize: "var(--text-sm)",
-                fontWeight: 600,
-                color: "var(--brand)",
-              }}
-            >
-              Membership starts at $55/mo. First task free. No card to join.
-            </div>
             {/* One genuine pull-quote - early social proof before the product
                 detail, without asking the full testimonial section to work up
                 here (and without a fabricated stat). */}
