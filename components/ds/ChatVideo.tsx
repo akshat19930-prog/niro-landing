@@ -67,7 +67,7 @@ export function ChatVideo() {
         poster="/media/chat-poster.webp"
         webkit-playsinline="true"
         src="/media/chat.mp4"
-        aria-label="A Niro family WhatsApp thread: a parent asks for a verified maid replacement and Niro sends three police-verified options, then confirms one."
+        aria-label="A Niro WhatsApp thread cycling three requests - filing an India tax return, booking home physio for a parent, and renewing a pension life certificate - each confirmed done by Niro."
         style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
       />
     </div>
