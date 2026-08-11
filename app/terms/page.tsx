@@ -22,8 +22,8 @@ export default function TermsPage() {
         <p>
           These Terms of Use (&ldquo;Terms&rdquo;) govern your use of tellniro.com
           (the &ldquo;Site&rdquo;), operated by{" "}
-          <strong>Destreza Eduventures Pvt Ltd</strong> (&ldquo;Niro&rdquo;,
-          &ldquo;we&rdquo;, &ldquo;us&rdquo;). By using the Site or joining the
+          <strong>Niro</strong> (&ldquo;we&rdquo;, &ldquo;us&rdquo;). By using
+          the Site or joining the
           waitlist, you agree to these Terms. If you do not agree, please do not use
           the Site.
         </p>
@@ -65,7 +65,7 @@ export default function TermsPage() {
         <h2>Intellectual property</h2>
         <p>
           The Niro name, logo, text, design, and other content on the Site are owned
-          by Destreza Eduventures Pvt Ltd and protected by applicable laws. You may
+          by Niro and protected by applicable laws. You may
           not copy, reproduce, or use them without our written permission. Names of
           third parties are the property of their respective owners.
         </p>
@@ -101,9 +101,9 @@ export default function TermsPage() {
         <h2>Contact</h2>
         <p>
           Questions about these Terms? Email us at{" "}
-          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Destreza
-          Eduventures Pvt Ltd, Indique Orion, 4th Main Rd, Agara Village, 1st
-          Sector, HSR Layout, Bengaluru, Karnataka 560102.
+          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Registered
+          office: Indique Orion, 4th Main Rd, Agara Village, 1st Sector, HSR
+          Layout, Bengaluru, Karnataka 560102.
         </p>
       </article>
     </PageShell>

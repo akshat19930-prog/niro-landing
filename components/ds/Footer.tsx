@@ -62,7 +62,7 @@ export function Footer() {
           }}
         >
           <span style={{ fontSize: "var(--text-xs)", color: "#7C8A80" }}>
-            © {year} Destreza Eduventures Pvt Ltd
+            © {year} Niro
           </span>
         </div>
       </div>

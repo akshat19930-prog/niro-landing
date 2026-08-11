@@ -4,7 +4,7 @@ import { PageShell } from "@/components/PageShell";
 export const metadata: Metadata = {
   title: "About Niro - Your family's own person in India",
   description:
-    "Why we built Niro, and the team behind it. Operated by Destreza Eduventures Pvt Ltd.",
+    "Why we built Niro, and the team behind it.",
 };
 
 type Founder = {
@@ -92,7 +92,7 @@ export default function AboutPage() {
 
         <h2>The company</h2>
         <p>
-          Niro is operated by <strong>Destreza Eduventures Pvt Ltd</strong>. If
+          Niro is built and operated by a small team based in Bengaluru. If
           you&apos;d like to reach us, email{" "}
           <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>.
         </p>
