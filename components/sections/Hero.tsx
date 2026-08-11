@@ -1,5 +1,5 @@
 import { ChatVideo } from "@/components/ds/ChatVideo";
-import { HeroEmailForm } from "@/components/ds/HeroEmailForm";
+import { JoinCta } from "@/components/ds/JoinCta";
 import { HERO_QUOTE } from "@/lib/content";
 import { HeroCopy } from "./HeroCopy";
 
@@ -39,10 +39,9 @@ export function Hero() {
         <div>
           <HeroCopy />
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {/* Inline email capture - the highest-intent path, one fewer tap
-                than opening the modal. Submitting advances straight to the
-                membership step. */}
-            <HeroEmailForm />
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 14, alignItems: "center" }}>
+              <JoinCta className="btn btn-primary btn-lg">Join the waitlist</JoinCta>
+            </div>
             {/* Price anchor + reward + no-card reassurance - the reasons a cold
                 visitor spends an email. */}
             <div
