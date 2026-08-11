@@ -4,7 +4,7 @@ import { PageShell } from "@/components/PageShell";
 export const metadata: Metadata = {
   title: "Privacy Policy - Niro",
   description:
-    "How Niro (Destreza Eduventures Pvt Ltd) collects, uses, and protects your information.",
+    "How Niro collects, uses, and protects your information.",
 };
 
 export default function PrivacyPage() {
@@ -20,8 +20,8 @@ export default function PrivacyPage() {
         </p>
 
         <p>
-          This Privacy Policy explains how <strong>Destreza Eduventures Pvt Ltd</strong>{" "}
-          (&ldquo;Niro&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) collects, uses,
+          This Privacy Policy explains how <strong>Niro</strong>{" "}
+          (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects, uses,
           and protects information when you visit tellniro.com and join our
           waitlist. We are the data fiduciary responsible for your personal data.
           By joining the waitlist you agree to this policy.
@@ -128,9 +128,9 @@ export default function PrivacyPage() {
         <h2>Contact</h2>
         <p>
           For any privacy question or request, email us at{" "}
-          <a href="mailto:privacy@tellniro.com">privacy@tellniro.com</a>. Destreza
-          Eduventures Pvt Ltd, Indique Orion, 4th Main Rd, Agara Village, 1st
-          Sector, HSR Layout, Bengaluru, Karnataka 560102.
+          <a href="mailto:privacy@tellniro.com">privacy@tellniro.com</a>. Registered
+          office: Indique Orion, 4th Main Rd, Agara Village, 1st Sector, HSR
+          Layout, Bengaluru, Karnataka 560102.
         </p>
       </article>
     </PageShell>
