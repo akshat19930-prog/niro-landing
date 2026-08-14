@@ -23,6 +23,10 @@ export function ChatVideo() {
     v.setAttribute("muted", "");
 
     const tryPlay = () => {
+      // With preload="none" nothing is fetched until we ask; kick the download
+      // here (post-hydration) so the 285KB clip never competes with the HTML,
+      // pixel, and critical JS during the first-paint window.
+      if (v.preload === "none" || v.networkState === v.NETWORK_EMPTY) v.load();
       const p = v.play();
       if (p && typeof p.catch === "function") p.catch(() => {});
     };
@@ -63,7 +67,7 @@ export function ChatVideo() {
         loop
         muted
         playsInline
-        preload="auto"
+        preload="none"
         poster="/media/chat-poster.webp"
         webkit-playsinline="true"
         src="/media/chat.mp4"
