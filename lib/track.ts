@@ -13,6 +13,7 @@
  */
 import { WAITLIST_ENDPOINT } from "./config";
 import { getStoredArm, getStoredAttribution } from "./analytics";
+import { readPageArm } from "./abtest";
 
 declare global {
   interface Window {
@@ -27,6 +28,7 @@ declare global {
 // session lifecycle events (exposure/session_end) are left to PostHog's own
 // pageview/pageleave capture.
 const PH_FORWARD: Record<string, true> = {
+  ab_exposure: true,
   join_initiated: true,
   email_entered: true,
   reserve_clicked: true,
@@ -73,6 +75,7 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
     type: "event",
     event,
     arm: getStoredArm(),
+    page_arm: readPageArm(),
     pitch,
     sid: getSessionId(),
     ts: Date.now(),
@@ -99,7 +102,11 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
   // Mirror funnel events to PostHog for funnels + heatmap segmentation.
   if (PH_FORWARD[event]) {
     try {
-      window.posthog?.capture(event, { arm: getStoredArm(), pitch });
+      window.posthog?.capture(event, {
+        arm: getStoredArm(),
+        page_arm: readPageArm(),
+        pitch,
+      });
     } catch {
       /* PostHog not loaded */
     }

@@ -18,6 +18,7 @@ import {
   type PricingArm,
 } from "@/lib/analytics";
 import { startSession, registerAnalytics, logEvent } from "@/lib/track";
+import { readPageArm } from "@/lib/abtest";
 import {
   WAITLIST_ENDPOINT,
   SITE_ORIGIN,
@@ -70,6 +71,7 @@ async function submitSignup(payload: {
   email: string;
   eventId: string;
   arm: PricingArm;
+  pageArm: string;
   pitch: string;
   ref: string;
   planId?: string | null;
@@ -170,8 +172,9 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
     if (!clean) return error || "Please enter a valid email address.";
     const { pitch, ref } = getStoredAttribution();
     setEmail(clean);
+    const pageArm = readPageArm();
     logEvent("email_entered");
-    track("Lead", { content_name: "waitlist_email", arm, pitch }, eventId);
+    track("Lead", { content_name: "waitlist_email", arm, page_arm: pageArm, pitch }, eventId);
     // Show the confirmation number instantly and advance - do NOT block the UI
     // on the Apps Script round-trip (302 redirect + cold start can take seconds).
     // The email is still captured; keepalive lets the POST finish in the
@@ -180,18 +183,19 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
       position: FALLBACK_WAITLIST_POSITION,
       referralCode: slugFromEmail(clean),
     });
-    void submitSignup({ email: clean, eventId, arm, pitch, ref });
+    void submitSignup({ email: clean, eventId, arm, pageArm, pitch, ref });
     setStep("plan");
     return null;
   }
 
   function submitPlan(plan: string | null) {
     const { pitch, ref } = getStoredAttribution();
+    const pageArm = readPageArm();
     if (plan) {
       logEvent("reserve_clicked", { plan: plan });
-      track("AddPaymentInfo", { plan_id: plan, arm }, eventId);
+      track("AddPaymentInfo", { plan_id: plan, arm, page_arm: pageArm }, eventId);
     }
-    void submitSignup({ email, eventId, arm, pitch, ref, planId: plan });
+    void submitSignup({ email, eventId, arm, pageArm, pitch, ref, planId: plan });
     setStep("done");
   }
 

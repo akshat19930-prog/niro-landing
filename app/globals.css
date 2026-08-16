@@ -626,3 +626,10 @@
     display: block;
   }
 }
+
+/* --- A/B page-variant gate. `data-pg` is stamped on <html> at parse time by
+   AbInit; only the assigned variant is ever shown, so there is no flash. The
+   default (attribute absent / JS disabled) shows the control arm. --- */
+.pg-b { display: none; }
+[data-pg="reposition"] .pg-a { display: none; }
+[data-pg="reposition"] .pg-b { display: block; }

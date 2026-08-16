@@ -8,7 +8,11 @@ import { useJoin } from "@/components/JoinProvider";
  * modal. Hidden while the modal is open (it would sit behind the overlay) and
  * once the visitor has joined.
  */
-export function StickyCta() {
+export function StickyCta({
+  label = "Join the waitlist — first task free",
+}: {
+  label?: string;
+}) {
   const { open, step } = useJoin();
   if (open || step === "done") return null;
 
@@ -27,9 +31,7 @@ export function StickyCta() {
         zIndex: 60,
       }}
     >
-      <JoinCta className="btn btn-primary btn-md btn-full">
-        Join the waitlist — first task free
-      </JoinCta>
+      <JoinCta className="btn btn-primary btn-md btn-full">{label}</JoinCta>
     </div>
   );
 }
