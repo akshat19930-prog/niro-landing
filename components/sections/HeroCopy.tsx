@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Eyebrow } from "@/components/ds/Eyebrow";
+import { Badge } from "@/components/ds/Badge";
+import { Icon } from "@/components/ds/Icon";
 import { HERO_VARIANTS, DEFAULT_VARIANT, resolveVariant } from "@/lib/content";
 
 /**
@@ -21,6 +23,13 @@ export function HeroCopy() {
 
   return (
     <>
+      {/* Offer badge — the "first task free" hook, surfaced in the fold (it
+          otherwise only appears inside the modal). Same for every ad variant. */}
+      <div style={{ marginBottom: 12 }}>
+        <Badge tone="brand" icon={<Icon name="check-circle" size={14} />}>
+          First task free · no card
+        </Badge>
+      </div>
       {hero.tag && <Eyebrow>{hero.tag}</Eyebrow>}
       <h1
         style={{
