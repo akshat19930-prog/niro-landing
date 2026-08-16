@@ -27,7 +27,9 @@ export function StickyCta() {
         zIndex: 60,
       }}
     >
-      <JoinCta className="btn btn-primary btn-md btn-full">Join the waitlist</JoinCta>
+      <JoinCta className="btn btn-primary btn-md btn-full">
+        Join the waitlist — first task free
+      </JoinCta>
     </div>
   );
 }
