@@ -7,7 +7,13 @@ import { Icon } from "@/components/ds/Icon";
 import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
-import { PLANS, MEMBERSHIP_SINGLE, type Plan } from "@/lib/content";
+import {
+  PLANS,
+  MEMBERSHIP_SINGLE,
+  QUALIFY_TASKS,
+  QUALIFY_WHO,
+  QUALIFY_URGENCY,
+} from "@/lib/content";
 import { FALLBACK_WAITLIST_POSITION } from "@/lib/config";
 
 const h2Style = {
@@ -17,112 +23,98 @@ const h2Style = {
   fontWeight: 500,
 } as const;
 
-/** Selectable membership card. */
-function PlanCard({ plan, selected, onSelect }: { plan: Plan; selected: boolean; onSelect: () => void }) {
-  const dark = plan.highlight;
+/** A tap-to-select pill used across the qualifier questions. */
+function Chip({
+  label,
+  selected,
+  onClick,
+  multi = false,
+}: {
+  label: string;
+  selected: boolean;
+  onClick: () => void;
+  multi?: boolean;
+}) {
   return (
     <button
       type="button"
-      onClick={onSelect}
-      role="radio"
+      role={multi ? "checkbox" : "radio"}
       aria-checked={selected}
+      onClick={onClick}
       style={{
-        position: "relative",
-        textAlign: "left",
+        padding: "9px 14px",
+        borderRadius: "var(--radius-pill)",
         cursor: "pointer",
-        width: "100%",
-        background: dark ? "var(--forest-700)" : "var(--surface-card)",
-        color: dark ? "var(--ivory)" : "var(--text-body)",
-        border: `2px solid ${
-          selected ? (dark ? "var(--gold-400)" : "var(--brand)") : dark ? "var(--forest-700)" : "var(--border)"
-        }`,
-        borderRadius: "var(--radius-xl)",
-        padding: "var(--space-5)",
-        boxShadow: selected ? "var(--shadow-3)" : dark ? "var(--shadow-brand)" : "var(--shadow-2)",
-        transition: "border-color var(--dur-fast) var(--ease-calm), box-shadow var(--dur-fast) var(--ease-calm)",
         fontFamily: "var(--font-sans)",
+        fontSize: "var(--text-sm)",
+        fontWeight: 500,
+        lineHeight: 1.2,
+        border: `1.5px solid ${selected ? "var(--brand)" : "var(--border-strong)"}`,
+        background: selected ? "var(--brand-soft)" : "transparent",
+        color: selected ? "var(--brand)" : "var(--text-body)",
+        transition:
+          "background var(--dur-fast) var(--ease-calm), border-color var(--dur-fast) var(--ease-calm), color var(--dur-fast) var(--ease-calm)",
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
-        <div
-          style={{
-            fontSize: "var(--text-sm)",
-            fontWeight: 600,
-            letterSpacing: "var(--tracking-wide)",
-            textTransform: "uppercase",
-            color: dark ? "var(--gold-300)" : "var(--accent-strong)",
-          }}
-        >
-          {plan.name}
-        </div>
-        <span
-          style={{
-            width: 22,
-            height: 22,
-            borderRadius: "50%",
-            flexShrink: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: `2px solid ${selected ? (dark ? "var(--gold-400)" : "var(--brand)") : "var(--border-strong)"}`,
-            background: selected ? (dark ? "var(--gold-400)" : "var(--brand)") : "transparent",
-            color: dark ? "var(--forest-950)" : "var(--ivory)",
-          }}
-        >
-          {selected && <Icon name="check" size={12} strokeWidth={3} />}
-        </span>
-      </div>
-      <div style={{ marginTop: 8, display: "flex", alignItems: "baseline", gap: 4 }}>
-        <span
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: 34,
-            fontWeight: 600,
-            color: dark ? "#fff" : "var(--text-strong)",
-            lineHeight: 1,
-          }}
-        >
-          {plan.price}
-        </span>
-        <span style={{ fontSize: "var(--text-sm)", color: dark ? "rgba(255,255,255,0.7)" : "var(--text-muted)" }}>
-          {plan.per}
-        </span>
-      </div>
-      <div style={{ marginTop: 4, fontSize: "var(--text-sm)", color: dark ? "var(--gold-300)" : "var(--brand)", fontWeight: 500 }}>
-        {plan.sub}
-      </div>
-      {plan.lead && (
-        <div style={{ marginTop: 14, fontSize: "var(--text-xs)", fontWeight: 600, color: dark ? "rgba(255,255,255,0.92)" : "var(--text-strong)" }}>
-          {plan.lead}
-        </div>
-      )}
-      <ul style={{ listStyle: "none", padding: 0, margin: plan.lead ? "8px 0 0" : "14px 0 0", display: "flex", flexDirection: "column", gap: 8 }}>
-        {plan.features.map((f) => (
-          <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-xs)" }}>
-            <Icon name="check-circle" size={15} style={{ marginTop: 1, flexShrink: 0, color: dark ? "var(--gold-300)" : "var(--brand)" }} />
-            <span style={{ color: dark ? "rgba(255,255,255,0.92)" : "var(--text-body)", lineHeight: 1.4 }}>{f}</span>
-          </li>
-        ))}
-      </ul>
+      {label}
     </button>
   );
 }
 
-/** The join modal - a focused interstitial (no page-scroll displacement).
+/** A labelled group of chips. */
+function Question({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div style={{ marginBottom: 18 }}>
+      <div
+        style={{
+          fontSize: "var(--text-sm)",
+          fontWeight: 600,
+          color: "var(--text-strong)",
+          marginBottom: 10,
+        }}
+      >
+        {label}
+      </div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>{children}</div>
+    </div>
+  );
+}
+
+/** The join modal - email → qualifiers (needs + lead quality) → confirmation.
  *  Email capture + submission live in JoinProvider, so the hero inline form and
  *  this modal share one submission and one eventId. */
 export function JoinModal() {
-  const { open, setOpen, step, arm, email, setEmail, result, referralUrl, submitEmail, submitPlan } = useJoin();
+  const {
+    open,
+    setOpen,
+    step,
+    arm,
+    email,
+    setEmail,
+    result,
+    referralUrl,
+    submitEmail,
+    submitQualifiers,
+    submitPhone,
+  } = useJoin();
 
   const [error, setError] = useState<string | undefined>();
-  const [selectedPlan, setSelectedPlan] = useState<string | null>("prime");
   const [copied, setCopied] = useState(false);
 
-  const plans = arm === "B" ? [MEMBERSHIP_SINGLE] : PLANS;
+  // Qualifier answers (all optional).
+  const [tasks, setTasks] = useState<string[]>([]);
+  const [whoFor, setWhoFor] = useState<string | null>(null);
+  const [urgency, setUrgency] = useState<string | null>(null);
+  const [plan, setPlan] = useState<string | null>(null);
 
-  // Put the cursor in the email field the moment the modal opens at the email
-  // step, so the visitor can type straight away. A tiny delay lets the overlay
-  // paint first (and the body scroll-lock settle) before we take focus.
+  // Optional WhatsApp number on the confirmation.
+  const [phone, setPhone] = useState("");
+  const [phoneAdded, setPhoneAdded] = useState(false);
+
+  // Plan-lean chips (arm-aware): a single tap, not a comparison step.
+  const planChips = arm === "B" ? [MEMBERSHIP_SINGLE] : PLANS;
+
+  // Put the cursor in the email field the moment the modal opens at the email step.
   useEffect(() => {
     if (!open || step !== "form") return;
     const t = setTimeout(() => {
@@ -143,6 +135,23 @@ export function JoinModal() {
     e.preventDefault();
     const err = submitEmail(email);
     setError(err || undefined);
+  }
+
+  function toggleTask(t: string) {
+    setTasks((cur) => (cur.includes(t) ? cur.filter((x) => x !== t) : [...cur, t]));
+  }
+
+  function finishQualifiers(skip = false) {
+    submitQualifiers(
+      skip
+        ? { tasks: [], whoFor: null, urgency: null, plan: null }
+        : { tasks, whoFor, urgency, plan }
+    );
+  }
+
+  function onPhoneAdd() {
+    submitPhone(phone);
+    setPhoneAdded(true);
   }
 
   async function copyReferral() {
@@ -200,37 +209,51 @@ export function JoinModal() {
           </>
         )}
 
-        {step === "plan" && (
+        {step === "qualify" && (
           <>
             <Eyebrow>Step 2 of 2</Eyebrow>
-            <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>
-              {arm === "B" ? "Your Niro membership" : "Choose your membership"}
-            </h2>
+            <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>Help us set up your Niro</h2>
             <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 22px" }}>
-              {arm === "B"
-                ? "No charge today - this just reserves your spot."
-                : "No charge today - this just reserves your spot and tells us which fits your family."}
+              A few taps so your associate is ready for you. Optional &mdash; skip anytime.
             </p>
-            <div
-              role="radiogroup"
-              style={{
-                display: "grid",
-                gap: 14,
-                gridTemplateColumns: plans.length === 1 ? "1fr" : "repeat(auto-fit, minmax(min(200px, 100%), 1fr))",
-                alignItems: "start",
-              }}
-            >
-              {plans.map((plan) => (
-                <PlanCard key={plan.id} plan={plan} selected={selectedPlan === plan.id} onSelect={() => setSelectedPlan(plan.id)} />
+
+            <Question label="What would you hand off first?">
+              {QUALIFY_TASKS.map((t) => (
+                <Chip key={t} label={t} multi selected={tasks.includes(t)} onClick={() => toggleTask(t)} />
               ))}
-            </div>
-            <div style={{ marginTop: 24 }}>
-              <Button size="lg" full disabled={!selectedPlan} onClick={() => submitPlan(selectedPlan)}>
-                Reserve my spot
+            </Question>
+
+            <Question label="Who&rsquo;s it for?">
+              {QUALIFY_WHO.map((w) => (
+                <Chip key={w} label={w} selected={whoFor === w} onClick={() => setWhoFor(w)} />
+              ))}
+            </Question>
+
+            <Question label="When do you need it?">
+              {QUALIFY_URGENCY.map((u) => (
+                <Chip key={u} label={u} selected={urgency === u} onClick={() => setUrgency(u)} />
+              ))}
+            </Question>
+
+            <Question label="Which plan fits your family?">
+              {planChips.map((p) => (
+                <Chip
+                  key={p.id}
+                  label={`${p.name} · ${p.price}${p.per}`}
+                  selected={plan === p.id}
+                  onClick={() => setPlan(plan === p.id ? null : p.id)}
+                />
+              ))}
+              <Chip label="Not sure yet" selected={plan === "unsure"} onClick={() => setPlan(plan === "unsure" ? null : "unsure")} />
+            </Question>
+
+            <div style={{ marginTop: 22 }}>
+              <Button size="lg" full onClick={() => finishQualifiers(false)}>
+                Done
               </Button>
             </div>
             <button
-              onClick={() => submitPlan(null)}
+              onClick={() => finishQualifiers(true)}
               style={{
                 display: "block",
                 margin: "14px auto 0",
@@ -242,7 +265,7 @@ export function JoinModal() {
                 fontFamily: "var(--font-sans)",
               }}
             >
-              I&apos;ll decide later
+              Skip for now
             </button>
           </>
         )}
@@ -267,10 +290,48 @@ export function JoinModal() {
             <h2 style={{ ...h2Style, margin: "0 0 10px" }}>
               You&apos;re #{(result?.position ?? FALLBACK_WAITLIST_POSITION).toLocaleString()} on the list
             </h2>
-            <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 24px" }}>
-              Share with your friends to move up the waitlist - every join with your link
-              moves your family up.
+            <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 20px" }}>
+              Want your first task started sooner? Add your WhatsApp number and we&apos;ll
+              reach out &mdash; or share your link to move up the list.
             </p>
+
+            {/* Optional WhatsApp number — the highest-intent signal + the handoff
+                into the product's own channel. */}
+            {phoneAdded ? (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  marginBottom: 18,
+                  padding: "12px 14px",
+                  borderRadius: "var(--radius-lg)",
+                  background: "var(--brand-soft)",
+                  color: "var(--brand)",
+                  fontSize: "var(--text-sm)",
+                  fontWeight: 500,
+                }}
+              >
+                <Icon name="check-circle" size={16} /> Got it &mdash; we&apos;ll WhatsApp you shortly.
+              </div>
+            ) : (
+              <div style={{ display: "flex", gap: 10, marginBottom: 18, alignItems: "stretch" }}>
+                <div style={{ flex: 1 }}>
+                  <Input
+                    type="tel"
+                    placeholder="WhatsApp number (optional)"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    autoComplete="tel"
+                    aria-label="WhatsApp number"
+                  />
+                </div>
+                <Button onClick={onPhoneAdd} disabled={phone.replace(/[^\d]/g, "").length < 7}>
+                  Notify me
+                </Button>
+              </div>
+            )}
+
             <div style={{ display: "flex", gap: 10, marginBottom: 16, alignItems: "stretch" }}>
               <div style={{ flex: 1 }}>
                 <Input value={referralUrl} readOnly aria-label="Referral link" />
