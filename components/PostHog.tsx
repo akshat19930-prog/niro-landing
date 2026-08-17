@@ -24,7 +24,8 @@ export function PostHog() {
           autocapture:true,
           enable_heatmaps:true,
           person_profiles:'identified_only',
-          session_recording:{ maskAllInputs:true }
+          session_recording:{ maskAllInputs:true },
+          loaded:function(ph){try{var m=document.cookie.match(/(?:^|;\\s*)niro_pg=(control|reposition)/);ph.register({page_arm:m?m[1]:'control'});}catch(e){}}
         });
       `}
     </Script>
