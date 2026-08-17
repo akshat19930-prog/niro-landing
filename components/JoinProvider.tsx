@@ -25,9 +25,16 @@ import {
   FALLBACK_WAITLIST_POSITION,
 } from "@/lib/config";
 
-/** Waitlist flow: email → membership → confirmation. (No task step.) */
-export type Step = "form" | "plan" | "done";
+/** Waitlist flow: email → qualifiers (needs + lead quality) → confirmation. */
+export type Step = "form" | "qualify" | "done";
 export type SignupResult = { position: number; referralCode: string };
+/** Post-signup qualifier answers — all optional, tap-captured. */
+export type Qualifiers = {
+  tasks: string[];
+  whoFor: string | null;
+  urgency: string | null;
+  plan: string | null;
+};
 
 function slugFromEmail(email: string): string {
   return (
@@ -75,6 +82,10 @@ async function submitSignup(payload: {
   pitch: string;
   ref: string;
   planId?: string | null;
+  tasks?: string[];
+  whoFor?: string | null;
+  urgency?: string | null;
+  phone?: string | null;
 }): Promise<SignupResult> {
   const fallback: SignupResult = {
     position: FALLBACK_WAITLIST_POSITION,
@@ -120,8 +131,11 @@ type JoinCtx = {
    *  string to display, or null on success. Used by BOTH the hero inline form
    *  and the modal's email step, so there is one submission and one eventId. */
   submitEmail: (raw: string) => string | null;
-  /** Record the chosen plan (or null) and finish. */
-  submitPlan: (plan: string | null) => void;
+  /** Record the qualifier answers (any/all optional), fire the completion
+   *  beacons, and finish. */
+  submitQualifiers: (answers: Qualifiers) => void;
+  /** Attach an optional WhatsApp number after the confirmation. */
+  submitPhone: (phone: string) => void;
 };
 
 const Ctx = createContext<JoinCtx | null>(null);
@@ -184,19 +198,48 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
       referralCode: slugFromEmail(clean),
     });
     void submitSignup({ email: clean, eventId, arm, pageArm, pitch, ref });
-    setStep("plan");
+    setStep("qualify");
     return null;
   }
 
-  function submitPlan(plan: string | null) {
+  function submitQualifiers(answers: Qualifiers) {
     const { pitch, ref } = getStoredAttribution();
     const pageArm = readPageArm();
-    if (plan) {
-      logEvent("reserve_clicked", { plan: plan });
-      track("AddPaymentInfo", { plan_id: plan, arm, page_arm: pageArm }, eventId);
+    // Beacon the answers (needs + lead-quality signals) and the completion.
+    logEvent("qualified", {
+      tasks: answers.tasks.join("|"),
+      whoFor: answers.whoFor || "",
+      urgency: answers.urgency || "",
+      plan: answers.plan || "",
+    });
+    if (answers.plan) {
+      // Keep the willingness-to-pay signal on the existing reserve metric.
+      logEvent("reserve_clicked", { plan: answers.plan });
+      track("AddPaymentInfo", { plan_id: answers.plan, arm, page_arm: pageArm }, eventId);
     }
-    void submitSignup({ email, eventId, arm, pageArm, pitch, ref, planId: plan });
+    logEvent("signup_completed");
+    void submitSignup({
+      email,
+      eventId,
+      arm,
+      pageArm,
+      pitch,
+      ref,
+      planId: answers.plan,
+      tasks: answers.tasks,
+      whoFor: answers.whoFor,
+      urgency: answers.urgency,
+    });
     setStep("done");
+  }
+
+  function submitPhone(phone: string) {
+    const clean = phone.replace(/[^\d+]/g, "");
+    if (clean.length < 7) return;
+    const { pitch, ref } = getStoredAttribution();
+    const pageArm = readPageArm();
+    logEvent("phone_added");
+    void submitSignup({ email, eventId, arm, pageArm, pitch, ref, phone: clean });
   }
 
   return (
@@ -213,7 +256,8 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
         referralUrl,
         openForm,
         submitEmail,
-        submitPlan,
+        submitQualifiers,
+        submitPhone,
       }}
     >
       {children}

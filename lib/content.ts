@@ -440,6 +440,28 @@ export const MEMBERSHIP_SINGLE: Plan = {
   highlight: true,
 };
 
+/* ---- Post-signup qualifiers (lead quality + needs). Tap-based, all optional;
+   captured right after the email so we read intent at peak, from ~100% of
+   signups, with no email-open dependency. ---- */
+export const QUALIFY_TASKS: string[] = [
+  "Parents' health & appointments",
+  "Bills, banking & paperwork",
+  "EPF / pension / govt work",
+  "Home repairs & upkeep",
+  "Property / tenants",
+  "Emergencies & peace of mind",
+];
+export const QUALIFY_WHO: string[] = [
+  "My parents in India",
+  "My own household",
+  "Both",
+];
+export const QUALIFY_URGENCY: string[] = [
+  "I have a task right now",
+  "In the next few weeks",
+  "Just exploring",
+];
+
 /* ---- First-task picker (order is randomized per visitor at runtime) ---- */
 export const TASK_DEFS: TaskDef[] = [
   {

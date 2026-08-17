@@ -74,6 +74,8 @@ function doPost(e) {
     var position;
     // Column indexes (1-based) matching HEADER.
     var C_REFCODE = 13, C_POSITION = 14;
+    var C_TASKS = 15, C_WHOFOR = 16, C_URGENCY = 17, C_PHONE = 18;
+    var tasksStr = (data.tasks && data.tasks.length) ? data.tasks.join(" | ") : "";
 
     if (rowIndex === -1) {
       // New signup. Order must match HEADER.
@@ -83,7 +85,8 @@ function doPost(e) {
         new Date(), eventId, email, data.arm || "",
         data.pitch || "", data.ref || "", data.planId || "",
         utm.utm_source || "", utm.utm_medium || "", utm.utm_campaign || "",
-        utm.utm_content || "", utm.fbclid || "", referralCode, position
+        utm.utm_content || "", utm.fbclid || "", referralCode, position,
+        tasksStr, data.whoFor || "", data.urgency || "", data.phone || ""
       ]);
     } else {
       // Existing signup - enrich the row, keep its position/referralCode.
@@ -95,6 +98,10 @@ function doPost(e) {
       if (data.pitch) sheet.getRange(rowIndex, 5).setValue(data.pitch);
       if (data.ref) sheet.getRange(rowIndex, 6).setValue(data.ref);
       if (data.planId) sheet.getRange(rowIndex, 7).setValue(data.planId);
+      if (tasksStr) sheet.getRange(rowIndex, C_TASKS).setValue(tasksStr);
+      if (data.whoFor) sheet.getRange(rowIndex, C_WHOFOR).setValue(data.whoFor);
+      if (data.urgency) sheet.getRange(rowIndex, C_URGENCY).setValue(data.urgency);
+      if (data.phone) sheet.getRange(rowIndex, C_PHONE).setValue(data.phone);
     }
 
     return json_({ position: position, referralCode: referralCode });
@@ -113,7 +120,9 @@ function doGet() {
 var HEADER = [
   "timestamp", "eventId", "email", "arm", "pitch", "ref",
   "planId", "utm_source", "utm_medium", "utm_campaign", "utm_content",
-  "fbclid", "referralCode", "position"
+  "fbclid", "referralCode", "position",
+  // Lead-quality qualifiers (appended so existing column indexes never shift).
+  "tasks", "whoFor", "urgency", "phone"
 ];
 
 function getSheet_() {
