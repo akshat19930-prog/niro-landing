@@ -9,10 +9,10 @@ import type { TaskDef } from "@/components/ds/TaskPicker";
  * confirmed content before launch (see design/design-system.md).
  */
 
-/* ---- Hero: 4 ad-matched variants, selected by ?v=1..4 (default 4) ---- */
+/* ---- Hero: 5 ad-matched variants, selected by ?v=1..5 (default 3) ---- */
 export type HeroVariant = { tag: string; h: string; s: string };
 
-export const HERO_VARIANTS: Record<"1" | "2" | "3" | "4", HeroVariant> = {
+export const HERO_VARIANTS: Record<"1" | "2" | "3" | "4" | "5", HeroVariant> = {
   // v1 - Sole Responder / peace-of-mind (emergency-fear register).
   "1": {
     tag: "Peace of mind",
@@ -38,6 +38,13 @@ export const HERO_VARIANTS: Record<"1" | "2" | "3" | "4", HeroVariant> = {
     h: "Everything back home you can't be there to handle - handled",
     s: "Bills, repairs, paperwork, emergencies. One person in India who gets it done for your parents and for you - over WhatsApp.",
   },
+  // v5 - broad "support for life back home" (matches the P5 ad: "A document. An
+  // appointment. A repair. A health concern. One message can get it moving.").
+  "5": {
+    tag: "Support for life back home",
+    h: "Anything waiting back home - one message and it's moving",
+    s: "A document, an appointment, a repair, a health worry - for your parents or for you. Text Niro and a real person in India picks it up and gets it done.",
+  },
 };
 
 // Default hero for traffic without a valid ?v= (organic, referral, or a
@@ -47,7 +54,7 @@ export const HERO_VARIANTS: Record<"1" | "2" | "3" | "4", HeroVariant> = {
 export const DEFAULT_VARIANT = "3" as const;
 
 export function resolveVariant(v: string | null): keyof typeof HERO_VARIANTS {
-  return v && ["1", "2", "3", "4"].includes(v)
+  return v && ["1", "2", "3", "4", "5"].includes(v)
     ? (v as keyof typeof HERO_VARIANTS)
     : DEFAULT_VARIANT;
 }
