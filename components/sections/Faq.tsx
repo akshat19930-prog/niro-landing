@@ -7,8 +7,17 @@ import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
 import { FAQ } from "@/lib/content";
 
-/** FAQ accordion - single panel open at a time; first item open by default. */
-export function Faq() {
+type FaqItem = { q: string; a: string; special?: boolean };
+
+/** FAQ accordion - single panel open at a time; first item open by default.
+ *  Defaults to the main-site FAQ; pass `items`/`heading` to reuse on /gulf. */
+export function Faq({
+  items = FAQ,
+  heading = "Before you join",
+}: {
+  items?: FaqItem[];
+  heading?: string;
+} = {}) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
@@ -24,10 +33,10 @@ export function Faq() {
             fontWeight: 500,
           }}
         >
-          Before you join
+          {heading}
         </h2>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          {FAQ.map((f, i) => {
+          {items.map((f, i) => {
             const isOpen = open === i;
             return (
               <Card key={f.q} padded={false}>

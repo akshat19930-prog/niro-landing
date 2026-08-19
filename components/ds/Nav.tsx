@@ -9,10 +9,17 @@ import { JoinCta } from "./JoinCta";
 export function Nav({
   cta = "Join the waitlist",
   ctaHref,
+  homeHref = "/",
+  ctaPosition,
   dark = false,
 }: {
   cta?: string;
   ctaHref?: string;
+  /** Where the wordmark links. Defaults to home; on a dead-end page (e.g.
+   *  /gulf) pass that page's own path so no link leads back to the main site. */
+  homeHref?: string;
+  /** Optional CTA-position tag for analytics (e.g. "nav"). */
+  ctaPosition?: string;
   dark?: boolean;
 }) {
   return (
@@ -38,7 +45,7 @@ export function Nav({
           gap: 16,
         }}
       >
-        <a href="/" aria-label="Niro - home" style={{ display: "inline-flex" }}>
+        <a href={homeHref} aria-label="Niro - home" style={{ display: "inline-flex" }}>
           <Wordmark dark={dark} />
         </a>
         {ctaHref ? (
@@ -46,7 +53,9 @@ export function Nav({
             {cta}
           </a>
         ) : (
-          <JoinCta className="nav-cta">{cta}</JoinCta>
+          <JoinCta className="nav-cta" position={ctaPosition}>
+            {cta}
+          </JoinCta>
         )}
       </div>
     </header>

@@ -25,6 +25,7 @@ const hanken = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://tellniro.com"),
   title: "Niro - Your family's own person in India",
   description:
     "One membership. A named associate for your parents' errands, bills, appointments, and emergencies - so you can be there, from anywhere.",

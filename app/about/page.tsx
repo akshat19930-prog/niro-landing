@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
 
 export const metadata: Metadata = {
-  title: "About Niro - Your family's own person in India",
+  title: "About Niro - The team behind Niro",
   description:
     "Why we built Niro, and the team behind it.",
 };

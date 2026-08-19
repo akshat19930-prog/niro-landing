@@ -86,6 +86,10 @@ async function submitSignup(payload: {
   whoFor?: string | null;
   urgency?: string | null;
   phone?: string | null;
+  /** Split-test market ("gulf" for /gulf); omitted on the main India page. */
+  market?: string;
+  /** The path this signup came from (e.g. "/gulf"), for attribution. */
+  page?: string;
 }): Promise<SignupResult> {
   const fallback: SignupResult = {
     position: FALLBACK_WAITLIST_POSITION,
@@ -118,6 +122,9 @@ type JoinCtx = {
   setOpen: (o: boolean) => void;
   /** Pricing-experiment cell for this visitor (see assignArm). */
   arm: PricingArm;
+  /** Split-test market for this page ("gulf" on /gulf), else undefined. Rides
+   *  along on CTA-position events and the signup payload. */
+  market?: string;
   /** The captured (normalized) email, shared by the hero form and the modal. */
   email: string;
   setEmail: (e: string) => void;
@@ -142,7 +149,15 @@ const Ctx = createContext<JoinCtx | null>(null);
 
 /** Shares join-flow state (modal open + step + email) across the page, captures
  *  UTM attribution, and assigns the pricing-experiment arm once on first load. */
-export function JoinProvider({ children }: { children: React.ReactNode }) {
+export function JoinProvider({
+  children,
+  market,
+}: {
+  children: React.ReactNode;
+  /** Set to "gulf" on /gulf so every beacon + the signup payload carry the
+   *  market, keeping the Meta split test cleanly separable. */
+  market?: string;
+}) {
   const [step, setStep] = useState<Step>("form");
   const [open, setOpen] = useState(false);
   // "A" until the client effect assigns the real arm; the modal (where the arm
@@ -187,8 +202,13 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
     const { pitch, ref } = getStoredAttribution();
     setEmail(clean);
     const pageArm = readPageArm();
-    logEvent("email_entered");
-    track("Lead", { content_name: "waitlist_email", arm, page_arm: pageArm, pitch }, eventId);
+    const page = typeof window !== "undefined" ? window.location.pathname : "";
+    logEvent("email_entered", market ? { market } : undefined);
+    track(
+      "Lead",
+      { content_name: "waitlist_email", arm, page_arm: pageArm, pitch, ...(market ? { market } : {}) },
+      eventId
+    );
     // Show the confirmation number instantly and advance - do NOT block the UI
     // on the Apps Script round-trip (302 redirect + cold start can take seconds).
     // The email is still captured; keepalive lets the POST finish in the
@@ -197,7 +217,7 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
       position: FALLBACK_WAITLIST_POSITION,
       referralCode: slugFromEmail(clean),
     });
-    void submitSignup({ email: clean, eventId, arm, pageArm, pitch, ref });
+    void submitSignup({ email: clean, eventId, arm, pageArm, pitch, ref, market, page });
     setStep("qualify");
     return null;
   }
@@ -205,19 +225,21 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
   function submitQualifiers(answers: Qualifiers) {
     const { pitch, ref } = getStoredAttribution();
     const pageArm = readPageArm();
+    const page = typeof window !== "undefined" ? window.location.pathname : "";
     // Beacon the answers (needs + lead-quality signals) and the completion.
     logEvent("qualified", {
       tasks: answers.tasks.join("|"),
       whoFor: answers.whoFor || "",
       urgency: answers.urgency || "",
       plan: answers.plan || "",
+      ...(market ? { market } : {}),
     });
     if (answers.plan) {
       // Keep the willingness-to-pay signal on the existing reserve metric.
-      logEvent("reserve_clicked", { plan: answers.plan });
-      track("AddPaymentInfo", { plan_id: answers.plan, arm, page_arm: pageArm }, eventId);
+      logEvent("reserve_clicked", { plan: answers.plan, ...(market ? { market } : {}) });
+      track("AddPaymentInfo", { plan_id: answers.plan, arm, page_arm: pageArm, ...(market ? { market } : {}) }, eventId);
     }
-    logEvent("signup_completed");
+    logEvent("signup_completed", market ? { market } : undefined);
     void submitSignup({
       email,
       eventId,
@@ -229,6 +251,8 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
       tasks: answers.tasks,
       whoFor: answers.whoFor,
       urgency: answers.urgency,
+      market,
+      page,
     });
     setStep("done");
   }
@@ -238,8 +262,9 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
     if (clean.length < 7) return;
     const { pitch, ref } = getStoredAttribution();
     const pageArm = readPageArm();
-    logEvent("phone_added");
-    void submitSignup({ email, eventId, arm, pageArm, pitch, ref, phone: clean });
+    const page = typeof window !== "undefined" ? window.location.pathname : "";
+    logEvent("phone_added", market ? { market } : undefined);
+    void submitSignup({ email, eventId, arm, pageArm, pitch, ref, phone: clean, market, page });
   }
 
   return (
@@ -250,6 +275,7 @@ export function JoinProvider({ children }: { children: React.ReactNode }) {
         open,
         setOpen,
         arm,
+        market,
         email,
         setEmail,
         result,

@@ -18,7 +18,11 @@ const links: { label: string; href: string; external?: boolean }[] = [
   },
 ];
 
-export function Footer() {
+export function Footer({
+  tagline = "Niro: your presence in India - a go-getter home manager to get things done for you and your family.",
+}: {
+  tagline?: string;
+} = {}) {
   const year = new Date().getFullYear();
   return (
     <footer
@@ -48,8 +52,7 @@ export function Footer() {
                 color: "#9AA79E",
               }}
             >
-              Niro: your presence in India - a go-getter home manager to get things
-              done for you and your family.
+              {tagline}
             </p>
           </div>
           <nav style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
