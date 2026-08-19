@@ -531,50 +531,6 @@ export const GULF_FAQ: { q: string; a: string }[] = [
   },
 ];
 
-/** Gulf pricing — two tiers (Lite $79, Prime $149). Copy per the conversion
- *  pass; Prime is flagged most-popular. */
-export const GULF_PLANS: {
-  id: "lite" | "prime";
-  name: string;
-  price: string;
-  tagline: string;
-  features: string[];
-  highlight: boolean;
-  badge?: string;
-}[] = [
-  {
-    id: "lite",
-    name: "Niro Lite",
-    price: "$79",
-    tagline: "For everyday family support.",
-    features: [
-      "One family WhatsApp group",
-      "Up to 8 tasks/month",
-      "Gulf + India coverage",
-      "Dedicated human contact",
-      "Emergency coordination through ambulance partner",
-    ],
-    highlight: false,
-  },
-  {
-    id: "prime",
-    name: "Niro Prime",
-    price: "$149",
-    tagline: "For families who want more.",
-    badge: "Most popular",
-    features: [
-      "Everything in Lite",
-      "Unlimited tasks",
-      "Niro's own concierge physically present at the hospital when needed",
-      "₹20L cyber-fraud insurance cover",
-      "$10/month wellness credits",
-      "Priority handling for time-sensitive requests",
-      "Gulf + India coverage",
-    ],
-    highlight: true,
-  },
-];
-
 /* Gulf post-signup qualifiers — dual (household here + parents in India). No
    plan question: the page has a single $149 SKU, and a plan chip would repeat
    the price (acceptance: "$149 appears exactly once"). */

@@ -9,7 +9,7 @@ import { ChatVideo } from "@/components/ds/ChatVideo";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import { logEvent } from "@/lib/track";
-import { GULF_TESTIMONIALS, GULF_FAQ, GULF_PLANS } from "@/lib/content";
+import { GULF_TESTIMONIALS, GULF_FAQ } from "@/lib/content";
 
 /* ------------------------------------------------------------ shared style */
 
@@ -517,101 +517,61 @@ function GulfTrustStrip() {
 
 /* ----------------------------------------------------------------- pricing */
 
-function PlanCard({ plan }: { plan: (typeof GULF_PLANS)[number] }) {
-  const dark = plan.highlight;
-  return (
-    <div
-      style={{
-        position: "relative",
-        background: dark ? "var(--forest-700)" : "var(--surface-card)",
-        color: dark ? "var(--ivory)" : "var(--text-body)",
-        border: `1.5px solid ${dark ? "var(--forest-700)" : "var(--border)"}`,
-        borderRadius: "var(--radius-xl)",
-        padding: "var(--space-6)",
-        boxShadow: dark ? "var(--shadow-brand)" : "var(--shadow-2)",
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10 }}>
-        <span
-          style={{
-            fontSize: "var(--text-sm)",
-            fontWeight: 600,
-            textTransform: "uppercase",
-            letterSpacing: "var(--tracking-wide)",
-            color: dark ? "var(--gold-300)" : "var(--accent-strong)",
-          }}
-        >
-          {plan.name}
-        </span>
-        {plan.badge && (
-          <span
-            style={{
-              fontSize: "var(--text-xs)",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "var(--tracking-wide)",
-              background: "var(--gold-300)",
-              color: "var(--forest-900)",
-              borderRadius: "var(--radius-pill)",
-              padding: "3px 10px",
-            }}
-          >
-            {plan.badge}
-          </span>
-        )}
-      </div>
-      <div style={{ margin: "10px 0 2px", display: "flex", alignItems: "baseline", gap: 5 }}>
-        <span style={{ fontFamily: "var(--font-display)", fontSize: 38, fontWeight: 600, color: dark ? "#fff" : "var(--text-strong)" }}>
-          {plan.price}
-        </span>
-        <span style={{ fontSize: "var(--text-sm)", color: dark ? "rgba(255,255,255,0.72)" : "var(--text-muted)" }}>/month</span>
-      </div>
-      <div style={{ fontSize: "var(--text-sm)", color: dark ? "var(--gold-300)" : "var(--brand)", fontWeight: 500, marginBottom: 16 }}>
-        {plan.tagline}
-      </div>
-      <ul style={{ listStyle: "none", padding: 0, margin: "0 0 16px", display: "flex", flexDirection: "column", gap: 9 }}>
-        {plan.features.map((f) => (
-          <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-sm)" }}>
-            <Icon name="check-circle" size={16} style={{ marginTop: 1, flexShrink: 0, color: dark ? "var(--gold-300)" : "var(--brand)" }} />
-            <span style={{ color: dark ? "rgba(255,255,255,0.92)" : "var(--text-body)", lineHeight: 1.4 }}>{f}</span>
-          </li>
-        ))}
-      </ul>
-      <div
-        style={{
-          fontSize: "var(--text-xs)",
-          fontWeight: 600,
-          color: dark ? "var(--gold-300)" : "var(--accent-strong)",
-        }}
-      >
-        First task free · No card required
-      </div>
-    </div>
-  );
-}
-
 function GulfPricing() {
+  const features = [
+    "Unlimited tasks, both countries",
+    "Two WhatsApp groups — one for India, one for home here",
+    "Your parents just WhatsApp. Nothing to install, nothing to learn.",
+    "Emergency response for your parents in India — ambulance partner plus our own person at the hospital",
+    "₹20 lakh cyber-fraud cover for your parents in India, plus monitoring",
+    "A named contact who knows your family",
+  ];
   return (
     <section data-screen-label="Gulf pricing" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
-      <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
-        <Eyebrow style={{ justifyContent: "flex-start" }}>Pricing</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 26px" }}>One membership. Your whole family, both countries.</h2>
+      <div style={{ maxWidth: 520, margin: "0 auto" }}>
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))",
-            gap: 16,
-            alignItems: "start",
+            background: "var(--forest-700)",
+            color: "var(--ivory)",
+            border: "1px solid var(--forest-700)",
+            borderRadius: "var(--radius-xl)",
+            padding: "var(--space-6)",
+            boxShadow: "var(--shadow-brand)",
           }}
         >
-          {GULF_PLANS.map((p) => (
-            <PlanCard key={p.id} plan={p} />
-          ))}
-        </div>
-        <div style={{ textAlign: "center", marginTop: 28 }}>
-          <JoinCta className="btn btn-primary btn-lg" position="pricing">
+          <div
+            style={{
+              fontSize: "var(--text-sm)",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "var(--tracking-wide)",
+              color: "var(--gold-300)",
+            }}
+          >
+            Niro Prime
+          </div>
+          <div style={{ margin: "10px 0 4px", display: "flex", alignItems: "baseline", gap: 6 }}>
+            <span style={{ fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 600, color: "#fff" }}>$149</span>
+            <span style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.72)" }}>/month</span>
+          </div>
+          <p style={{ fontSize: "var(--text-sm)", color: "var(--gold-300)", fontWeight: 500, margin: "0 0 18px", lineHeight: 1.5 }}>
+            The first house manager that works in both places your family lives. Gets you back
+            15+ hours a month.
+          </p>
+          <ul style={{ listStyle: "none", padding: 0, margin: "0 0 22px", display: "flex", flexDirection: "column", gap: 11 }}>
+            {features.map((f) => (
+              <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 9, fontSize: "var(--text-sm)" }}>
+                <Icon name="check-circle" size={17} style={{ marginTop: 1, flexShrink: 0, color: "var(--gold-300)" }} />
+                <span style={{ color: "rgba(255,255,255,0.92)", lineHeight: 1.45 }}>{f}</span>
+              </li>
+            ))}
+          </ul>
+          <JoinCta className="btn btn-accent btn-lg btn-full" position="pricing">
             Get Early Access
           </JoinCta>
+          <div style={{ marginTop: 14, textAlign: "center", fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.72)" }}>
+            First task free · No card required to join
+          </div>
         </div>
       </div>
     </section>
