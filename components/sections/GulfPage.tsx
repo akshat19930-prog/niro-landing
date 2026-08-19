@@ -399,9 +399,36 @@ function GulfCrossBorder() {
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow>The cross-border difference</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>And when something needs to happen in India&hellip;</h2>
-        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 24px" }}>
+        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 18px" }}>
           Your same Niro team can handle it.
         </p>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(250px, 100%), 1fr))",
+            gap: "12px 20px",
+            marginBottom: 28,
+          }}
+        >
+          {[
+            "Parents' travel planning & concierge",
+            "Parents' health & emergency response",
+            "EPFO recovery & India bank admin",
+            "Home admin, repairs & chores for parents",
+          ].map((t) => (
+            <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+              <Icon
+                name="check-circle"
+                size={18}
+                style={{ marginTop: 1, flexShrink: 0, color: "var(--brand)" }}
+              />
+              <span style={{ fontSize: "var(--text-md)", color: "var(--text-strong)", fontWeight: 500, lineHeight: 1.4 }}>
+                {t}
+              </span>
+            </div>
+          ))}
+        </div>
 
         <div
           style={{
