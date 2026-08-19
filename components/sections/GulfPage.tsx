@@ -13,7 +13,7 @@ import { GULF_TESTIMONIALS, GULF_FAQ } from "@/lib/content";
 
 /* ------------------------------------------------------------ shared style */
 
-const sectionPad = "56px var(--gutter)";
+const sectionPad = "48px var(--gutter)";
 const h2Style = {
   fontFamily: "var(--font-display)",
   fontSize: "var(--text-3xl)",
@@ -159,42 +159,74 @@ function AskBubble({ children }: { children: React.ReactNode }) {
   );
 }
 
+/** A reply from Niro — left-aligned received-message bubble with a sender tag,
+ *  so the exchange reads as a real WhatsApp thread, not a list of requests. */
+function NiroBubble({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "flex-start" }}>
+      <div
+        style={{
+          background: "var(--surface-card)",
+          color: "var(--text-body)",
+          border: "1px solid var(--border)",
+          borderRadius: 16,
+          borderTopLeftRadius: 5,
+          padding: "10px 16px 12px",
+          maxWidth: 500,
+          fontSize: "var(--text-base)",
+          lineHeight: 1.45,
+          boxShadow: "var(--shadow-1)",
+        }}
+      >
+        <span
+          style={{
+            display: "block",
+            fontSize: "var(--text-xs)",
+            fontWeight: 700,
+            color: "var(--brand)",
+            marginBottom: 3,
+          }}
+        >
+          Niro
+        </span>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function GulfHowItWorks() {
-  const asks = [
-    "Our cleaner is leaving next week. Can you help?",
-    "Can you find a maths tutor for my daughter?",
-    "Emirates IDs expire in three weeks. Can you sort the renewals?",
-    "Dad needs a hospital appointment in Bangalore on Friday.",
+  // A genuine exchange: problem → Niro takes ownership → next step, twice, so
+  // the "someone else carries it" magic is shown, not asserted. Both a Gulf
+  // household problem and an India problem, in one thread.
+  const thread: { from: "you" | "niro"; text: React.ReactNode }[] = [
+    { from: "you", text: <>Our cleaner just quit 😩 We need someone from next week.</> },
+    { from: "niro", text: <>Got it &mdash; I&rsquo;ll line up a few background-checked options and share them here.</> },
+    { from: "you", text: <>Also, Dad needs a hospital appointment in Bangalore on Friday.</> },
+    { from: "niro", text: <>On it &mdash; I&rsquo;ll book it and arrange his cab, and keep you posted here.</> },
   ];
   return (
     <section data-screen-label="Gulf how it works" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow>How it works</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 26px" }}>One message instead of five phone calls.</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 11, marginBottom: 26 }}>
-          {asks.map((a) => (
-            <AskBubble key={a}>{a}</AskBubble>
-          ))}
+        <h2 style={{ ...h2Style, margin: "14px 0 24px" }}>One message instead of five phone calls.</h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 22 }}>
+          {thread.map((m, i) =>
+            m.from === "you" ? <AskBubble key={i}>{m.text}</AskBubble> : <NiroBubble key={i}>{m.text}</NiroBubble>
+          )}
         </div>
-        <div
+        <p
           style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "8px 12px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "var(--text-md)",
-            fontWeight: 600,
+            textAlign: "center",
+            margin: 0,
+            fontFamily: "var(--font-display)",
+            fontSize: "var(--text-xl)",
+            fontWeight: 500,
             color: "var(--text-strong)",
           }}
         >
-          <span>You ask</span>
-          <Icon name="arrow-right" size={18} style={{ color: "var(--brand)" }} />
-          <span>Niro handles it</span>
-          <Icon name="arrow-right" size={18} style={{ color: "var(--brand)" }} />
-          <span>You get an update</span>
-        </div>
+          One message. Someone else handles the chasing.
+        </p>
       </div>
     </section>
   );
@@ -261,13 +293,13 @@ function GulfTimeBack() {
 type HandleCard = { icon: IconName; title: string; items: string; crossBorder?: boolean };
 
 const HANDLES: HandleCard[] = [
-  { icon: "home", title: "Your Gulf household", items: "Domestic help · School · Tutors · Home maintenance" },
-  { icon: "star", title: "Kids & family", items: "Summer camps · Activities · Transport · Appointments" },
+  { icon: "home", title: "Your Gulf household", items: "Domestic help · Repairs · Maintenance · Household admin" },
+  { icon: "star", title: "Kids & family", items: "Tutors · Camps · Activities · Appointments" },
   { icon: "heart-pulse", title: "Your family in India", items: "Parents · Hospitals · Repairs · Paperwork" },
   {
     icon: "arrow-up-right",
     title: "Across borders",
-    items: "Document attestation · Visas · Certificates · Property",
+    items: "Attestation · Visas · Certificates · Property",
     crossBorder: true,
   },
 ];
@@ -280,17 +312,17 @@ function HandleCardView({ card }: { card: HandleCard }) {
         background: cross ? "var(--gold-50, #FBF6EA)" : "var(--surface-card)",
         border: cross ? "1.5px solid var(--gold-300)" : "1px solid var(--border)",
         borderRadius: "var(--radius-xl)",
-        padding: "var(--space-5)",
+        padding: "var(--space-4)",
         boxShadow: cross ? "var(--shadow-2)" : "var(--shadow-1)",
         display: "flex",
         alignItems: "center",
-        gap: 16,
+        gap: 14,
       }}
     >
       <span
         style={{
-          width: 46,
-          height: 46,
+          width: 42,
+          height: 42,
           flexShrink: 0,
           borderRadius: 12,
           display: "flex",
@@ -328,12 +360,12 @@ function GulfHandles() {
     <section data-screen-label="Gulf handles" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>What Niro handles</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 26px" }}>The person you call when something needs doing.</h2>
+        <h2 style={{ ...h2Style, margin: "14px 0 22px" }}>The person you call when something needs doing.</h2>
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))",
-            gap: 16,
+            gap: 12,
           }}
         >
           {HANDLES.map((c) => (
@@ -343,7 +375,7 @@ function GulfHandles() {
         <p
           style={{
             textAlign: "center",
-            marginTop: 24,
+            marginTop: 20,
             fontSize: "var(--text-lg)",
             fontFamily: "var(--font-display)",
             fontWeight: 500,
@@ -402,36 +434,10 @@ function GulfCrossBorder() {
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow>The cross-border difference</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>And when something needs to happen in India&hellip;</h2>
-        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 18px" }}>
-          Your same Niro team can handle it.
+        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 22px" }}>
+          Your same Niro team can handle it &mdash; parents&rsquo; appointments, EPFO and bank
+          admin, repairs, or a document that has to move between both countries.
         </p>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(250px, 100%), 1fr))",
-            gap: "12px 20px",
-            marginBottom: 28,
-          }}
-        >
-          {[
-            "Parents' travel planning & concierge",
-            "Parents' health & emergency response",
-            "EPFO recovery & India bank admin",
-            "Home admin, repairs & chores for parents",
-          ].map((t) => (
-            <div key={t} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-              <Icon
-                name="check-circle"
-                size={18}
-                style={{ marginTop: 1, flexShrink: 0, color: "var(--brand)" }}
-              />
-              <span style={{ fontSize: "var(--text-md)", color: "var(--text-strong)", fontWeight: 500, lineHeight: 1.4 }}>
-                {t}
-              </span>
-            </div>
-          ))}
-        </div>
 
         <div
           style={{
@@ -477,7 +483,7 @@ function GulfCrossBorder() {
             display: "flex",
             alignItems: "flex-start",
             gap: 13,
-            marginTop: 26,
+            marginTop: 22,
           }}
         >
           <span
@@ -510,6 +516,22 @@ function GulfCrossBorder() {
 }
 
 /* ---------------------------------------------------------------- families */
+
+/** Render a real quote with its outcome phrase emphasised. The highlight must
+ *  be a verbatim substring of the quote — we only add visual weight, never
+ *  words. Falls back to the plain quote if it isn't found. */
+function renderQuote(quote: string, highlight?: string): React.ReactNode {
+  if (!highlight) return quote;
+  const i = quote.indexOf(highlight);
+  if (i === -1) return quote;
+  return (
+    <>
+      {quote.slice(0, i)}
+      <strong style={{ color: "var(--text-strong)", fontWeight: 600 }}>{highlight}</strong>
+      {quote.slice(i + highlight.length)}
+    </>
+  );
+}
 
 function GulfFamilies() {
   // Two real, permission-cleared Dubai testimonials: one Gulf-led (Nikita —
@@ -545,7 +567,7 @@ function GulfFamilies() {
               }}
             >
               <blockquote style={{ margin: "0 0 18px", fontSize: "var(--text-base)", lineHeight: 1.55, color: "var(--text-body)" }}>
-                &ldquo;{s.quote}&rdquo;
+                &ldquo;{renderQuote(s.quote, s.highlight)}&rdquo;
               </blockquote>
               <figcaption style={{ display: "flex", alignItems: "center", gap: 12, marginTop: "auto" }}>
                 <span
@@ -588,7 +610,7 @@ function GulfTrustStrip() {
     "Clear pricing",
   ];
   return (
-    <section data-screen-label="Gulf trust strip" style={{ padding: "28px var(--gutter)" }}>
+    <section data-screen-label="Gulf trust strip" style={{ padding: "16px var(--gutter)", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
       <div
         style={{
           maxWidth: "var(--container)",
@@ -597,8 +619,8 @@ function GulfTrustStrip() {
           flexWrap: "wrap",
           justifyContent: "center",
           alignItems: "center",
-          gap: "8px 14px",
-          fontSize: "var(--text-sm)",
+          gap: "6px 12px",
+          fontSize: "var(--text-xs)",
           fontWeight: 500,
           color: "var(--text-muted)",
         }}
@@ -716,7 +738,7 @@ function GulfClosing() {
             margin: "0 0 20px",
           }}
         >
-          Your family is busy enough. Let someone else handle the chasing.
+          Let Niro take it from here.
         </h2>
         <JoinCta className="btn btn-accent btn-lg" position="closing">
           Get Early Access
