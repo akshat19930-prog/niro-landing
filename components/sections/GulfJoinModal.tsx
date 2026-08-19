@@ -182,7 +182,7 @@ export function GulfJoinModal() {
             <Eyebrow>Step 2 of 2</Eyebrow>
             <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>Help us set up your Niro</h2>
             <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 22px" }}>
-              A few taps so your contact is ready for you. Optional &mdash; skip anytime.
+              A few taps so your contact is ready for you. Optional - skip anytime.
             </p>
 
             <Question label="What should we handle first?">
@@ -263,7 +263,7 @@ export function GulfJoinModal() {
                   fontWeight: 500,
                 }}
               >
-                <Icon name="check-circle" size={16} /> Got it &mdash; we&apos;ll WhatsApp you shortly.
+                <Icon name="check-circle" size={16} /> Got it - we&apos;ll WhatsApp you shortly.
               </div>
             ) : (
               <div style={{ display: "flex", gap: 10, alignItems: "stretch" }}>
