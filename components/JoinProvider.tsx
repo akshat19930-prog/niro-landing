@@ -17,7 +17,7 @@ import {
   newEventId,
   type PricingArm,
 } from "@/lib/analytics";
-import { startSession, registerAnalytics, logEvent } from "@/lib/track";
+import { startSession, registerAnalytics, logEvent, getGeo } from "@/lib/track";
 import { readPageArm } from "@/lib/abtest";
 import {
   WAITLIST_ENDPOINT,
@@ -100,7 +100,7 @@ async function submitSignup(payload: {
     const res = await fetch(WAITLIST_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ ...payload, utm: getStoredUtm() }),
+      body: JSON.stringify({ ...payload, geo: getGeo(), utm: getStoredUtm() }),
       keepalive: true,
     });
     if (!res.ok) return fallback;

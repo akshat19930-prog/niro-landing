@@ -1,24 +1,37 @@
 /**
- * Niro smoke-test — twice-daily email report (Google Apps Script).
+ * Niro smoke-test — thrice-daily email report (12:00, 18:00, 00:00 IST).
+ * Google Apps Script.
  *
- * Lives in the SAME spreadsheet as waitlist.gs (add as a second file). Reads:
- *   - `waitlist` tab  (signups: arm, pitch, plan, referral)
+ * Lives in the SAME spreadsheet as waitlist.gs. Reads:
+ *   - `waitlist` tab  (signups: now carry market / page / geo)
  *   - `events` tab    (funnel + session beacons: exposure, join_initiated,
- *                      email_entered, reserve_clicked, session_end)
- *   - Meta Marketing API (daily spend / impressions / clicks; per-ad for pitch)
+ *                      email_entered, phone_added, session_end — each now
+ *                      carries `page` + `geo`)
+ *   - Meta Marketing API (ad-set level: spend / impressions / clicks / leads /
+ *                         landing-page views)
  *
- * Emails two tables at 09:00 and 18:00:
- *   1. Metric × date matrix — last 5 days as columns + an MTD column
- *      (sessions, bounce %, avg session duration, the funnel, spend, CPL).
- *   2. Pricing A/B funnel — arms A and B as columns (traffic, join initiated,
- *      email entered, reserve clicked, LP→reserve %).
+ * The email has FOUR blocks:
+ *   1-3. One metric×date table per market — North America, Gulf, Gulf (Dual) —
+ *        each with the same columns (last N days + MTD) and these rows, in order:
+ *          Sessions (unique visitors), Bounce rate, Avg session duration,
+ *          Get Early Access clicked, Email entered, Email entered / visitors %,
+ *          Phone number submitted, Cost per lead, Spend, Meta CPM, CTR.
+ *   4.   Meta ads console — two tables across ALL ad sets:
+ *          (a) cost per lead by ad set, (b) cost per visitor by ad set.
+ *
+ * SEGMENTATION
+ *   Funnel/session rows come from our own beacons, split by (page, geo):
+ *     - Gulf (Dual) = page starts with "/gulf"
+ *     - Gulf        = page "/" and geo "gulf"
+ *     - North America = page "/" and geo "na"
+ *     (page "/" with geo "other" is rest-of-world; not shown in the 3 sections.)
+ *   Spend / CPM / CTR / Cost-per-lead come from Meta, split by AD-SET NAME via
+ *   CONFIG.MARKETS[].adset regexes — ADJUST THOSE to your real ad-set names.
+ *   The console tables show every ad set with the market each mapped to, so you
+ *   can confirm the mapping at a glance.
  *
  * SETUP: fill CONFIG, then run setupTriggers() once (authorize). Meta rows show
- * "n/a" until META_ACCESS_TOKEN + META_AD_ACCOUNT_ID are filled. Ad-naming for
- * per-pitch CPL: ad name contains P1..P4, URL carries the matching ?v=1..4.
- *
- * Bounce / avg duration are approximations from our own beacons (a session is
- * "engaged" if it lasts >=10s, scrolls/clicks, or starts the waitlist).
+ * "n/a" until META_ACCESS_TOKEN + META_AD_ACCOUNT_ID are filled.
  */
 
 // ===================== CONFIG =====================
@@ -26,45 +39,47 @@ var CONFIG = {
   RECIPIENTS: "akshat.19930@gmail.com, paarthdhar@gmail.com",
   TIMEZONE: "Asia/Kolkata",
 
-  META_ACCESS_TOKEN: "",            // PASTE your System User token here (ads_read). Secret - never commit it.
-  META_AD_ACCOUNT_ID: "act_2246578592783321",  // Niro ad account (verified)
+  META_ACCESS_TOKEN: "",            // PASTE your System User token (ads_read). Secret - never commit it.
+  META_AD_ACCOUNT_ID: "act_2246578592783321",
   META_API_VERSION: "v19.0",
 
-  BUDGET_INR: 207500,               // ~$2,500 at 83/USD - set to your real INR ad budget
-  TEST_START: "2026-08-07",         // yyyy-mm-dd (ads began 8 Aug; captures all spend in MTD)
+  BUDGET_INR: 207500,
+  TEST_START: "2026-08-07",         // yyyy-mm-dd — start of the window (captures all spend)
   TEST_DAYS: 12,
   DATE_COLS: 5,                     // trailing day columns before MTD
 
-  // Excluded from reported signups/CPL (QA + placeholders). Add your own
-  // testing address here so your walkthroughs never count as leads. Match is
-  // case-insensitive; a leading "@" entry excludes a whole domain.
+  // The three report markets, in display order. `pages`/`geos` segment our own
+  // beacons; `adset` matches Meta ad-set names for spend/CPM/CTR. Gulf (Dual) is
+  // matched BEFORE Gulf so a dual ad set isn't swallowed by the Gulf regex.
+  // >>> EDIT the `adset` patterns to match how YOUR ad sets are actually named. <<<
+  MARKETS: [
+    { key: "na",        label: "North America", adset: /(^|[^a-z])(us|usa|united\s*states|canada|ca|north\s*america|na)([^a-z]|$)/i },
+    { key: "gulf",      label: "Gulf",          adset: /(gulf|uae|dubai|abu\s*dhabi|qatar|doha|sharjah|parent)/i },
+    { key: "gulf_dual", label: "Gulf (Dual)",   adset: /(dual|two[-\s]?countr|both[-\s]?side|\/gulf|gulf[-_\s]?dual|149)/i }
+  ],
+
   TEST_EMAILS: [
     "john.doe@gmail.com", "johndoe@gmail.com", "jane.doe@gmail.com",
     "test@test.com", "test@gmail.com", "kk@gm",
     "@example.com", "@test.com", "@mailinator.com"
   ],
 
-  PITCH_LABELS: {
-    "1": "P1 · Peace of mind",
-    "2": "P2 · Off your plate",
-    "3": "P3 · Your India, sorted",
-    "4": "P4 · Home manager (control)"
-  },
-
   GATES: {
-    cpl:    { good: 1000, warn: 1850, dir: "lower" },  // ₹ (was $12/$22; ad spend is INR)
-    bounce: { good: 45, warn: 65, dir: "lower" },   // %
-    lp2res: { good: 8,  warn: 3,  dir: "higher" }   // % LP -> reserve
+    cpl:    { good: 1000, warn: 1850, dir: "lower" },  // ₹
+    bounce: { good: 45,   warn: 65,   dir: "lower" },  // %
+    e2v:    { good: 8,    warn: 3,    dir: "higher" }  // % email entered / visitors
   }
 };
 // ==================================================
 
 function setupTriggers() {
   removeTriggers();
-  ScriptApp.newTrigger("sendReport").timeBased().atHour(9).everyDays(1)
-    .inTimezone(CONFIG.TIMEZONE).create();
-  ScriptApp.newTrigger("sendReport").timeBased().atHour(18).everyDays(1)
-    .inTimezone(CONFIG.TIMEZONE).create();
+  // Three times a day (IST): 12:00 noon, 18:00 evening, and 00:00 midnight
+  // (the day-end report, delivered just after midnight).
+  [12, 18, 0].forEach(function (hr) {
+    ScriptApp.newTrigger("sendReport").timeBased().atHour(hr).everyDays(1)
+      .inTimezone(CONFIG.TIMEZONE).create();
+  });
 }
 function removeTriggers() {
   ScriptApp.getProjectTriggers().forEach(function (t) {
@@ -74,7 +89,7 @@ function removeTriggers() {
 
 function sendReport() {
   var data = readAll_();
-  var meta = fetchMetaDaily_();          // {byDate:{}, byCell:{}} or null
+  var meta = fetchMeta_();
   var model = buildModel_(data, meta);
   MailApp.sendEmail({
     to: CONFIG.RECIPIENTS,
@@ -108,9 +123,6 @@ function dateStr_(v) {
   var d = (v instanceof Date) ? v : new Date(v);
   return Utilities.formatDate(d, CONFIG.TIMEZONE, "yyyy-MM-dd");
 }
-
-/** True for QA/placeholder addresses (exact match or "@domain" entry in
- *  CONFIG.TEST_EMAILS), so they don't count as real signups. */
 function isTestEmail_(email) {
   var e = String(email || "").trim().toLowerCase();
   if (!e) return false;
@@ -125,140 +137,163 @@ function isTestEmail_(email) {
   return false;
 }
 
-function fetchMetaDaily_() {
+// ------------------------------ Meta ------------------------------
+function fetchMeta_() {
   if (!CONFIG.META_ACCESS_TOKEN || !CONFIG.META_AD_ACCOUNT_ID) return null;
   try {
     var base = "https://graph.facebook.com/" + CONFIG.META_API_VERSION + "/" +
       CONFIG.META_AD_ACCOUNT_ID + "/insights";
     var until = Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyy-MM-dd");
     var range = encodeURIComponent(JSON.stringify({ since: CONFIG.TEST_START, until: until }));
-    var f = "spend,impressions,clicks";
+    var fields = "adset_id,adset_name,spend,impressions,clicks,actions";
 
-    var daily = metaGet_(base + "?level=account&time_increment=1&time_range=" + range + "&fields=" + f + "&limit=500");
-    var byDate = {};
-    daily.forEach(function (d) {
-      byDate[d.date_start] = { spend: num_(d.spend), impr: num_(d.impressions), clicks: num_(d.clicks) };
-    });
+    // Ad-set level, one row per (ad set, day). Everything else is derived from this.
+    var rows = metaGetAll_(base + "?level=adset&time_increment=1&time_range=" + range +
+      "&fields=" + fields + "&limit=500");
 
-    var ads = metaGet_(base + "?level=ad&time_range=" + range + "&fields=ad_name,actions," + f + "&limit=500");
-    var byCell = {};
-    ads.forEach(function (a) {
-      var c = cellFromName_(a.ad_name);
-      if (!byCell[c]) byCell[c] = { spend: 0, leads: 0 };
-      byCell[c].spend += num_(a.spend);
-      byCell[c].leads += metaLeads_(a.actions);
+    var adsets = {};          // id -> { name, market, spend, impr, clicks, leads, lpv }
+    var marketDate = {};      // marketKey -> { date -> {spend, impr, clicks} }
+    var totalSpend = 0;
+
+    rows.forEach(function (r) {
+      var id = String(r.adset_id || r.adset_name || "?");
+      var name = String(r.adset_name || id);
+      var date = r.date_start;
+      var spend = num_(r.spend), impr = num_(r.impressions), clicks = num_(r.clicks);
+      var leads = metaAction_(r.actions, "lead");
+      var lpv = metaAction_(r.actions, "landing_page_view");
+      totalSpend += spend;
+
+      var mk = marketForAdset_(name);
+      if (!adsets[id]) adsets[id] = { name: name, market: mk, spend: 0, impr: 0, clicks: 0, leads: 0, lpv: 0 };
+      var a = adsets[id];
+      a.spend += spend; a.impr += impr; a.clicks += clicks; a.leads += leads; a.lpv += lpv;
+
+      if (mk) {
+        var md = marketDate[mk] = marketDate[mk] || {};
+        var cell = md[date] = md[date] || { spend: 0, impr: 0, clicks: 0 };
+        cell.spend += spend; cell.impr += impr; cell.clicks += clicks;
+      }
     });
-    return { byDate: byDate, byCell: byCell };
+    return { adsets: adsets, marketDate: marketDate, totalSpend: totalSpend };
   } catch (err) {
     return { error: String(err) };
   }
 }
-function metaGet_(url) {
-  var res = UrlFetchApp.fetch(url + "&access_token=" + encodeURIComponent(CONFIG.META_ACCESS_TOKEN),
-    { muteHttpExceptions: true });
-  var body = JSON.parse(res.getContentText() || "{}");
-  return body.data || [];
+function metaGetAll_(url) {
+  var out = [], guard = 0, next = url;
+  while (next && guard < 20) {
+    var full = next.indexOf("access_token=") === -1
+      ? next + "&access_token=" + encodeURIComponent(CONFIG.META_ACCESS_TOKEN)
+      : next;
+    var res = UrlFetchApp.fetch(full, { muteHttpExceptions: true });
+    var body = JSON.parse(res.getContentText() || "{}");
+    if (body.data && body.data.length) out = out.concat(body.data);
+    next = (body.paging && body.paging.next) ? body.paging.next : null;
+    guard++;
+  }
+  return out;
 }
-function cellFromName_(name) {
-  // Matches P1..P4 (or v1..v4) as a token even when followed by _/-/text, e.g.
-  // "P1_english", "Niro-P3-hindi", "v2". Requires a boundary before the P/v and
-  // no trailing digit (so P4 != P40).
-  var mm = String(name || "").match(/(?:^|[^a-z0-9])[pv]\s*([1-4])(?![0-9])/i);
-  return mm ? mm[1] : "?";
+/** Value for one action_type from an insights actions[] array (0 if absent).
+ *  Use canonical single types (e.g. "lead", "landing_page_view") — never sum
+ *  Meta's duplicate lead variants, which would multiply the count. */
+function metaAction_(actions, type) {
+  if (!actions || !actions.length) return 0;
+  var v = 0;
+  actions.forEach(function (a) { if (String(a.action_type) === type) v = num_(a.value); });
+  return v;
+}
+function marketForAdset_(name) {
+  var list = CONFIG.MARKETS;
+  // Test Gulf (Dual) before Gulf so a dual ad set isn't captured by the Gulf regex.
+  var order = ["gulf_dual", "gulf", "na"];
+  for (var i = 0; i < order.length; i++) {
+    var def = defForKey_(order[i]);
+    if (def && def.adset && def.adset.test(String(name || ""))) return def.key;
+  }
+  return "";  // unmapped
+}
+function defForKey_(key) {
+  var list = CONFIG.MARKETS;
+  for (var i = 0; i < list.length; i++) if (list[i].key === key) return list[i];
+  return null;
 }
 function num_(x) { return Number(x) || 0; }
-/** Meta lead count from an insights actions[] array. Meta reports the SAME lead
- *  under several action_types (lead, onsite_web_lead, offsite_conversion.fb_pixel_lead,
- *  offsite_lead_add_20_s_calls) - all the same value - so summing them multiplies
- *  the true count. Use the canonical "lead" action_type only. */
-function metaLeads_(actions) {
-  if (!actions || !actions.length) return 0;
-  var found = 0;
-  actions.forEach(function (a) {
-    if (String(a.action_type) === "lead") found = num_(a.value);
-  });
-  return found;
-}
 
 // ------------------------------ model ------------------------------
 function buildModel_(data, meta) {
-  var now = new Date();
-  var tz = CONFIG.TIMEZONE;
+  var now = new Date(), tz = CONFIG.TIMEZONE;
 
-  // Only rows with a real email are signups (defends against any stray blank
-  // rows, e.g. from an older waitlist.gs that mis-handled event beacons), and
-  // exclude obvious QA/placeholder addresses so test sweeps don't inflate leads
-  // or CPL. Raw rows stay in the sheet - this only affects reported metrics.
   data.signups = data.signups.filter(function (s) {
     var email = String(s.email || "").trim().toLowerCase();
     return email !== "" && !isTestEmail_(email);
   });
 
-  // Column dates: last DATE_COLS days (oldest..today).
+  // Date columns: last DATE_COLS days (oldest..today).
   var cols = [];
   for (var i = CONFIG.DATE_COLS - 1; i >= 0; i--) {
     cols.push(Utilities.formatDate(new Date(now.getTime() - i * 86400000), tz, "yyyy-MM-dd"));
   }
-
-  // Bucket events + signups by date.
-  var evByDate = {}, suByDate = {};
-  data.events.forEach(function (e) {
-    // e.date may come back as a Date object (Sheets coerces the "yyyy-MM-dd"
-    // text into a date value on read), so always normalize through dateStr_()
-    // to a string key that matches the column dates. Fall back to timestamp.
-    var raw = (e.date !== "" && e.date != null) ? e.date : e.timestamp;
-    var d = dateStr_(raw);
-    (evByDate[d] = evByDate[d] || []).push(e);
-  });
-  data.signups.forEach(function (s) {
-    var d = dateStr_(s.timestamp);
-    suByDate[d] = (suByDate[d] || 0) + 1;
-  });
-
-  function windowFor(dates) {
-    var evs = [], su = 0;
-    dates.forEach(function (d) {
-      if (evByDate[d]) evs = evs.concat(evByDate[d]);
-      su += (suByDate[d] || 0);
-    });
-    return computeWindow_(evs, su, meta, dates);
-  }
-
-  // MTD dates = TEST_START .. today
-  var mtdDates = [];
-  var cur = CONFIG.TEST_START, todayStr = Utilities.formatDate(now, tz, "yyyy-MM-dd");
-  var guard = 0;
+  // MTD dates = TEST_START..today
+  var mtdDates = [], cur = CONFIG.TEST_START, todayStr = Utilities.formatDate(now, tz, "yyyy-MM-dd"), guard = 0;
   while (cur <= todayStr && guard < 400) { mtdDates.push(cur); cur = nextDay_(cur); guard++; }
 
-  var colModels = cols.map(function (d) { return { label: Utilities.formatDate(new Date(d + "T00:00:00"), tz, "MMM d"), stat: windowFor([d]) }; });
-  var mtd = windowFor(mtdDates);
+  // Bucket events by (market, date).
+  var evByMarketDate = {};   // marketKey -> date -> [events]
+  data.events.forEach(function (e) {
+    var mk = marketForEvent_(e.page, e.geo, e.market);
+    if (!mk) return;
+    var raw = (e.date !== "" && e.date != null) ? e.date : e.timestamp;
+    var d = dateStr_(raw);
+    (evByMarketDate[mk] = evByMarketDate[mk] || {});
+    (evByMarketDate[mk][d] = evByMarketDate[mk][d] || []).push(e);
+  });
 
-  // A/B split over MTD
-  var ab = { A: computeArm_(data.events, "A", meta), B: computeArm_(data.events, "B", meta) };
+  function windowFor(mk, dates) {
+    var evs = [];
+    dates.forEach(function (d) {
+      if (evByMarketDate[mk] && evByMarketDate[mk][d]) evs = evs.concat(evByMarketDate[mk][d]);
+    });
+    var metaAgg = { spend: 0, impr: 0, clicks: 0 };
+    if (meta && meta.marketDate && meta.marketDate[mk]) {
+      dates.forEach(function (d) {
+        var c = meta.marketDate[mk][d];
+        if (c) { metaAgg.spend += c.spend; metaAgg.impr += c.impr; metaAgg.clicks += c.clicks; }
+      });
+    }
+    return computeMarketWindow_(evs, metaAgg);
+  }
 
-  // Pitch leaderboard. Spend + leads come from Meta (per-ad, matched to cell by
-  // ad name); CPL = Meta spend / Meta leads for that cell - self-consistent and
-  // immune to any ?v= attribution drift in the sheet's pitch column. "Signups"
-  // still shows the sheet's own count for that pitch, for cross-reference.
-  var pitch = ["1", "2", "3", "4"].map(function (c) {
-    var su = data.signups.filter(function (s) { return String(s.pitch || "4") === c; }).length;
-    var cell = (meta && meta.byCell && meta.byCell[c]) ? meta.byCell[c] : null;
-    var sp = cell ? cell.spend : 0;
-    var leads = cell ? cell.leads : 0;
-    return { cell: c, label: CONFIG.PITCH_LABELS[c], signups: su, spend: sp, leads: leads, cpl: leads ? sp / leads : 0 };
-  }).sort(function (a, b) { return b.leads - a.leads; });
+  var markets = CONFIG.MARKETS.map(function (def) {
+    return {
+      key: def.key, label: def.label,
+      cols: cols.map(function (d) {
+        return { label: Utilities.formatDate(new Date(d + "T00:00:00"), tz, "MMM d"), stat: windowFor(def.key, [d]) };
+      }),
+      mtd: windowFor(def.key, mtdDates)
+    };
+  });
+
+  // Ad-set console (MTD totals), sorted by spend desc.
+  var adsets = [];
+  if (meta && meta.adsets) {
+    Object.keys(meta.adsets).forEach(function (id) { adsets.push(meta.adsets[id]); });
+    adsets.sort(function (a, b) { return b.spend - a.spend; });
+  }
 
   var start = new Date(CONFIG.TEST_START + "T00:00:00");
   var dayNum = Math.max(1, Math.ceil((now - start) / 86400000));
   var prev = loadSnapshot_();
 
   return {
-    now: now, meta_ok: !!(meta && !meta.error && meta.byDate), meta_err: meta && meta.error,
-    cols: colModels, mtd: mtd, ab: ab, pitch: pitch,
+    now: now,
+    meta_ok: !!(meta && !meta.error && meta.adsets),
+    meta_err: meta && meta.error,
+    markets: markets, adsets: adsets,
     totalSignups: data.signups.length,
     newSignups: prev ? Math.max(0, data.signups.length - prev.totalSignups) : data.signups.length,
     dayNum: dayNum, daysLeft: Math.max(0, CONFIG.TEST_DAYS - dayNum),
-    spendMTD: mtd.spend, budget: CONFIG.BUDGET_INR
+    spendMTD: meta && meta.totalSpend ? meta.totalSpend : 0, budget: CONFIG.BUDGET_INR
   };
 }
 function nextDay_(yyyymmdd) {
@@ -267,15 +302,24 @@ function nextDay_(yyyymmdd) {
   return Utilities.formatDate(d, CONFIG.TIMEZONE, "yyyy-MM-dd");
 }
 
-function computeWindow_(evts, signupCount, meta, dates) {
-  var expo = {}, ji = {}, em = {}, rs = {}, engaged = {}, dur = {};
+/** Which report market an event belongs to, from its page + geo (market wins if
+ *  the beacon carried it). Returns "" for rest-of-world (not shown). */
+function marketForEvent_(page, geo, market) {
+  var p = String(page || ""), g = String(geo || "").toLowerCase(), mk = String(market || "").toLowerCase();
+  if (p.indexOf("/gulf") === 0 || mk === "gulf") return "gulf_dual";
+  if (g === "gulf") return "gulf";
+  if (g === "na") return "na";
+  return "";
+}
+
+function computeMarketWindow_(evts, metaAgg) {
+  var expo = {}, getAcc = {}, em = {}, ph = {}, engaged = {}, dur = {};
   evts.forEach(function (e) {
-    var sid = String(e.sid || "");
-    var ev = String(e.event || "");
+    var sid = String(e.sid || ""), ev = String(e.event || "");
     if (ev === "exposure") expo[sid] = 1;
-    else if (ev === "join_initiated") { ji[sid] = 1; engaged[sid] = 1; }
+    else if (ev === "join_initiated") { getAcc[sid] = 1; engaged[sid] = 1; }
     else if (ev === "email_entered") em[sid] = 1;
-    else if (ev === "reserve_clicked") rs[sid] = 1;
+    else if (ev === "phone_added") ph[sid] = 1;
     else if (ev === "session_end") {
       if (num_(e.engaged) === 1) engaged[sid] = 1;
       var d = num_(e.durationMs);
@@ -288,25 +332,20 @@ function computeWindow_(evts, signupCount, meta, dates) {
   var bounce = sessions ? (1 - engagedCount / sessions) * 100 : 0;
   var durList = Object.keys(dur).map(function (s) { return dur[s]; }).filter(function (d) { return d > 0; });
   var avgDurSec = durList.length ? (durList.reduce(function (a, b) { return a + b; }, 0) / durList.length / 1000) : 0;
-  var email = Object.keys(em).length || signupCount || 0;
+  var email = Object.keys(em).length;
 
-  // Meta spend for these dates
-  var spend = 0;
-  if (meta && meta.byDate && dates) {
-    dates.forEach(function (d) { if (meta.byDate[d]) spend += meta.byDate[d].spend; });
-  }
-
+  var spend = metaAgg.spend, impr = metaAgg.impr, clicks = metaAgg.clicks;
   return {
     sessions: sessions, bounce: bounce, avgDurSec: avgDurSec,
-    joinInit: Object.keys(ji).length, email: email, reserve: Object.keys(rs).length,
-    spend: spend, cpl: email ? spend / email : 0,
-    lp2res: sessions ? (Object.keys(rs).length / sessions * 100) : 0
+    getAccess: Object.keys(getAcc).length,
+    email: email,
+    e2v: sessions ? (email / sessions * 100) : 0,
+    phone: Object.keys(ph).length,
+    spend: spend, impr: impr, clicks: clicks,
+    cpl: email ? spend / email : 0,
+    cpm: impr ? spend / impr * 1000 : 0,
+    ctr: impr ? clicks / impr * 100 : 0
   };
-}
-
-function computeArm_(events, arm, meta) {
-  var evs = events.filter(function (e) { return String(e.arm || "") === arm; });
-  return computeWindow_(evs, 0, meta, null);
 }
 
 // ------------------------------ render ------------------------------
@@ -326,7 +365,7 @@ function money_(n) {
 }
 function pct_(n) { return (Math.round(n * 10) / 10) + "%"; }
 function dur_(sec) {
-  if (!sec) return "—";
+  if (!sec) return "-";
   var m = Math.floor(sec / 60), s = Math.round(sec % 60);
   return m ? (m + "m " + s + "s") : (s + "s");
 }
@@ -339,94 +378,131 @@ function td_(html, opt) {
 function th_(html, opt) {
   return '<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:right;font:12.5px/1.4 -apple-system,Segoe UI,Roboto,sans-serif;color:#5b6b60;' + (opt || "") + '">' + html + "</th>";
 }
-
-function renderSubject_(m) {
-  var lead = m.pitch[0] && m.pitch[0].signups ? m.pitch[0].label.split(" ")[0] : "—";
-  var ampm = Number(Utilities.formatDate(m.now, CONFIG.TIMEZONE, "H")) < 12 ? "AM" : "PM";
-  var cpl = m.meta_ok ? (" · " + money_(m.mtd.cpl) + " CPL") : "";
-  return "Niro smoke test · " + Utilities.formatDate(m.now, CONFIG.TIMEZONE, "MMM d") + " " + ampm +
-    " · " + m.totalSignups + " signups (+" + m.newSignups + ")" + cpl + " · " + lead + " leading";
+function labelTd_(label) {
+  return '<td style="padding:6px 9px;border-bottom:1px solid #eee;font:12.5px/1.4 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a2b22">' + label + "</td>";
 }
 
-function metricRow_(label, cols, mtdVal, statusForMtd) {
-  var cells = "<td style=\"padding:6px 9px;border-bottom:1px solid #eee;font:12.5px/1.4 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a2b22\">" + label + "</td>";
-  cols.forEach(function (c) { cells += td_(c, "text-align:right;color:#3a4a40"); });
-  cells += td_(statusForMtd ? chip_(mtdVal, statusForMtd) : mtdVal, "text-align:right;font-weight:600;background:#f6f4ee");
-  return "<tr>" + cells + "</tr>";
+function renderSubject_(m) {
+  var ampm = Number(Utilities.formatDate(m.now, CONFIG.TIMEZONE, "H")) < 12 ? "AM" : "PM";
+  var spend = m.meta_ok ? (" · " + money_(m.spendMTD) + " spend") : "";
+  return "Niro smoke test · " + Utilities.formatDate(m.now, CONFIG.TIMEZONE, "MMM d") + " " + ampm +
+    " · " + m.totalSignups + " signups (+" + m.newSignups + ")" + spend;
+}
+
+/** One metric×date table for a market. Rows in the exact requested order. */
+function renderMarketTable_(m, market) {
+  var h = [];
+  h.push('<h3 style="font-size:15px;margin:22px 0 6px">' + market.label + '</h3>');
+  h.push('<table style="border-collapse:collapse;width:100%"><tr>');
+  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Metric</th>');
+  market.cols.forEach(function (c) { h.push(th_(c.label)); });
+  h.push(th_("MTD", "background:#f6f4ee;color:#1a2b22"));
+  h.push('</tr>');
+
+  var C = market.cols.map(function (c) { return c.stat; });
+  var M = market.mtd, ok = m.meta_ok;
+
+  function row(label, vals, mtdVal, statusForMtd) {
+    var cells = labelTd_(label);
+    vals.forEach(function (v) { cells += td_(v, "text-align:right;color:#3a4a40"); });
+    cells += td_(statusForMtd ? chip_(mtdVal, statusForMtd) : mtdVal, "text-align:right;font-weight:600;background:#f6f4ee");
+    return "<tr>" + cells + "</tr>";
+  }
+
+  h.push(row("Sessions (unique visitors)", C.map(function (s) { return s.sessions; }), M.sessions));
+  h.push(row("Bounce rate", C.map(function (s) { return pct_(s.bounce); }), pct_(M.bounce), statusOf_(M.bounce, CONFIG.GATES.bounce)));
+  h.push(row("Avg session duration", C.map(function (s) { return dur_(s.avgDurSec); }), dur_(M.avgDurSec)));
+  h.push(row("Get Early Access clicked", C.map(function (s) { return s.getAccess; }), M.getAccess));
+  h.push(row("Email entered", C.map(function (s) { return s.email; }), M.email));
+  h.push(row("Email entered / visitors %", C.map(function (s) { return pct_(s.e2v); }), pct_(M.e2v), statusOf_(M.e2v, CONFIG.GATES.e2v)));
+  h.push(row("Phone number submitted", C.map(function (s) { return s.phone; }), M.phone));
+  h.push(row("Cost per lead", C.map(function (s) { return ok ? money_(s.cpl) : na_(); }), ok ? money_(M.cpl) : na_(), ok ? statusOf_(M.cpl, CONFIG.GATES.cpl) : ""));
+  h.push(row("Spend", C.map(function (s) { return ok ? money_(s.spend) : na_(); }), ok ? money_(M.spend) : na_()));
+  h.push(row("Meta CPM", C.map(function (s) { return ok ? money_(s.cpm) : na_(); }), ok ? money_(M.cpm) : na_()));
+  h.push(row("CTR", C.map(function (s) { return ok ? pct_(s.ctr) : na_(); }), ok ? pct_(M.ctr) : na_()));
+  h.push('</table>');
+  return h.join("");
+}
+
+function marketLabelFor_(key) {
+  var d = defForKey_(key);
+  return d ? d.label : (key || "Unmapped");
 }
 
 function renderHtml_(m) {
   var h = [];
-  h.push('<div style="max-width:720px;margin:0 auto;font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a2b22">');
+  h.push('<div style="max-width:760px;margin:0 auto;font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a2b22">');
   h.push('<h2 style="font-size:18px;margin:0 0 4px">Niro smoke test — ' +
     Utilities.formatDate(m.now, CONFIG.TIMEZONE, "EEE MMM d, HH:mm z") + '</h2>');
   h.push('<p style="color:#5b6b60;margin:0 0 16px">Day ' + m.dayNum + ' of ' + CONFIG.TEST_DAYS +
-    ' · ' + m.daysLeft + ' left · spend ' + (m.meta_ok ? money_(m.spendMTD) : na_()) + ' / ' + money_(m.budget) + '</p>');
+    ' · ' + m.daysLeft + ' left · ' + m.totalSignups + ' signups (+' + m.newSignups + ') · spend ' +
+    (m.meta_ok ? money_(m.spendMTD) : na_()) + ' / ' + money_(m.budget) + '</p>');
   if (!m.meta_ok) {
     h.push('<p style="background:#FBEEC8;border:1px solid #E4C97A;border-radius:6px;padding:8px 12px;color:#7a5b12">' +
-      'Meta not connected' + (m.meta_err ? ' (' + m.meta_err + ')' : '') + ' — spend / CPL show n/a. Fill CONFIG.</p>');
+      'Meta not connected' + (m.meta_err ? ' (' + m.meta_err + ')' : '') + ' — Cost per lead / Spend / CPM / CTR show n/a. Fill CONFIG.META_ACCESS_TOKEN.</p>');
   }
 
-  // ---- Table 1: metric x date ----
-  h.push('<h3 style="font-size:14px;margin:18px 0 6px">Daily metrics</h3>');
-  h.push('<table style="border-collapse:collapse;width:100%"><tr>');
-  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Metric</th>');
-  m.cols.forEach(function (c) { h.push(th_(c.label)); });
-  h.push(th_("MTD", "background:#f6f4ee;color:#1a2b22"));
-  h.push('</tr>');
+  // ---- Blocks 1-3: one table per market ----
+  m.markets.forEach(function (market) { h.push(renderMarketTable_(m, market)); });
 
-  var C = m.cols.map(function (c) { return c.stat; });
-  var M = m.mtd, ok = m.meta_ok;
-  h.push(metricRow_("Sessions (LP visits)", C.map(function (s) { return s.sessions; }), M.sessions));
-  h.push(metricRow_("Bounce rate", C.map(function (s) { return pct_(s.bounce); }), pct_(M.bounce), statusOf_(M.bounce, CONFIG.GATES.bounce)));
-  h.push(metricRow_("Avg session duration", C.map(function (s) { return dur_(s.avgDurSec); }), dur_(M.avgDurSec)));
-  h.push(metricRow_("Join waitlist initiated", C.map(function (s) { return s.joinInit; }), M.joinInit));
-  h.push(metricRow_("Email entered", C.map(function (s) { return s.email; }), M.email));
-  h.push(metricRow_("Reserve spot clicked", C.map(function (s) { return s.reserve; }), M.reserve));
-  h.push(metricRow_("LP → reserve", C.map(function (s) { return pct_(s.lp2res); }), pct_(M.lp2res), statusOf_(M.lp2res, CONFIG.GATES.lp2res)));
-  h.push(metricRow_("Spend", C.map(function (s) { return ok ? money_(s.spend) : na_(); }), ok ? money_(M.spend) : na_()));
-  h.push(metricRow_("CPL", C.map(function (s) { return ok ? money_(s.cpl) : na_(); }), ok ? money_(M.cpl) : na_(), ok ? statusOf_(M.cpl, CONFIG.GATES.cpl) : ""));
-  h.push('</table>');
+  // ---- Block 4: Meta ads console (2 tables across all ad sets) ----
+  h.push('<h2 style="font-size:16px;margin:30px 0 4px;padding-top:16px;border-top:2px solid #e6e2d6">Meta ads — all ad sets</h2>');
 
-  // ---- Table 2: pricing A/B ----
-  h.push('<h3 style="font-size:14px;margin:22px 0 6px">Pricing A/B (since start)</h3>');
+  // Table A: cost per lead
+  h.push('<h3 style="font-size:14px;margin:14px 0 6px">Cost per lead by ad set</h3>');
   h.push('<table style="border-collapse:collapse;width:100%"><tr>');
-  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Step</th>');
-  h.push(th_("Arm A (Lite + Prime)"));
-  h.push(th_("Arm B (single $99)"));
+  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Ad set</th>');
+  h.push(th_("Market", "text-align:left")); h.push(th_("Spend")); h.push(th_("Leads")); h.push(th_("Cost / lead"));
   h.push('</tr>');
-  var A = m.ab.A, B = m.ab.B;
-  function abRow(label, a, b) {
-    return "<tr>" +
-      '<td style="padding:6px 9px;border-bottom:1px solid #eee;font:12.5px/1.4 -apple-system;color:#1a2b22">' + label + "</td>" +
-      td_(a, "text-align:right") + td_(b, "text-align:right") + "</tr>";
+  if (m.meta_ok && m.adsets.length) {
+    var tS = 0, tL = 0;
+    m.adsets.forEach(function (a) {
+      tS += a.spend; tL += a.leads;
+      h.push("<tr>" + labelTd_(a.name) +
+        td_(marketLabelFor_(a.market), "text-align:left;color:#5b6b60") +
+        td_(money_(a.spend), "text-align:right") +
+        td_(a.leads, "text-align:right") +
+        td_(a.leads ? money_(a.spend / a.leads) : na_(), "text-align:right;font-weight:600") + "</tr>");
+    });
+    h.push("<tr>" + labelTd_("<b>Total</b>") + td_("", "") +
+      td_(money_(tS), "text-align:right;font-weight:600") +
+      td_(tL, "text-align:right;font-weight:600") +
+      td_(tL ? money_(tS / tL) : na_(), "text-align:right;font-weight:600;background:#f6f4ee") + "</tr>");
+  } else {
+    h.push("<tr>" + td_(m.meta_ok ? "No ad-set data in range." : na_(), "text-align:left") + "</tr>");
   }
-  h.push(abRow("Traffic (sessions)", A.sessions, B.sessions));
-  h.push(abRow("Join waitlist initiated", A.joinInit, B.joinInit));
-  h.push(abRow("Email entered", A.email, B.email));
-  h.push(abRow("Reserve spot clicked", A.reserve, B.reserve));
-  h.push(abRow("LP → reserve %", pct_(A.lp2res), pct_(B.lp2res)));
   h.push('</table>');
 
-  // ---- Pitch leaderboard ----
-  h.push('<h3 style="font-size:14px;margin:22px 0 6px">Pitch leaderboard</h3>');
+  // Table B: cost per visitor (Meta landing-page views)
+  h.push('<h3 style="font-size:14px;margin:20px 0 6px">Cost per visitor by ad set</h3>');
   h.push('<table style="border-collapse:collapse;width:100%"><tr>');
-  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Cell</th>');
-  h.push(th_("Signups")); h.push(th_("Spend")); h.push(th_("Leads")); h.push(th_("CPL"));
+  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Ad set</th>');
+  h.push(th_("Market", "text-align:left")); h.push(th_("Spend")); h.push(th_("Visitors (LPV)")); h.push(th_("Cost / visitor"));
   h.push('</tr>');
-  m.pitch.forEach(function (p) {
-    h.push("<tr>" +
-      '<td style="padding:6px 9px;border-bottom:1px solid #eee;font:12.5px/1.4 -apple-system;color:#1a2b22">' + p.label + "</td>" +
-      td_(p.signups, "text-align:right") +
-      td_(m.meta_ok ? money_(p.spend) : na_(), "text-align:right") +
-      td_(m.meta_ok ? p.leads : na_(), "text-align:right") +
-      td_(m.meta_ok && p.cpl ? money_(p.cpl) : na_(), "text-align:right") + "</tr>");
-  });
+  if (m.meta_ok && m.adsets.length) {
+    var sS = 0, sV = 0;
+    m.adsets.forEach(function (a) {
+      sS += a.spend; sV += a.lpv;
+      h.push("<tr>" + labelTd_(a.name) +
+        td_(marketLabelFor_(a.market), "text-align:left;color:#5b6b60") +
+        td_(money_(a.spend), "text-align:right") +
+        td_(Math.round(a.lpv), "text-align:right") +
+        td_(a.lpv ? money_(a.spend / a.lpv) : na_(), "text-align:right;font-weight:600") + "</tr>");
+    });
+    h.push("<tr>" + labelTd_("<b>Total</b>") + td_("", "") +
+      td_(money_(sS), "text-align:right;font-weight:600") +
+      td_(Math.round(sV), "text-align:right;font-weight:600") +
+      td_(sV ? money_(sS / sV) : na_(), "text-align:right;font-weight:600;background:#f6f4ee") + "</tr>");
+  } else {
+    h.push("<tr>" + td_(m.meta_ok ? "No ad-set data in range." : na_(), "text-align:left") + "</tr>");
+  }
   h.push('</table>');
 
   h.push('<p style="margin:22px 0 0;padding-top:12px;border-top:1px solid #eee;color:#5b6b60;font-size:12px">' +
-    'Bounce / duration are from our own beacons (engaged = ≥10s, a scroll/click, or starting the waitlist). ' +
-    'Green CPL means acquisition cost is not the killer — not that CAC is validated; waitlist intent is soft (no payment gate).</p>');
+    'Funnel rows are from our own beacons, split by page + geography: Gulf (Dual) = /gulf; Gulf = "/" from a Gulf time zone; North America = "/" from a US/Canada time zone (rest-of-world "/" traffic is not shown). ' +
+    'Spend / CPM / CTR / Cost-per-lead are from Meta, mapped to a market by ad-set name (CONFIG.MARKETS) — the console tables show that mapping. ' +
+    '"Visitors" in the second console table = Meta landing-page views. Section Cost per lead = Meta spend ÷ emails entered; console Cost per lead = Meta spend ÷ Meta lead conversions. ' +
+    'Bounce / duration are approximations (engaged = ≥10s, a scroll/click, or starting the waitlist).</p>');
   h.push('</div>');
   return h.join("");
 }
