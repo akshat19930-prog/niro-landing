@@ -469,6 +469,95 @@ export const QUALIFY_URGENCY: string[] = [
   "Just exploring",
 ];
 
+/* =====================================================================
+   GULF PAGE (/gulf) — dual-sided, single-SKU ($149) split-test page.
+   Copy is verbatim from the Gulf build brief. Kept separate from the
+   India-page constants above so neither test contaminates the other.
+   ===================================================================== */
+
+/** Reworded Dubai testimonials, dual-sided framing (permission obtained).
+ *  Real families only — we ship the two confirmed Dubai stories rather than
+ *  invent a third. */
+export const GULF_TESTIMONIALS: {
+  name: string;
+  location: string;
+  quote: string;
+  photo?: string;
+}[] = [
+  {
+    name: "Abhishek, 43",
+    location: "Dubai, UAE ↔ Gwalior, India",
+    quote:
+      "Between a job here in Dubai and my parents in Gwalior, I was the family's default fixer. Niro found us a reliable cleaner within the week — and, separately, got ₹4L of my father's EPF unstuck after eight years. Two things, two countries, one WhatsApp.",
+    photo: "/people/abhishek.jpg",
+  },
+  {
+    name: "Nikita, 38",
+    location: "Dubai, UAE ↔ Noida, India",
+    quote:
+      "Our cleaner quit right as the kids' Emirates IDs came due — and Mom in Noida needed her passport renewed to visit. Niro handled the search and the paperwork here, and did Mom's passport-and-visa run in India, even going with her to the appointment. Can't wait to have her over in September.",
+    photo: "/people/nikita.jpg",
+  },
+];
+
+/** 8 Gulf FAQs (brief §4). */
+export const GULF_FAQ: { q: string; a: string }[] = [
+  {
+    q: "What can Niro handle here in the Gulf?",
+    a: "Domestic help, school and summer-camp logistics, tutors, children's activities, Emirates ID and visa paperwork, home and car admin, insurance follow-ups. If it needs research, coordination or chasing, ask us.",
+  },
+  {
+    q: "And in India?",
+    a: "Parents' appointments and cabs, home repairs, EPFO and government paperwork, property and tenant issues, emergency coordination. Same membership, separate WhatsApp group.",
+  },
+  {
+    q: "Why does having both sides matter?",
+    a: "Some things genuinely span two countries. Attesting a marriage certificate means state attestation, then MEA Delhi, then the UAE Embassy, then MOFA here. Most families courier the original and hope. We run the India leg and the Gulf leg as one job.",
+  },
+  {
+    q: "Is emergency response available here too?",
+    a: "No — emergency response and the cyber-fraud cover apply to your parents in India only. Here, we handle everyday coordination, not medical emergencies.",
+  },
+  {
+    q: "Which cities?",
+    a: "Dubai, Abu Dhabi and Sharjah today, expanding to Doha, Riyadh and Kuwait City. In India, most major cities — tell us where your parents are and we'll confirm.",
+  },
+  {
+    q: "Do my parents need an app?",
+    a: "No. WhatsApp, a voice note, or a plain phone call. English, Hindi, Tamil or Malayalam.",
+  },
+  {
+    q: "Is my family's data safe?",
+    a: "Yes — and here's how. We never ask for OTPs, passwords, PINs or bank logins, and anyone who does isn't us. We work only on what you choose to share, never through access to your email or accounts. Everything is encrypted, and your records are permanently deleted within 30 days if you leave.",
+  },
+  {
+    q: "What happens after I join?",
+    a: "We set up your two WhatsApp groups, learn your household and your parents, and the things that come up regularly. Your first task is free.",
+  },
+];
+
+/* Gulf post-signup qualifiers — dual (household here + parents in India). No
+   plan question: the page has a single $149 SKU, and a plan chip would repeat
+   the price (acceptance: "$149 appears exactly once"). */
+export const GULF_QUALIFY_TASKS: string[] = [
+  "Domestic help & home admin",
+  "Kids — school, camps, tutors",
+  "Emirates ID & visas",
+  "Parents' health & appointments (India)",
+  "Paperwork — here & in India",
+  "Property in India",
+];
+export const GULF_QUALIFY_WHO: string[] = [
+  "My household here",
+  "My parents in India",
+  "Both",
+];
+export const GULF_QUALIFY_URGENCY: string[] = [
+  "I have a task right now",
+  "In the next few weeks",
+  "Just exploring",
+];
+
 /* ---- First-task picker (order is randomized per visitor at runtime) ---- */
 export const TASK_DEFS: TaskDef[] = [
   {

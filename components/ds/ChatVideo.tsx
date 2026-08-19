@@ -11,7 +11,19 @@ import { useEffect, useRef } from "react";
  * first user interaction so it starts on any tap rather than only a tap on the
  * video. Poster shows instantly; aspect-ratio reserves the box to avoid shift.
  */
-export function ChatVideo() {
+export function ChatVideo({
+  src = "/media/chat.mp4",
+  poster = "/media/chat-poster.webp",
+  aspect = "760 / 1080",
+  maxWidth = 380,
+  ariaLabel = "A Niro WhatsApp thread cycling three requests - filing an India tax return, booking home physio for a parent, and renewing a pension life certificate - each confirmed done by Niro.",
+}: {
+  src?: string;
+  poster?: string;
+  aspect?: string;
+  maxWidth?: number;
+  ariaLabel?: string;
+} = {}) {
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -51,13 +63,13 @@ export function ChatVideo() {
     <div
       style={{
         width: "100%",
-        maxWidth: 380,
+        maxWidth,
         margin: "0 auto",
         borderRadius: "var(--radius-xl)",
         overflow: "hidden",
         boxShadow: "var(--shadow-3)",
         border: "1px solid var(--border)",
-        aspectRatio: "760 / 1080",
+        aspectRatio: aspect,
         background: "var(--wa-bg)",
       }}
     >
@@ -68,10 +80,10 @@ export function ChatVideo() {
         muted
         playsInline
         preload="none"
-        poster="/media/chat-poster.webp"
+        poster={poster}
         webkit-playsinline="true"
-        src="/media/chat.mp4"
-        aria-label="A Niro WhatsApp thread cycling three requests - filing an India tax return, booking home physio for a parent, and renewing a pension life certificate - each confirmed done by Niro."
+        src={src}
+        aria-label={ariaLabel}
         style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
       />
     </div>
