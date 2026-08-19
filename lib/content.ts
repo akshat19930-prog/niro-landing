@@ -507,39 +507,71 @@ export const GULF_TESTIMONIALS: {
   },
 ];
 
-/** 8 Gulf FAQs (brief §4). */
+/** Short Gulf FAQ — 5 questions, concise answers, no new features introduced. */
 export const GULF_FAQ: { q: string; a: string }[] = [
   {
-    q: "What can Niro handle here in the Gulf?",
-    a: "Domestic help, school and summer-camp logistics, tutors, children's activities, Emirates ID and visa paperwork, home and car admin, insurance follow-ups. If it needs research, coordination or chasing, ask us.",
+    q: "What can Niro handle in the Gulf?",
+    a: "Domestic help, school and camp logistics, tutors, Emirates ID and visa paperwork, home and car admin. If it needs a person to sort out, ask us.",
   },
   {
-    q: "And in India?",
-    a: "Parents' appointments and cabs, home repairs, EPFO and government paperwork, property and tenant issues, emergency coordination. Same membership, separate WhatsApp group.",
+    q: "Can Niro help my parents in India?",
+    a: "Yes — appointments and cabs, home repairs, EPFO and government paperwork, property, and emergency coordination, through their own WhatsApp group.",
   },
   {
-    q: "Why does having both sides matter?",
-    a: "Some things genuinely span two countries. Attesting a marriage certificate means state attestation, then MEA Delhi, then the UAE Embassy, then MOFA here. Most families courier the original and hope. We run the India leg and the Gulf leg as one job.",
-  },
-  {
-    q: "Is emergency response available here too?",
-    a: "No — emergency response and the cyber-fraud cover apply to your parents in India only. Here, we handle everyday coordination, not medical emergencies.",
-  },
-  {
-    q: "Which cities?",
-    a: "Dubai, Abu Dhabi and Sharjah today, expanding to Doha, Riyadh and Kuwait City. In India, most major cities — tell us where your parents are and we'll confirm.",
+    q: "Which Gulf cities do you cover?",
+    a: "Dubai, Abu Dhabi and Sharjah today, with Doha, Riyadh and Kuwait City next. In India, most major cities.",
   },
   {
     q: "Do my parents need an app?",
-    a: "No. WhatsApp, a voice note, or a plain phone call. English, Hindi, Tamil or Malayalam.",
+    a: "No. They message Niro or send a voice note in English, Hindi or Tamil.",
   },
   {
-    q: "Is my family's data safe?",
-    a: "Yes — and here's how. We never ask for OTPs, passwords, PINs or bank logins, and anyone who does isn't us. We work only on what you choose to share, never through access to your email or accounts. Everything is encrypted, and your records are permanently deleted within 30 days if you leave.",
+    q: "How do you keep my family's information safe?",
+    a: "We never ask for OTPs, passwords or bank logins, and anyone who does isn't us. We work only on what you choose to share, everything is encrypted, and your records are deleted within 30 days if you leave.",
+  },
+];
+
+/** Gulf pricing — two tiers (Lite $79, Prime $149). Copy per the conversion
+ *  pass; Prime is flagged most-popular. */
+export const GULF_PLANS: {
+  id: "lite" | "prime";
+  name: string;
+  price: string;
+  tagline: string;
+  features: string[];
+  highlight: boolean;
+  badge?: string;
+}[] = [
+  {
+    id: "lite",
+    name: "Niro Lite",
+    price: "$79",
+    tagline: "For everyday family support.",
+    features: [
+      "One family WhatsApp group",
+      "Up to 8 tasks/month",
+      "Gulf + India coverage",
+      "Dedicated human contact",
+      "Emergency coordination through ambulance partner",
+    ],
+    highlight: false,
   },
   {
-    q: "What happens after I join?",
-    a: "We set up your two WhatsApp groups, learn your household and your parents, and the things that come up regularly. Your first task is free.",
+    id: "prime",
+    name: "Niro Prime",
+    price: "$149",
+    tagline: "For families who want more.",
+    badge: "Most popular",
+    features: [
+      "Everything in Lite",
+      "Unlimited tasks",
+      "Niro's own concierge physically present at the hospital when needed",
+      "₹20L cyber-fraud insurance cover",
+      "$10/month wellness credits",
+      "Priority handling for time-sensitive requests",
+      "Gulf + India coverage",
+    ],
+    highlight: true,
   },
 ];
 
