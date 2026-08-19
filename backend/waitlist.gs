@@ -28,7 +28,7 @@ var SHEET_NAME = "waitlist";
 var BASE_POSITION = 320;
 
 var EVENTS_SHEET = "events";
-var EVENTS_HEADER = ["timestamp", "date", "event", "arm", "pitch", "sid", "durationMs", "engaged"];
+var EVENTS_HEADER = ["timestamp", "date", "event", "arm", "pitch", "sid", "durationMs", "engaged", "page", "geo", "market"];
 
 // ---- Entry points -----------------------------------------------------------
 function doPost(e) {
@@ -75,7 +75,13 @@ function doPost(e) {
     // Column indexes (1-based) matching HEADER.
     var C_REFCODE = 13, C_POSITION = 14;
     var C_TASKS = 15, C_WHOFOR = 16, C_URGENCY = 17, C_PHONE = 18;
+    var C_MARKET = 19, C_PAGE = 20, C_GEO = 21;
     var tasksStr = (data.tasks && data.tasks.length) ? data.tasks.join(" | ") : "";
+    // Geography: prefer the market the page declared ("gulf" on /gulf), else the
+    // coarse region the client inferred from its time zone ("gulf"/"na"/"other").
+    var market = String(data.market || "");
+    var pagePath = String(data.page || "");
+    var geo = String(data.geo || "");
 
     if (rowIndex === -1) {
       // New signup. Order must match HEADER.
@@ -86,7 +92,8 @@ function doPost(e) {
         data.pitch || "", data.ref || "", data.planId || "",
         utm.utm_source || "", utm.utm_medium || "", utm.utm_campaign || "",
         utm.utm_content || "", utm.fbclid || "", referralCode, position,
-        tasksStr, data.whoFor || "", data.urgency || "", data.phone || ""
+        tasksStr, data.whoFor || "", data.urgency || "", data.phone || "",
+        market, pagePath, geo
       ]);
     } else {
       // Existing signup - enrich the row, keep its position/referralCode.
@@ -102,6 +109,11 @@ function doPost(e) {
       if (data.whoFor) sheet.getRange(rowIndex, C_WHOFOR).setValue(data.whoFor);
       if (data.urgency) sheet.getRange(rowIndex, C_URGENCY).setValue(data.urgency);
       if (data.phone) sheet.getRange(rowIndex, C_PHONE).setValue(data.phone);
+      // Attribution is first-touch: only fill these if still blank, so a later
+      // enrich POST can't overwrite the geography captured at email entry.
+      if (market && !row[C_MARKET - 1]) sheet.getRange(rowIndex, C_MARKET).setValue(market);
+      if (pagePath && !row[C_PAGE - 1]) sheet.getRange(rowIndex, C_PAGE).setValue(pagePath);
+      if (geo && !row[C_GEO - 1]) sheet.getRange(rowIndex, C_GEO).setValue(geo);
     }
 
     return json_({ position: position, referralCode: referralCode });
@@ -122,7 +134,10 @@ var HEADER = [
   "planId", "utm_source", "utm_medium", "utm_campaign", "utm_content",
   "fbclid", "referralCode", "position",
   // Lead-quality qualifiers (appended so existing column indexes never shift).
-  "tasks", "whoFor", "urgency", "phone"
+  "tasks", "whoFor", "urgency", "phone",
+  // Attribution: which page/market the lead came from, and coarse geography
+  // ("gulf"/"na"/"other"). geo is intentionally the last column.
+  "market", "page", "geo"
 ];
 
 function getSheet_() {
@@ -147,13 +162,20 @@ function logEventRow_(data) {
       sheet = ss.insertSheet(EVENTS_SHEET);
       sheet.appendRow(EVENTS_HEADER);
     }
+    // Keep the header in sync so older events sheets gain the page/geo/market
+    // columns (added for the per-market report). Existing rows stay blank there.
+    if (sheet.getLastRow() === 0) sheet.appendRow(EVENTS_HEADER);
+    else if (sheet.getLastColumn() < EVENTS_HEADER.length) {
+      sheet.getRange(1, 1, 1, EVENTS_HEADER.length).setValues([EVENTS_HEADER]);
+    }
     var when = data.ts ? new Date(Number(data.ts)) : new Date();
     var date = Utilities.formatDate(when, ss.getSpreadsheetTimeZone(), "yyyy-MM-dd");
     sheet.appendRow([
       when, date, String(data.event || ""), String(data.arm || ""),
       String(data.pitch || ""), String(data.sid || ""),
       data.durationMs != null ? Number(data.durationMs) : "",
-      data.engaged != null ? Number(data.engaged) : ""
+      data.engaged != null ? Number(data.engaged) : "",
+      String(data.page || ""), String(data.geo || ""), String(data.market || "")
     ]);
     return json_({ ok: true });
   } catch (err) {

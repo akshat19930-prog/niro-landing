@@ -44,6 +44,41 @@ export function registerAnalytics(arm: string, pitch: string): void {
   }
 }
 
+/** Coarse region from the browser time zone, so the report can split the funnel
+ *  into North America / Gulf / rest without a geo-IP service. Cached per load. */
+let _geo: string | null = null;
+function coarseGeo(): string {
+  if (_geo) return _geo;
+  let g = "other";
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    if (/Dubai|Abu_Dhabi|Qatar|Bahrain|Riyadh|Kuwait|Muscat|Aden/i.test(tz)) g = "gulf";
+    else if (
+      /New_York|Chicago|Denver|Los_Angeles|Phoenix|Anchorage|Detroit|Indiana|Kentucky|Boise|Juneau|Sitka|Menominee|Honolulu|Adak|Nome|Toronto|Vancouver|Edmonton|Winnipeg|Halifax|Regina|St_Johns|Montreal|Moncton|Whitehorse|Yellowknife|Iqaluit|Goose_Bay|Swift_Current|Cambridge_Bay|Fort_Nelson|Rankin_Inlet|Resolute|Dawson|Creston/i.test(tz) ||
+      /^America\//.test(tz)
+    )
+      g = "na";
+  } catch {
+    /* keep "other" */
+  }
+  _geo = g;
+  return g;
+}
+
+/** Public accessor for the coarse region ("gulf" | "na" | "other"), so the
+ *  signup payload can tag each lead's geography in the waitlist sheet. */
+export function getGeo(): string {
+  return coarseGeo();
+}
+
+function pagePath(): string {
+  try {
+    return window.location.pathname || "/";
+  } catch {
+    return "/";
+  }
+}
+
 const SID_KEY = "niro_sid";
 const START_KEY = "niro_sstart";
 const ENG_KEY = "niro_eng";
@@ -79,6 +114,10 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
     pitch,
     sid: getSessionId(),
     ts: Date.now(),
+    // page + geo on EVERY beacon so the report can segment the funnel by market
+    // (North America / Gulf / Gulf-Dual) — exposure/session_end included.
+    page: pagePath(),
+    geo: coarseGeo(),
     ...(extra || {}),
   });
   try {
