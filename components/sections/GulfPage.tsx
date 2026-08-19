@@ -83,19 +83,19 @@ function GulfHero() {
             filling. Niro gives you a named person to handle the things that fall between
             work, school and home &mdash; and gets you back 15+ hours a month.
           </p>
-          <JoinCta className="btn btn-primary btn-lg" position="hero">
-            Get Early Access
-          </JoinCta>
           <div
             style={{
-              marginTop: 12,
-              fontSize: "var(--text-sm)",
+              marginBottom: 18,
+              fontSize: "var(--text-md)",
               fontStyle: "italic",
-              color: "var(--text-muted)",
+              color: "var(--text-body)",
             }}
           >
             And yes &mdash; we handle your parents in India too.
           </div>
+          <JoinCta className="btn btn-primary btn-lg" position="hero">
+            Get Early Access
+          </JoinCta>
           <div
             style={{
               display: "flex",
@@ -107,13 +107,11 @@ function GulfHero() {
               color: "var(--text-muted)",
             }}
           >
-            <span>A house manager, not an app</span>
-            <span aria-hidden="true">·</span>
-            <span>One dedicated contact</span>
+            <span>Remote House Manager</span>
             <span aria-hidden="true">·</span>
             <span>WhatsApp-first</span>
             <span aria-hidden="true">·</span>
-            <span>Dubai, Abu Dhabi &amp; Sharjah</span>
+            <span>Serving Dubai, Abu Dhabi &amp; Sharjah</span>
           </div>
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
@@ -156,21 +154,57 @@ function AskBubble({ children }: { children: React.ReactNode }) {
   );
 }
 
+function AskColumn({ label, asks }: { label: string; asks: string[] }) {
+  return (
+    <div>
+      <div
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontSize: "var(--text-xs)",
+          fontWeight: 600,
+          textTransform: "uppercase",
+          letterSpacing: "var(--tracking-wide)",
+          color: "var(--accent-strong)",
+          marginBottom: 12,
+        }}
+      >
+        {label}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {asks.map((a) => (
+          <AskBubble key={a}>{a}</AskBubble>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function GulfHowItWorks() {
-  const asks = [
+  const gulfAsks = [
     "Our cleaner quit. We need someone reliable from next week.",
     "Can you find a licensed maths tutor in JLT, twice a week?",
     "Kids’ Emirates IDs expire this month — can you start it?",
   ];
+  const indiaAsks = [
+    "Get Mom a cab for her hospital appointment tomorrow.",
+    "Dad’s AC isn’t working — can you get someone to fix it?",
+    "Check what’s happening with my father’s EPF claim.",
+  ];
   return (
     <section data-screen-label="Gulf how it works" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
-      <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
+      <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>How it works</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 28px" }}>One message instead of five phone calls.</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
-          {asks.map((a) => (
-            <AskBubble key={a}>{a}</AskBubble>
-          ))}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))",
+            gap: "28px 24px",
+            marginBottom: 30,
+          }}
+        >
+          <AskColumn label="Here in the Gulf" asks={gulfAsks} />
+          <AskColumn label="For your parents in India" asks={indiaAsks} />
         </div>
         <div
           style={{
@@ -200,7 +234,7 @@ function GulfHowItWorks() {
 
 function GulfHousehold() {
   return (
-    <section data-screen-label="Gulf household" style={{ padding: "64px var(--gutter) 0" }}>
+    <section data-screen-label="Gulf household" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow>For your household</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 16px" }}>
@@ -214,10 +248,8 @@ function GulfHousehold() {
             margin: "0 0 18px",
           }}
         >
-          You don&rsquo;t need another delivery app. You need someone who can deal with the
-          things a button can&rsquo;t solve &mdash; a replacement cleaner, a tutor who actually
-          turns up, school paperwork, a camp before it fills, a landlord asking 8% when the
-          rental index says 5%.
+          Not another delivery app &mdash; someone who handles what a button can&rsquo;t: a
+          replacement cleaner, a tutor who turns up, school paperwork, a camp before it fills.
         </p>
         <p
           style={{
@@ -230,35 +262,6 @@ function GulfHousehold() {
           }}
         >
           When did the two of you last have dinner without a to-do list running underneath it?
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/** The hinge: full-bleed forest band (#1e4536 = --forest-700), ivory text.
- *  This is where India enters — a deliberate shift, not another paragraph. */
-function GulfTransition() {
-  return (
-    <section
-      data-screen-label="Gulf transition"
-      style={{ background: "var(--forest-700)", padding: "48px var(--gutter)", margin: "56px 0 0" }}
-    >
-      <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
-        <p
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "var(--text-2xl)",
-            lineHeight: 1.4,
-            color: "var(--ivory)",
-            margin: 0,
-            fontWeight: 500,
-          }}
-        >
-          <span style={{ color: "var(--gold-300)" }}>And because we&rsquo;re in India too &mdash;</span>{" "}
-          your parents get their own WhatsApp group and their own named person. Appointments,
-          repairs, paperwork, emergencies. You stop being the family administrator from 2,000
-          miles away.
         </p>
       </div>
     </section>
@@ -678,7 +681,6 @@ export function GulfPage() {
         <GulfHero />
         <GulfHowItWorks />
         <GulfHousehold />
-        <GulfTransition />
         <GulfHandles />
         <GulfFamilies />
         <GulfTrust />
