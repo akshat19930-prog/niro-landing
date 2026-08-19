@@ -482,6 +482,9 @@ export const GULF_TESTIMONIALS: {
   name: string;
   location: string;
   quote: string;
+  /** A verbatim substring of `quote` to emphasise (the outcome sentence).
+   *  Never new words — only visual weight on the real quote. */
+  highlight?: string;
   photo?: string;
 }[] = [
   {
@@ -489,6 +492,7 @@ export const GULF_TESTIMONIALS: {
     location: "Dubai, UAE ↔ Gwalior, India",
     quote:
       "Between a job here in Dubai and my parents in Gwalior, I was the family's default fixer. Niro found us a reliable cleaner within the week — and, separately, got ₹4L of my father's EPF unstuck after eight years. Two things, two countries, one WhatsApp.",
+    highlight: "got ₹4L of my father's EPF unstuck after eight years",
     photo: "/people/abhishek.jpg",
   },
   {
@@ -496,6 +500,7 @@ export const GULF_TESTIMONIALS: {
     location: "Dubai, UAE ↔ Noida, India",
     quote:
       "Our cleaner quit right as the kids' Emirates IDs came due — and Mom in Noida needed her passport renewed to visit. Niro handled the search and the paperwork here, and did Mom's passport-and-visa run in India, even going with her to the appointment. Can't wait to have her over in September.",
+    highlight: "Niro handled the search and the paperwork here, and did Mom's passport-and-visa run in India",
     photo: "/people/nikita.jpg",
   },
   {
