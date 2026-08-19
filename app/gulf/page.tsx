@@ -38,7 +38,7 @@ export default function Page() {
   return (
     <JoinProvider market="gulf">
       <GulfPage />
-      <Footer tagline="Niro — your family's own person, in both the places you call home." />
+      <Footer tagline="Niro — less household admin. More time for your family." />
       <GulfJoinModal />
     </JoinProvider>
   );
