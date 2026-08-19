@@ -491,7 +491,7 @@ export const GULF_TESTIMONIALS: {
     name: "Abhishek, 43",
     location: "Dubai, UAE ↔ Gwalior, India",
     quote:
-      "Between a job here in Dubai and my parents in Gwalior, I was the family's default fixer. Niro found us a reliable cleaner within the week — and, separately, got ₹4L of my father's EPF unstuck after eight years. Two things, two countries, one WhatsApp.",
+      "Between a job here in Dubai and my parents in Gwalior, I was the family's default fixer. Niro found us a reliable cleaner within the week - and, separately, got ₹4L of my father's EPF unstuck after eight years. Two things, two countries, one WhatsApp.",
     highlight: "got ₹4L of my father's EPF unstuck after eight years",
     photo: "/people/abhishek.jpg",
   },
@@ -499,7 +499,7 @@ export const GULF_TESTIMONIALS: {
     name: "Nikita, 38",
     location: "Dubai, UAE ↔ Noida, India",
     quote:
-      "Our cleaner quit right as the kids' Emirates IDs came due — and Mom in Noida needed her passport renewed to visit. Niro handled the search and the paperwork here, and did Mom's passport-and-visa run in India, even going with her to the appointment. Can't wait to have her over in September.",
+      "Our cleaner quit right as the kids' Emirates IDs came due - and Mom in Noida needed her passport renewed to visit. Niro handled the search and the paperwork here, and did Mom's passport-and-visa run in India, even going with her to the appointment. Can't wait to have her over in September.",
     highlight: "Niro handled the search and the paperwork here, and did Mom's passport-and-visa run in India",
     photo: "/people/nikita.jpg",
   },
@@ -507,7 +507,7 @@ export const GULF_TESTIMONIALS: {
     name: "Kartik, 34",
     location: "Abu Dhabi, UAE ↔ Nagpur, India",
     quote:
-      "Having one person for both sides is the whole point. Here in Abu Dhabi they sorted a maths tutor and our car renewal in the same week — and back home, Mom can't book a cab on the apps, so now she just sends Niro a voice note and it happens. Two households, one WhatsApp.",
+      "Having one person for both sides is the whole point. Here in Abu Dhabi they sorted a maths tutor and our car renewal in the same week - and back home, Mom can't book a cab on the apps, so now she just sends Niro a voice note and it happens. Two households, one WhatsApp.",
     photo: "/people/kartik.jpg",
   },
 ];
@@ -520,7 +520,7 @@ export const GULF_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Can Niro help my parents in India?",
-    a: "Yes — appointments and cabs, home repairs, EPFO and government paperwork, property, and emergency coordination, through their own WhatsApp group.",
+    a: "Yes - appointments and cabs, home repairs, EPFO and government paperwork, property, and emergency coordination, through their own WhatsApp group.",
   },
   {
     q: "Which Gulf cities do you cover?",
@@ -541,10 +541,10 @@ export const GULF_FAQ: { q: string; a: string }[] = [
    the price (acceptance: "$149 appears exactly once"). */
 export const GULF_QUALIFY_TASKS: string[] = [
   "Domestic help & home admin",
-  "Kids — school, camps, tutors",
+  "Kids - school, camps, tutors",
   "Emirates ID & visas",
   "Parents' health & appointments (India)",
-  "Paperwork — here & in India",
+  "Paperwork - here & in India",
   "Property in India",
 ];
 export const GULF_QUALIFY_WHO: string[] = [

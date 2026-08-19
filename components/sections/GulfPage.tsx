@@ -84,7 +84,7 @@ function GulfHero() {
               margin: "0 0 12px",
             }}
           >
-            For life in the Gulf &mdash; and your family back in India.
+            For life in the Gulf - and your family back in India.
           </p>
           <p
             style={{
@@ -112,11 +112,11 @@ function GulfHero() {
               color: "var(--text-muted)",
             }}
           >
-            <span>Human help</span>
-            <span aria-hidden="true">·</span>
-            <span>One dedicated contact</span>
+            <span>Remote Human Concierge</span>
             <span aria-hidden="true">·</span>
             <span>WhatsApp-first</span>
+            <span aria-hidden="true">·</span>
+            <span>Serving UAE &amp; Qatar families</span>
           </div>
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
@@ -201,9 +201,9 @@ function GulfHowItWorks() {
   // household problem and an India problem, in one thread.
   const thread: { from: "you" | "niro"; text: React.ReactNode }[] = [
     { from: "you", text: <>Our cleaner just quit 😩 We need someone from next week.</> },
-    { from: "niro", text: <>Got it &mdash; I&rsquo;ll line up a few background-checked options and share them here.</> },
+    { from: "niro", text: <>Got it - I&rsquo;ll line up a few background-checked options and share them here.</> },
     { from: "you", text: <>Also, Dad needs a hospital appointment in Bangalore on Friday.</> },
-    { from: "niro", text: <>On it &mdash; I&rsquo;ll book it and arrange his cab, and keep you posted here.</> },
+    { from: "niro", text: <>On it - I&rsquo;ll book it and arrange his cab, and keep you posted here.</> },
   ];
   return (
     <section data-screen-label="Gulf how it works" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
@@ -435,7 +435,7 @@ function GulfCrossBorder() {
         <Eyebrow>The cross-border difference</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>And when something needs to happen in India&hellip;</h2>
         <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 22px" }}>
-          Your same Niro team can handle it &mdash; parents&rsquo; appointments, EPFO and bank
+          Your same Niro team can handle it - parents&rsquo; appointments, EPFO and bank
           admin, repairs, or a document that has to move between both countries.
         </p>
 
@@ -641,9 +641,9 @@ function GulfTrustStrip() {
 function GulfPricing() {
   const features = [
     "Unlimited tasks, both countries",
-    "Two WhatsApp groups — one for India, one for home here",
+    "Two WhatsApp groups - one for India, one for home here",
     "Your parents just WhatsApp. Nothing to install, nothing to learn.",
-    "Emergency response for your parents in India — ambulance partner plus our own person at the hospital",
+    "Emergency response for your parents in India - ambulance partner plus our own person at the hospital",
     "₹20 lakh cyber-fraud cover for your parents in India, plus monitoring",
     "A named contact who knows your family",
   ];
@@ -676,7 +676,7 @@ function GulfPricing() {
             <span style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.72)" }}>/month</span>
           </div>
           <p style={{ fontSize: "var(--text-sm)", color: "var(--gold-300)", fontWeight: 500, margin: "0 0 18px", lineHeight: 1.5 }}>
-            The one house manager that works in both places your family lives &mdash; so you
+            The one house manager that works in both places your family lives - so you
             get hours of your week back.
           </p>
           <ul style={{ listStyle: "none", padding: 0, margin: "0 0 22px", display: "flex", flexDirection: "column", gap: 11 }}>
