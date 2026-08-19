@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Newsreader, Hanken_Grotesk } from "next/font/google";
 import { MetaPixel } from "@/components/MetaPixel";
 import { PostHog } from "@/components/PostHog";
-import { AbInit } from "@/components/AbInit";
 import "./globals.css";
 
 /**
@@ -51,7 +50,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${newsreader.variable} ${hanken.variable}`}>
       <body>
-        <AbInit />
         <MetaPixel />
         <PostHog />
         {children}

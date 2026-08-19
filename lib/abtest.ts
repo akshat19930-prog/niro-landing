@@ -10,8 +10,13 @@
  */
 export type PageArm = "control" | "reposition";
 
+/**
+ * The control-vs-reposition A/B has concluded — the reposition is now the sole
+ * live page (see app/page.tsx). This returns "reposition" so the page_arm still
+ * logged on beacons stays accurate; the split harness (AbInit) is no longer
+ * mounted. Kept as a single function to repurpose for the next test (mode:
+ * parents vs dual-sided) rather than re-plumbing every call site.
+ */
 export function readPageArm(): PageArm {
-  if (typeof document === "undefined") return "control";
-  const m = document.cookie.match(/(?:^|;\s*)niro_pg=(control|reposition)/);
-  return m && m[1] === "reposition" ? "reposition" : "control";
+  return "reposition";
 }

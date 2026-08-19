@@ -14,24 +14,36 @@ import { PLANS, PARENT_VOICE, TESTIMONIALS_SHORT } from "@/lib/content";
 
 /* ---------------------------------------------------------------- helpers */
 
-/** Geo-personalised eyebrow (rec #8), inferred from the browser time zone —
- *  client-only, zero-latency, no external call. Falls back to "abroad". */
-function useGeoLabel(): string {
-  const [label, setLabel] = useState("FOR INDIANS LIVING ABROAD");
+type GeoRegion = "gulf" | "us" | "canada" | null;
+
+/** Geo personalisation, inferred from the browser time zone — client-only,
+ *  zero-latency, no external call. Drives the hero eyebrow and the testimonial
+ *  order (Gulf visitors lead with Dubai stories). Falls back to "abroad". */
+function useGeo(): { region: GeoRegion; label: string } {
+  const [geo, setGeo] = useState<{ region: GeoRegion; label: string }>({
+    region: null,
+    label: "FOR INDIANS LIVING ABROAD",
+  });
   useEffect(() => {
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
-      const ca =
+      const canada =
         /Toronto|Vancouver|Edmonton|Winnipeg|Halifax|Regina|St_Johns|Montreal|Moncton|Whitehorse|Yellowknife|Iqaluit|Goose_Bay|Swift_Current|Cambridge_Bay|Fort_Nelson|Rankin_Inlet|Resolute|Dawson|Creston/i;
       const us =
         /New_York|Chicago|Denver|Los_Angeles|Phoenix|Anchorage|Detroit|Indiana|Kentucky|Boise|Juneau|Sitka|Menominee|Honolulu|Adak|Nome/i;
-      if (ca.test(tz)) setLabel("FOR INDIANS LIVING IN CANADA");
-      else if (us.test(tz) || /^America\//.test(tz)) setLabel("FOR INDIANS LIVING IN THE US");
+      if (/Dubai|Abu_Dhabi/i.test(tz))
+        setGeo({ region: "gulf", label: "FOR INDIANS LIVING IN THE UAE" });
+      else if (/Qatar|Bahrain|Riyadh|Kuwait|Muscat|Aden|Dubai/i.test(tz))
+        setGeo({ region: "gulf", label: "FOR INDIANS LIVING IN THE GULF" });
+      else if (canada.test(tz))
+        setGeo({ region: "canada", label: "FOR INDIANS LIVING IN CANADA" });
+      else if (us.test(tz) || /^America\//.test(tz))
+        setGeo({ region: "us", label: "FOR INDIANS LIVING IN THE US" });
     } catch {
       /* keep default */
     }
   }, []);
-  return label;
+  return geo;
 }
 
 const sectionPad = "64px var(--gutter)";
@@ -48,7 +60,7 @@ const h2Style = {
 /* ------------------------------------------------------------------- hero */
 
 function HeroB() {
-  const geo = useGeoLabel();
+  const { label: geo } = useGeo();
   return (
     <section
       data-screen-label="Hero (B)"
@@ -327,8 +339,13 @@ function UseCasesB() {
 /* ---------------------------------------------------------------- stories */
 
 function StoriesB() {
-  // Lead with concrete outcomes; the voice-note story is called out per rec #5.
-  const picks = ["Kartik, 34", "Abhishek, 43", "Vaibhav, 32"];
+  // Lead with concrete outcomes. Gulf visitors see the Dubai routes first
+  // (Abhishek Dubai→Gwalior, Nikita Dubai→Noida) for regional proof.
+  const { region } = useGeo();
+  const picks =
+    region === "gulf"
+      ? ["Abhishek, 43", "Nikita, 38", "Kartik, 34"]
+      : ["Kartik, 34", "Abhishek, 43", "Vaibhav, 32"];
   const stories = picks
     .map((n) => TESTIMONIALS_SHORT.find((t) => t.name === n))
     .filter(Boolean) as typeof TESTIMONIALS_SHORT;
