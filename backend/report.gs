@@ -48,6 +48,13 @@ var CONFIG = {
   TEST_DAYS: 12,
   DATE_COLS: 5,                     // trailing day columns before MTD
 
+  // Sessions logged before geo tracking (and from visitors still on cached
+  // pre-update JS) carry no page/geo. Before /gulf launched, ALL traffic was
+  // the North-America-first "/" test, so fold these "untagged" sessions into
+  // this market to retain historical numbers. Set to "" to exclude them once
+  // browser caches have turned over and every live session is tagged.
+  UNTAGGED_MARKET: "na",
+
   // The three report markets, in display order. `pages`/`geos` segment our own
   // beacons; `adset` matches Meta ad-set names for spend/CPM/CTR. Gulf (Dual) is
   // matched BEFORE Gulf so a dual ad set isn't swallowed by the Gulf regex.
@@ -309,6 +316,9 @@ function marketForEvent_(page, geo, market) {
   if (p.indexOf("/gulf") === 0 || mk === "gulf") return "gulf_dual";
   if (g === "gulf") return "gulf";
   if (g === "na") return "na";
+  // Fully untagged (no page AND no geo) = legacy / cached-JS session. Attribute
+  // to the configured default market so historical numbers are retained.
+  if (!p && !g) return CONFIG.UNTAGGED_MARKET || "";
   return "";
 }
 
@@ -499,7 +509,8 @@ function renderHtml_(m) {
   h.push('</table>');
 
   h.push('<p style="margin:22px 0 0;padding-top:12px;border-top:1px solid #eee;color:#5b6b60;font-size:12px">' +
-    'Funnel rows are from our own beacons, split by page + geography: Gulf (Dual) = /gulf; Gulf = "/" from a Gulf time zone; North America = "/" from a US/Canada time zone (rest-of-world "/" traffic is not shown). ' +
+    'Funnel rows are from our own beacons, split by page + geography: Gulf (Dual) = /gulf; Gulf = "/" from a Gulf time zone; North America = "/" from a US/Canada time zone. ' +
+    'Legacy/untagged sessions (logged before geo tracking, or from cached pre-update JS) are counted under ' + (marketLabelFor_(CONFIG.UNTAGGED_MARKET) || 'no market') + ' to retain history; set CONFIG.UNTAGGED_MARKET="" to exclude them. Tagged rest-of-world "/" traffic is not shown. ' +
     'Spend / CPM / CTR / Cost-per-lead are from Meta, mapped to a market by ad-set name (CONFIG.MARKETS) — the console tables show that mapping. ' +
     '"Visitors" in the second console table = Meta landing-page views. Section Cost per lead = Meta spend ÷ emails entered; console Cost per lead = Meta spend ÷ Meta lead conversions. ' +
     'Bounce / duration are approximations (engaged = ≥10s, a scroll/click, or starting the waitlist).</p>');
