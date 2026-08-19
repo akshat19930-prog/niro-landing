@@ -498,6 +498,13 @@ export const GULF_TESTIMONIALS: {
       "Our cleaner quit right as the kids' Emirates IDs came due — and Mom in Noida needed her passport renewed to visit. Niro handled the search and the paperwork here, and did Mom's passport-and-visa run in India, even going with her to the appointment. Can't wait to have her over in September.",
     photo: "/people/nikita.jpg",
   },
+  {
+    name: "Kartik, 34",
+    location: "Abu Dhabi, UAE ↔ Nagpur, India",
+    quote:
+      "Having one person for both sides is the whole point. Here in Abu Dhabi they sorted a maths tutor and our car renewal in the same week — and back home, Mom can't book a cab on the apps, so now she just sends Niro a voice note and it happens. Two households, one WhatsApp.",
+    photo: "/people/kartik.jpg",
+  },
 ];
 
 /** 8 Gulf FAQs (brief §4). */
