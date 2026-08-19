@@ -60,27 +60,31 @@ function GulfHero() {
           <h1
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "var(--text-4xl)",
-              lineHeight: "var(--leading-tight)",
+              // This headline is longer than the previous one, so cap the size
+              // below display-4xl: large enough to dominate the fold, small
+              // enough to hold ~4 lines in the hero's half-width column on
+              // desktop (keeping the CTA visible) and ~5 on mobile.
+              fontSize: "clamp(1.95rem, 4.6vw, 2.6rem)",
+              lineHeight: 1.12,
               letterSpacing: "var(--tracking-tight)",
               color: "var(--text-strong)",
               margin: "12px 0 16px",
               fontWeight: 500,
+              textWrap: "balance",
             }}
           >
-            Your Gulf life doesn&rsquo;t come with a family support system. Niro does.
+            Your dedicated house manager, handling the errands, appointments and paperwork.
           </h1>
           <p
             style={{
               fontSize: "var(--text-md)",
               lineHeight: "var(--leading-body)",
               color: "var(--text-body)",
-              maxWidth: 520,
+              maxWidth: 460,
               margin: "0 0 12px",
             }}
           >
-            A dedicated human who handles the things between work, school and home &mdash; and
-            takes care of your family in India too.
+            For life in the Gulf &mdash; and your family back in India.
           </p>
           <p
             style={{
@@ -89,11 +93,10 @@ function GulfHero() {
               lineHeight: 1.4,
               color: "var(--text-strong)",
               fontWeight: 500,
-              maxWidth: 520,
               margin: "0 0 24px",
             }}
           >
-            Less chasing. More time for your family, your work and yourself.
+            Less to chase. More time to live.
           </p>
           <JoinCta className="btn btn-primary btn-lg" position="hero">
             Get Early Access
