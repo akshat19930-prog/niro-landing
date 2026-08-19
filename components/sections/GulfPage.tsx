@@ -76,11 +76,24 @@ function GulfHero() {
               lineHeight: "var(--leading-body)",
               color: "var(--text-body)",
               maxWidth: 520,
-              margin: "0 0 24px",
+              margin: "0 0 12px",
             }}
           >
             A dedicated human who handles the things between work, school and home &mdash; and
             takes care of your family in India too.
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "var(--text-lg)",
+              lineHeight: 1.4,
+              color: "var(--text-strong)",
+              fontWeight: 500,
+              maxWidth: 520,
+              margin: "0 0 24px",
+            }}
+          >
+            Less chasing. More time for your family, your work and yourself.
           </p>
           <JoinCta className="btn btn-primary btn-lg" position="hero">
             Get Early Access
@@ -184,6 +197,62 @@ function GulfHowItWorks() {
   );
 }
 
+/* ----------------------------------------------------------- time + payoff */
+
+function GulfTimeBack() {
+  const offList = [
+    "No more spending your lunch break calling schools.",
+    "No more evenings searching for tutors.",
+    "No more weekends chasing paperwork.",
+    "No more coordinating something in India from the Gulf.",
+  ];
+  return (
+    <section data-screen-label="Gulf time back" style={{ padding: sectionPad }}>
+      <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
+        <h2 style={{ ...h2Style, margin: "0 0 22px" }}>
+          The point isn&rsquo;t getting things done. It&rsquo;s getting your time back.
+        </h2>
+        <ul style={{ listStyle: "none", padding: 0, margin: "0 0 22px", display: "flex", flexDirection: "column", gap: 12 }}>
+          {offList.map((t) => (
+            <li key={t} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+              <span
+                aria-hidden="true"
+                style={{
+                  width: 26,
+                  height: 26,
+                  flexShrink: 0,
+                  borderRadius: "50%",
+                  background: "var(--brand-soft)",
+                  color: "var(--brand)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginTop: 1,
+                }}
+              >
+                <Icon name="x" size={15} />
+              </span>
+              <span style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.45 }}>{t}</span>
+            </li>
+          ))}
+        </ul>
+        <p
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "var(--text-2xl)",
+            lineHeight: 1.35,
+            color: "var(--text-strong)",
+            fontWeight: 500,
+            margin: 0,
+          }}
+        >
+          Niro handles the chasing. <span style={{ color: "var(--brand)" }}>You get the time back.</span>
+        </p>
+      </div>
+    </section>
+  );
+}
+
 /* --------------------------------------------------------- what Niro handles */
 
 type HandleCard = { icon: IconName; title: string; items: string; crossBorder?: boolean };
@@ -253,7 +322,7 @@ function HandleCardView({ card }: { card: HandleCard }) {
 
 function GulfHandles() {
   return (
-    <section data-screen-label="Gulf handles" style={{ padding: sectionPad }}>
+    <section data-screen-label="Gulf handles" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>What Niro handles</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 26px" }}>The person you call when something needs doing.</h2>
@@ -326,7 +395,7 @@ function StepFlow({ label, steps }: { label: string; steps: string[] }) {
 
 function GulfCrossBorder() {
   return (
-    <section data-screen-label="Gulf cross-border" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
+    <section data-screen-label="Gulf cross-border" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow>The cross-border difference</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>And when something needs to happen in India&hellip;</h2>
@@ -420,7 +489,7 @@ function GulfFamilies() {
     .map((n) => GULF_TESTIMONIALS.find((t) => t.name === n))
     .filter(Boolean) as typeof GULF_TESTIMONIALS;
   return (
-    <section data-screen-label="Gulf families" style={{ padding: sectionPad }}>
+    <section data-screen-label="Gulf families" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>Real families</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 26px" }}>Already doing this for families like yours.</h2>
@@ -555,8 +624,8 @@ function GulfPricing() {
             <span style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.72)" }}>/month</span>
           </div>
           <p style={{ fontSize: "var(--text-sm)", color: "var(--gold-300)", fontWeight: 500, margin: "0 0 18px", lineHeight: 1.5 }}>
-            The first house manager that works in both places your family lives. Gets you back
-            15+ hours a month.
+            The one house manager that works in both places your family lives &mdash; so you
+            get hours of your week back.
           </p>
           <ul style={{ listStyle: "none", padding: 0, margin: "0 0 22px", display: "flex", flexDirection: "column", gap: 11 }}>
             {features.map((f) => (
@@ -641,6 +710,7 @@ export function GulfPage() {
       <main>
         <GulfHero />
         <GulfHowItWorks />
+        <GulfTimeBack />
         <GulfHandles />
         <GulfCrossBorder />
         <GulfFamilies />

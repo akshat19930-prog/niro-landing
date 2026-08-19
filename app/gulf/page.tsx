@@ -14,7 +14,7 @@ import { GulfPage } from "@/components/sections/GulfPage";
 export const metadata: Metadata = {
   title: "Niro — one house manager, both the places you call home",
   description:
-    "A named person for your home in the Gulf and your parents in India. Domestic help, school runs, Emirates ID, appointments back home. Get back 15+ hours a month.",
+    "A named person for your home in the Gulf and your parents in India. Domestic help, school runs, Emirates ID, appointments back home. Less chasing — more time for your family.",
   robots: { index: false, follow: false },
   alternates: { canonical: "https://tellniro.com/gulf" },
   openGraph: {
