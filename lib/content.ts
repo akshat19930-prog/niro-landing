@@ -540,12 +540,11 @@ export const GULF_FAQ: { q: string; a: string }[] = [
    plan question: the page has a single $149 SKU, and a plan chip would repeat
    the price (acceptance: "$149 appears exactly once"). */
 export const GULF_QUALIFY_TASKS: string[] = [
-  "Domestic help & home admin",
-  "Kids - school, camps, tutors",
-  "Emirates ID & visas",
-  "Parents' health & appointments (India)",
-  "Paperwork - here & in India",
-  "Property in India",
+  "House staff - hiring, visas & managing",
+  "Kids - school, tuition & activities",
+  "Government & paperwork - Emirates ID, visas, attestation",
+  "Home & everyday admin - bills, maintenance, car, errands",
+  "Support parents in India",
 ];
 export const GULF_QUALIFY_WHO: string[] = [
   "My household here",

@@ -185,7 +185,7 @@ export function GulfJoinModal() {
               A few taps so your contact is ready for you. Optional - skip anytime.
             </p>
 
-            <Question label="What should we handle first?">
+            <Question label="Where could you use a hand?">
               {GULF_QUALIFY_TASKS.map((t) => (
                 <Chip key={t} label={t} multi selected={tasks.includes(t)} onClick={() => toggleTask(t)} />
               ))}
