@@ -55,6 +55,11 @@ var CONFIG = {
   // browser caches have turned over and every live session is tagged.
   UNTAGGED_MARKET: "na",
 
+  // Ad sets (or campaigns) whose name matches this are dropped from the report
+  // entirely — no spend, no leads, no attribution. Used to exclude the Hindi
+  // ad-set variants. Set to null to keep everything.
+  EXCLUDE_ADSET: /hindi/i,
+
   // The three report markets, in display order. `pages`/`geos` segment our own
   // beacons; `adset` matches Meta ad-set names for spend/CPM/CTR. Gulf (Dual) is
   // matched BEFORE Gulf so a dual ad set isn't swallowed by the Gulf regex.
@@ -152,7 +157,7 @@ function fetchMeta_() {
       CONFIG.META_AD_ACCOUNT_ID + "/insights";
     var until = Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyy-MM-dd");
     var range = encodeURIComponent(JSON.stringify({ since: CONFIG.TEST_START, until: until }));
-    var fields = "adset_id,adset_name,spend,impressions,clicks,actions";
+    var fields = "adset_id,adset_name,campaign_name,spend,impressions,clicks,actions";
 
     // Ad-set level, one row per (ad set, day). Everything else is derived from this.
     var rows = metaGetAll_(base + "?level=adset&time_increment=1&time_range=" + range +
@@ -160,18 +165,23 @@ function fetchMeta_() {
 
     var adsets = {};          // id -> { name, market, spend, impr, clicks, leads, lpv }
     var marketDate = {};      // marketKey -> { date -> {spend, impr, clicks} }
-    var totalSpend = 0;
+    var totalSpend = 0, unmappedSpend = 0;
 
     rows.forEach(function (r) {
       var id = String(r.adset_id || r.adset_name || "?");
       var name = String(r.adset_name || id);
+      var campaign = String(r.campaign_name || "");
+      // Drop excluded ad sets (e.g. Hindi) entirely — before any accumulation.
+      if (CONFIG.EXCLUDE_ADSET && (CONFIG.EXCLUDE_ADSET.test(name) || CONFIG.EXCLUDE_ADSET.test(campaign))) return;
+
       var date = r.date_start;
       var spend = num_(r.spend), impr = num_(r.impressions), clicks = num_(r.clicks);
       var leads = metaAction_(r.actions, "lead");
       var lpv = metaAction_(r.actions, "landing_page_view");
       totalSpend += spend;
 
-      var mk = marketForAdset_(name);
+      // Match the market on the ad-set name OR its campaign name.
+      var mk = marketForAdset_(name, campaign);
       if (!adsets[id]) adsets[id] = { name: name, market: mk, spend: 0, impr: 0, clicks: 0, leads: 0, lpv: 0 };
       var a = adsets[id];
       a.spend += spend; a.impr += impr; a.clicks += clicks; a.leads += leads; a.lpv += lpv;
@@ -180,9 +190,11 @@ function fetchMeta_() {
         var md = marketDate[mk] = marketDate[mk] || {};
         var cell = md[date] = md[date] || { spend: 0, impr: 0, clicks: 0 };
         cell.spend += spend; cell.impr += impr; cell.clicks += clicks;
+      } else {
+        unmappedSpend += spend;
       }
     });
-    return { adsets: adsets, marketDate: marketDate, totalSpend: totalSpend };
+    return { adsets: adsets, marketDate: marketDate, totalSpend: totalSpend, unmappedSpend: unmappedSpend };
   } catch (err) {
     return { error: String(err) };
   }
@@ -210,13 +222,13 @@ function metaAction_(actions, type) {
   actions.forEach(function (a) { if (String(a.action_type) === type) v = num_(a.value); });
   return v;
 }
-function marketForAdset_(name) {
-  var list = CONFIG.MARKETS;
+function marketForAdset_(name, campaign) {
+  var hay = String(name || "") + " " + String(campaign || "");
   // Test Gulf (Dual) before Gulf so a dual ad set isn't captured by the Gulf regex.
   var order = ["gulf_dual", "gulf", "na"];
   for (var i = 0; i < order.length; i++) {
     var def = defForKey_(order[i]);
-    if (def && def.adset && def.adset.test(String(name || ""))) return def.key;
+    if (def && def.adset && def.adset.test(hay)) return def.key;
   }
   return "";  // unmapped
 }
@@ -300,7 +312,9 @@ function buildModel_(data, meta) {
     totalSignups: data.signups.length,
     newSignups: prev ? Math.max(0, data.signups.length - prev.totalSignups) : data.signups.length,
     dayNum: dayNum, daysLeft: Math.max(0, CONFIG.TEST_DAYS - dayNum),
-    spendMTD: meta && meta.totalSpend ? meta.totalSpend : 0, budget: CONFIG.BUDGET_INR
+    spendMTD: meta && meta.totalSpend ? meta.totalSpend : 0,
+    unmappedSpend: meta && meta.unmappedSpend ? meta.unmappedSpend : 0,
+    budget: CONFIG.BUDGET_INR
   };
 }
 function nextDay_(yyyymmdd) {
@@ -450,6 +464,10 @@ function renderHtml_(m) {
   if (!m.meta_ok) {
     h.push('<p style="background:#FBEEC8;border:1px solid #E4C97A;border-radius:6px;padding:8px 12px;color:#7a5b12">' +
       'Meta not connected' + (m.meta_err ? ' (' + m.meta_err + ')' : '') + ' — Cost per lead / Spend / CPM / CTR show n/a. Fill CONFIG.META_ACCESS_TOKEN.</p>');
+  } else if (m.unmappedSpend > 0) {
+    h.push('<p style="background:#FBEEC8;border:1px solid #E4C97A;border-radius:6px;padding:8px 12px;color:#7a5b12">' +
+      money_(m.unmappedSpend) + ' of spend is in ad sets that matched no market, so it is missing from the three sections above (see rows marked <b>Unmapped</b> in the console below). ' +
+      'Edit CONFIG.MARKETS[].adset to match your ad-set / campaign names.</p>');
   }
 
   // ---- Blocks 1-3: one table per market ----
