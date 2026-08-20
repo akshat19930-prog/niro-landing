@@ -60,14 +60,31 @@ var CONFIG = {
   // ad-set variants. Set to null to keep everything.
   EXCLUDE_ADSET: /hindi/i,
 
-  // The three report markets, in display order. `pages`/`geos` segment our own
-  // beacons; `adset` matches Meta ad-set names for spend/CPM/CTR. Gulf (Dual) is
-  // matched BEFORE Gulf so a dual ad set isn't swallowed by the Gulf regex.
-  // >>> EDIT the `adset` patterns to match how YOUR ad sets are actually named. <<<
+  // The three report markets, in display order. Meta spend/CPM/CTR/leads are
+  // attributed by EXACT campaign name (`campaigns`) — ad-set names collide
+  // across markets (a "P3 English" ad set exists in both the US-CA and the Gulf
+  // campaigns), so only the campaign disambiguates. `adset` is a fuzzy fallback
+  // for any NEW campaign not yet listed here. Add new campaign names as you make
+  // them. (Funnel rows are split separately, by page + geo, from our beacons.)
   MARKETS: [
-    { key: "na",        label: "North America", adset: /(^|[^a-z])(us|usa|united\s*states|canada|ca|north\s*america|na)([^a-z]|$)/i },
-    { key: "gulf",      label: "Gulf",          adset: /(gulf|uae|dubai|abu\s*dhabi|qatar|doha|sharjah|parent)/i },
-    { key: "gulf_dual", label: "Gulf (Dual)",   adset: /(dual|two[-\s]?countr|both[-\s]?side|\/gulf|gulf[-_\s]?dual|149)/i }
+    {
+      key: "na", label: "North America",
+      campaigns: [
+        "Niro Test P1-5 US CA",   // current consolidated US-CA campaign
+        "Niro Test P1", "Niro Test P2", "Niro Test P3", "Niro Test P4", "Niro Test P5" // original per-pitch NA tests
+      ],
+      adset: /(^|[^a-z])(us|usa|united\s*states|canada|na)([^a-z]|$)/i
+    },
+    {
+      key: "gulf", label: "Gulf",
+      campaigns: ["Niro Test P3-P4 Gulf"],
+      adset: /gulf(?!\s*dual)/i
+    },
+    {
+      key: "gulf_dual", label: "Gulf (Dual)",
+      campaigns: ["Niro Test Gulf Dual"],
+      adset: /(gulf\s*dual|\bD[1-4]\b|dual)/i
+    }
   ],
 
   TEST_EMAILS: [
@@ -223,11 +240,22 @@ function metaAction_(actions, type) {
   return v;
 }
 function marketForAdset_(name, campaign) {
+  // 1) Primary: exact campaign-name match (unambiguous — ad-set names collide).
+  var camp = String(campaign || "").trim().toLowerCase();
+  if (camp) {
+    for (var i = 0; i < CONFIG.MARKETS.length; i++) {
+      var list = CONFIG.MARKETS[i].campaigns || [];
+      for (var j = 0; j < list.length; j++) {
+        if (String(list[j]).trim().toLowerCase() === camp) return CONFIG.MARKETS[i].key;
+      }
+    }
+  }
+  // 2) Fallback: fuzzy name regex, for any campaign not in the static map.
+  //    Test Gulf (Dual) before Gulf so a dual ad set isn't caught by the Gulf regex.
   var hay = String(name || "") + " " + String(campaign || "");
-  // Test Gulf (Dual) before Gulf so a dual ad set isn't captured by the Gulf regex.
   var order = ["gulf_dual", "gulf", "na"];
-  for (var i = 0; i < order.length; i++) {
-    var def = defForKey_(order[i]);
+  for (var k = 0; k < order.length; k++) {
+    var def = defForKey_(order[k]);
     if (def && def.adset && def.adset.test(hay)) return def.key;
   }
   return "";  // unmapped
