@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Wordmark } from "./Wordmark";
 import { SUPPORT_WHATSAPP } from "@/lib/config";
 
@@ -56,18 +57,25 @@ export function Footer({
             </p>
           </div>
           <nav style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
-            {links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                className="footer-link"
-                {...(l.external
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-              >
-                {l.label}
-              </a>
-            ))}
+            {links.map((l) =>
+              l.external ? (
+                <a
+                  key={l.label}
+                  href={l.href}
+                  className="footer-link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {l.label}
+                </a>
+              ) : (
+                // Internal pages use client-side navigation (prefetched) so the
+                // footer never triggers a full-document reload.
+                <Link key={l.label} href={l.href} className="footer-link">
+                  {l.label}
+                </Link>
+              )
+            )}
           </nav>
         </div>
         <div
