@@ -586,13 +586,13 @@ function GulfTimeBack() {
 type HandleCard = { icon: IconName; title: string; items: string; highlight?: boolean };
 
 const HANDLES: HandleCard[] = [
-  { icon: "home", title: "Your Gulf household", items: "Domestic help · Repairs · Maintenance · Household admin" },
-  { icon: "star", title: "Kids & family", items: "Tutors · Camps · Activities · Appointments" },
+  { icon: "home", title: "Your home", items: "Domestic help · Repairs · Maintenance · Household admin" },
+  { icon: "star", title: "Your family", items: "Tutors · Camps · Activities · Appointments" },
   { icon: "heart-pulse", title: "Your family in India", items: "Parents · Hospitals · Repairs · Paperwork" },
   {
     icon: "map-pin",
-    title: "Travel, Local experiences & Gifting",
-    items: "Trips & itineraries · Restaurants & staycations · Gifts & occasions · Bookings",
+    title: "Travel, Experiences & Gifting",
+    items: "Trips · Restaurants · Staycations · Gifts · Bookings",
     highlight: true,
   },
 ];
@@ -648,34 +648,83 @@ function HandleCardView({ card }: { card: HandleCard }) {
   );
 }
 
+/** Caps label used for the "You need / Niro" rows in the worked example. */
+function labelStyle(color: string): React.CSSProperties {
+  return {
+    fontSize: "var(--text-xs)",
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: "var(--tracking-wide)",
+    color: color,
+    whiteSpace: "nowrap",
+    alignSelf: "start",
+    paddingTop: 2,
+  };
+}
+
 function GulfHandles() {
   return (
     <section data-screen-label="Gulf handles" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>What Niro handles</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 22px" }}>The person you call when something needs doing.</h2>
-        <div
+        <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>Whatever&rsquo;s on your plate.</h2>
+        <p
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))",
-            gap: 12,
+            fontFamily: "var(--font-display)",
+            fontSize: "var(--text-xl)",
+            fontWeight: 500,
+            color: "var(--brand)",
+            margin: "0 0 22px",
           }}
         >
+          Research it. Make the calls. Get it done.
+        </p>
+        <div className="gulf-handles-grid">
           {HANDLES.map((c) => (
             <HandleCardView key={c.title} card={c} />
           ))}
         </div>
+
+        {/* One worked example - shows Niro taking ownership of the whole task,
+            not just recommending options. */}
+        <div
+          style={{
+            marginTop: 16,
+            border: "1px solid var(--border)",
+            borderLeft: "3px solid var(--brand)",
+            borderRadius: "var(--radius-lg)",
+            background: "var(--surface-card)",
+            padding: "16px 18px",
+            display: "grid",
+            gridTemplateColumns: "auto 1fr",
+            gap: "8px 14px",
+            alignItems: "baseline",
+            boxShadow: "var(--shadow-1)",
+          }}
+        >
+          <span style={labelStyle("var(--text-muted)")}>You need</span>
+          <span style={{ fontSize: "var(--text-md)", color: "var(--text-strong)", fontWeight: 500, lineHeight: 1.4 }}>
+            A maths tutor for your daughter.
+          </span>
+          <span style={labelStyle("var(--brand)")}>Niro</span>
+          <span style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.5 }}>
+            Researches options <span style={{ color: "var(--brand)" }}>→</span> makes the calls{" "}
+            <span style={{ color: "var(--brand)" }}>→</span> checks availability{" "}
+            <span style={{ color: "var(--brand)" }}>→</span> helps you book.
+          </span>
+        </div>
+
         <p
           style={{
             textAlign: "center",
-            marginTop: 20,
+            marginTop: 22,
             fontSize: "var(--text-lg)",
             fontFamily: "var(--font-display)",
             fontWeight: 500,
             color: "var(--text-strong)",
           }}
         >
-          From planning &amp; research, to booking &amp; execution.
+          If you don&rsquo;t have time to deal with it, ask Niro.
         </p>
       </div>
     </section>
