@@ -7,6 +7,7 @@ import { Icon } from "@/components/ds/Icon";
 import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
+import { dialCode } from "@/lib/track";
 import {
   GULF_QUALIFY_TASKS,
   GULF_QUALIFY_WHO,
@@ -107,6 +108,13 @@ export function GulfJoinModal() {
     }, 60);
     return () => clearTimeout(t);
   }, [open, step]);
+
+  // Pre-fill the WhatsApp field with the visitor's country dialling code so they
+  // only type the local number.
+  useEffect(() => {
+    if (step !== "done" || phoneAdded) return;
+    setPhone((cur) => (cur ? cur : dialCode() ? dialCode() + " " : ""));
+  }, [step, phoneAdded]);
 
   if (!open) return null;
 
@@ -243,11 +251,7 @@ export function GulfJoinModal() {
             >
               <Icon name="check-circle" size={28} />
             </span>
-            <h2 style={{ ...h2Style, margin: "0 0 10px" }}>You&apos;re on the list</h2>
-            <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 20px" }}>
-              We&apos;ll be in touch as we open up early access in your city. Want your first task
-              started sooner? Add your WhatsApp number and we&apos;ll reach out.
-            </p>
+            <h2 style={{ ...h2Style, margin: "0 0 8px" }}>You&apos;re on the list</h2>
 
             {phoneAdded ? (
               <div
@@ -255,6 +259,7 @@ export function GulfJoinModal() {
                   display: "flex",
                   alignItems: "center",
                   gap: 8,
+                  marginTop: 12,
                   padding: "12px 14px",
                   borderRadius: "var(--radius-lg)",
                   background: "var(--brand-soft)",
@@ -263,24 +268,33 @@ export function GulfJoinModal() {
                   fontWeight: 500,
                 }}
               >
-                <Icon name="check-circle" size={16} /> Got it - we&apos;ll WhatsApp you shortly.
+                <Icon name="check-circle" size={16} /> Got it - a named contact will WhatsApp you shortly.
               </div>
             ) : (
-              <div style={{ display: "flex", gap: 10, alignItems: "stretch" }}>
-                <div style={{ flex: 1 }}>
-                  <Input
-                    type="tel"
-                    placeholder="WhatsApp number (optional)"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    autoComplete="tel"
-                    aria-label="WhatsApp number"
-                  />
+              <>
+                <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 14px" }}>
+                  Want your first task started this week? Add your WhatsApp number and a named
+                  contact will message you to get going - on us.
+                </p>
+                <Input
+                  id="gulf-phone-input"
+                  type="tel"
+                  inputMode="tel"
+                  placeholder="WhatsApp number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  autoComplete="tel"
+                  aria-label="WhatsApp number"
+                />
+                <div style={{ marginTop: 10 }}>
+                  <Button full onClick={onPhoneAdd} disabled={phone.replace(/[^\d]/g, "").length < 8}>
+                    Notify me on WhatsApp
+                  </Button>
                 </div>
-                <Button onClick={onPhoneAdd} disabled={phone.replace(/[^\d]/g, "").length < 7}>
-                  Notify me
-                </Button>
-              </div>
+                <div style={{ marginTop: 8, fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                  Only about your Niro - no spam, opt out anytime.
+                </div>
+              </>
             )}
           </Card>
         )}
