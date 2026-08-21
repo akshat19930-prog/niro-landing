@@ -176,6 +176,75 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
   }
 }
 
+/** Fire a beacon at most once per session for a given key (uses sessionStorage
+ *  so a scroll milestone / fold view isn't double-counted on the same visit).
+ *  Returns true the first time only. */
+function fireOnce(key: string): boolean {
+  const s = store();
+  if (!s) return true; // no storage: allow (rare; avoids silently dropping)
+  try {
+    if (s.getItem(key)) return false;
+    s.setItem(key, "1");
+    return true;
+  } catch {
+    return true;
+  }
+}
+
+/** Scroll-depth + pricing-fold beacons, so the report can see WHERE visitors
+ *  drop — e.g. how many reach the $ pricing fold before leaving — split by
+ *  page/market like the rest of the funnel. Each milestone fires at most once
+ *  per session. `#pricing-fold` is marked on both the main and /gulf pricing
+ *  sections. */
+function startScrollTracking(): void {
+  const milestones: Array<[number, string]> = [
+    [25, "scroll_25"],
+    [50, "scroll_50"],
+    [75, "scroll_75"],
+    [95, "scroll_100"],
+  ];
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      const doc = document.documentElement;
+      const scrollable = doc.scrollHeight - window.innerHeight;
+      const pct =
+        scrollable <= 0 ? 100 : ((window.scrollY || doc.scrollTop) / scrollable) * 100;
+      for (const [t, name] of milestones) {
+        if (pct >= t && fireOnce("nsc_" + t)) logEvent(name);
+      }
+      if (pct >= 95) window.removeEventListener("scroll", onScroll);
+    });
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll(); // catch short pages / restored scroll position
+
+  // Pricing fold: fire when the $ section first enters the viewport. This is the
+  // key "did they get to the price?" signal for the funnel.
+  try {
+    const el = document.getElementById("pricing-fold");
+    if (el && "IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              if (fireOnce("nsc_pricing")) logEvent("reached_pricing");
+              io.disconnect();
+            }
+          }
+        },
+        { threshold: 0.35 }
+      );
+      io.observe(el);
+    }
+  } catch {
+    /* IO not supported — depth milestones still cover the funnel */
+  }
+}
+
 let started = false;
 /** Call once on mount (after the arm is assigned). Logs one exposure per
  *  session, tracks engagement, and emits session_end with duration on unload. */
@@ -214,4 +283,6 @@ export function startSession(): void {
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") end();
   });
+
+  startScrollTracking();
 }

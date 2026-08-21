@@ -366,6 +366,7 @@ function marketForEvent_(page, geo, market) {
 
 function computeMarketWindow_(evts, metaAgg) {
   var expo = {}, getAcc = {}, em = {}, ph = {}, done = {}, engaged = {}, dur = {};
+  var sc50 = {}, scPrice = {}, sc100 = {};
   evts.forEach(function (e) {
     var sid = String(e.sid || ""), ev = String(e.event || "");
     if (ev === "exposure") expo[sid] = 1;
@@ -373,6 +374,9 @@ function computeMarketWindow_(evts, metaAgg) {
     else if (ev === "email_entered") em[sid] = 1;
     else if (ev === "phone_added") ph[sid] = 1;
     else if (ev === "signup_completed") done[sid] = 1;
+    else if (ev === "scroll_50") { sc50[sid] = 1; engaged[sid] = 1; }
+    else if (ev === "reached_pricing") { scPrice[sid] = 1; engaged[sid] = 1; }
+    else if (ev === "scroll_100") sc100[sid] = 1;
     else if (ev === "session_end") {
       if (num_(e.engaged) === 1) engaged[sid] = 1;
       var d = num_(e.durationMs);
@@ -391,6 +395,9 @@ function computeMarketWindow_(evts, metaAgg) {
   var spend = metaAgg.spend, impr = metaAgg.impr, clicks = metaAgg.clicks;
   return {
     sessions: sessions, bounce: bounce, avgDurSec: avgDurSec,
+    scroll50: Object.keys(sc50).length,
+    reachedPricing: Object.keys(scPrice).length,
+    scroll100: Object.keys(sc100).length,
     getAccess: Object.keys(getAcc).length,
     email: email,
     e2v: sessions ? (email / sessions * 100) : 0,
@@ -425,6 +432,13 @@ function dur_(sec) {
   return m ? (m + "m " + s + "s") : (s + "s");
 }
 function na_() { return '<span style="color:#9AA79E">n/a</span>'; }
+/** Scroll-funnel cell: absolute count with % of sessions in muted parens, e.g.
+ *  "43 (27%)". Dash when there were no sessions. */
+function scrollCell_(count, sessions) {
+  var c = num_(count);
+  if (!sessions) return c ? String(c) : "-";
+  return c + ' <span style="color:#9AA79E">(' + Math.round(c / sessions * 100) + '%)</span>';
+}
 
 function td_(html, opt) {
   var style = "padding:6px 9px;border-bottom:1px solid #eee;font:12.5px/1.4 -apple-system,Segoe UI,Roboto,sans-serif;" + (opt || "");
@@ -467,6 +481,9 @@ function renderMarketTable_(m, market) {
   h.push(row("Sessions (unique visitors)", C.map(function (s) { return s.sessions; }), M.sessions));
   h.push(row("Bounce rate", C.map(function (s) { return pct_(s.bounce); }), pct_(M.bounce), statusOf_(M.bounce, CONFIG.GATES.bounce)));
   h.push(row("Avg session duration", C.map(function (s) { return dur_(s.avgDurSec); }), dur_(M.avgDurSec)));
+  h.push(row("Scrolled 50%", C.map(function (s) { return scrollCell_(s.scroll50, s.sessions); }), scrollCell_(M.scroll50, M.sessions)));
+  h.push(row("Reached pricing", C.map(function (s) { return scrollCell_(s.reachedPricing, s.sessions); }), scrollCell_(M.reachedPricing, M.sessions)));
+  h.push(row("Reached page end", C.map(function (s) { return scrollCell_(s.scroll100, s.sessions); }), scrollCell_(M.scroll100, M.sessions)));
   h.push(row("Get Early Access clicked", C.map(function (s) { return s.getAccess; }), M.getAccess));
   h.push(row("Email entered", C.map(function (s) { return s.email; }), M.email));
   h.push(row("Email entered / visitors %", C.map(function (s) { return pct_(s.e2v); }), pct_(M.e2v), statusOf_(M.e2v, CONFIG.GATES.e2v)));
