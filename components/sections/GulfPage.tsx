@@ -8,6 +8,7 @@ import { Icon, type IconName } from "@/components/ds/Icon";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import { logEvent } from "@/lib/track";
+import { assignGulfPriceArm } from "@/lib/analytics";
 import { GULF_TESTIMONIALS, GULF_FAQ } from "@/lib/content";
 
 /* ------------------------------------------------------------ shared style */
@@ -928,6 +929,16 @@ function GulfTrustStrip() {
 /* ----------------------------------------------------------------- pricing */
 
 function GulfPricing() {
+  // Price A/B ($149 control vs $99). Start at the SSR default so hydration
+  // matches, then swap to this visitor's assigned arm on mount. The pricing
+  // fold is far below the load, so there's no visible flash.
+  const [price, setPrice] = useState<"149" | "99">("149");
+  useEffect(() => {
+    // assign (idempotent) rather than read: child effects fire before the
+    // provider's, so reading alone could miss an arm not yet assigned.
+    setPrice(assignGulfPriceArm());
+  }, []);
+
   const features = [
     "Unlimited tasks, both countries",
     "Two WhatsApp groups - one for India, one for home here",
@@ -961,7 +972,7 @@ function GulfPricing() {
             Niro Prime
           </div>
           <div style={{ margin: "10px 0 4px", display: "flex", alignItems: "baseline", gap: 6 }}>
-            <span style={{ fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 600, color: "#fff" }}>$149</span>
+            <span style={{ fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 600, color: "#fff" }}>${price}</span>
             <span style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.72)" }}>/month</span>
           </div>
           <p style={{ fontSize: "var(--text-sm)", color: "var(--gold-300)", fontWeight: 500, margin: "0 0 18px", lineHeight: 1.5 }}>
