@@ -129,20 +129,44 @@ function GulfHero() {
 /* ------------------------------------------------------------- how it works */
 
 function AskBubble({ children, sender }: { children: React.ReactNode; sender?: string }) {
-  return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
-      {sender && (
-        <span
+  // Group-message variant (hero): left-aligned received bubble with the sender's
+  // name at the top-left, exactly like a WhatsApp group and like NiroBubble.
+  if (sender) {
+    return (
+      <div style={{ display: "flex", justifyContent: "flex-start" }}>
+        <div
           style={{
-            fontSize: "var(--text-xs)",
-            fontWeight: 700,
-            color: "var(--accent-strong, #a65f28)",
-            margin: "0 4px 3px 0",
+            background: "var(--brand-soft)",
+            color: "var(--text-strong)",
+            border: "1px solid var(--border)",
+            borderRadius: 16,
+            borderTopLeftRadius: 5,
+            padding: "10px 16px 12px",
+            maxWidth: 500,
+            fontSize: "var(--text-base)",
+            lineHeight: 1.45,
+            boxShadow: "var(--shadow-1)",
           }}
         >
-          {sender}
-        </span>
-      )}
+          <span
+            style={{
+              display: "block",
+              fontSize: "var(--text-xs)",
+              fontWeight: 700,
+              color: "var(--accent-strong, #a65f28)",
+              marginBottom: 3,
+            }}
+          >
+            {sender}
+          </span>
+          {children}
+        </div>
+      </div>
+    );
+  }
+  // Default "you" bubble (right-aligned) used by the How-it-works thread.
+  return (
+    <div style={{ display: "flex", justifyContent: "flex-end" }}>
       <div
         style={{
           background: "var(--brand-soft)",
@@ -261,28 +285,42 @@ function usePrefersReducedMotion(): boolean {
   return reduced;
 }
 
-/** A compact stacked-chat row used on the closing summary frame. */
-function MiniChat({ title, snippet }: { title: string; snippet: string }) {
+/** One row of the WhatsApp chats list (avatar, group name, last-message
+ *  preview, time, unread badge) — used on the closing summary frame. */
+function ChatListRow({ title, preview, time, unread }: { title: string; preview: string; time: string; unread?: string }) {
   return (
-    <div style={{ border: "1px solid var(--border)", borderRadius: 12, overflow: "hidden", background: "var(--surface-card)", boxShadow: "var(--shadow-1)" }}>
-      <div style={{ background: "var(--brand)", color: "#fff", fontSize: 10.5, fontWeight: 700, padding: "5px 10px" }}>{title}</div>
-      <div style={{ padding: "7px 10px", fontSize: "var(--text-xs)", color: "var(--text-body)", display: "flex", alignItems: "center", gap: 6 }}>
-        <span style={{ color: "var(--brand)", display: "inline-flex", flexShrink: 0 }}>
-          <Icon name="check-circle" size={13} />
-        </span>
-        {snippet}
+    <div style={{ display: "flex", alignItems: "center", gap: 11, padding: "10px 12px" }}>
+      <span style={{ width: 44, height: 44, borderRadius: "50%", background: "var(--brand-soft)", color: "var(--brand)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+        <Icon name="message-circle" size={20} />
+      </span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
+          <span style={{ fontWeight: 700, fontSize: "var(--text-sm)", color: "var(--text-strong)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{title}</span>
+          <span style={{ fontSize: 10.5, color: "var(--brand)", flexShrink: 0 }}>{time}</span>
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginTop: 3 }}>
+          <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{preview}</span>
+          {unread && (
+            <span style={{ background: "var(--brand)", color: "#fff", fontSize: 10, fontWeight: 700, minWidth: 18, height: 18, borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 5px", flexShrink: 0 }}>
+              {unread}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-/** Closing frame: the two group chats stacked, then the two-homes-one-manager
- *  mark — carried over from the earlier hero video. */
+/** Closing frame: the two group chats as a WhatsApp chats list, then the
+ *  two-homes-one-manager mark — carried over from the earlier hero video. */
 function HeroSummary() {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
-      <MiniChat title={GROUPS.gulf.title} snippet="Date night & car service - sorted" />
-      <MiniChat title={GROUPS.india.title} snippet="Ma's visa & a new maid - sorted" />
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ background: "var(--surface-card)", border: "1px solid var(--border)", borderRadius: 14, overflow: "hidden", boxShadow: "var(--shadow-1)" }}>
+        <ChatListRow title={GROUPS.gulf.title} preview="Niro: Booked - Tuesday, pickup & drop" time="now" unread="2" />
+        <div aria-hidden="true" style={{ height: 1, background: "var(--border)", marginLeft: 55 }} />
+        <ChatListRow title={GROUPS.india.title} preview="Niro: Visa booked, someone will go with her" time="now" unread="1" />
+      </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, marginTop: 6 }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
           <span style={{ width: 40, height: 40, borderRadius: "50%", background: "var(--brand-soft)", color: "var(--brand)", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -390,7 +428,7 @@ function GulfHeroChat() {
         </div>
       </div>
 
-      <div style={{ flex: 1, minHeight: 276, display: "flex", flexDirection: "column", justifyContent: isSummary ? "center" : "flex-start", gap: 10, padding: "18px 14px" }}>
+      <div style={{ flex: 1, minHeight: 356, display: "flex", flexDirection: "column", justifyContent: isSummary ? "center" : "flex-end", gap: 10, padding: "18px 14px" }}>
         <div
           style={{
             opacity: op,
@@ -419,6 +457,29 @@ function GulfHeroChat() {
           )}
         </div>
       </div>
+
+      {/* Faux WhatsApp input bar - completes the phone screen so the card reads
+          as a real chat, not a cropped panel. Hidden on the chats-list summary. */}
+      {!isSummary && (
+        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 12px", background: "var(--wa-bg)", borderTop: "1px solid var(--border)" }}>
+          <div
+            style={{
+              flex: 1,
+              background: "var(--surface-card)",
+              border: "1px solid var(--border)",
+              borderRadius: 999,
+              padding: "8px 14px",
+              color: "var(--text-muted)",
+              fontSize: "var(--text-sm)",
+            }}
+          >
+            Message
+          </div>
+          <span style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--brand)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Icon name="mic" size={17} />
+          </span>
+        </div>
+      )}
     </div>
   );
 }
