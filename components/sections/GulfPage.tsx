@@ -797,7 +797,7 @@ function GulfCrossBorder() {
               Your parents don&rsquo;t need another app to figure out.
             </div>
             <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)" }}>
-              They can simply message Niro or send a voice note - in English, Hindi or Tamil.
+              They can simply WhatsApp Niro, send a voice note or call - in English or their local language.
             </div>
           </div>
         </div>
