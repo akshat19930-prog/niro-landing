@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ds/Card";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
@@ -14,7 +14,7 @@ import {
   QUALIFY_URGENCY,
 } from "@/lib/content";
 import { FALLBACK_WAITLIST_POSITION } from "@/lib/config";
-import { logEvent, dialCode } from "@/lib/track";
+import { dialCode } from "@/lib/track";
 
 const h2Style = {
   fontFamily: "var(--font-display)",
@@ -91,14 +91,12 @@ export function JoinModal() {
     email,
     setEmail,
     result,
-    referralUrl,
     submitEmail,
     submitQualifiers,
     submitPhone,
   } = useJoin();
 
   const [error, setError] = useState<string | undefined>();
-  const [copied, setCopied] = useState(false);
 
   // Qualifier answers (all optional).
   const [tasks, setTasks] = useState<string[]>([]);
@@ -132,11 +130,6 @@ export function JoinModal() {
     setPhone((cur) => (cur ? cur : dialCode() ? dialCode() + " " : ""));
   }, [step, phoneAdded]);
 
-  const waLink = useMemo(() => {
-    const text = `I found Niro - they handle my parents' errands, bills, and emergencies in India, over WhatsApp. Thought you'd want this too: ${referralUrl}`;
-    return `https://wa.me/?text=${encodeURIComponent(text)}`;
-  }, [referralUrl]);
-
   if (!open) return null;
 
   function onEmailSubmit(e: React.FormEvent) {
@@ -160,17 +153,6 @@ export function JoinModal() {
   function onPhoneAdd() {
     submitPhone(phone);
     setPhoneAdded(true);
-  }
-
-  async function copyReferral() {
-    try {
-      await navigator.clipboard.writeText(referralUrl);
-      logEvent("referral_copied");
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* clipboard blocked */
-    }
   }
 
   return (
@@ -345,33 +327,6 @@ export function JoinModal() {
                 </div>
               </>
             )}
-
-            {/* SECONDARY: share Niro — set below a divider so it doesn't compete
-                with the number capture above. */}
-            <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "22px 0 16px" }}>
-              <span style={{ flex: 1, height: 1, background: "var(--border)" }} />
-              <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>or share Niro</span>
-              <span style={{ flex: 1, height: 1, background: "var(--border)" }} />
-            </div>
-            <div style={{ display: "flex", gap: 10, marginBottom: 10, alignItems: "stretch" }}>
-              <div style={{ flex: 1 }}>
-                <Input value={referralUrl} readOnly aria-label="Referral link" />
-              </div>
-              <Button variant="secondary" onClick={copyReferral}>
-                {copied ? "Copied!" : "Copy link"}
-              </Button>
-            </div>
-            <Button
-              href={waLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              variant="secondary"
-              full
-              onClick={() => logEvent("referral_shared")}
-            >
-              <Icon name="message-circle" size={18} />
-              Share on WhatsApp
-            </Button>
           </Card>
         )}
       </div>
