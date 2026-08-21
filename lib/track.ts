@@ -71,6 +71,30 @@ export function getGeo(): string {
   return coarseGeo();
 }
 
+/** Best-guess international dialling code from the browser time zone, used to
+ *  pre-fill the WhatsApp-number field so the visitor only types the local part.
+ *  Returns "" when it can't tell (visitor can type the full number). */
+export function dialCode(): string {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    if (/Dubai|Abu_Dhabi/i.test(tz)) return "+971";
+    if (/Qatar/i.test(tz)) return "+974";
+    if (/Bahrain/i.test(tz)) return "+973";
+    if (/Riyadh/i.test(tz)) return "+966";
+    if (/Kuwait/i.test(tz)) return "+965";
+    if (/Muscat/i.test(tz)) return "+968";
+    if (/Kolkata|Calcutta/i.test(tz)) return "+91";
+    if (
+      /Toronto|Vancouver|Edmonton|Winnipeg|Halifax|Regina|St_Johns|Montreal|Moncton|Whitehorse|Yellowknife|Iqaluit/i.test(tz) ||
+      /^America\//.test(tz)
+    )
+      return "+1";
+  } catch {
+    /* fall through */
+  }
+  return "";
+}
+
 function pagePath(): string {
   try {
     return window.location.pathname || "/";

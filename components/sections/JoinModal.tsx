@@ -14,7 +14,7 @@ import {
   QUALIFY_URGENCY,
 } from "@/lib/content";
 import { FALLBACK_WAITLIST_POSITION } from "@/lib/config";
-import { logEvent } from "@/lib/track";
+import { logEvent, dialCode } from "@/lib/track";
 
 const h2Style = {
   fontFamily: "var(--font-display)",
@@ -123,6 +123,14 @@ export function JoinModal() {
     }, 60);
     return () => clearTimeout(t);
   }, [open, step]);
+
+  // On the confirmation step, pre-fill the WhatsApp field with the visitor's
+  // country dialling code (from their time zone) so they only type the local
+  // number — lowers the friction on the highest-intent signal.
+  useEffect(() => {
+    if (step !== "done" || phoneAdded) return;
+    setPhone((cur) => (cur ? cur : dialCode() ? dialCode() + " " : ""));
+  }, [step, phoneAdded]);
 
   const waLink = useMemo(() => {
     const text = `I found Niro - they handle my parents' errands, bills, and emergencies in India, over WhatsApp. Thought you'd want this too: ${referralUrl}`;
@@ -288,23 +296,19 @@ export function JoinModal() {
             >
               <Icon name="check-circle" size={28} />
             </span>
-            <h2 style={{ ...h2Style, margin: "0 0 10px" }}>
+            <h2 style={{ ...h2Style, margin: "0 0 6px" }}>
               You&apos;re #{(result?.position ?? FALLBACK_WAITLIST_POSITION).toLocaleString()} on the list
             </h2>
-            <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 20px" }}>
-              Want your first task started sooner? Add your WhatsApp number and we&apos;ll
-              reach out &mdash; or share your link to move up the list.
-            </p>
 
-            {/* Optional WhatsApp number — the highest-intent signal + the handoff
-                into the product's own channel. */}
+            {/* PRIMARY: WhatsApp number — benefit-framed, the highest-intent
+                signal + the handoff into the product's own channel. */}
             {phoneAdded ? (
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                   gap: 8,
-                  marginBottom: 18,
+                  marginTop: 14,
                   padding: "12px 14px",
                   borderRadius: "var(--radius-lg)",
                   background: "var(--brand-soft)",
@@ -313,27 +317,43 @@ export function JoinModal() {
                   fontWeight: 500,
                 }}
               >
-                <Icon name="check-circle" size={16} /> Got it &mdash; we&apos;ll WhatsApp you shortly.
+                <Icon name="check-circle" size={16} /> Got it &mdash; a named associate will WhatsApp you shortly.
               </div>
             ) : (
-              <div style={{ display: "flex", gap: 10, marginBottom: 18, alignItems: "stretch" }}>
-                <div style={{ flex: 1 }}>
-                  <Input
-                    type="tel"
-                    placeholder="WhatsApp number (optional)"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    autoComplete="tel"
-                    aria-label="WhatsApp number"
-                  />
+              <>
+                <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 14px" }}>
+                  Want your first task started this week? Add your WhatsApp number and a
+                  named associate will message you to get going &mdash; on us.
+                </p>
+                <Input
+                  id="phone-input"
+                  type="tel"
+                  inputMode="tel"
+                  placeholder="WhatsApp number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  autoComplete="tel"
+                  aria-label="WhatsApp number"
+                />
+                <div style={{ marginTop: 10 }}>
+                  <Button full onClick={onPhoneAdd} disabled={phone.replace(/[^\d]/g, "").length < 8}>
+                    Notify me on WhatsApp
+                  </Button>
                 </div>
-                <Button onClick={onPhoneAdd} disabled={phone.replace(/[^\d]/g, "").length < 7}>
-                  Notify me
-                </Button>
-              </div>
+                <div style={{ marginTop: 8, fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
+                  Only about your Niro &mdash; no spam, opt out anytime.
+                </div>
+              </>
             )}
 
-            <div style={{ display: "flex", gap: 10, marginBottom: 16, alignItems: "stretch" }}>
+            {/* SECONDARY: share Niro — set below a divider so it doesn't compete
+                with the number capture above. */}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "22px 0 16px" }}>
+              <span style={{ flex: 1, height: 1, background: "var(--border)" }} />
+              <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>or share Niro</span>
+              <span style={{ flex: 1, height: 1, background: "var(--border)" }} />
+            </div>
+            <div style={{ display: "flex", gap: 10, marginBottom: 10, alignItems: "stretch" }}>
               <div style={{ flex: 1 }}>
                 <Input value={referralUrl} readOnly aria-label="Referral link" />
               </div>
@@ -345,6 +365,7 @@ export function JoinModal() {
               href={waLink}
               target="_blank"
               rel="noopener noreferrer"
+              variant="secondary"
               full
               onClick={() => logEvent("referral_shared")}
             >
