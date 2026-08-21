@@ -733,99 +733,48 @@ function GulfHandles() {
 
 /* --------------------------------------------------- cross-border + parents */
 
-function StepFlow({ label, steps }: { label: string; steps: string[] }) {
-  return (
-    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px 10px" }}>
-      <span
-        style={{
-          fontSize: "var(--text-xs)",
-          fontWeight: 700,
-          textTransform: "uppercase",
-          letterSpacing: "var(--tracking-wide)",
-          color: "var(--accent-strong)",
-          minWidth: 44,
-        }}
-      >
-        {label}
-      </span>
-      {steps.map((s, i) => (
-        <span key={s} style={{ display: "inline-flex", alignItems: "center", gap: "8px 10px" }}>
-          <span
-            style={{
-              background: "var(--surface-card)",
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius-pill)",
-              padding: "6px 12px",
-              fontSize: "var(--text-sm)",
-              color: "var(--text-strong)",
-              fontWeight: 500,
-            }}
-          >
-            {s}
-          </span>
-          {i < steps.length - 1 && <Icon name="arrow-right" size={15} style={{ color: "var(--brand)" }} />}
-        </span>
-      ))}
-    </div>
-  );
-}
-
 function GulfCrossBorder() {
+  const bothSides = [
+    "Parents health admin & Emergencies",
+    "Home repairs, chores & Staff",
+    "Travel Concierge",
+    "Property Management",
+  ];
   return (
     <section data-screen-label="Gulf cross-border" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
-        <Eyebrow>The cross-border difference</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>And when something needs to happen in India&hellip;</h2>
-        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 22px" }}>
-          Your same Niro team can handle it - parents&rsquo; appointments, EPFO and bank
-          admin, repairs, or a document that has to move between both countries.
+        <Eyebrow>Your India sorted, too</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>Life in the Gulf. Family in India. One Niro.</h2>
+        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: "var(--leading-body)", margin: "0 0 24px" }}>
+          Whether it&rsquo;s something you need handled here, or something your family needs
+          sorted back home, your Niro team coordinates both.
         </p>
 
         <div
           style={{
-            background: "var(--surface-card)",
-            border: "1.5px solid var(--gold-300)",
-            borderRadius: "var(--radius-xl)",
-            padding: "var(--space-5)",
-            boxShadow: "var(--shadow-2)",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))",
+            gap: "12px 24px",
           }}
         >
-          <div
-            style={{
-              fontSize: "var(--text-sm)",
-              fontWeight: 600,
-              color: "var(--text-strong)",
-              marginBottom: 18,
-            }}
-          >
-            Need your marriage certificate attested for the UAE?
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            <StepFlow label="India" steps={["Collect original", "State attestation", "MEA"]} />
-            <StepFlow label="UAE" steps={["Embassy", "MOFA"]} />
-          </div>
-          <div
-            style={{
-              marginTop: 18,
-              paddingTop: 16,
-              borderTop: "1px solid var(--border)",
-              fontFamily: "var(--font-display)",
-              fontSize: "var(--text-lg)",
-              fontWeight: 500,
-              color: "var(--text-strong)",
-            }}
-          >
-            One team coordinating both sides.
-          </div>
+          {bothSides.map((item) => (
+            <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+              <Icon name="check-circle" size={18} style={{ marginTop: 2, flexShrink: 0, color: "var(--brand)" }} />
+              <span style={{ fontSize: "var(--text-md)", color: "var(--text-strong)", lineHeight: 1.4 }}>{item}</span>
+            </div>
+          ))}
         </div>
 
-        {/* Compact parents callout — integrated here rather than a full section. */}
+        {/* Parents callout — the accessibility hook that makes cross-border work. */}
         <div
           style={{
             display: "flex",
             alignItems: "flex-start",
             gap: 13,
-            marginTop: 22,
+            marginTop: 26,
+            padding: "16px 18px",
+            borderRadius: "var(--radius-lg)",
+            background: "var(--brand-soft)",
           }}
         >
           <span
@@ -837,18 +786,18 @@ function GulfCrossBorder() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              background: "var(--brand-soft)",
-              color: "var(--brand)",
+              background: "var(--brand)",
+              color: "#fff",
             }}
           >
             <Icon name="message-circle" size={22} />
           </span>
           <div style={{ lineHeight: 1.5 }}>
             <div style={{ fontSize: "var(--text-base)", fontWeight: 600, color: "var(--text-strong)" }}>
-              Your parents don&rsquo;t need an app.
+              Your parents don&rsquo;t need another app to figure out.
             </div>
-            <div style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
-              They can message Niro or send a voice note in English, Hindi or Tamil.
+            <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)" }}>
+              They can simply message Niro or send a voice note - in English, Hindi or Tamil.
             </div>
           </div>
         </div>
