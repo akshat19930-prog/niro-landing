@@ -472,7 +472,7 @@ function TrustB() {
 
 function PricingB() {
   return (
-    <section data-screen-label="Pricing (B)" style={{ padding: sectionPad }}>
+    <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto", textAlign: "center" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>Plans starting at $55/month.</h2>

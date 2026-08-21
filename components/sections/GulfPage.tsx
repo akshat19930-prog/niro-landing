@@ -648,7 +648,7 @@ function GulfPricing() {
     "A named contact who knows your family",
   ];
   return (
-    <section data-screen-label="Gulf pricing" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
+    <section id="pricing-fold" data-screen-label="Gulf pricing" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: 520, margin: "0 auto" }}>
         <div
           style={{
