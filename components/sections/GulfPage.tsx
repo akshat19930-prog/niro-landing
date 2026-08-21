@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Nav } from "@/components/ds/Nav";
 import { JoinCta } from "@/components/ds/JoinCta";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
-import { ChatVideo } from "@/components/ds/ChatVideo";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import { logEvent } from "@/lib/track";
@@ -120,12 +119,7 @@ function GulfHero() {
           </div>
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
-          <ChatVideo
-            src="/media/gulf-hero.mp4"
-            poster="/media/gulf-hero-poster.jpg"
-            aspect="1080 / 1920"
-            ariaLabel="A WhatsApp conversation showing Niro handling real family requests in the Gulf and in India"
-          />
+          <GulfHeroChat />
         </div>
       </div>
     </section>
@@ -190,6 +184,154 @@ function NiroBubble({ children }: { children: React.ReactNode }) {
           Niro
         </span>
         {children}
+      </div>
+    </div>
+  );
+}
+
+/* ----------------------------------------------------- animated hero chat */
+
+type HeroChatTask = { side: "gulf" | "india"; ask: React.ReactNode; reply: React.ReactNode };
+
+// Higher-frequency, lived-in requests (not paperwork), alternating between the
+// family's Gulf side and their India side so the dual-sided story is shown.
+const HERO_TASKS: HeroChatTask[] = [
+  {
+    side: "gulf",
+    ask: <>Plan a date night this Saturday - book Paradiso for 8pm 🍷</>,
+    reply: <>Done. A table for two at Paradiso, Saturday 8pm - confirmation on its way.</>,
+  },
+  {
+    side: "india",
+    ask: <>Can someone look in on Mom in Pune this week?</>,
+    reply: <>Arranged a visit and her health check for Thursday. I&rsquo;ll update you right after.</>,
+  },
+  {
+    side: "gulf",
+    ask: <>The car&rsquo;s overdue a service - can you sort it?</>,
+    reply: <>Booked for Tuesday, with pickup and drop from home. Nothing for you to do.</>,
+  },
+  {
+    side: "india",
+    ask: <>Sort Diwali gifts for the family in Delhi?</>,
+    reply: <>Picked, wrapped and scheduled to arrive before Diwali.</>,
+  },
+  {
+    side: "gulf",
+    ask: <>We&rsquo;re thinking Malaysia next month with the kids.</>,
+    reply: <>Shortlisted the best family BnBs in Langkawi - sending options with prices now.</>,
+  },
+];
+
+function usePrefersReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const m = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setReduced(m.matches);
+    apply();
+    m.addEventListener?.("change", apply);
+    return () => m.removeEventListener?.("change", apply);
+  }, []);
+  return reduced;
+}
+
+/**
+ * Code-driven WhatsApp hero: one request on screen at a time, alternating
+ * between the family's Gulf side and their India side, with slow cross-fades so
+ * each task reads cleanly (no second task crowding in). Replaces the old baked
+ * MP4 so the tasks and the India<->Gulf rhythm stay editable.
+ */
+function GulfHeroChat() {
+  const reduced = usePrefersReducedMotion();
+  const [idx, setIdx] = useState(0);
+  const [showReply, setShowReply] = useState(false);
+  const [op, setOp] = useState(0);
+  const task = HERO_TASKS[idx];
+
+  useEffect(() => {
+    if (reduced) {
+      setShowReply(true);
+      setOp(1);
+      return;
+    }
+    setShowReply(false);
+    setOp(0);
+    const raf = requestAnimationFrame(() => setOp(1)); // fade the new task in
+    const t1 = setTimeout(() => setShowReply(true), 1200); // Niro replies
+    const t2 = setTimeout(() => setOp(0), 4100); // fade out before switching
+    const t3 = setTimeout(() => setIdx((i) => (i + 1) % HERO_TASKS.length), 4700);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, [idx, reduced]);
+
+  const sideLabel = task.side === "gulf" ? "Home in the Gulf" : "Family in India";
+  const ease = "var(--ease-calm, ease)";
+
+  return (
+    <div
+      aria-label="A Niro WhatsApp thread cycling real family requests - a date night here, looking in on a parent in India, a car service, Diwali gifts, and a family trip - each handled by Niro."
+      style={{
+        width: "100%",
+        maxWidth: 360,
+        margin: "0 auto",
+        borderRadius: "var(--radius-xl)",
+        overflow: "hidden",
+        boxShadow: "var(--shadow-3)",
+        border: "1px solid var(--border)",
+        background: "var(--wa-bg)",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", background: "var(--brand)", color: "#fff" }}>
+        <span
+          style={{
+            width: 34,
+            height: 34,
+            borderRadius: "50%",
+            background: "rgba(255,255,255,0.18)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <Icon name="message-circle" size={18} />
+        </span>
+        <div style={{ lineHeight: 1.25 }}>
+          <div style={{ fontWeight: 700, fontSize: "var(--text-sm)" }}>Niro</div>
+          <div key={task.side} style={{ fontSize: "var(--text-xs)", opacity: 0.85, transition: `opacity 500ms ${ease}` }}>
+            {sideLabel}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ flex: 1, minHeight: 208, display: "flex", flexDirection: "column", justifyContent: "flex-start", gap: 10, padding: "18px 14px" }}>
+        <div
+          style={{
+            opacity: op,
+            transform: op ? "translateY(0)" : "translateY(6px)",
+            transition: `opacity 550ms ${ease}, transform 550ms ${ease}`,
+            display: "flex",
+            flexDirection: "column",
+            gap: 10,
+          }}
+        >
+          <AskBubble>{task.ask}</AskBubble>
+          <div
+            style={{
+              opacity: showReply ? 1 : 0,
+              transform: showReply ? "translateY(0)" : "translateY(6px)",
+              transition: `opacity 450ms ${ease}, transform 450ms ${ease}`,
+            }}
+          >
+            <NiroBubble>{task.reply}</NiroBubble>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -290,22 +432,22 @@ function GulfTimeBack() {
 
 /* --------------------------------------------------------- what Niro handles */
 
-type HandleCard = { icon: IconName; title: string; items: string; crossBorder?: boolean };
+type HandleCard = { icon: IconName; title: string; items: string; highlight?: boolean };
 
 const HANDLES: HandleCard[] = [
   { icon: "home", title: "Your Gulf household", items: "Domestic help · Repairs · Maintenance · Household admin" },
   { icon: "star", title: "Kids & family", items: "Tutors · Camps · Activities · Appointments" },
   { icon: "heart-pulse", title: "Your family in India", items: "Parents · Hospitals · Repairs · Paperwork" },
   {
-    icon: "arrow-up-right",
-    title: "Across borders",
-    items: "Attestation · Visas · Certificates · Property",
-    crossBorder: true,
+    icon: "map-pin",
+    title: "Travel, Local experiences & Gifting",
+    items: "Trips & itineraries · Restaurants & staycations · Gifts & occasions · Bookings",
+    highlight: true,
   },
 ];
 
 function HandleCardView({ card }: { card: HandleCard }) {
-  const cross = card.crossBorder;
+  const cross = card.highlight;
   return (
     <div
       style={{
@@ -382,7 +524,7 @@ function GulfHandles() {
             color: "var(--text-strong)",
           }}
         >
-          If it needs a person to sort out, ask Niro.
+          From planning &amp; research, to booking &amp; execution.
         </p>
       </div>
     </section>
