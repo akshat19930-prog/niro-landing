@@ -525,53 +525,56 @@ function GulfHowItWorks() {
 /* ----------------------------------------------------------- time + payoff */
 
 function GulfTimeBack() {
-  const offList = [
-    "No more spending your lunch break calling schools.",
-    "No more evenings searching for tutors.",
-    "No more weekends chasing paperwork.",
-    "No more coordinating something in India from the Gulf.",
+  // Four concrete moments Niro gives back - each a real slice of the week, so
+  // the section reads as "what you get back" (distinct from the "what you hand
+  // off" section that follows).
+  const gotBack = [
+    { label: "Your lunch break", line: "Not spent calling schools." },
+    { label: "Your evenings", line: "Not spent searching for tutors." },
+    { label: "Your weekends", line: "Not spent chasing paperwork." },
+    { label: "Your headspace", line: "Not spent coordinating things in India." },
   ];
   return (
     <section data-screen-label="Gulf time back" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
-        <h2 style={{ ...h2Style, margin: "0 0 22px" }}>
-          The point isn&rsquo;t getting things done. It&rsquo;s getting your time back.
-        </h2>
-        <ul style={{ listStyle: "none", padding: 0, margin: "0 0 22px", display: "flex", flexDirection: "column", gap: 12 }}>
-          {offList.map((t) => (
-            <li key={t} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-              <span
-                aria-hidden="true"
+        <Eyebrow>What you get back</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "12px 0 26px" }}>Your time.</h2>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(230px, 100%), 1fr))",
+            gap: "20px 32px",
+          }}
+        >
+          {gotBack.map((b) => (
+            <div key={b.label} style={{ borderTop: "2px solid var(--border-strong)", paddingTop: 12 }}>
+              <div
                 style={{
-                  width: 26,
-                  height: 26,
-                  flexShrink: 0,
-                  borderRadius: "50%",
-                  background: "var(--brand-soft)",
+                  fontSize: "var(--text-sm)",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "var(--tracking-wide)",
                   color: "var(--brand)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginTop: 1,
+                  marginBottom: 5,
                 }}
               >
-                <Icon name="x" size={15} />
-              </span>
-              <span style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.45 }}>{t}</span>
-            </li>
+                {b.label}
+              </div>
+              <div style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.4 }}>{b.line}</div>
+            </div>
           ))}
-        </ul>
+        </div>
         <p
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "var(--text-2xl)",
-            lineHeight: 1.35,
+            lineHeight: 1.3,
             color: "var(--text-strong)",
             fontWeight: 500,
-            margin: 0,
+            margin: "30px 0 0",
           }}
         >
-          Niro handles the chasing. <span style={{ color: "var(--brand)" }}>You get the time back.</span>
+          One message to Niro. <span style={{ color: "var(--brand)" }}>One less thing on your plate.</span>
         </p>
       </div>
     </section>
