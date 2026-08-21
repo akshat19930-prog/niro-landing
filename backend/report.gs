@@ -167,8 +167,20 @@ function isTestEmail_(email) {
 }
 
 // ------------------------------ Meta ------------------------------
+/** The Meta token, preferring an inline CONFIG value but falling back to a
+ *  Script Property named META_ACCESS_TOKEN. Set it once under Project Settings
+ *  → Script Properties and re-pasting this file will never wipe it again. */
+function metaToken_() {
+  if (CONFIG.META_ACCESS_TOKEN) return CONFIG.META_ACCESS_TOKEN;
+  try {
+    return PropertiesService.getScriptProperties().getProperty("META_ACCESS_TOKEN") || "";
+  } catch (e) {
+    return "";
+  }
+}
+
 function fetchMeta_() {
-  if (!CONFIG.META_ACCESS_TOKEN || !CONFIG.META_AD_ACCOUNT_ID) return null;
+  if (!metaToken_() || !CONFIG.META_AD_ACCOUNT_ID) return null;
   try {
     var base = "https://graph.facebook.com/" + CONFIG.META_API_VERSION + "/" +
       CONFIG.META_AD_ACCOUNT_ID + "/insights";
@@ -220,10 +232,13 @@ function metaGetAll_(url) {
   var out = [], guard = 0, next = url;
   while (next && guard < 20) {
     var full = next.indexOf("access_token=") === -1
-      ? next + "&access_token=" + encodeURIComponent(CONFIG.META_ACCESS_TOKEN)
+      ? next + "&access_token=" + encodeURIComponent(metaToken_())
       : next;
     var res = UrlFetchApp.fetch(full, { muteHttpExceptions: true });
     var body = JSON.parse(res.getContentText() || "{}");
+    // Surface API errors (expired/invalid token, wrong account, rate limit)
+    // instead of swallowing them into silent zeros.
+    if (body.error) throw new Error("Meta API: " + (body.error.message || JSON.stringify(body.error)));
     if (body.data && body.data.length) out = out.concat(body.data);
     next = (body.paging && body.paging.next) ? body.paging.next : null;
     guard++;
@@ -586,7 +601,7 @@ function renderHtml_(m) {
     (m.meta_ok ? money_(m.spendMTD) : na_()) + ' / ' + money_(m.budget) + '</p>');
   if (!m.meta_ok) {
     h.push('<p style="background:#FBEEC8;border:1px solid #E4C97A;border-radius:6px;padding:8px 12px;color:#7a5b12">' +
-      'Meta not connected' + (m.meta_err ? ' (' + m.meta_err + ')' : '') + ' — Cost per lead / Spend / CPM / CTR show n/a. Fill CONFIG.META_ACCESS_TOKEN.</p>');
+      'Meta not connected' + (m.meta_err ? ' (' + m.meta_err + ')' : '') + ' — Cost per lead / Spend / CPM / CTR show n/a. Set META_ACCESS_TOKEN (Project Settings → Script Properties, or CONFIG).</p>');
   } else if (m.unmappedSpend > 0) {
     h.push('<p style="background:#FBEEC8;border:1px solid #E4C97A;border-radius:6px;padding:8px 12px;color:#7a5b12">' +
       money_(m.unmappedSpend) + ' of spend is in ad sets that matched no market, so it is missing from the three sections above (see rows marked <b>Unmapped</b> in the console below). ' +
