@@ -128,7 +128,43 @@ function GulfHero() {
 
 /* ------------------------------------------------------------- how it works */
 
-function AskBubble({ children }: { children: React.ReactNode }) {
+function AskBubble({ children, sender }: { children: React.ReactNode; sender?: string }) {
+  // Group-message variant (hero): left-aligned received bubble with the sender's
+  // name at the top-left, exactly like a WhatsApp group and like NiroBubble.
+  if (sender) {
+    return (
+      <div style={{ display: "flex", justifyContent: "flex-start" }}>
+        <div
+          style={{
+            background: "var(--brand-soft)",
+            color: "var(--text-strong)",
+            border: "1px solid var(--border)",
+            borderRadius: 16,
+            borderTopLeftRadius: 5,
+            padding: "10px 16px 12px",
+            maxWidth: 500,
+            fontSize: "var(--text-base)",
+            lineHeight: 1.45,
+            boxShadow: "var(--shadow-1)",
+          }}
+        >
+          <span
+            style={{
+              display: "block",
+              fontSize: "var(--text-xs)",
+              fontWeight: 700,
+              color: "var(--accent-strong, #a65f28)",
+              marginBottom: 3,
+            }}
+          >
+            {sender}
+          </span>
+          {children}
+        </div>
+      </div>
+    );
+  }
+  // Default "you" bubble (right-aligned) used by the How-it-works thread.
   return (
     <div style={{ display: "flex", justifyContent: "flex-end" }}>
       <div
@@ -191,33 +227,47 @@ function NiroBubble({ children }: { children: React.ReactNode }) {
 
 /* ----------------------------------------------------- animated hero chat */
 
-type HeroChatTask = { side: "gulf" | "india"; ask: React.ReactNode; reply: React.ReactNode };
+type ChatSide = "gulf" | "india";
+type HeroChatTask = { side: ChatSide; sender: string; ask: React.ReactNode; reply: React.ReactNode };
+
+// The two WhatsApp groups Niro runs for one family — same shape as the earlier
+// hero video: a group name plus who's in it.
+const GROUPS: Record<ChatSide, { title: string; members: string }> = {
+  gulf: { title: "Niro ↔ Ankush ↔ Gulf", members: "Ankush, Rhea, Niro" },
+  india: { title: "Niro ↔ Ankush ↔ India", members: "Ankush, Ma, Papa, Niro" },
+};
 
 // Higher-frequency, lived-in requests (not paperwork), alternating between the
-// family's Gulf side and their India side so the dual-sided story is shown.
+// family's Gulf group and their India group so the dual-sided story is shown.
+// Ankush opens the thread; Rhea (Gulf group) chimes in too.
 const HERO_TASKS: HeroChatTask[] = [
   {
     side: "gulf",
+    sender: "Ankush",
     ask: <>Plan a date night this Saturday - book Paradiso for 8pm 🍷</>,
     reply: <>Done. A table for two at Paradiso, Saturday 8pm - confirmation on its way.</>,
   },
   {
     side: "india",
-    ask: <>Can someone look in on Mom in Pune this week?</>,
-    reply: <>Arranged a visit and her health check for Thursday. I&rsquo;ll update you right after.</>,
+    sender: "Ankush",
+    ask: <>Plan Ma&rsquo;s visa appointment - and send someone to accompany her.</>,
+    reply: <>Booked her appointment for next week, and arranged someone to go with her and handle the queue.</>,
   },
   {
     side: "gulf",
+    sender: "Rhea",
     ask: <>The car&rsquo;s overdue a service - can you sort it?</>,
     reply: <>Booked for Tuesday, with pickup and drop from home. Nothing for you to do.</>,
   },
   {
     side: "india",
-    ask: <>Sort Diwali gifts for the family in Delhi?</>,
-    reply: <>Picked, wrapped and scheduled to arrive before Diwali.</>,
+    sender: "Ankush",
+    ask: <>We need to find a replacement maid for Ma &amp; Papa.</>,
+    reply: <>On it - lining up background-checked options near them and sharing this week.</>,
   },
   {
     side: "gulf",
+    sender: "Rhea",
     ask: <>We&rsquo;re thinking Malaysia next month with the kids.</>,
     reply: <>Shortlisted the best family BnBs in Langkawi - sending options with prices now.</>,
   },
@@ -235,18 +285,83 @@ function usePrefersReducedMotion(): boolean {
   return reduced;
 }
 
+/** One row of the WhatsApp chats list (avatar, group name, last-message
+ *  preview, time, unread badge) — used on the closing summary frame. */
+function ChatListRow({ title, preview, time, unread }: { title: string; preview: string; time: string; unread?: string }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 11, padding: "10px 12px" }}>
+      <span style={{ width: 44, height: 44, borderRadius: "50%", background: "var(--brand-soft)", color: "var(--brand)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+        <Icon name="message-circle" size={20} />
+      </span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
+          <span style={{ fontWeight: 700, fontSize: "var(--text-sm)", color: "var(--text-strong)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{title}</span>
+          <span style={{ fontSize: 10.5, color: "var(--brand)", flexShrink: 0 }}>{time}</span>
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginTop: 3 }}>
+          <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{preview}</span>
+          {unread && (
+            <span style={{ background: "var(--brand)", color: "#fff", fontSize: 10, fontWeight: 700, minWidth: 18, height: 18, borderRadius: 9, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 5px", flexShrink: 0 }}>
+              {unread}
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Closing frame: the two group chats as a WhatsApp chats list, then the
+ *  two-homes-one-manager mark — carried over from the earlier hero video. */
+function HeroSummary() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ background: "var(--surface-card)", border: "1px solid var(--border)", borderRadius: 14, overflow: "hidden", boxShadow: "var(--shadow-1)" }}>
+        <ChatListRow title={GROUPS.gulf.title} preview="Niro: Booked - Tuesday, pickup & drop" time="now" unread="2" />
+        <div aria-hidden="true" style={{ height: 1, background: "var(--border)", marginLeft: 55 }} />
+        <ChatListRow title={GROUPS.india.title} preview="Niro: Visa booked, someone will go with her" time="now" unread="1" />
+      </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14, marginTop: 6 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+          <span style={{ width: 40, height: 40, borderRadius: "50%", background: "var(--brand-soft)", color: "var(--brand)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Icon name="home" size={20} />
+          </span>
+          <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-strong)" }}>Gulf</span>
+        </div>
+        <span aria-hidden="true" style={{ width: 22, height: 1.5, background: "var(--border-strong)", flexShrink: 0 }} />
+        <span style={{ width: 46, height: 46, borderRadius: "50%", background: "var(--brand)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <Icon name="user-check" size={22} />
+        </span>
+        <span aria-hidden="true" style={{ width: 22, height: 1.5, background: "var(--border-strong)", flexShrink: 0 }} />
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+          <span style={{ width: 40, height: 40, borderRadius: "50%", background: "var(--brand-soft)", color: "var(--brand)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Icon name="home" size={20} />
+          </span>
+          <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--text-strong)" }}>India</span>
+        </div>
+      </div>
+      <div style={{ textAlign: "center", fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", fontWeight: 500, color: "var(--text-strong)", marginTop: 2 }}>
+        Two homes. One manager.
+      </div>
+    </div>
+  );
+}
+
 /**
  * Code-driven WhatsApp hero: one request on screen at a time, alternating
- * between the family's Gulf side and their India side, with slow cross-fades so
- * each task reads cleanly (no second task crowding in). Replaces the old baked
- * MP4 so the tasks and the India<->Gulf rhythm stay editable.
+ * between the family's Gulf group and their India group, with slow cross-fades
+ * so each task reads cleanly (no second task crowding in). Ankush opens the
+ * thread. After the tasks, a closing frame stacks both group chats and the
+ * two-homes-one-manager mark. Replaces the old baked MP4 so tasks, senders and
+ * the India<->Gulf rhythm stay editable.
  */
 function GulfHeroChat() {
   const reduced = usePrefersReducedMotion();
-  const [idx, setIdx] = useState(0);
+  const [step, setStep] = useState(0); // 0..N-1 = tasks, N = closing summary
   const [showReply, setShowReply] = useState(false);
   const [op, setOp] = useState(0);
-  const task = HERO_TASKS[idx];
+  const isSummary = step >= HERO_TASKS.length;
+  const task = isSummary ? null : HERO_TASKS[step];
 
   useEffect(() => {
     if (reduced) {
@@ -256,24 +371,29 @@ function GulfHeroChat() {
     }
     setShowReply(false);
     setOp(0);
-    const raf = requestAnimationFrame(() => setOp(1)); // fade the new task in
-    const t1 = setTimeout(() => setShowReply(true), 1200); // Niro replies
-    const t2 = setTimeout(() => setOp(0), 4100); // fade out before switching
-    const t3 = setTimeout(() => setIdx((i) => (i + 1) % HERO_TASKS.length), 4700);
+    const raf = requestAnimationFrame(() => setOp(1)); // fade the new frame in
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    if (isSummary) {
+      timers.push(setTimeout(() => setOp(0), 5200));
+      timers.push(setTimeout(() => setStep(0), 5800));
+    } else {
+      timers.push(setTimeout(() => setShowReply(true), 1200)); // Niro replies
+      timers.push(setTimeout(() => setOp(0), 4100)); // fade out before switching
+      timers.push(setTimeout(() => setStep((s) => s + 1), 4700));
+    }
     return () => {
       cancelAnimationFrame(raf);
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
+      timers.forEach(clearTimeout);
     };
-  }, [idx, reduced]);
+  }, [step, isSummary, reduced]);
 
-  const sideLabel = task.side === "gulf" ? "Home in the Gulf" : "Family in India";
   const ease = "var(--ease-calm, ease)";
+  const headerTitle = isSummary ? "Niro" : GROUPS[task!.side].title;
+  const headerSub = isSummary ? "Two homes · one manager" : GROUPS[task!.side].members;
 
   return (
     <div
-      aria-label="A Niro WhatsApp thread cycling real family requests - a date night here, looking in on a parent in India, a car service, Diwali gifts, and a family trip - each handled by Niro."
+      aria-label="Two Niro WhatsApp groups for one family - a Gulf group (Ankush, Rhea, Niro) and an India group (Ankush, Ma, Papa, Niro) - cycling real requests Niro handles: a date night, Ma's visa appointment, a car service, a replacement maid, a family trip - then a summary: two homes, one manager."
       style={{
         width: "100%",
         maxWidth: 360,
@@ -302,15 +422,13 @@ function GulfHeroChat() {
         >
           <Icon name="message-circle" size={18} />
         </span>
-        <div style={{ lineHeight: 1.25 }}>
-          <div style={{ fontWeight: 700, fontSize: "var(--text-sm)" }}>Niro</div>
-          <div key={task.side} style={{ fontSize: "var(--text-xs)", opacity: 0.85, transition: `opacity 500ms ${ease}` }}>
-            {sideLabel}
-          </div>
+        <div key={isSummary ? "sum" : task!.side} style={{ lineHeight: 1.3, transition: `opacity 500ms ${ease}` }}>
+          <div style={{ fontWeight: 700, fontSize: "var(--text-sm)" }}>{headerTitle}</div>
+          <div style={{ fontSize: "var(--text-xs)", opacity: 0.85 }}>{headerSub}</div>
         </div>
       </div>
 
-      <div style={{ flex: 1, minHeight: 208, display: "flex", flexDirection: "column", justifyContent: "flex-start", gap: 10, padding: "18px 14px" }}>
+      <div style={{ flex: 1, minHeight: 356, display: "flex", flexDirection: "column", justifyContent: isSummary ? "center" : "flex-end", gap: 10, padding: "18px 14px" }}>
         <div
           style={{
             opacity: op,
@@ -321,18 +439,47 @@ function GulfHeroChat() {
             gap: 10,
           }}
         >
-          <AskBubble>{task.ask}</AskBubble>
-          <div
-            style={{
-              opacity: showReply ? 1 : 0,
-              transform: showReply ? "translateY(0)" : "translateY(6px)",
-              transition: `opacity 450ms ${ease}, transform 450ms ${ease}`,
-            }}
-          >
-            <NiroBubble>{task.reply}</NiroBubble>
-          </div>
+          {isSummary ? (
+            <HeroSummary />
+          ) : (
+            <>
+              <AskBubble sender={task!.sender}>{task!.ask}</AskBubble>
+              <div
+                style={{
+                  opacity: showReply ? 1 : 0,
+                  transform: showReply ? "translateY(0)" : "translateY(6px)",
+                  transition: `opacity 450ms ${ease}, transform 450ms ${ease}`,
+                }}
+              >
+                <NiroBubble>{task!.reply}</NiroBubble>
+              </div>
+            </>
+          )}
         </div>
       </div>
+
+      {/* Faux WhatsApp input bar - completes the phone screen so the card reads
+          as a real chat, not a cropped panel. Hidden on the chats-list summary. */}
+      {!isSummary && (
+        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 12px", background: "var(--wa-bg)", borderTop: "1px solid var(--border)" }}>
+          <div
+            style={{
+              flex: 1,
+              background: "var(--surface-card)",
+              border: "1px solid var(--border)",
+              borderRadius: 999,
+              padding: "8px 14px",
+              color: "var(--text-muted)",
+              fontSize: "var(--text-sm)",
+            }}
+          >
+            Message
+          </div>
+          <span style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--brand)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <Icon name="mic" size={17} />
+          </span>
+        </div>
+      )}
     </div>
   );
 }
