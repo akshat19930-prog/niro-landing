@@ -626,3 +626,16 @@
     display: block;
   }
 }
+
+/* /gulf "What Niro handles" category grid: one column on mobile, a balanced
+   2x2 on wider screens. */
+.gulf-handles-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+@media (min-width: 680px) {
+  .gulf-handles-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
