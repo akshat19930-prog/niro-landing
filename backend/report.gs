@@ -365,13 +365,16 @@ function marketForEvent_(page, geo, market) {
 }
 
 function computeMarketWindow_(evts, metaAgg) {
-  var expo = {}, getAcc = {}, em = {}, ph = {}, engaged = {}, dur = {};
+  var expo = {}, getAcc = {}, em = {}, ph = {}, done = {}, refC = {}, refS = {}, engaged = {}, dur = {};
   evts.forEach(function (e) {
     var sid = String(e.sid || ""), ev = String(e.event || "");
     if (ev === "exposure") expo[sid] = 1;
     else if (ev === "join_initiated") { getAcc[sid] = 1; engaged[sid] = 1; }
     else if (ev === "email_entered") em[sid] = 1;
     else if (ev === "phone_added") ph[sid] = 1;
+    else if (ev === "signup_completed") done[sid] = 1;
+    else if (ev === "referral_copied") refC[sid] = 1;
+    else if (ev === "referral_shared") refS[sid] = 1;
     else if (ev === "session_end") {
       if (num_(e.engaged) === 1) engaged[sid] = 1;
       var d = num_(e.durationMs);
@@ -386,6 +389,8 @@ function computeMarketWindow_(evts, metaAgg) {
   var avgDurSec = durList.length ? (durList.reduce(function (a, b) { return a + b; }, 0) / durList.length / 1000) : 0;
   var email = Object.keys(em).length;
 
+  var completed = Object.keys(done).length;
+  var refCopied = Object.keys(refC).length, refShared = Object.keys(refS).length;
   var spend = metaAgg.spend, impr = metaAgg.impr, clicks = metaAgg.clicks;
   return {
     sessions: sessions, bounce: bounce, avgDurSec: avgDurSec,
@@ -393,6 +398,10 @@ function computeMarketWindow_(evts, metaAgg) {
     email: email,
     e2v: sessions ? (email / sessions * 100) : 0,
     phone: Object.keys(ph).length,
+    completed: completed,
+    refCopied: refCopied, refShared: refShared,
+    // Share rate = links copied ÷ people who reached the confirmation step.
+    shareRate: completed ? (refCopied / completed * 100) : 0,
     spend: spend, impr: impr, clicks: clicks,
     cpl: email ? spend / email : 0,
     cpm: impr ? spend / impr * 1000 : 0,
@@ -468,6 +477,10 @@ function renderMarketTable_(m, market) {
   h.push(row("Email entered", C.map(function (s) { return s.email; }), M.email));
   h.push(row("Email entered / visitors %", C.map(function (s) { return pct_(s.e2v); }), pct_(M.e2v), statusOf_(M.e2v, CONFIG.GATES.e2v)));
   h.push(row("Phone number submitted", C.map(function (s) { return s.phone; }), M.phone));
+  h.push(row("Reached confirmation", C.map(function (s) { return s.completed; }), M.completed));
+  h.push(row("Referral link copied", C.map(function (s) { return s.refCopied; }), M.refCopied));
+  h.push(row("Shared on WhatsApp", C.map(function (s) { return s.refShared; }), M.refShared));
+  h.push(row("Share rate (copied / confirmed)", C.map(function (s) { return pct_(s.shareRate); }), pct_(M.shareRate)));
   h.push(row("Cost per lead", C.map(function (s) { return ok ? money_(s.cpl) : na_(); }), ok ? money_(M.cpl) : na_(), ok ? statusOf_(M.cpl, CONFIG.GATES.cpl) : ""));
   h.push(row("Spend", C.map(function (s) { return ok ? money_(s.spend) : na_(); }), ok ? money_(M.spend) : na_()));
   h.push(row("Meta CPM", C.map(function (s) { return ok ? money_(s.cpm) : na_(); }), ok ? money_(M.cpm) : na_()));

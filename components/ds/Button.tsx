@@ -28,6 +28,7 @@ type AsLink = CommonProps & {
   href: string;
   target?: string;
   rel?: string;
+  onClick?: () => void;
 };
 
 export function Button(props: AsButton | AsLink) {
@@ -56,6 +57,7 @@ export function Button(props: AsButton | AsLink) {
         href={props.href}
         target={props.target}
         rel={props.rel}
+        onClick={props.onClick}
         className={cls}
         style={style}
       >

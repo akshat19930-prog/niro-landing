@@ -9,12 +9,12 @@ import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
 import {
   PLANS,
-  MEMBERSHIP_SINGLE,
   QUALIFY_TASKS,
   QUALIFY_WHO,
   QUALIFY_URGENCY,
 } from "@/lib/content";
 import { FALLBACK_WAITLIST_POSITION } from "@/lib/config";
+import { logEvent } from "@/lib/track";
 
 const h2Style = {
   fontFamily: "var(--font-display)",
@@ -88,7 +88,6 @@ export function JoinModal() {
     open,
     setOpen,
     step,
-    arm,
     email,
     setEmail,
     result,
@@ -111,8 +110,9 @@ export function JoinModal() {
   const [phone, setPhone] = useState("");
   const [phoneAdded, setPhoneAdded] = useState(false);
 
-  // Plan-lean chips (arm-aware): a single tap, not a comparison step.
-  const planChips = arm === "B" ? [MEMBERSHIP_SINGLE] : PLANS;
+  // Plan-lean chips: always show both SKUs — Niro Lite ($55) and Niro Prime
+  // ($99) — so the visitor picks a tier (plus a "Not sure yet" escape).
+  const planChips = PLANS;
 
   // Put the cursor in the email field the moment the modal opens at the email step.
   useEffect(() => {
@@ -157,6 +157,7 @@ export function JoinModal() {
   async function copyReferral() {
     try {
       await navigator.clipboard.writeText(referralUrl);
+      logEvent("referral_copied");
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -340,7 +341,13 @@ export function JoinModal() {
                 {copied ? "Copied!" : "Copy link"}
               </Button>
             </div>
-            <Button href={waLink} target="_blank" rel="noopener noreferrer" full>
+            <Button
+              href={waLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              full
+              onClick={() => logEvent("referral_shared")}
+            >
               <Icon name="message-circle" size={18} />
               Share on WhatsApp
             </Button>
