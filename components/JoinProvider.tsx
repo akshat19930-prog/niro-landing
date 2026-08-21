@@ -11,6 +11,8 @@ import {
   captureUtm,
   captureAttribution,
   assignArm,
+  assignGulfPriceArm,
+  getStoredGulfPriceArm,
   getStoredUtm,
   getStoredAttribution,
   track,
@@ -100,7 +102,13 @@ async function submitSignup(payload: {
     const res = await fetch(WAITLIST_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ ...payload, geo: getGeo(), utm: getStoredUtm() }),
+      body: JSON.stringify({
+        ...payload,
+        geo: getGeo(),
+        utm: getStoredUtm(),
+        // Record which /gulf price this lead saw ($149 vs $99); blank elsewhere.
+        ...(payload.market === "gulf" ? { priceArm: getStoredGulfPriceArm() } : {}),
+      }),
       keepalive: true,
     });
     if (!res.ok) return fallback;
@@ -172,6 +180,9 @@ export function JoinProvider({
     const attr = captureAttribution();
     const assigned = assignArm();
     setArm(assigned);
+    // Lock the /gulf price arm before the first beacon so every event this
+    // session carries a consistent $149-vs-$99 tag.
+    if (market === "gulf") assignGulfPriceArm();
     registerAnalytics(assigned, attr.pitch);
     startSession();
   }, []);

@@ -311,15 +311,34 @@ function buildModel_(data, meta) {
     return computeMarketWindow_(evs, metaAgg);
   }
 
+  // Gulf (Dual) price A/B: split dual-side events by the priceArm tag
+  // ("149" vs "99") the client writes on every /gulf beacon.
+  function priceWindowFor(dates) {
+    var evs = [];
+    dates.forEach(function (d) {
+      if (evByMarketDate["gulf_dual"] && evByMarketDate["gulf_dual"][d]) evs = evs.concat(evByMarketDate["gulf_dual"][d]);
+    });
+    return computePriceTest_(evs);
+  }
+
   var markets = CONFIG.MARKETS.map(function (def) {
-    return {
+    var mkt = {
       key: def.key, label: def.label,
       cols: cols.map(function (d) {
         return { label: Utilities.formatDate(new Date(d + "T00:00:00"), tz, "MMM d"), stat: windowFor(def.key, [d]) };
       }),
       mtd: windowFor(def.key, mtdDates)
     };
+    // Attach the per-day + MTD price split so the Gulf (Dual) table can show the
+    // conversion % broken out by the $149 and $99 arms.
+    if (def.key === "gulf_dual") {
+      mkt.priceCols = cols.map(function (d) { return priceWindowFor([d]); });
+      mkt.priceMtd = priceWindowFor(mtdDates);
+    }
+    return mkt;
   });
+
+  var priceTest = priceWindowFor(mtdDates);
 
   // Ad-set console (MTD totals), sorted by spend desc.
   var adsets = [];
@@ -336,7 +355,7 @@ function buildModel_(data, meta) {
     now: now,
     meta_ok: !!(meta && !meta.error && meta.adsets),
     meta_err: meta && meta.error,
-    markets: markets, adsets: adsets,
+    markets: markets, adsets: adsets, priceTest: priceTest,
     totalSignups: data.signups.length,
     newSignups: prev ? Math.max(0, data.signups.length - prev.totalSignups) : data.signups.length,
     dayNum: dayNum, daysLeft: Math.max(0, CONFIG.TEST_DAYS - dayNum),
@@ -362,6 +381,19 @@ function marketForEvent_(page, geo, market) {
   // to the configured default market so historical numbers are retained.
   if (!p && !g) return CONFIG.UNTAGGED_MARKET || "";
   return "";
+}
+
+/** Split dual-side events into the two price arms and return the funnel for
+ *  each, plus whether any arm was tagged at all (older data has none). */
+function computePriceTest_(evs) {
+  var arms = ["149", "99"], out = { tagged: false };
+  arms.forEach(function (a) {
+    var sub = evs.filter(function (e) { return String(e.priceArm || "") === a; });
+    if (sub.length) out.tagged = true;
+    var w = computeMarketWindow_(sub, { spend: 0, impr: 0, clicks: 0 });
+    out[a] = { sessions: w.sessions, reachedPricing: w.reachedPricing, getAccess: w.getAccess, email: w.email, e2v: w.e2v };
+  });
+  return out;
 }
 
 function computeMarketWindow_(evts, metaAgg) {
@@ -432,6 +464,13 @@ function dur_(sec) {
   return m ? (m + "m " + s + "s") : (s + "s");
 }
 function na_() { return '<span style="color:#9AA79E">n/a</span>'; }
+/** Price-arm conversion cell: "9.1% (1/11)" — the e2v % with email/visitors
+ *  behind it. Dash when the arm had no visitors in the window. */
+function priceE2v_(a) {
+  if (!a || !a.sessions) return "-";
+  return pct_(a.e2v) + ' <span style="color:#9AA79E">(' + a.email + '/' + a.sessions + ')</span>';
+}
+
 /** Scroll-funnel cell: absolute count with % of sessions in muted parens, e.g.
  *  "43 (27%)". Dash when there were no sessions. */
 function scrollCell_(count, sessions) {
@@ -487,6 +526,15 @@ function renderMarketTable_(m, market) {
   h.push(row("Get Early Access clicked", C.map(function (s) { return s.getAccess; }), M.getAccess));
   h.push(row("Email entered", C.map(function (s) { return s.email; }), M.email));
   h.push(row("Email entered / visitors %", C.map(function (s) { return pct_(s.e2v); }), pct_(M.e2v), statusOf_(M.e2v, CONFIG.GATES.e2v)));
+  // Gulf (Dual) only: split that conversion % by the price A/B arm.
+  if (market.key === "gulf_dual" && market.priceCols && market.priceMtd) {
+    h.push(row("↳ $149 arm — email / visitors %",
+      market.priceCols.map(function (p) { return priceE2v_(p["149"]); }),
+      priceE2v_(market.priceMtd["149"])));
+    h.push(row("↳ $99 arm — email / visitors %",
+      market.priceCols.map(function (p) { return priceE2v_(p["99"]); }),
+      priceE2v_(market.priceMtd["99"])));
+  }
   h.push(row("Phone number submitted", C.map(function (s) { return s.phone; }), M.phone));
   h.push(row("Reached confirmation", C.map(function (s) { return s.completed; }), M.completed));
   h.push(row("Cost per lead", C.map(function (s) { return ok ? money_(s.cpl) : na_(); }), ok ? money_(M.cpl) : na_(), ok ? statusOf_(M.cpl, CONFIG.GATES.cpl) : ""));
@@ -500,6 +548,32 @@ function renderMarketTable_(m, market) {
 function marketLabelFor_(key) {
   var d = defForKey_(key);
   return d ? d.label : (key || "Unmapped");
+}
+
+/** Gulf (Dual) price A/B: $149 vs $99, MTD, from the priceArm-tagged beacons. */
+function renderPriceTest_(pt) {
+  var h = [];
+  h.push('<h3 style="font-size:15px;margin:24px 0 6px">Gulf (Dual) — price test ($149 vs $99)</h3>');
+  if (!pt || !pt.tagged) {
+    h.push('<p style="color:#5b6b60;margin:0 0 8px">No price-tagged /gulf traffic yet — rows populate once the $149-vs-$99 build is live and visitors land.</p>');
+    return h.join("");
+  }
+  var A = pt["149"], B = pt["99"];
+  h.push('<table style="border-collapse:collapse;width:100%"><tr>');
+  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Metric</th>');
+  h.push(th_("$149 (control)")); h.push(th_("$99"));
+  h.push('</tr>');
+  function row(label, a, b) {
+    return "<tr>" + labelTd_(label) + td_(a, "text-align:right;color:#3a4a40") + td_(b, "text-align:right;color:#3a4a40") + "</tr>";
+  }
+  h.push(row("Sessions (visitors)", A.sessions, B.sessions));
+  h.push(row("Reached pricing", scrollCell_(A.reachedPricing, A.sessions), scrollCell_(B.reachedPricing, B.sessions)));
+  h.push(row("Get Early Access clicked", A.getAccess, B.getAccess));
+  h.push(row("Email entered", A.email, B.email));
+  h.push(row("Email / visitors %", pct_(A.e2v), pct_(B.e2v)));
+  h.push('</table>');
+  h.push('<p style="color:#5b6b60;margin:6px 0 0;font-size:12px">Conversion = emails ÷ visitors, per price arm. Samples are small early — read the % once each arm clears ~100 visitors.</p>');
+  return h.join("");
 }
 
 function renderHtml_(m) {
@@ -521,6 +595,9 @@ function renderHtml_(m) {
 
   // ---- Blocks 1-3: one table per market ----
   m.markets.forEach(function (market) { h.push(renderMarketTable_(m, market)); });
+
+  // ---- Block 3b: Gulf (Dual) price A/B ($149 vs $99) ----
+  if (m.priceTest) h.push(renderPriceTest_(m.priceTest));
 
   // ---- Block 4: Meta ads console (2 tables across all ad sets) ----
   h.push('<h2 style="font-size:16px;margin:30px 0 4px;padding-top:16px;border-top:2px solid #e6e2d6">Meta ads — all ad sets</h2>');

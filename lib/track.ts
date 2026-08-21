@@ -12,7 +12,7 @@
  * starts the waitlist). Swap in GA4 later if you want industry-standard numbers.
  */
 import { WAITLIST_ENDPOINT } from "./config";
-import { getStoredArm, getStoredAttribution } from "./analytics";
+import { getStoredArm, getStoredAttribution, getStoredGulfPriceArm } from "./analytics";
 import { readPageArm } from "./abtest";
 
 declare global {
@@ -142,6 +142,9 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
     // (North America / Gulf / Gulf-Dual) — exposure/session_end included.
     page: pagePath(),
     geo: coarseGeo(),
+    // On /gulf, tag the $149-vs-$99 price arm so the report can split the
+    // dual-side funnel by price. Empty string elsewhere (kept out of the way).
+    ...(pagePath().startsWith("/gulf") ? { priceArm: getStoredGulfPriceArm() } : {}),
     ...(extra || {}),
   });
   try {

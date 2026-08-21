@@ -170,6 +170,67 @@ export function getStoredArm(): PricingArm {
   }
 }
 
+/* =====================================================================
+   /gulf (dual-side) PRICE test - independent 2-arm test, 50/50 split.
+     "149" (50%): Niro Prime at $149/month  (control)
+     "99"  (50%): Niro Prime at $99/month
+   Separate from the main PricingArm above so it never collides with the
+   main-site cell. Persisted in localStorage so a returning visitor always
+   sees the same price (clean read). `?price=149` / `?price=99` overrides for
+   QA. Rides on every /gulf beacon + the signup payload so the report can
+   split conversion by price. Assigned once, early, in JoinProvider (gulf).
+   ===================================================================== */
+export type GulfPriceArm = "149" | "99";
+
+const GULF_PRICE_KEY = "niro_gulf_price_arm";
+
+function normalizeGulfPrice(v: string | null | undefined): GulfPriceArm | null {
+  if (!v) return null;
+  const s = v.trim();
+  return s === "149" || s === "99" ? s : null;
+}
+
+/** Assign + persist this visitor's /gulf price arm on first call (50/50).
+ *  Precedence: `?price=` override → stored arm → fresh draw. "149" during SSR. */
+export function assignGulfPriceArm(): GulfPriceArm {
+  if (typeof window === "undefined") return "149";
+
+  const override = normalizeGulfPrice(new URLSearchParams(window.location.search).get("price"));
+  if (override) {
+    try {
+      localStorage.setItem(GULF_PRICE_KEY, override);
+    } catch {
+      /* non-fatal */
+    }
+    return override;
+  }
+
+  let stored: GulfPriceArm | null = null;
+  try {
+    stored = normalizeGulfPrice(localStorage.getItem(GULF_PRICE_KEY));
+  } catch {
+    stored = null;
+  }
+  if (stored) return stored;
+
+  const arm: GulfPriceArm = Math.random() < 0.5 ? "149" : "99";
+  try {
+    localStorage.setItem(GULF_PRICE_KEY, arm);
+  } catch {
+    /* non-fatal */
+  }
+  return arm;
+}
+
+export function getStoredGulfPriceArm(): GulfPriceArm {
+  if (typeof window === "undefined") return "149";
+  try {
+    return normalizeGulfPrice(localStorage.getItem(GULF_PRICE_KEY)) ?? "149";
+  } catch {
+    return "149";
+  }
+}
+
 /** Fire a Meta Pixel event if the pixel is loaded. Safe no-op otherwise. */
 export function track(
   event: string,
