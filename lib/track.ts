@@ -12,7 +12,12 @@
  * starts the waitlist). Swap in GA4 later if you want industry-standard numbers.
  */
 import { WAITLIST_ENDPOINT } from "./config";
-import { getStoredArm, getStoredAttribution, getStoredGulfPriceArm } from "./analytics";
+import {
+  getStoredArm,
+  getStoredAttribution,
+  getStoredGulfPriceArm,
+  getStoredUtm,
+} from "./analytics";
 import { readPageArm } from "./abtest";
 
 declare global {
@@ -142,6 +147,11 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
     // (North America / Gulf / Gulf-Dual) — exposure/session_end included.
     page: pagePath(),
     geo: coarseGeo(),
+    // The ad campaign that brought this session. Far more reliable than the
+    // browser time zone for splitting the funnel by market — a Gulf visitor
+    // whose phone is set to IST reads as geo "other", but their campaign is
+    // still Smoketest_gulf. The report prefers this over geo.
+    campaign: (getStoredUtm() || {}).utm_campaign || "",
     // On /gulf, tag the $149-vs-$99 price arm so the report can split the
     // dual-side funnel by price. Empty string elsewhere (kept out of the way).
     ...(pagePath().startsWith("/gulf") ? { priceArm: getStoredGulfPriceArm() } : {}),
