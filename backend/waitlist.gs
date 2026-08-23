@@ -145,6 +145,90 @@ var HEADER = [
   "priceArm"
 ];
 
+/* =====================================================================
+   RETRO-BACKFILL: resolve the `market` column for every existing lead.
+   -----------------------------------------------------------------------
+   Older rows were only tagged with a coarse time-zone `geo`, so anyone
+   outside the Gulf / North America zones landed as "other" — including real
+   Gulf leads whose phone is set to IST. This rewrites `market` for every row
+   using the strongest signal available, in order:
+
+       1. page          (/gulf  -> gulf_dual)
+       2. utm_campaign  (…gulf_dual / …gulf / Smoketest -> na)
+       3. geo           (gulf | na)
+       4. phone country code (+971/+974/… -> gulf, +1 -> na, +91 -> other)
+
+   RUN IT:  select backfillMarketDryRun (preview, writes nothing) and press
+   Run, read the Execution log, then run backfillMarket to apply.
+   Safe to re-run — it only writes cells whose value actually changes.
+   ===================================================================== */
+function backfillMarketDryRun() { return backfillMarket_(true); }
+function backfillMarket() { return backfillMarket_(false); }
+
+function resolveMarket_(page, campaign, geo, phone) {
+  var p = String(page || "");
+  var c = String(campaign || "").toLowerCase();
+  var g = String(geo || "").toLowerCase();
+  var ph = String(phone || "").replace(/[^\d+]/g, "");
+
+  if (p.indexOf("/gulf") === 0) return "gulf_dual";
+  if (c) {
+    if (c.indexOf("gulf_dual") !== -1 || c.indexOf("gulf dual") !== -1) return "gulf_dual";
+    if (c.indexOf("gulf") !== -1) return "gulf";
+    if (c.indexOf("smoketest") !== -1) return "na";
+  }
+  if (g === "gulf") return "gulf";
+  if (g === "na") return "na";
+  // Next: the phone number's country code.
+  var digits = ph.replace(/^\+/, "");
+  if (/^(971|974|973|966|965|968)/.test(digits)) return "gulf";
+  if (/^1\d{10}$/.test(digits)) return "na";
+  if (/^91/.test(digits)) return "other";
+  // Fully untagged legacy row (logged before geo/campaign tracking existed).
+  // Matches the report's CONFIG.UNTAGGED_MARKET so history stays consistent.
+  if (!p && !c && !g) return LEGACY_MARKET;
+  return "other";
+}
+/** Where pre-tracking rows belong (the early funnel was entirely North America). */
+var LEGACY_MARKET = "na";
+
+function backfillMarket_(dryRun) {
+  var sheet = getSheet_();
+  var last = sheet.getLastRow();
+  if (last < 2) { Logger.log("Nothing to backfill."); return; }
+
+  var values = sheet.getRange(1, 1, last, HEADER.length).getValues();
+  var head = values[0], idx = {};
+  head.forEach(function (h, i) { idx[String(h)] = i; });
+  var cMarket = idx["market"], cPage = idx["page"], cGeo = idx["geo"];
+  var cCamp = idx["utm_campaign"], cPhone = idx["phone"], cEmail = idx["email"];
+  if (cMarket == null) { Logger.log("No 'market' column — paste the latest HEADER first."); return; }
+
+  var changes = [], tally = {}, moved = 0;
+  for (var r = 1; r < values.length; r++) {
+    var row = values[r];
+    if (!String(row[cEmail] || "").trim()) continue;      // skip blank rows
+    var before = String(row[cMarket] || "");
+    var after = resolveMarket_(row[cPage], row[cCamp], row[cGeo], row[cPhone]);
+    tally[after] = (tally[after] || 0) + 1;
+    if (before !== after) {
+      moved++;
+      changes.push({ rowNum: r + 1, email: row[cEmail], geo: row[cGeo], campaign: row[cCamp], from: before || "(blank)", to: after });
+      if (!dryRun) sheet.getRange(r + 1, cMarket + 1).setValue(after);
+    }
+  }
+
+  Logger.log((dryRun ? "DRY RUN — nothing written.\n" : "APPLIED.\n") +
+    "Rows scanned: " + (values.length - 1) + " | rows changed: " + moved);
+  Logger.log("Resulting market split: " + JSON.stringify(tally));
+  changes.slice(0, 60).forEach(function (c) {
+    Logger.log("  row " + c.rowNum + "  " + c.email + "  geo=" + (c.geo || "-") +
+      "  campaign=" + (c.campaign || "-") + "   " + c.from + " -> " + c.to);
+  });
+  if (changes.length > 60) Logger.log("  …and " + (changes.length - 60) + " more.");
+  return { scanned: values.length - 1, changed: moved, split: tally };
+}
+
 function getSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var sheet = ss.getSheetByName(SHEET_NAME);
