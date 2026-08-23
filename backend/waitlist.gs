@@ -183,13 +183,14 @@ function resolveMarket_(page, campaign, geo, phone) {
   var digits = ph.replace(/^\+/, "");
   if (/^(971|974|973|966|965|968)/.test(digits)) return "gulf";
   if (/^1\d{10}$/.test(digits)) return "na";
-  if (/^91/.test(digits)) return "other";
-  // Fully untagged legacy row (logged before geo/campaign tracking existed).
-  // Matches the report's CONFIG.UNTAGGED_MARKET so history stays consistent.
-  if (!p && !c && !g) return LEGACY_MARKET;
-  return "other";
+  // Everything else - legacy pre-tracking rows and tagged rest-of-world alike -
+  // falls back to the default market. There is no "other" cluster: every lead
+  // lands in na | gulf | gulf_dual, matching the report's three sections.
+  return LEGACY_MARKET;
 }
-/** Where pre-tracking rows belong (the early funnel was entirely North America). */
+/** Fallback cluster for anything we can't place (the early funnel, and all
+ *  untagged traffic, was overwhelmingly North America). Mirror of the report's
+ *  CONFIG.UNTAGGED_MARKET - keep the two in sync. */
 var LEGACY_MARKET = "na";
 
 function backfillMarket_(dryRun) {
