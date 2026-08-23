@@ -525,9 +525,12 @@ function labelTd_(label) {
 }
 
 function renderSubject_(m) {
-  var ampm = Number(Utilities.formatDate(m.now, CONFIG.TIMEZONE, "H")) < 12 ? "AM" : "PM";
+  // Include the run time (HH:mm). Two runs in the same hour used to produce a
+  // byte-identical subject, so Gmail collapsed them into one thread and a
+  // re-run looked like "no new report arrived".
+  var stamp = Utilities.formatDate(m.now, CONFIG.TIMEZONE, "MMM d, HH:mm");
   var spend = m.meta_ok ? (" · " + money_(m.spendMTD) + " spend") : "";
-  return "Niro smoke test · " + Utilities.formatDate(m.now, CONFIG.TIMEZONE, "MMM d") + " " + ampm +
+  return "Niro smoke test · " + stamp +
     " · " + m.totalSignups + " signups (+" + m.newSignups + ")" + spend;
 }
 
