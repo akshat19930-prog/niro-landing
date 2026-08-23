@@ -146,7 +146,7 @@ export function GulfJoinModal() {
       className="join-overlay"
       role="dialog"
       aria-modal="true"
-      aria-label="Get early access"
+      aria-label="Join the waitlist"
       onClick={(e) => {
         if (e.target === e.currentTarget) setOpen(false);
       }}
@@ -159,9 +159,14 @@ export function GulfJoinModal() {
         {step === "form" && (
           <>
             <Eyebrow>Step 1 of 2</Eyebrow>
-            <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>Get early access</h2>
+            {/* Deliberately NOT "Get early access": that is the label on every
+                CTA that opens this modal, and repeating it at the commit step
+                reads as a no-op ("did my tap register?") instead of a next
+                step. The main page, which converts ~45% here vs /gulf's ~26%,
+                changes the label — so we match it. */}
+            <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>Join the waitlist</h2>
             <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 24px" }}>
-              First task free — no card to join. Just your email to hold your family&apos;s place.
+              First task free - no card to join. Just your email to hold your family&apos;s place.
             </p>
             <form onSubmit={onEmailSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
               <Input
@@ -175,7 +180,7 @@ export function GulfJoinModal() {
                 autoComplete="email"
               />
               <Button type="submit" size="lg" full>
-                Get Early Access
+                Join the waitlist
               </Button>
             </form>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 16, fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
