@@ -84,6 +84,16 @@ var CONFIG = {
       key: "gulf_dual", label: "Gulf (Dual)",
       campaigns: ["Niro Test Gulf Dual"],
       adset: /(gulf\s*dual|\bD[1-4]\b|dual)/i
+    },
+    {
+      // Catch-all so no visitor/lead is ever silently dropped: anyone whose
+      // campaign is unknown AND whose time zone is neither Gulf nor North
+      // America (India, UK, Europe, SE Asia, …). Funnel-only — Meta spend is
+      // attributed to the campaign's own market above, so Spend/CPM/CTR here
+      // are legitimately zero.
+      key: "other", label: "Other / Rest of world",
+      campaigns: [],
+      adset: /$^/  // never matches an ad set
     }
   ],
 
@@ -303,7 +313,7 @@ function buildModel_(data, meta) {
   // Bucket events by (market, date).
   var evByMarketDate = {};   // marketKey -> date -> [events]
   data.events.forEach(function (e) {
-    var mk = marketForEvent_(e.page, e.geo, e.market);
+    var mk = marketForEvent_(e.page, e.geo, e.market, e.campaign);
     if (!mk) return;
     var raw = (e.date !== "" && e.date != null) ? e.date : e.timestamp;
     var d = dateStr_(raw);
@@ -385,17 +395,32 @@ function nextDay_(yyyymmdd) {
   return Utilities.formatDate(d, CONFIG.TIMEZONE, "yyyy-MM-dd");
 }
 
-/** Which report market an event belongs to, from its page + geo (market wins if
- *  the beacon carried it). Returns "" for rest-of-world (not shown). */
-function marketForEvent_(page, geo, market) {
-  var p = String(page || ""), g = String(geo || "").toLowerCase(), mk = String(market || "").toLowerCase();
+/** Which report market an event belongs to.
+ *
+ *  Order matters: the /gulf page and the ad CAMPAIGN are hard facts, the
+ *  browser time zone is only a guess. A Gulf visitor whose phone is set to IST
+ *  reports geo "other" — before campaign tagging those leads were dropped from
+ *  every section (the "sheet says 11, report says 7" gap). Never returns "":
+ *  anything we can't place lands in "other" so totals always reconcile. */
+function marketForEvent_(page, geo, market, campaign) {
+  var p = String(page || ""), g = String(geo || "").toLowerCase();
+  var mk = String(market || "").toLowerCase(), c = String(campaign || "").toLowerCase();
+  // 1. The page itself / an explicit market tag.
   if (p.indexOf("/gulf") === 0 || mk === "gulf") return "gulf_dual";
+  // 2. The ad campaign that brought them (reliable; beats time zone).
+  if (c) {
+    if (c.indexOf("gulf_dual") !== -1 || c.indexOf("gulf dual") !== -1) return "gulf_dual";
+    if (c.indexOf("gulf") !== -1) return "gulf";
+    if (c.indexOf("smoketest") !== -1) return "na";
+  }
+  // 3. Coarse time-zone geography.
   if (g === "gulf") return "gulf";
   if (g === "na") return "na";
-  // Fully untagged (no page AND no geo) = legacy / cached-JS session. Attribute
-  // to the configured default market so historical numbers are retained.
-  if (!p && !g) return CONFIG.UNTAGGED_MARKET || "";
-  return "";
+  // 4. Fully untagged (no page AND no geo) = legacy / cached-JS session.
+  //    Attribute to the configured default market so history is retained.
+  if (!p && !g) return CONFIG.UNTAGGED_MARKET || "other";
+  // 5. Everything else (India, UK, Europe, SE Asia, …) — surfaced, never dropped.
+  return "other";
 }
 
 /** Split dual-side events into the two price arms and return the funnel for
@@ -669,7 +694,7 @@ function renderHtml_(m) {
 
   h.push('<p style="margin:22px 0 0;padding-top:12px;border-top:1px solid #eee;color:#5b6b60;font-size:12px">' +
     'Funnel rows are from our own beacons, split by page + geography: Gulf (Dual) = /gulf; Gulf = "/" from a Gulf time zone; North America = "/" from a US/Canada time zone. ' +
-    'Legacy/untagged sessions (logged before geo tracking, or from cached pre-update JS) are counted under ' + (marketLabelFor_(CONFIG.UNTAGGED_MARKET) || 'no market') + ' to retain history; set CONFIG.UNTAGGED_MARKET="" to exclude them. Tagged rest-of-world "/" traffic is not shown. ' +
+    'Legacy/untagged sessions (logged before geo tracking, or from cached pre-update JS) are counted under ' + (marketLabelFor_(CONFIG.UNTAGGED_MARKET) || 'no market') + ' to retain history; set CONFIG.UNTAGGED_MARKET="" to exclude them. Sessions are placed by page, then by ad campaign, then by time zone; anything still unplaced (India, UK, Europe, …) lands in "Other / Rest of world" so the sections always add up to the sheet. ' +
     'Spend / CPM / CTR / Cost-per-lead are from Meta, mapped to a market by ad-set name (CONFIG.MARKETS) — the console tables show that mapping. ' +
     '"Visitors" in the second console table = Meta landing-page views. Section Cost per lead = Meta spend ÷ emails entered; console Cost per lead = Meta spend ÷ Meta lead conversions. ' +
     'Bounce / duration are approximations (engaged = ≥10s, a scroll/click, or starting the waitlist).</p>');
