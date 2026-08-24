@@ -524,6 +524,79 @@ function labelTd_(label) {
   return '<td style="padding:6px 9px;border-bottom:1px solid #eee;font:12.5px/1.4 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a2b22">' + label + "</td>";
 }
 
+/* =====================================================================
+   ON-DEMAND: pricing-fold -> CTA-click funnel, by market and by price arm.
+   Answers "of the people who actually saw the price, how many went on to
+   click Get Early Access?" - which the emailed report does not break out.
+
+   RUN IT: select pricingFoldFunnel and press Run, then read the Execution log.
+   Counts unique sessions. Two conversion columns:
+     click (any)  - session reached pricing AND clicked at some point
+     click (after)- session clicked AFTER first seeing the price (stricter;
+                    excludes people who clicked the hero CTA on the way down)
+   ===================================================================== */
+function pricingFoldFunnel() {
+  var data = readAll_();
+  var byMarket = {}, byArm = {};
+
+  function slot(store, key) {
+    if (!store[key]) store[key] = { priced: {}, pricedAt: {}, clicked: {}, clickedAt: {}, sessions: {} };
+    return store[key];
+  }
+  function note(s, e, ev, sid, ts) {
+    s.sessions[sid] = 1;
+    if (ev === "reached_pricing") {
+      if (!s.pricedAt[sid] || ts < s.pricedAt[sid]) s.pricedAt[sid] = ts;
+      s.priced[sid] = 1;
+    } else if (ev === "join_initiated") {
+      if (!s.clickedAt[sid] || ts < s.clickedAt[sid]) s.clickedAt[sid] = ts;
+      s.clicked[sid] = 1;
+    }
+  }
+
+  data.events.forEach(function (e) {
+    var sid = String(e.sid || ""); if (!sid) return;
+    var ev = String(e.event || "");
+    if (ev !== "reached_pricing" && ev !== "join_initiated" && ev !== "exposure") return;
+    var ts = (e.timestamp instanceof Date) ? e.timestamp.getTime() : Number(new Date(e.timestamp));
+    var mk = marketForEvent_(e.page, e.geo, e.market, e.campaign);
+    note(slot(byMarket, mk), e, ev, sid, ts);
+    var arm = String(e.priceArm || "");
+    if (mk === "gulf_dual" && arm) note(slot(byArm, "$" + arm), e, ev, sid, ts);
+  });
+
+  function report(title, store, keys) {
+    Logger.log("\n" + title);
+    Logger.log(pad_("segment", 16) + pad_("sessions", 10) + pad_("reached $", 11) +
+      pad_("click(any)", 12) + pad_("click(after)", 14) + "rate(after)");
+    keys.forEach(function (k) {
+      var s = store[k]; if (!s) { Logger.log(pad_(k, 16) + "no data"); return; }
+      var sess = Object.keys(s.sessions).length;
+      var priced = Object.keys(s.priced);
+      var any = 0, after = 0;
+      priced.forEach(function (sid) {
+        if (s.clicked[sid]) {
+          any++;
+          if (s.clickedAt[sid] >= s.pricedAt[sid]) after++;
+        }
+      });
+      var rate = priced.length ? (100 * after / priced.length).toFixed(1) + "%" : "-";
+      Logger.log(pad_(k, 16) + pad_(sess, 10) + pad_(priced.length, 11) +
+        pad_(any, 12) + pad_(after, 14) + rate);
+    });
+  }
+
+  report("BY MARKET", byMarket, ["na", "gulf", "gulf_dual"]);
+  report("GULF DUAL - BY PRICE ARM", byArm, ["$149", "$99"]);
+  Logger.log("\nreached $ = unique sessions that scrolled the pricing section into view.");
+  Logger.log("If 'reached $' is 0 everywhere, the scroll beacons have not reached this sheet yet.");
+}
+function pad_(v, n) {
+  var s = String(v);
+  while (s.length < n) s += " ";
+  return s;
+}
+
 function renderSubject_(m) {
   // Include the run time (HH:mm). Two runs in the same hour used to produce a
   // byte-identical subject, so Gmail collapsed them into one thread and a

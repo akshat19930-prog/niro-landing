@@ -37,6 +37,11 @@ const PH_FORWARD: Record<string, true> = {
   join_initiated: true,
   email_entered: true,
   reserve_clicked: true,
+  // Scroll milestones too, so the pricing-fold -> CTA funnel is queryable in
+  // PostHog directly instead of only from the events sheet.
+  reached_pricing: true,
+  scroll_50: true,
+  scroll_100: true,
 };
 
 /** Register the pricing arm + pitch as PostHog super-properties, so heatmaps
@@ -182,6 +187,11 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
         arm: getStoredArm(),
         page_arm: readPageArm(),
         pitch,
+        // Carry the /gulf price arm so the funnel can be split by $149 vs $99
+        // in PostHog, not just in the events sheet.
+        ...(pagePath().startsWith("/gulf")
+          ? { price_arm: getStoredGulfPriceArm() }
+          : {}),
       });
     } catch {
       /* PostHog not loaded */
