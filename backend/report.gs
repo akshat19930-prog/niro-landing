@@ -87,6 +87,11 @@ var CONFIG = {
       key: "gulf_dual", label: "Gulf (Dual)",
       campaigns: ["Niro Test Gulf Dual"],
       adset: /(gulf\s*dual|\bD[1-4]\b|dual)/i
+    },
+    {
+      key: "us_dual", label: "US (Dual)",
+      campaigns: ["Niro Test US Dual"],
+      adset: /(us\s*dual|\bUS\s*D[1-9]\b)/i
     }
   ],
 
@@ -427,8 +432,10 @@ function marketForEvent_(page, geo, market, campaign) {
   var mk = String(market || "").toLowerCase(), c = String(campaign || "").toLowerCase();
   // 1. The page itself / an explicit market tag.
   if (p.indexOf("/gulf") === 0 || mk === "gulf") return "gulf_dual";
+  if (p.indexOf("/us") === 0 || mk === "us_dual") return "us_dual";
   // 2. The ad campaign that brought them (reliable; beats time zone).
   if (c) {
+    if (c.indexOf("us_dual") !== -1 || c.indexOf("us dual") !== -1) return "us_dual";
     if (c.indexOf("gulf_dual") !== -1 || c.indexOf("gulf dual") !== -1) return "gulf_dual";
     if (c.indexOf("gulf") !== -1) return "gulf";
     if (c.indexOf("smoketest") !== -1) return "na";
@@ -451,6 +458,8 @@ function resolveLeadMarket_(s) {
   var g = String(s.geo || "").toLowerCase();
   var ph = String(s.phone || "").replace(/[^\d]/g, "");
   if (p.indexOf("/gulf") === 0) return "gulf_dual";
+  if (p.indexOf("/us") === 0) return "us_dual";
+  if (c.indexOf("us_dual") !== -1 || c.indexOf("us dual") !== -1) return "us_dual";
   if (c.indexOf("gulf_dual") !== -1 || c.indexOf("gulf dual") !== -1) return "gulf_dual";
   if (c.indexOf("gulf") !== -1) return "gulf";
   if (c.indexOf("smoketest") !== -1) return "na";

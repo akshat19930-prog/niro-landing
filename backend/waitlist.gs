@@ -175,7 +175,9 @@ function resolveMarket_(page, campaign, geo, phone) {
   var ph = String(phone || "").replace(/[^\d+]/g, "");
 
   if (p.indexOf("/gulf") === 0) return "gulf_dual";
+  if (p.indexOf("/us") === 0) return "us_dual";
   if (c) {
+    if (c.indexOf("us_dual") !== -1 || c.indexOf("us dual") !== -1) return "us_dual";
     if (c.indexOf("gulf_dual") !== -1 || c.indexOf("gulf dual") !== -1) return "gulf_dual";
     if (c.indexOf("gulf") !== -1) return "gulf";
     if (c.indexOf("smoketest") !== -1) return "na";
