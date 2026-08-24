@@ -83,11 +83,12 @@ var CONFIG = {
       campaigns: ["Niro Test P3-P4 Gulf"],
       adset: /gulf(?!\s*dual)/i
     },
-    {
-      key: "gulf_dual", label: "Gulf (Dual)",
-      campaigns: ["Niro Test Gulf Dual"],
-      adset: /(gulf\s*dual|\bD[1-4]\b|dual)/i
-    },
+    // Gulf (Dual) is deliberately absent. Dual-vs-single is settled - 9.30%
+    // (24/258) single vs 1.85% (5/271) dual on the same audience, p=0.00017 -
+    // so the market no longer earns a table. Its ad sets still appear in the
+    // Meta console below, so spend stays visible while the campaign winds down.
+    // marketForEvent_ still resolves /gulf to "gulf_dual"; those events are
+    // simply not rendered. Restore this entry to bring the table back.
     {
       key: "us_dual", label: "US (Dual)",
       campaigns: ["Niro Test US Dual"],
@@ -274,9 +275,11 @@ function marketForAdset_(name, campaign) {
     }
   }
   // 2) Fallback: fuzzy name regex, for any campaign not in the static map.
-  //    Test Gulf (Dual) before Gulf so a dual ad set isn't caught by the Gulf regex.
+  //    Gulf (Dual) is no longer a market, and the Gulf regex excludes "dual",
+  //    so a dual ad set falls through unmapped - which is what we want: its
+  //    spend still lists in the console without claiming a market table.
   var hay = String(name || "") + " " + String(campaign || "");
-  var order = ["gulf_dual", "gulf", "na"];
+  var order = ["gulf", "na"];
   for (var k = 0; k < order.length; k++) {
     var def = defForKey_(order[k]);
     if (def && def.adset && def.adset.test(hay)) return def.key;
@@ -334,31 +337,14 @@ function buildModel_(data, meta) {
     return computeMarketWindow_(evs, metaAgg);
   }
 
-  // Gulf (Dual) price A/B: split dual-side events by the priceArm tag
-  // ("149" vs "99") the client writes on every /gulf beacon.
-  function priceWindowFor(dates) {
-    var evs = [];
-    dates.forEach(function (d) {
-      if (evByMarketDate["gulf_dual"] && evByMarketDate["gulf_dual"][d]) evs = evs.concat(evByMarketDate["gulf_dual"][d]);
-    });
-    return computePriceTest_(evs);
-  }
-
   var markets = CONFIG.MARKETS.map(function (def) {
-    var mkt = {
+    return {
       key: def.key, label: def.label,
       cols: cols.map(function (d) {
         return { label: Utilities.formatDate(new Date(d + "T00:00:00"), tz, "MMM d"), stat: windowFor(def.key, [d]) };
       }),
       mtd: windowFor(def.key, mtdDates)
     };
-    // Attach the per-day + MTD price split so the Gulf (Dual) table can show the
-    // conversion % broken out by the $149 and $99 arms.
-    if (def.key === "gulf_dual") {
-      mkt.priceCols = cols.map(function (d) { return priceWindowFor([d]); });
-      mkt.priceMtd = priceWindowFor(mtdDates);
-    }
-    return mkt;
   });
 
   // Ad-set console (MTD totals), sorted by spend desc.
@@ -490,17 +476,6 @@ function realLeadsByMarket_(signups, dates) {
 
 /** Split dual-side events into the two price arms and return the funnel for
  *  each, plus whether any arm was tagged at all (older data has none). */
-function computePriceTest_(evs) {
-  var arms = ["149", "99"], out = { tagged: false };
-  arms.forEach(function (a) {
-    var sub = evs.filter(function (e) { return String(e.priceArm || "") === a; });
-    if (sub.length) out.tagged = true;
-    var w = computeMarketWindow_(sub, { spend: 0, impr: 0, clicks: 0 });
-    out[a] = { sessions: w.sessions, reachedPricing: w.reachedPricing, getAccess: w.getAccess, email: w.email, e2v: w.e2v };
-  });
-  return out;
-}
-
 function computeMarketWindow_(evts, metaAgg) {
   var expo = {}, getAcc = {}, em = {}, ph = {}, done = {}, engaged = {}, dur = {};
   var sc50 = {}, scPrice = {}, sc100 = {};
@@ -585,11 +560,6 @@ function dur_(sec) {
 function na_() { return '<span style="color:#9AA79E">n/a</span>'; }
 /** Price-arm conversion cell: "9.1% (1/11)" — the e2v % with email/visitors
  *  behind it. Dash when the arm had no visitors in the window. */
-function priceE2v_(a) {
-  if (!a || !a.sessions) return "-";
-  return pct_(a.e2v) + ' <span style="color:#9AA79E">(' + a.email + '/' + a.sessions + ')</span>';
-}
-
 /** Scroll-funnel cell: absolute count with % of sessions in muted parens, e.g.
  *  "43 (27%)". Dash when there were no sessions. */
 function scrollCell_(count, sessions) {
@@ -633,7 +603,7 @@ function labelTd_(label) {
    ===================================================================== */
 function pricingFoldFunnel() {
   var data = readAll_();
-  var byMarket = {}, byArm = {};
+  var byMarket = {};
 
   function slot(store, key) {
     if (!store[key]) store[key] = { priced: {}, pricedAt: {}, clicked: {}, clickedAt: {}, sessions: {} };
@@ -657,8 +627,6 @@ function pricingFoldFunnel() {
     var ts = (e.timestamp instanceof Date) ? e.timestamp.getTime() : Number(new Date(e.timestamp));
     var mk = marketForEvent_(e.page, e.geo, e.market, e.campaign);
     note(slot(byMarket, mk), e, ev, sid, ts);
-    var arm = String(e.priceArm || "");
-    if (mk === "gulf_dual" && arm) note(slot(byArm, "$" + arm), e, ev, sid, ts);
   });
 
   function report(title, store, keys) {
@@ -682,8 +650,7 @@ function pricingFoldFunnel() {
     });
   }
 
-  report("BY MARKET", byMarket, ["na", "gulf", "gulf_dual"]);
-  report("GULF DUAL - BY PRICE ARM", byArm, ["$149", "$99"]);
+  report("BY MARKET", byMarket, ["na", "gulf", "us_dual"]);
   Logger.log("\nreached $ = unique sessions that scrolled the pricing section into view.");
   Logger.log("If 'reached $' is 0 everywhere, the scroll beacons have not reached this sheet yet.");
 }
@@ -732,15 +699,6 @@ function renderMarketTable_(m, market) {
   h.push(row("Get Early Access clicked", C.map(function (s) { return s.getAccess; }), M.getAccess));
   h.push(row("Email entered", C.map(function (s) { return s.email; }), M.email));
   h.push(row("Email entered / visitors %", C.map(function (s) { return pct_(s.e2v); }), pct_(M.e2v), statusOf_(M.e2v, CONFIG.GATES.e2v)));
-  // Gulf (Dual) only: split that conversion % by the price A/B arm.
-  if (market.key === "gulf_dual" && market.priceCols && market.priceMtd) {
-    h.push(row("↳ $149 arm — email / visitors %",
-      market.priceCols.map(function (p) { return priceE2v_(p["149"]); }),
-      priceE2v_(market.priceMtd["149"])));
-    h.push(row("↳ $99 arm — email / visitors %",
-      market.priceCols.map(function (p) { return priceE2v_(p["99"]); }),
-      priceE2v_(market.priceMtd["99"])));
-  }
   // Demand that never reaches the signup sheet: these visitors went to WhatsApp
   // instead of joining, so every rate above under-counts them by definition.
   h.push(row("WhatsApp clicked (off-funnel)", C.map(function (s) { return s.whatsapp; }), M.whatsapp));
