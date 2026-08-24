@@ -422,7 +422,7 @@ function TrustB() {
     { icon: "phone", text: "One dedicated point of contact", sub: "The same person, who knows your family" },
     { icon: "message-circle", text: "Runs on WhatsApp", sub: "Nothing new for your parents to learn" },
     { icon: "lock", text: "Your information stays secure", sub: "No passwords or OTPs — we never ask" },
-    { icon: "wallet", text: "Clear, upfront pricing", sub: "Plans from $55/mo. No surprises." },
+    { icon: "wallet", text: "Clear, upfront pricing", sub: "One membership, $99/mo. No surprises." },
     { icon: "star", text: "Real beta families", sub: "In use across the US, Canada & the Gulf" },
   ];
   return (
@@ -475,17 +475,19 @@ function PricingB() {
     <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto", textAlign: "center" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>Plans starting at $55/month.</h2>
+        <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>One membership. $99/month.</h2>
         <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 28px" }}>
-          One membership covers your whole family in India. First task free — no card to join.
+          Covers your whole family in India. First task free — no card to join.
         </p>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))",
+            gridTemplateColumns: "1fr",
             gap: 16,
             textAlign: "left",
             marginBottom: 28,
+            maxWidth: 420,
+            marginInline: "auto",
           }}
         >
           {PLANS.map((p) => {

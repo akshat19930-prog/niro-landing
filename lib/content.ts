@@ -349,7 +349,7 @@ export const TESTIMONIALS_SHORT: {
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
     q: "What is the membership pricing?",
-    a: "While your first task is free, monthly membership pricing ranges between US $55 to $99, depending on your plan.",
+    a: "Your first task is free. After that it is one membership at US $99 a month, covering your whole family in India.",
   },
   {
     q: "Is Niro a human manager?",
@@ -383,7 +383,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
 
 /* ---- Membership plans (shown inside the join flow after email) ---- */
 export type Plan = {
-  id: "lite" | "prime";
+  id: "prime";
   name: string;
   price: string;
   per: string;
@@ -394,42 +394,14 @@ export type Plan = {
   badge?: string;
 };
 
-export const PLANS: Plan[] = [
-  {
-    id: "lite",
-    name: "Niro Lite",
-    price: "$55",
-    per: "/month",
-    sub: "The essentials, covered",
-    features: [
-      "Family WhatsApp group for tasks",
-      "8 tasks included",
-      "Emergency response - ambulance partner + 24/7 remote coordination",
-    ],
-    highlight: false,
-  },
-  {
-    id: "prime",
-    name: "Niro Prime",
-    price: "$99",
-    per: "/month",
-    sub: "Your family, fully covered",
-    lead: "Everything in Lite, plus",
-    features: [
-      "Unlimited tasks",
-      "Emergency response - Niro's concierge present on the ground with your family",
-      "Cyber-fraud cover - insurance up to ₹20L, monitoring & education",
-      "$10/mo wellness credits - tests, physio & more",
-    ],
-    highlight: true,
-    badge: "Most popular",
-  },
-];
-
 /**
- * Single-SKU offer for the pricing experiment's arm B - one $99 "Niro
- * membership" with the full benefit set spelled out (no tier to compare
- * against, so Lite's essentials are folded in explicitly).
+ * One SKU, $99. Niro Lite ($55) was retired: across three independent reads
+ * - the Gulf $149-vs-$99 test, this page's plan question, and the founder's
+ * WhatsApp calls - price never showed up as the blocker (trust did), and among
+ * the few who did express a preference the dearer plan won 9-3. A single tier
+ * also removes the "not sure" escape that 76% of respondents were taking.
+ * Lite's essentials are folded in explicitly, since there is no tier below to
+ * inherit them from.
  */
 export const MEMBERSHIP_SINGLE: Plan = {
   id: "prime",
@@ -446,6 +418,8 @@ export const MEMBERSHIP_SINGLE: Plan = {
   ],
   highlight: true,
 };
+
+export const PLANS: Plan[] = [MEMBERSHIP_SINGLE];
 
 /* ---- Post-signup qualifiers (lead quality + needs). Tap-based, all optional;
    captured right after the email so we read intent at peak, from ~100% of
