@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Nav } from "@/components/ds/Nav";
 import { JoinCta } from "@/components/ds/JoinCta";
-import { AskOnWhatsApp } from "@/components/ds/WhatsAppLink";
+import { AskNiroCta } from "@/components/ds/WhatsAppLink";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
 import { StickyCta } from "@/components/sections/StickyCta";
@@ -414,13 +414,22 @@ function UsHero() {
           <JoinCta className="btn btn-primary btn-lg" position="hero">
             Get Early Access
           </JoinCta>
+          {/* Close enough to the button to read as attached to it, far enough
+              that the hierarchy is unambiguous. For the visitor who is
+              interested but wants to ask about their own situation first. */}
+          <AskNiroCta
+            placement="hero"
+            prompt="Got something specific in mind?"
+            label="Ask Niro on WhatsApp"
+            marginTop={14}
+          />
           <div
             style={{
               display: "flex",
               flexWrap: "wrap",
               alignItems: "center",
               gap: "6px 14px",
-              marginTop: 18,
+              marginTop: 14,
               fontSize: "var(--text-sm)",
               color: "var(--text-muted)",
             }}
@@ -678,6 +687,17 @@ function UsPositioning() {
         >
           Research it. Make the calls. Get it done.
         </p>
+
+        {/* The strategically important one: the two columns read as a catalogue
+            unless something says otherwise. This is what tells a visitor whose
+            need is not listed that the lists are examples, not limits. */}
+        <AskNiroCta
+          placement="capabilities"
+          prompt="Not sure if Niro can handle something?"
+          label="Tell us what you need"
+          align="center"
+          marginTop={14}
+        />
       </div>
     </section>
   );
@@ -992,7 +1012,13 @@ function UsPricing() {
           <div style={{ marginTop: 12, fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
             Cancel anytime · No payment to join the list
           </div>
-          <AskOnWhatsApp placement="pricing" />
+          <AskNiroCta
+            placement="pricing"
+            prompt="Questions before joining?"
+            label="Chat with us on WhatsApp"
+            align="center"
+            marginTop={14}
+          />
         </div>
       </div>
     </section>
@@ -1176,7 +1202,7 @@ export function UsPage() {
         <UsFamilies />
         <UsTrustStrip />
         <UsPricing />
-        <Faq items={US_FAQ_ITEMS} heading="Questions" />
+        <Faq items={US_FAQ_ITEMS} heading="Questions" showAsk={false} />
         <UsClosing />
       </main>
       <StickyCta label="Get Early Access" />
