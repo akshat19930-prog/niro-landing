@@ -689,3 +689,22 @@
     flex: 1;
   }
 }
+
+/* The India scope list inside the FAQ. Column flow rather than a grid: the five
+   groups run from four to six items, and columns keep it compact. */
+.us-scope {
+  columns: 1;
+  column-gap: 32px;
+}
+.us-scope-group {
+  break-inside: avoid;
+  padding-bottom: 20px;
+}
+.us-scope-group:last-child {
+  padding-bottom: 0;
+}
+@media (min-width: 620px) {
+  .us-scope {
+    columns: 2;
+  }
+}

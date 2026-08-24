@@ -8,7 +8,7 @@ import { Icon, type IconName } from "@/components/ds/Icon";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import { logEvent } from "@/lib/track";
-import { US_TESTIMONIALS, US_FAQ, US_PLANS } from "@/lib/content";
+import { US_TESTIMONIALS, US_FAQ, US_PLANS, INDIA_SCOPE, VETTING } from "@/lib/content";
 
 /* ------------------------------------------------------------ shared style */
 
@@ -370,7 +370,7 @@ function UsHero() {
         }}
       >
         <div>
-          <Eyebrow>For Indian families in the US</Eyebrow>
+          <Eyebrow>For Indian families in the US &amp; Canada</Eyebrow>
           <h1
             style={{
               fontFamily: "var(--font-display)",
@@ -383,8 +383,20 @@ function UsHero() {
               textWrap: "balance",
             }}
           >
-            India and the US. One team to handle it all.
+            The personal assistant you wish your whole family had.
           </h1>
+          <p
+            style={{
+              fontSize: "var(--text-lg)",
+              lineHeight: 1.45,
+              color: "var(--text-strong)",
+              fontWeight: 500,
+              maxWidth: 460,
+              margin: "0 0 10px",
+            }}
+          >
+            For your family in India and your life in the US or Canada.
+          </p>
           <p
             style={{
               fontSize: "var(--text-md)",
@@ -394,8 +406,8 @@ function UsHero() {
               margin: "0 0 12px",
             }}
           >
-            Your family back home. Your household here. Send Niro what needs doing -
-            we&rsquo;ll research it, make the calls and get it sorted.
+            Send Niro what needs doing. We&rsquo;ll research it, make the calls and get
+            it sorted.
           </p>
           <div style={{ height: 24 }} />
           <JoinCta className="btn btn-primary btn-lg" position="hero">
@@ -884,9 +896,9 @@ function UsPricing() {
     <section id="pricing-fold" data-screen-label="US pricing" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
-        <h2 style={{ ...h2Style, textAlign: "center", margin: "14px 0 8px" }}>Start with India. Add here when you need it.</h2>
+        <h2 style={{ ...h2Style, textAlign: "center", margin: "14px 0 8px" }}>Start with family. Add life here when you need it.</h2>
         <p style={{ textAlign: "center", fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 28px" }}>
-          First task free - no card to join.
+          First task free. No card required to join.
         </p>
         <div
           style={{
@@ -977,7 +989,7 @@ function UsPricing() {
             Get Early Access
           </JoinCta>
           <div style={{ marginTop: 12, fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
-            First task free · No card required to join
+            Cancel anytime · No payment to join the list
           </div>
         </div>
       </div>
@@ -1039,6 +1051,89 @@ function UsClosing() {
   );
 }
 
+/* --------------------------------------------------------------- india scope */
+
+const SCOPE_ICONS: IconName[] = ["heart-pulse", "home", "plane", "wallet", "shield-check"];
+
+/** The full India list, inside the FAQ answer. Column-flowed rather than a
+ *  grid of equal boxes: the groups are very different lengths, and masonry-ish
+ *  flow keeps it compact instead of leaving four ragged gaps. */
+function IndiaScope() {
+  return (
+    <div className="us-scope">
+      {INDIA_SCOPE.map((group, gi) => (
+        <div key={group.title} className="us-scope-group">
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 9 }}>
+            <span
+              aria-hidden="true"
+              style={{
+                width: 26,
+                height: 26,
+                flexShrink: 0,
+                borderRadius: 7,
+                background: "var(--brand-soft)",
+                color: "var(--brand)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Icon name={SCOPE_ICONS[gi]} size={15} />
+            </span>
+            <span
+              style={{
+                fontSize: "var(--text-xs)",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "var(--tracking-wide)",
+                color: "var(--brand)",
+              }}
+            >
+              {group.title}
+            </span>
+          </div>
+          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 7 }}>
+            {group.items.map((item) => (
+              <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                <Icon
+                  name="check"
+                  size={14}
+                  style={{ marginTop: 4, flexShrink: 0, color: "var(--accent-strong)" }}
+                />
+                <span style={{ color: "var(--text-body)", lineHeight: 1.45 }}>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Vetting() {
+  return (
+    <div>
+      <p style={{ margin: "0 0 16px", color: "var(--text-strong)", fontWeight: 500 }}>{VETTING.lead}</p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {VETTING.points.map((p) => (
+          <div key={p.title} style={{ borderLeft: "2px solid var(--brand-soft)", paddingLeft: 14 }}>
+            <div style={{ fontWeight: 600, color: "var(--text-strong)", marginBottom: 3 }}>{p.title}</div>
+            <div style={{ lineHeight: 1.6 }}>{p.body}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** US_FAQ with the two long answers swapped for rendered versions. Kept here
+ *  rather than in content.ts because that file is plain data, no JSX. */
+const US_FAQ_ITEMS = US_FAQ.map((f) => {
+  if (f.q === "What can Niro handle in India?") return { ...f, a: <IndiaScope />, wide: true };
+  if (f.q.startsWith("What is the process for vetting")) return { ...f, a: <Vetting /> };
+  return f;
+});
+
 /* -------------------------------------------------------------------- page */
 
 export function UsPage() {
@@ -1054,7 +1149,7 @@ export function UsPage() {
         <UsFamilies />
         <UsTrustStrip />
         <UsPricing />
-        <Faq items={US_FAQ} heading="Questions" />
+        <Faq items={US_FAQ_ITEMS} heading="Questions" />
         <UsClosing />
       </main>
       <StickyCta label="Get Early Access" />
