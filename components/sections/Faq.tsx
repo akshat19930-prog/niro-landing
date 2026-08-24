@@ -18,9 +18,14 @@ type FaqItem = { q: string; a: React.ReactNode; special?: boolean; wide?: boolea
 export function Faq({
   items = FAQ,
   heading = "Before you join",
+  showAsk = true,
 }: {
   items?: FaqItem[];
   heading?: string;
+  /** /us carries its own WhatsApp CTAs in the hero, capabilities and pricing
+   *  sections, and pricing sits directly above this one - a fourth link a
+   *  screen later stops reading as secondary. */
+  showAsk?: boolean;
 } = {}) {
   const [open, setOpen] = useState<number | null>(0);
 
@@ -108,6 +113,7 @@ export function Faq({
             Deliberately not a floating button: the sticky CTA already owns the
             bottom of the screen on mobile, and a second always-on CTA would
             divert the highest-intent visitors out of the measured funnel. */}
+        {showAsk && (
         <div
           style={{
             marginTop: 22,
@@ -151,6 +157,7 @@ export function Faq({
             Chat on WhatsApp
           </WhatsAppLink>
         </div>
+        )}
       </div>
     </section>
   );

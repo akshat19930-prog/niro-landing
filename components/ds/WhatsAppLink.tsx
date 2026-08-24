@@ -110,3 +110,75 @@ export function AskOnWhatsApp({
     </div>
   );
 }
+
+/** The opening line for a pre-signup question. Kept in one place so all three
+ *  /us placements arrive in the inbox reading the same way. */
+const ASK_MESSAGE =
+  "Hi, I came across Niro and wanted to understand whether it could help with something specific.";
+
+/**
+ * Two-line secondary CTA: a muted prompt, then the link.
+ *
+ * The prompt line is what does the work - it names the hesitation ("something
+ * specific", "not sure if Niro can handle something") so the link reads as an
+ * answer to a question the visitor is already holding, rather than as a second
+ * offer competing with Get Early Access. Hence the size and colour step down
+ * from the button above it, and no button treatment of its own.
+ */
+export function AskNiroCta({
+  placement,
+  prompt,
+  label,
+  tone = "default",
+  align = "left",
+  marginTop = 18,
+}: {
+  placement: string;
+  prompt: string;
+  label: string;
+  tone?: "default" | "inverse";
+  align?: "left" | "center";
+  marginTop?: number;
+}) {
+  const inverse = tone === "inverse";
+  return (
+    <div style={{ marginTop, textAlign: align }}>
+      <div
+        style={{
+          fontSize: "var(--text-sm)",
+          lineHeight: 1.4,
+          color: inverse ? "rgba(255,255,255,0.62)" : "var(--text-muted)",
+          marginBottom: 3,
+        }}
+      >
+        {prompt}
+      </div>
+      <WhatsAppLink
+        placement={placement}
+        message={ASK_MESSAGE}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 7,
+          // A 44px touch target without the link looking like a button: the
+          // padding is vertical only, and there is no background. Measured, not
+          // guessed - at 6px it came out 34px on a 390px viewport.
+          padding: "11px 0",
+          fontFamily: "var(--font-sans)",
+          fontSize: "var(--text-sm)",
+          fontWeight: 500,
+          color: inverse ? "var(--gold-300)" : "var(--brand)",
+          textDecoration: "underline",
+          textUnderlineOffset: 3,
+          textDecorationThickness: 1,
+        }}
+      >
+        {/* One flex child, so the arrow sits inside the underline and next to
+            the last word rather than floating a gap away from it. */}
+        <span>
+          {label} <span aria-hidden="true">→</span>
+        </span>
+      </WhatsAppLink>
+    </div>
+  );
+}
