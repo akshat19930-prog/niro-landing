@@ -639,3 +639,53 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* /us core positioning: two equal sides joined by one Niro node.
+   Mobile stacks (India / node / US); desktop puts them side by side with the
+   node as a slim connecting column. */
+.us-sides {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  align-items: stretch;
+}
+.us-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 4px 0;
+}
+.us-node-rule {
+  flex: 1;
+  height: 1.5px;
+  background: var(--border-strong);
+}
+.us-node-mark {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-2);
+}
+@media (min-width: 720px) {
+  .us-sides {
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+  }
+  .us-node {
+    flex-direction: column;
+    padding: 0 18px;
+    align-self: stretch;
+  }
+  .us-node-rule {
+    width: 1.5px;
+    height: auto;
+    flex: 1;
+  }
+}

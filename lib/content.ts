@@ -383,7 +383,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
 
 /* ---- Membership plans (shown inside the join flow after email) ---- */
 export type Plan = {
-  id: "prime";
+  id: "prime" | "global";
   name: string;
   price: string;
   per: string;
@@ -556,5 +556,139 @@ export const TASK_DEFS: TaskDef[] = [
     icon: "shield-check",
     label: "Parents' Cyber-Fraud Risk Score",
     note: "A plain-language read on where they're exposed.",
+  },
+];
+
+/* =====================================================================
+   /us — NORTH AMERICA DUAL-SIDED SPLIT TEST
+   ---------------------------------------------------------------------
+   India-primary, US-household as the add-on (deliberately the inverse of
+   the Gulf dual page, which led with the local side and lost). Two SKUs so
+   the test reads dual willingness-to-pay directly rather than inferring it.
+   ===================================================================== */
+
+export const US_PLANS: Plan[] = [
+  {
+    id: "prime",
+    name: "Niro India",
+    price: "$99",
+    per: "/month",
+    sub: "For everything your family needs back home.",
+    features: [
+      "Dedicated family manager + WhatsApp group",
+      "Unlimited tasks for your family in India",
+      "Emergency response, with someone on the ground",
+      "Cyber-fraud cover up to ₹20L",
+      "$10/mo wellness credits",
+    ],
+    highlight: false,
+  },
+  {
+    id: "global",
+    name: "Niro Prime Global",
+    price: "$169",
+    per: "/month",
+    sub: "For your family in India - and everything you need handled here.",
+    lead: "Everything in Niro India, plus your dedicated team for household, family and life admin in the US.",
+    features: [
+      "Home repairs & vendor coordination",
+      "DMV, registration & vehicle admin",
+      "Kids' camps, school forms & signups",
+      "Insurance, refunds & warranty chasing",
+      "Travel, experiences & gifting",
+    ],
+    highlight: true,
+    badge: "Both sides",
+  },
+];
+
+/** SKU question on the /us questionnaire - the core measurement of this test. */
+export const US_PLAN_CHOICES: { id: string; label: string }[] = [
+  { id: "india", label: "Niro India · $99/mo" },
+  { id: "global", label: "Niro Prime Global · $169/mo" },
+];
+
+/** Deliberately three India-side and three US-side options, so the answers
+ *  measure how much of the demand is actually local. */
+export const US_QUALIFY_TASKS: string[] = [
+  "Parents' health & appointments in India",
+  "India paperwork - EPF, pension, banking, property",
+  "Emergencies & peace of mind for parents",
+  "Our US home - repairs, vendors, DMV",
+  "Kids here - camps, school forms, activities",
+  "US admin - insurance, subscriptions, refunds",
+];
+
+export const US_QUALIFY_WHO: string[] = [
+  "My parents in India",
+  "My own household here",
+  "Both",
+];
+
+export const US_QUALIFY_URGENCY: string[] = [
+  "I have a task right now",
+  "In the next few weeks",
+  "Just exploring",
+];
+
+/** Reuses the existing US-based beta voices - same people, same quotes as the
+ *  main site. Nothing invented for this page. */
+export const US_TESTIMONIALS: {
+  name: string;
+  location: string;
+  quote: string;
+  highlight?: string;
+  photo?: string;
+}[] = [
+  {
+    name: "Vaibhav, 32",
+    location: "San Francisco, US ↔ Patiala, India",
+    quote:
+      "On an H1B, I can't just fly home. After Papa's heart scare, knowing there's a named person who'll be at the hospital - with full context, acting on our behalf - is what lets me sleep.",
+    highlight: "a named person who'll be at the hospital",
+    photo: "/people/vaibhav.jpg",
+  },
+  {
+    name: "Sudiksha, 31",
+    location: "Dallas, US ↔ Patiala, India",
+    quote:
+      "I automated Papa's quarterly blood tests and finally recovered my stuck EPFO money. When the maid absconded, Papa had a verified replacement in minutes - he's even set up birthday reminders for his whole circle. He's loving it!",
+    highlight: "finally recovered my stuck EPFO money",
+    photo: "/people/sudiksha.jpg",
+  },
+  {
+    name: "Mayank, 36",
+    location: "New York, US ↔ Lucknow, India",
+    quote:
+      "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now - and I worry far less about the cyber-fraud that targets senior citizens.",
+    highlight: "Niro handles all of it now",
+    photo: "/people/mayank.jpg",
+  },
+];
+
+export const US_FAQ: { q: string; a: string }[] = [
+  {
+    q: "Do my parents need to download anything?",
+    a: "No. They message Niro on WhatsApp, send a voice note, or call - in English or their local language. Nothing new to learn.",
+  },
+  {
+    q: "What can Niro handle in India?",
+    a: "Parents' appointments and cabs, home repairs and staff, EPF, pension and banking paperwork, property and tenants, and emergency coordination - through their own WhatsApp group.",
+  },
+  {
+    q: "And what can Niro handle here in the US?",
+    a: "The household admin that eats your evenings: sourcing and scheduling repair vendors, DMV and vehicle paperwork, kids' camp and school signups, and chasing refunds, warranties and insurance.",
+  },
+  {
+    q: "What's the difference between the two memberships?",
+    a: "Niro India covers your family back home. Niro Prime Global covers that plus your US household admin - one person, both sides.",
+  },
+  {
+    q: "How do you vet the people who help my family?",
+    a: "Every concierge is background-checked and named - you're introduced by photo before day one, and every task is closed with proof: photos, receipts, a written note.",
+  },
+  {
+    q: "Will you ever ask for passwords or OTPs?",
+    a: "Never. Not for banking, not for anything. If someone claiming to be from Niro asks, it isn't us.",
   },
 ];
