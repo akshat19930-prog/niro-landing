@@ -245,7 +245,7 @@ function backfillMarket_(dryRun) {
    safe to re-run after editing an entry below.
    ===================================================================== */
 var LEAD_NOTES = [
-  { email: "yashishan@gmail.com", status: "Engaged/Details Shared",
+  { email: "yash.160@gmail.com", phone: "+919791118613", status: "Engaged/Details Shared",
     details: "Self 35, Toronto, Canada. Parents in Bangalore and Kolkata (ages not shared).",
     notes: "Wants an emergency safety net for parents, plus health tasks (tests, consults, fitness) and home repairs/upkeep. Key concerns: how Niro chooses and vets the partners who interact with parents (trust), and whether tasks cost extra on top of $99 or whether $99 is platform access only. NEXT: answer the vetting and what's-included-in-$99 questions." },
 
