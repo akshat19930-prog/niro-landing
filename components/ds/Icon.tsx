@@ -30,7 +30,13 @@ export type IconName =
   | "menu"
   | "x"
   | "map-pin"
-  | "sunrise";
+  | "sunrise"
+  | "users"
+  | "wrench"
+  | "plane"
+  | "car"
+  | "calendar"
+  | "graduation-cap";
 
 const PATHS: Record<IconName, React.ReactNode> = {
   "arrow-right": (
@@ -167,6 +173,43 @@ const PATHS: Record<IconName, React.ReactNode> = {
       <path d="M22 22H2" />
       <path d="M16 18a4 4 0 0 0-8 0" />
       <path d="m8 6 4-4 4 4" />
+    </>
+  ),
+  users: (
+    <>
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M22 21v-2a4 4 0 0 0-3-3.9" />
+      <path d="M16 3.1a4 4 0 0 1 0 7.8" />
+    </>
+  ),
+  wrench: (
+    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+  ),
+  plane: (
+    <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
+  ),
+  car: (
+    <>
+      <path d="M5 17h14" />
+      <path d="M3 17v-4.5l2-5A2 2 0 0 1 6.9 6h10.2a2 2 0 0 1 1.9 1.5l2 5V17" />
+      <path d="M5 12h14" />
+      <circle cx="7.5" cy="17" r="1.8" />
+      <circle cx="16.5" cy="17" r="1.8" />
+    </>
+  ),
+  calendar: (
+    <>
+      <rect x="3" y="5" width="18" height="16" rx="2" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+      <line x1="8" y1="3" x2="8" y2="7" />
+      <line x1="16" y1="3" x2="16" y2="7" />
+    </>
+  ),
+  "graduation-cap": (
+    <>
+      <path d="M12 3 2 8l10 5 10-5z" />
+      <path d="M6 10.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-5.5" />
     </>
   ),
 };

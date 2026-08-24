@@ -103,7 +103,7 @@ type HeroTask = { side: ChatSide; sender: string; ask: React.ReactNode; reply: R
 
 const GROUPS: Record<ChatSide, { title: string; members: string }> = {
   india: { title: "Niro ↔ Arjun ↔ India", members: "Arjun, Ma, Papa, Niro" },
-  us: { title: "Niro ↔ Arjun ↔ Home", members: "Arjun, Meera, Niro" },
+  us: { title: "Niro ↔ Arjun ↔ US", members: "Arjun, Meera, Niro" },
 };
 
 /** India leads - it is the reason people sign up. The US-side asks appear as
@@ -136,8 +136,8 @@ const HERO_TASKS: HeroTask[] = [
   {
     side: "india",
     sender: "Arjun",
-    ask: <>Can someone check on Ma this week? She&rsquo;s been low.</>,
-    reply: <>Visiting Thursday with her health check, and I&rsquo;ll call you right after.</>,
+    ask: <>Need to set up quarterly blood tests for Ma from a reliable service.</>,
+    reply: <>Set up with a NABL-accredited lab - home collection every quarter, reports shared here.</>,
   },
 ];
 
@@ -249,7 +249,7 @@ function UsHeroChat() {
 
   return (
     <div
-      aria-label="Two Niro WhatsApp groups for one family - an India group (Arjun, Ma, Papa, Niro) and a home group (Arjun, Meera, Niro) - cycling real requests: a cardiology follow-up for Papa, a leaking dishwasher, Ma's pension certificate, summer camp signups, and checking in on Ma."
+      aria-label="Two Niro WhatsApp groups for one family - an India group (Arjun, Ma, Papa, Niro) and a US group (Arjun, Meera, Niro) - cycling real requests: a cardiology follow-up for Papa, a leaking dishwasher, Ma's pension certificate, summer camp signups, and quarterly blood tests for Ma."
       style={{
         width: "100%",
         maxWidth: 360,
@@ -284,7 +284,7 @@ function UsHeroChat() {
         </div>
       </div>
 
-      <div style={{ flex: 1, minHeight: 276, display: "flex", flexDirection: "column", justifyContent: isSummary ? "center" : "flex-end", gap: 10, padding: "18px 14px" }}>
+      <div style={{ flex: 1, minHeight: 356, display: "flex", flexDirection: "column", justifyContent: isSummary ? "center" : "flex-end", gap: 10, padding: "18px 14px" }}>
         <div
           style={{
             opacity: op,
@@ -412,11 +412,11 @@ function UsHero() {
               color: "var(--text-muted)",
             }}
           >
-            <span>Real people, not AI</span>
+            <span>Remote Human Concierge</span>
             <span aria-hidden="true">·</span>
             <span>WhatsApp-first</span>
             <span aria-hidden="true">·</span>
-            <span>No app for your parents</span>
+            <span>Serving USA &amp; Canada families</span>
           </div>
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
@@ -530,28 +530,36 @@ function UsTimeBack() {
    read as "Niro India, plus some errands". Equal visual weight plus one shared
    connector is what makes the dual proposition read as the core product. */
 
-type SideDef = { eyebrow: string; items: string[] };
+type SideItem = { icon: IconName; label: string };
+type SideDef = { eyebrow: string; items: SideItem[] };
 
+/** Both columns carry the same weight and the same shape - a distinct icon per
+ *  capability rather than a repeated tick, so the two sides read as one
+ *  service with two surfaces instead of a headline plus a footnote. */
 const SIDES: SideDef[] = [
   {
     eyebrow: "Your family in India",
-    items: ["Parents & health", "Appointments", "Paperwork", "Property", "Repairs"],
+    items: [
+      { icon: "heart-pulse", label: "Parents' health admin & appointments" },
+      { icon: "shield-check", label: "Emergency response" },
+      { icon: "users", label: "Domestic staff management" },
+      { icon: "wrench", label: "Household admin & repairs" },
+      { icon: "map-pin", label: "Property management" },
+      { icon: "wallet", label: "EPFO, banking & paperwork" },
+      { icon: "plane", label: "Travel planning & visa" },
+    ],
   },
   {
     eyebrow: "Your life in the US",
-    items: ["Home repairs", "Vendors", "Kids & family", "School forms", "Household admin"],
+    items: [
+      { icon: "car", label: "Vehicle" },
+      { icon: "wrench", label: "Household admin & repairs" },
+      { icon: "calendar", label: "Restaurant & events bookings" },
+      { icon: "heart-pulse", label: "Health & insurance admin" },
+      { icon: "graduation-cap", label: "Kids logistics & school" },
+      { icon: "file-text", label: "Immigration & paperwork support" },
+    ],
   },
-];
-
-/** Secondary capability line - breadth cue, deliberately quieter than the two
- *  sides above it. */
-const ALSO: string[] = [
-  "Travel planning",
-  "Experiences",
-  "Restaurants",
-  "Staycations",
-  "Bookings",
-  "Gifts & occasions",
 ];
 
 function SideCard({ side }: { side: SideDef }) {
@@ -578,11 +586,26 @@ function SideCard({ side }: { side: SideDef }) {
       >
         {side.eyebrow}
       </div>
-      <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 9 }}>
+      <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 11 }}>
         {side.items.map((i) => (
-          <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 9, fontSize: "var(--text-md)" }}>
-            <Icon name="check-circle" size={16} style={{ marginTop: 3, flexShrink: 0, color: "var(--brand)" }} />
-            <span style={{ color: "var(--text-body)", lineHeight: 1.4 }}>{i}</span>
+          <li key={i.label} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: "var(--text-md)" }}>
+            <span
+              aria-hidden="true"
+              style={{
+                width: 28,
+                height: 28,
+                flexShrink: 0,
+                borderRadius: 8,
+                background: "var(--brand-soft)",
+                color: "var(--brand)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Icon name={i.icon} size={16} />
+            </span>
+            <span style={{ color: "var(--text-body)", lineHeight: 1.4, paddingTop: 4 }}>{i.label}</span>
           </li>
         ))}
       </ul>
@@ -629,50 +652,10 @@ function UsPositioning() {
           <SideCard side={SIDES[1]} />
         </div>
 
-        <div
-          style={{
-            marginTop: 22,
-            paddingTop: 18,
-            borderTop: "1px solid var(--border)",
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "center",
-            gap: "8px 10px",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "var(--text-xs)",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "var(--tracking-wide)",
-              color: "var(--text-muted)",
-              marginRight: 4,
-            }}
-          >
-            Also handled
-          </span>
-          {ALSO.map((a) => (
-            <span
-              key={a}
-              style={{
-                fontSize: "var(--text-sm)",
-                color: "var(--text-body)",
-                background: "var(--bg-inset)",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius-pill)",
-                padding: "5px 12px",
-              }}
-            >
-              {a}
-            </span>
-          ))}
-        </div>
-
         <p
           style={{
             textAlign: "center",
-            marginTop: 26,
+            marginTop: 30,
             marginBottom: 0,
             fontFamily: "var(--font-display)",
             fontSize: "var(--text-xl)",
