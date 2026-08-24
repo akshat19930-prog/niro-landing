@@ -361,8 +361,6 @@ function buildModel_(data, meta) {
     return mkt;
   });
 
-  var priceTest = priceWindowFor(mtdDates);
-
   // Ad-set console (MTD totals), sorted by spend desc.
   var adsets = [];
   if (meta && meta.adsets) {
@@ -378,7 +376,7 @@ function buildModel_(data, meta) {
     now: now,
     meta_ok: !!(meta && !meta.error && meta.adsets),
     meta_err: meta && meta.error,
-    markets: markets, adsets: adsets, priceTest: priceTest,
+    markets: markets, adsets: adsets,
     realLeads: realLeadsByMarket_(data.signups, mtdDates),
     metaSpendByMarket: (function () {
       var out = {};
@@ -764,32 +762,6 @@ function marketLabelFor_(key) {
   return d ? d.label : (key || "Unmapped");
 }
 
-/** Gulf (Dual) price A/B: $149 vs $99, MTD, from the priceArm-tagged beacons. */
-function renderPriceTest_(pt) {
-  var h = [];
-  h.push('<h3 style="font-size:15px;margin:24px 0 6px">Gulf (Dual) — price test ($149 vs $99)</h3>');
-  if (!pt || !pt.tagged) {
-    h.push('<p style="color:#5b6b60;margin:0 0 8px">No price-tagged /gulf traffic yet — rows populate once the $149-vs-$99 build is live and visitors land.</p>');
-    return h.join("");
-  }
-  var A = pt["149"], B = pt["99"];
-  h.push('<table style="border-collapse:collapse;width:100%"><tr>');
-  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Metric</th>');
-  h.push(th_("$149 (control)")); h.push(th_("$99"));
-  h.push('</tr>');
-  function row(label, a, b) {
-    return "<tr>" + labelTd_(label) + td_(a, "text-align:right;color:#3a4a40") + td_(b, "text-align:right;color:#3a4a40") + "</tr>";
-  }
-  h.push(row("Sessions (visitors)", A.sessions, B.sessions));
-  h.push(row("Reached pricing", scrollCell_(A.reachedPricing, A.sessions), scrollCell_(B.reachedPricing, B.sessions)));
-  h.push(row("Get Early Access clicked", A.getAccess, B.getAccess));
-  h.push(row("Email entered", A.email, B.email));
-  h.push(row("Email / visitors %", pct_(A.e2v), pct_(B.e2v)));
-  h.push('</table>');
-  h.push('<p style="color:#5b6b60;margin:6px 0 0;font-size:12px">Conversion = emails ÷ visitors, per price arm. Samples are small early — read the % once each arm clears ~100 visitors.</p>');
-  return h.join("");
-}
-
 function renderHtml_(m) {
   var h = [];
   h.push('<div style="max-width:760px;margin:0 auto;font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a2b22">');
@@ -809,9 +781,6 @@ function renderHtml_(m) {
 
   // ---- Blocks 1-3: one table per market ----
   m.markets.forEach(function (market) { h.push(renderMarketTable_(m, market)); });
-
-  // ---- Block 3b: Gulf (Dual) price A/B ($149 vs $99) ----
-  if (m.priceTest) h.push(renderPriceTest_(m.priceTest));
 
   // ---- Block 4: Meta ads console (2 tables across all ad sets) ----
   h.push('<h2 style="font-size:16px;margin:30px 0 4px;padding-top:16px;border-top:2px solid #e6e2d6">Meta ads — all ad sets</h2>');
