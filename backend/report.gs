@@ -374,6 +374,31 @@ function buildModel_(data, meta) {
     meta_ok: !!(meta && !meta.error && meta.adsets),
     meta_err: meta && meta.error,
     markets: markets, adsets: adsets, priceTest: priceTest,
+    realLeads: realLeadsByMarket_(data.signups, mtdDates),
+    metaSpendByMarket: (function () {
+      var out = {};
+      CONFIG.MARKETS.forEach(function (def) {
+        var s = 0;
+        if (meta && meta.marketDate && meta.marketDate[def.key]) {
+          mtdDates.forEach(function (d) {
+            var c = meta.marketDate[def.key][d];
+            if (c) s += c.spend;
+          });
+        }
+        out[def.key] = s;
+      });
+      return out;
+    })(),
+    metaLeadsByMarket: (function () {
+      var out = {};
+      if (meta && meta.adsets) {
+        Object.keys(meta.adsets).forEach(function (id) {
+          var a = meta.adsets[id];
+          if (a.market) out[a.market] = (out[a.market] || 0) + a.leads;
+        });
+      }
+      return out;
+    })(),
     totalSignups: data.signups.length,
     newSignups: prev ? Math.max(0, data.signups.length - prev.totalSignups) : data.signups.length,
     dayNum: dayNum, daysLeft: Math.max(0, CONFIG.TEST_DAYS - dayNum),
@@ -415,6 +440,45 @@ function marketForEvent_(page, geo, market, campaign) {
   //    traffic (India, UK, Europe, SE Asia, …). Both fall back to the default
   //    market rather than being split out or dropped.
   return CONFIG.UNTAGGED_MARKET || "na";
+}
+
+/** Which market a SIGNUP row belongs to. Mirrors marketForEvent_ but reads the
+ *  waitlist columns (page / utm_campaign / geo / phone). Kept in sync with
+ *  resolveMarket_ in waitlist.gs so the sheet and the report agree. */
+function resolveLeadMarket_(s) {
+  var p = String(s.page || "");
+  var c = String(s.utm_campaign || "").toLowerCase();
+  var g = String(s.geo || "").toLowerCase();
+  var ph = String(s.phone || "").replace(/[^\d]/g, "");
+  if (p.indexOf("/gulf") === 0) return "gulf_dual";
+  if (c.indexOf("gulf_dual") !== -1 || c.indexOf("gulf dual") !== -1) return "gulf_dual";
+  if (c.indexOf("gulf") !== -1) return "gulf";
+  if (c.indexOf("smoketest") !== -1) return "na";
+  if (g === "gulf") return "gulf";
+  if (g === "na") return "na";
+  if (/^(971|974|973|966|965|968)/.test(ph)) return "gulf";
+  return CONFIG.UNTAGGED_MARKET || "na";
+}
+
+/** Real signups per market, from the waitlist sheet, de-duplicated by email and
+ *  limited to the report window. This is the honest lead count - Meta's own
+ *  `lead` action over-reports it by ~3x, which made the console's cost-per-lead
+ *  far too flattering. */
+function realLeadsByMarket_(signups, dates) {
+  var inWindow = {};
+  dates.forEach(function (d) { inWindow[d] = 1; });
+  var seen = {}, out = {};
+  signups.forEach(function (s) {
+    var raw = (s.date !== "" && s.date != null) ? s.date : s.timestamp;
+    var d = dateStr_(raw);
+    if (!inWindow[d]) return;
+    var em = String(s.email || "").trim().toLowerCase();
+    if (!em || seen[em]) return;
+    seen[em] = 1;
+    var mk = resolveLeadMarket_(s);
+    out[mk] = (out[mk] || 0) + 1;
+  });
+  return out;
 }
 
 /** Split dual-side events into the two price arms and return the funnel for
@@ -713,29 +777,43 @@ function renderHtml_(m) {
   h.push('<h2 style="font-size:16px;margin:30px 0 4px;padding-top:16px;border-top:2px solid #e6e2d6">Meta ads — all ad sets</h2>');
 
   // Table A: cost per lead
-  h.push('<h3 style="font-size:14px;margin:14px 0 6px">Cost per lead by ad set</h3>');
+  // Cost per lead is computed from REAL signups in the sheet, not from Meta's
+  // `lead` action, which over-reports by roughly 3x. Attribution is at market
+  // level: a signup's campaign/page/geo places it reliably, whereas ad-set
+  // level cannot be resolved (several ad sets carry the same pitch, e.g. both
+  // "P3 English" and "P1 & P3 English" exist).
+  h.push('<h3 style="font-size:14px;margin:14px 0 6px">Cost per lead by market <span style="font-weight:400;color:#5b6b60">(real signups)</span></h3>');
   h.push('<table style="border-collapse:collapse;width:100%"><tr>');
-  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Ad set</th>');
-  h.push(th_("Market", "text-align:left")); h.push(th_("Spend")); h.push(th_("Leads")); h.push(th_("Cost / lead"));
+  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Market</th>');
+  h.push(th_("Spend")); h.push(th_("Real leads")); h.push(th_("Cost / lead"));
+  h.push(th_("Meta claims", "color:#9AA79E")); h.push(th_("Inflation", "color:#9AA79E"));
   h.push('</tr>');
-  if (m.meta_ok && m.adsets.length) {
-    var tS = 0, tL = 0;
-    m.adsets.forEach(function (a) {
-      tS += a.spend; tL += a.leads;
-      h.push("<tr>" + labelTd_(a.name) +
-        td_(marketLabelFor_(a.market), "text-align:left;color:#5b6b60") +
-        td_(money_(a.spend), "text-align:right") +
-        td_(a.leads, "text-align:right") +
-        td_(a.leads ? money_(a.spend / a.leads) : na_(), "text-align:right;font-weight:600") + "</tr>");
+  if (m.meta_ok) {
+    var tS2 = 0, tR = 0, tM = 0;
+    CONFIG.MARKETS.forEach(function (def) {
+      var spend = m.metaSpendByMarket[def.key] || 0;
+      var real = m.realLeads[def.key] || 0;
+      var mLeads = m.metaLeadsByMarket[def.key] || 0;
+      tS2 += spend; tR += real; tM += mLeads;
+      h.push("<tr>" + labelTd_(def.label) +
+        td_(money_(spend), "text-align:right") +
+        td_(real, "text-align:right") +
+        td_(real ? money_(spend / real) : na_(), "text-align:right;font-weight:600") +
+        td_(mLeads, "text-align:right;color:#9AA79E") +
+        td_(real ? (Math.round(mLeads / real * 10) / 10) + "x" : na_(), "text-align:right;color:#9AA79E") + "</tr>");
     });
-    h.push("<tr>" + labelTd_("<b>Total</b>") + td_("", "") +
-      td_(money_(tS), "text-align:right;font-weight:600") +
-      td_(tL, "text-align:right;font-weight:600") +
-      td_(tL ? money_(tS / tL) : na_(), "text-align:right;font-weight:600;background:#f6f4ee") + "</tr>");
+    h.push("<tr>" + labelTd_("<b>Total</b>") +
+      td_(money_(tS2), "text-align:right;font-weight:600") +
+      td_(tR, "text-align:right;font-weight:600") +
+      td_(tR ? money_(tS2 / tR) : na_(), "text-align:right;font-weight:600;background:#f6f4ee") +
+      td_(tM, "text-align:right;color:#9AA79E") +
+      td_(tR ? (Math.round(tM / tR * 10) / 10) + "x" : na_(), "text-align:right;color:#9AA79E") + "</tr>");
   } else {
-    h.push("<tr>" + td_(m.meta_ok ? "No ad-set data in range." : na_(), "text-align:left") + "</tr>");
+    h.push("<tr>" + td_(na_(), "text-align:left") + "</tr>");
   }
   h.push('</table>');
+  h.push('<p style="color:#5b6b60;margin:6px 0 0;font-size:12px">Real leads = unique emails in the waitlist sheet for the window (test addresses excluded). ' +
+    '"Meta claims" is Meta\'s own lead count, shown only to expose how far it over-reports - never use it for cost per lead.</p>');
 
   // Table B: cost per visitor (Meta landing-page views)
   h.push('<h3 style="font-size:14px;margin:20px 0 6px">Cost per visitor by ad set</h3>');
@@ -766,7 +844,7 @@ function renderHtml_(m) {
     'Funnel rows are from our own beacons, split by page + geography: Gulf (Dual) = /gulf; Gulf = "/" from a Gulf time zone; North America = "/" from a US/Canada time zone. ' +
     'Legacy/untagged sessions (logged before geo tracking, or from cached pre-update JS) are counted under ' + (marketLabelFor_(CONFIG.UNTAGGED_MARKET) || 'no market') + ' to retain history. Every session is placed in one of the three sections - by page, then ad campaign, then time zone - and anything still unplaced (India, UK, Europe, …) falls back to ' + (marketLabelFor_(CONFIG.UNTAGGED_MARKET) || 'North America') + ', so the three sections always add up to the sheet. ' +
     'Spend / CPM / CTR / Cost-per-lead are from Meta, mapped to a market by ad-set name (CONFIG.MARKETS) — the console tables show that mapping. ' +
-    '"Visitors" in the second console table = Meta landing-page views. Section Cost per lead = Meta spend ÷ emails entered; console Cost per lead = Meta spend ÷ Meta lead conversions. ' +
+    '"Visitors" in the second console table = Meta landing-page views. Section Cost per lead = Meta spend ÷ emails entered (from our beacons); console Cost per lead = Meta spend ÷ real signups in the sheet. Meta\'s own lead count over-reports by roughly 3x and is shown greyed, for contrast only. ' +
     'Bounce / duration are approximations (engaged = ≥10s, a scroll/click, or starting the waitlist).</p>');
   h.push('</div>');
   return h.join("");
