@@ -42,6 +42,10 @@ const PH_FORWARD: Record<string, true> = {
   reached_pricing: true,
   scroll_50: true,
   scroll_100: true,
+  // Click-to-chat. Worth a PostHog funnel of its own: a visitor who asks on
+  // WhatsApp instead of joining never reaches email_entered, so without this
+  // they read as a bounce.
+  whatsapp_click: true,
 };
 
 /** Register the pricing arm + pitch as PostHog super-properties, so heatmaps
@@ -192,6 +196,9 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
         ...(pagePath().startsWith("/gulf")
           ? { price_arm: getStoredGulfPriceArm() }
           : {}),
+        // Carry whatever the caller attached (e.g. the WhatsApp placement), so
+        // PostHog can break the event down without a second beacon.
+        ...(extra || {}),
       });
     } catch {
       /* PostHog not loaded */

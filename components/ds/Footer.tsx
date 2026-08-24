@@ -1,22 +1,15 @@
 import Link from "next/link";
 import { Wordmark } from "./Wordmark";
-import { SUPPORT_WHATSAPP } from "@/lib/config";
+import { WhatsAppLink } from "./WhatsAppLink";
 
 /**
  * Minimal footer for the waitlist stage. "Contact us" opens a WhatsApp chat to
  * our support line; the rest are the site's legal/about pages.
  */
-const links: { label: string; href: string; external?: boolean }[] = [
+const links: { label: string; href: string }[] = [
   { label: "About", href: "/about/" },
   { label: "Privacy", href: "/privacy/" },
   { label: "Terms", href: "/terms/" },
-  {
-    label: "Contact us",
-    href: `https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent(
-      "Hi Niro, I have a question."
-    )}`,
-    external: true,
-  },
 ];
 
 export function Footer({
@@ -57,25 +50,23 @@ export function Footer({
             </p>
           </div>
           <nav style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
-            {links.map((l) =>
-              l.external ? (
-                <a
-                  key={l.label}
-                  href={l.href}
-                  className="footer-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {l.label}
-                </a>
-              ) : (
-                // Internal pages use client-side navigation (prefetched) so the
-                // footer never triggers a full-document reload.
-                <Link key={l.label} href={l.href} className="footer-link">
-                  {l.label}
-                </Link>
-              )
-            )}
+            {/* Internal pages use client-side navigation (prefetched) so the
+                footer never triggers a full-document reload. */}
+            {links.map((l) => (
+              <Link key={l.label} href={l.href} className="footer-link">
+                {l.label}
+              </Link>
+            ))}
+            {/* Was a plain wa.me link with a fixed prefill, so an inbound chat
+                arrived with no page, campaign or creative attached. */}
+            <WhatsAppLink
+              placement="footer"
+              className="footer-link"
+              showIcon={false}
+              style={{ display: "inline-flex", alignItems: "center", gap: 7 }}
+            >
+              Contact us
+            </WhatsAppLink>
           </nav>
         </div>
         <div

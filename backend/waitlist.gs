@@ -28,7 +28,7 @@ var SHEET_NAME = "waitlist";
 var BASE_POSITION = 320;
 
 var EVENTS_SHEET = "events";
-var EVENTS_HEADER = ["timestamp", "date", "event", "arm", "pitch", "sid", "durationMs", "engaged", "page", "geo", "market", "priceArm", "campaign"];
+var EVENTS_HEADER = ["timestamp", "date", "event", "arm", "pitch", "sid", "durationMs", "engaged", "page", "geo", "market", "priceArm", "campaign", "placement"];
 
 // ---- Entry points -----------------------------------------------------------
 function doPost(e) {
@@ -402,7 +402,10 @@ function logEventRow_(data) {
       data.durationMs != null ? Number(data.durationMs) : "",
       data.engaged != null ? Number(data.engaged) : "",
       String(data.page || ""), String(data.geo || ""), String(data.market || ""),
-      String(data.priceArm || ""), String(data.campaign || "")
+      String(data.priceArm || ""), String(data.campaign || ""),
+      // Which WhatsApp entry point was clicked (pricing / faq / footer). Blank
+      // for every other event.
+      String(data.placement || "")
     ]);
     return json_({ ok: true });
   } catch (err) {

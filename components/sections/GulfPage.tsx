@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Nav } from "@/components/ds/Nav";
 import { JoinCta } from "@/components/ds/JoinCta";
+import { AskOnWhatsApp } from "@/components/ds/WhatsAppLink";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
 import { StickyCta } from "@/components/sections/StickyCta";
@@ -994,6 +995,7 @@ function GulfPricing() {
           <div style={{ marginTop: 14, textAlign: "center", fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.72)" }}>
             First task free · No card required to join
           </div>
+          <AskOnWhatsApp placement="pricing" tone="inverse" />
         </div>
       </div>
     </section>

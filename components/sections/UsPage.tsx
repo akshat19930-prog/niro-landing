@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Nav } from "@/components/ds/Nav";
 import { JoinCta } from "@/components/ds/JoinCta";
+import { AskOnWhatsApp } from "@/components/ds/WhatsAppLink";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
 import { StickyCta } from "@/components/sections/StickyCta";
@@ -991,6 +992,7 @@ function UsPricing() {
           <div style={{ marginTop: 12, fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
             Cancel anytime · No payment to join the list
           </div>
+          <AskOnWhatsApp placement="pricing" />
         </div>
       </div>
     </section>

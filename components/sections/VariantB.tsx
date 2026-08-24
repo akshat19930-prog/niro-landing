@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Nav } from "@/components/ds/Nav";
 import { JoinCta } from "@/components/ds/JoinCta";
+import { AskOnWhatsApp } from "@/components/ds/WhatsAppLink";
 import { Badge } from "@/components/ds/Badge";
 import { Icon, type IconName } from "@/components/ds/Icon";
 import { Eyebrow } from "@/components/ds/Eyebrow";
@@ -542,6 +543,7 @@ function PricingB() {
           })}
         </div>
         <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
+        <AskOnWhatsApp placement="pricing" />
       </div>
     </section>
   );

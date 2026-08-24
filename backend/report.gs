@@ -506,6 +506,7 @@ function computePriceTest_(evs) {
 function computeMarketWindow_(evts, metaAgg) {
   var expo = {}, getAcc = {}, em = {}, ph = {}, done = {}, engaged = {}, dur = {};
   var sc50 = {}, scPrice = {}, sc100 = {};
+  var wa = {}, waBy = {};
   evts.forEach(function (e) {
     var sid = String(e.sid || ""), ev = String(e.event || "");
     if (ev === "exposure") expo[sid] = 1;
@@ -516,6 +517,14 @@ function computeMarketWindow_(evts, metaAgg) {
     else if (ev === "scroll_50") { sc50[sid] = 1; engaged[sid] = 1; }
     else if (ev === "reached_pricing") { scPrice[sid] = 1; engaged[sid] = 1; }
     else if (ev === "scroll_100") sc100[sid] = 1;
+    else if (ev === "whatsapp_click") {
+      // A visitor who asks on WhatsApp instead of joining never reaches
+      // email_entered, so without counting them here they read as a bounce.
+      wa[sid] = 1;
+      engaged[sid] = 1;
+      var pl = String(e.placement || "unknown");
+      waBy[pl] = (waBy[pl] || 0) + 1;
+    }
     else if (ev === "session_end") {
       if (num_(e.engaged) === 1) engaged[sid] = 1;
       var d = num_(e.durationMs);
@@ -537,6 +546,11 @@ function computeMarketWindow_(evts, metaAgg) {
     scroll50: Object.keys(sc50).length,
     reachedPricing: Object.keys(scPrice).length,
     scroll100: Object.keys(sc100).length,
+    // Sessions that clicked through to WhatsApp, and the same broken down by
+    // where on the page they clicked. These do NOT appear in the signup sheet,
+    // so they are demand the funnel metrics cannot see.
+    whatsapp: Object.keys(wa).length,
+    whatsappBy: waBy,
     getAccess: Object.keys(getAcc).length,
     email: email,
     e2v: sessions ? (email / sessions * 100) : 0,
@@ -584,6 +598,17 @@ function scrollCell_(count, sessions) {
   var c = num_(count);
   if (!sessions) return c ? String(c) : "-";
   return c + ' <span style="color:#9AA79E">(' + Math.round(c / sessions * 100) + '%)</span>';
+}
+
+/** "pricing 4 · faq 2 · footer 1", biggest first. Tells us which entry point is
+ *  doing the work, and so whether the placement is worth keeping. */
+function waPlacements_(by) {
+  var keys = Object.keys(by || {});
+  if (!keys.length) return "-";
+  keys.sort(function (a, b) { return by[b] - by[a]; });
+  return '<span style="color:#9AA79E">' + keys.map(function (k) {
+    return k + " " + by[k];
+  }).join(" · ") + "</span>";
 }
 
 function td_(html, opt) {
@@ -717,6 +742,12 @@ function renderMarketTable_(m, market) {
     h.push(row("↳ $99 arm — email / visitors %",
       market.priceCols.map(function (p) { return priceE2v_(p["99"]); }),
       priceE2v_(market.priceMtd["99"])));
+  }
+  // Demand that never reaches the signup sheet: these visitors went to WhatsApp
+  // instead of joining, so every rate above under-counts them by definition.
+  h.push(row("WhatsApp clicked (off-funnel)", C.map(function (s) { return s.whatsapp; }), M.whatsapp));
+  if (M.whatsappBy && Object.keys(M.whatsappBy).length) {
+    h.push(row("↳ by placement", C.map(function () { return ""; }), waPlacements_(M.whatsappBy)));
   }
   h.push(row("Phone number submitted", C.map(function (s) { return s.phone; }), M.phone));
   h.push(row("Reached confirmation", C.map(function (s) { return s.completed; }), M.completed));
