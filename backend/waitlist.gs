@@ -249,43 +249,43 @@ var LEAD_NOTES = [
     details: "Self 35, Toronto, Canada. Parents in Bangalore and Kolkata (ages not shared).",
     notes: "Wants an emergency safety net for parents, plus health tasks (tests, consults, fitness) and home repairs/upkeep. Key concerns: how Niro chooses and vets the partners who interact with parents (trust), and whether tasks cost extra on top of $99 or whether $99 is platform access only. NEXT: answer the vetting and what's-included-in-$99 questions." },
 
-  { email: "sparshgarg56@gmail.com", status: "Engaged/Details Shared",
+  { email: "sparshgarg56@gmail.com", phone: "16692044102", status: "Engaged/Details Shared",
     details: "Self 33, California, US. Parents in Ghaziabad, UP (ages not shared).",
     notes: "Needs help with parents' doctor visits and emergencies. Key question: how it actually works - does the point of contact come themselves or send someone? Akshat explained the emergency protocol and on-demand concierge. NEXT: confirm beta interest." },
 
-  { email: "wadhwani.rahul@gmail.com", status: "Engaged/Details Shared",
+  { email: "wadhwani.rahul@gmail.com", phone: "+971556464607", status: "Engaged/Details Shared",
     details: "Self 37, Dubai, UAE. Parents and in-laws both in Mumbai (ages not shared).",
     notes: "Signed up from an Instagram ad, exploring. No immediate task. Main needs: house repairs/technical support, and travel support for health appointments. Key question: what are the interview/qualifying criteria for the people providing the service. Offered to send more questions in real time." },
 
-  { email: "sharad.yadav@outlook.com", status: "Interested",
+  { email: "sharad.yadav@outlook.com", phone: "+917757886201", status: "Interested",
     details: "Self 38, Campbell River, Vancouver Island, Canada. Father 72, Gwalior MP. Mother 70.",
     notes: "SOFT-COMMITTED - picked Niro Prime ($99). Immediate task: father's periodic medical appointments across Gwalior and New Delhi, needs someone to run them and accompany him; Delhi confirmed covered, family has own car and driver. Asked about charges and whether the same person can help his mother if a medical situation arises. NEXT: send onboarding confirmation - he said he'll 'have to fix things fast' and is waiting. NOTE: tagged 'Niro Gulf' in contacts but is actually in Canada." },
 
-  { email: "rturumella@gmail.com", status: "Dropped off",
+  { email: "rturumella@gmail.com", phone: "4082508360", status: "Dropped off",
     details: "Self 35, SF Bay Area, US. Parents/family in Hyderabad; aging grandparents. Has a 2-year-old; is a solo founder.",
     notes: "DECLINED the monthly subscription - 'I don't think I'd have enough use to pay for this monthly compared to per task.' Own need: Aadhaar-linked Airtel number deactivated, so he can't receive HDFC OTPs from the US; lost most of a 1L Yes Bank balance to minimum-balance fees. Wants a PACK OF 8-10 TASKS usable over 6 months, and said it would be good to gift. NEXT: come back with task-pack pricing. Warm contact - knows Rajesh from GSF." },
 
-  { email: "kusum.bhatia@gmail.com", status: "Engaged/Details Shared",
+  { email: "kusum.bhatia@gmail.com", phone: "97455726248", status: "Engaged/Details Shared",
     details: "Lives in Qatar. Mother in Bombay, father-in-law in Lavasa. Ages not shared. Travelling in the USA until end September.",
     notes: "'I love the concept of Niro.' Agreed to answer questions async on WhatsApp; wants a call once back, end of September, and asked to be re-contacted then 'lest I forget'. NEXT: send the parked questions (parents' ages, whether they live alone) and diarise a follow-up for end September." },
 
-  { email: "sunandita@outlook.com", status: "Interested",
+  { email: "sunandita@outlook.com", phone: "+19022095554", status: "Interested",
     details: "Self 43, Nova Scotia, Canada. Parents in Asansol, West Bengal (ages not shared).",
     notes: "COMMITTED TO BETA - 'Sure you can count us in.' Trigger: supporting parents with their daily needs. Key concern: 'Is this a real service or is this just an experiment to do the feasibility?' Asked what to expect during the beta. NEXT: book the 15-min clarity call, then onboard." },
 
-  { email: "sarfarazdj@gmail.com", status: "Dropped off",
+  { email: "sarfarazdj@gmail.com", phone: "9599100496", status: "Dropped off",
     details: "Self 34, Doha, Qatar. Parents in Chennai (ages not shared).",
     notes: "Task-only interest: wants his EPF claim expedited (his own need, not a parent need). Said plainly that his parents 'don't have any specific need to be taken care of now' - no subscription intent. NEXT: decide whether to serve the one-off EPF task as a paid pack or a lead-in." },
 
-  { email: "mansi23gulati@gmail.com", status: "Engaged/Details Shared",
+  { email: "mansi23gulati@gmail.com", phone: "+18479175607", status: "Engaged/Details Shared",
     details: "Self age not shared, US. Parents in early 60s, Delhi. Mother volunteers at the family NGO and doesn't drive.",
     notes: "Asked for beta pricing; Lite $55 / Prime $99 shared, awaiting her choice. Five concerns: (1) is it AI-driven, and what data is needed to file payments/ITR, (2) do parents pay for cab rides and maids or is it all covered, (3) how are the people who show up vetted - do you meet them, what are the hiring criteria, (4) continuity - will the same person keep showing up for her mother, (5) BIGGEST: privacy protection. NEXT: answer privacy, vetting and continuity, then close on a plan." },
 
-  { email: "rituarangaden@outlook.com", status: "Engaged/Details Shared",
+  { email: "rituarangaden@outlook.com", phone: "+918830639592", status: "Engaged/Details Shared",
     details: "Based in the Gulf, does not currently live in India. Parents both in their 70s, will be based in New Delhi over the next few months.",
     notes: "Main need: a first point of contact in case of emergencies, rather than day-to-day help. Asked for the services to be elaborated before she can form a clear picture. Task-scope card shared and a 15-min call proposed. NEXT: get the call scheduled, or elaborate the services in writing." },
 
-  { email: "digitalsijit@gmail.com", status: "Interested",
+  { email: "digitalsijit@gmail.com", phone: "+971564553949", status: "Interested",
     details: "Based in the UAE. Parents 68 and 63, Kozhikode, Kerala - they live by themselves.",
     notes: "'Yes I am interested' - open to beta and to the dual offering. Trigger: saw that Niro could help with PF. No questions at the moment. IMPORTANT SIGNAL: after reading /gulf he said 'I am more concerned about back home. For everything else in UAE it is manageable' - the Gulf-side value proposition did not land. NEXT: confirm beta enrolment." }
 ];
@@ -306,15 +306,28 @@ function applyLeadNotes_(dryRun) {
     Logger.log("Columns W/X/Y missing - paste the latest HEADER and re-run."); return;
   }
 
-  var byEmail = {};
-  LEAD_NOTES.forEach(function (n) { byEmail[n.email.toLowerCase()] = n; });
+  // Match on email OR phone. Phone is the tie-breaker where several rows share
+  // a similar email (e.g. two Rahuls): the last 10 digits are compared, so
+  // "+971 55 646 4607", "971556464607" and "0556464607" all resolve alike.
+  var cPhone = idx["phone"];
+  var tail = function (v) {
+    var d = String(v || "").replace(/[^\d]/g, "");
+    return d.length >= 10 ? d.slice(-10) : "";
+  };
+  var byEmail = {}, byPhone = {};
+  LEAD_NOTES.forEach(function (n) {
+    byEmail[n.email.toLowerCase()] = n;
+    var t = tail(n.phone);
+    if (t) byPhone[t] = n;
+  });
 
   var wrote = 0, matched = {}, rowsTouched = [];
   for (var r = 1; r < values.length; r++) {
     var em = String(values[r][cEmail] || "").trim().toLowerCase();
     var n = byEmail[em];
+    if (!n && cPhone != null) n = byPhone[tail(values[r][cPhone])];
     if (!n) continue;
-    matched[em] = true;
+    matched[n.email.toLowerCase()] = true;
     var cur = [values[r][cS], values[r][cD], values[r][cN]].map(function (v) { return String(v || ""); });
     var next = [n.status, n.details, n.notes];
     if (cur[0] === next[0] && cur[1] === next[1] && cur[2] === next[2]) continue;
