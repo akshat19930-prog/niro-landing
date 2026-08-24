@@ -8,7 +8,6 @@ import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
 import {
-  PLANS,
   QUALIFY_TASKS,
   QUALIFY_WHO,
   QUALIFY_URGENCY,
@@ -102,15 +101,10 @@ export function JoinModal() {
   const [tasks, setTasks] = useState<string[]>([]);
   const [whoFor, setWhoFor] = useState<string | null>(null);
   const [urgency, setUrgency] = useState<string | null>(null);
-  const [plan, setPlan] = useState<string | null>(null);
 
   // Optional WhatsApp number on the confirmation.
   const [phone, setPhone] = useState("");
   const [phoneAdded, setPhoneAdded] = useState(false);
-
-  // Plan-lean chips: always show both SKUs — Niro Lite ($55) and Niro Prime
-  // ($99) — so the visitor picks a tier (plus a "Not sure yet" escape).
-  const planChips = PLANS;
 
   // Put the cursor in the email field the moment the modal opens at the email step.
   useEffect(() => {
@@ -146,7 +140,7 @@ export function JoinModal() {
     submitQualifiers(
       skip
         ? { tasks: [], whoFor: null, urgency: null, plan: null }
-        : { tasks, whoFor, urgency, plan }
+        : { tasks, whoFor, urgency, plan: null }
     );
   }
 
@@ -224,18 +218,6 @@ export function JoinModal() {
               {QUALIFY_URGENCY.map((u) => (
                 <Chip key={u} label={u} selected={urgency === u} onClick={() => setUrgency(u)} />
               ))}
-            </Question>
-
-            <Question label="Which plan fits your family?">
-              {planChips.map((p) => (
-                <Chip
-                  key={p.id}
-                  label={`${p.name} · ${p.price}${p.per}`}
-                  selected={plan === p.id}
-                  onClick={() => setPlan(plan === p.id ? null : p.id)}
-                />
-              ))}
-              <Chip label="Not sure yet" selected={plan === "unsure"} onClick={() => setPlan(plan === "unsure" ? null : "unsure")} />
             </Question>
 
             <div style={{ marginTop: 22 }}>
