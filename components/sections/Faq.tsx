@@ -7,7 +7,10 @@ import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
 import { FAQ } from "@/lib/content";
 
-type FaqItem = { q: string; a: string; special?: boolean };
+/** `a` is a node so a page can swap in a richer answer - /us renders the full
+ *  India scope as a grid inside one of these panels. `wide` drops the reading
+ *  measure for those, which only makes sense for a wall of prose. */
+type FaqItem = { q: string; a: React.ReactNode; special?: boolean; wide?: boolean };
 
 /** FAQ accordion - single panel open at a time; first item open by default.
  *  Defaults to the main-site FAQ; pass `items`/`heading` to reuse on /gulf. */
@@ -88,7 +91,7 @@ export function Faq({
                         fontSize: "var(--text-sm)",
                         color: "var(--text-body)",
                         lineHeight: 1.6,
-                        maxWidth: 560,
+                        maxWidth: f.wide ? undefined : 560,
                       }}
                     >
                       {f.a}

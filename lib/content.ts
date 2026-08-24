@@ -666,14 +666,100 @@ export const US_TESTIMONIALS: {
   },
 ];
 
+/**
+ * The full India scope, grouped the way the ops team actually groups it.
+ * Rendered inside the "What can Niro handle in India?" FAQ answer rather than
+ * as a page section: leads who want the exhaustive list go looking for it, and
+ * putting 25 line items on the page would bury the proposition.
+ */
+export const INDIA_SCOPE: { title: string; items: string[] }[] = [
+  {
+    title: "Health admin & emergency support",
+    items: [
+      "Pre-set periodic health checkups, with home sample collection",
+      "Emergency response protocol - Niro arranges the ambulance and an on-ground concierge",
+      "Medicines re-fulfilment",
+      "Verified physio, massage, nutritionist and yoga sessions on demand",
+      "Doctor appointments: booking and reminders",
+      "Health insurance claims and cashless coordination",
+    ],
+  },
+  {
+    title: "Home admin & chores",
+    items: [
+      "Bill reminders and property tax",
+      "Verifying domestic help, and finding a replacement or backup",
+      "Repairs, maintenance and periodic pest control",
+      "Customer support threads - wrong electricity bill, internet down, appliance in warranty",
+      "Car servicing and repair",
+    ],
+  },
+  {
+    title: "Travel",
+    items: [
+      "Visa and passport appointment booking, and paperwork prep",
+      "On-ground concierge for those appointments",
+      "End-to-end domestic travel, cabs included",
+      "End-to-end international travel, cabs included",
+    ],
+  },
+  {
+    title: "Paperwork, banking & EPFO",
+    items: [
+      "Recovery of an EPFO or bank account",
+      "Document attestation - marriage certificate and others - for NRI needs",
+      "CGHS renewals and pension life certificate",
+      "India ITR filing",
+    ],
+  },
+  {
+    title: "And the rest",
+    items: [
+      "Cyber fraud prevention and monitoring, opt-in",
+      "Reminders your parents can set themselves, for birthdays and events",
+      "Property and tenant management",
+      "Tech support for your parents' how-to questions",
+    ],
+  },
+];
+
+/**
+ * The vetting answer, broken into its four claims. Leads ask this one in almost
+ * every WhatsApp thread and it is the question that decides them, so it gets a
+ * scannable answer rather than a paragraph they have to read twice.
+ */
+export const VETTING: { lead: string; points: { title: string; body: string }[] } = {
+  lead: "They are on our payroll - not a marketplace of freelancers we forward your request to.",
+  points: [
+    {
+      title: "Hired for the job your parents actually need",
+      body: "We test three things before anyone joins: compassion and patience with older parents, communication skill in the language your family actually speaks, and the operational judgement to chase something until it is finished. Everyone is background-checked and named - you're introduced to your concierge by photo before day one.",
+    },
+    {
+      title: "They work to central SOPs",
+      body: "What happens on a task is defined before it starts. Concierges execute the process, they don't improvise it.",
+    },
+    {
+      title: "And to the protocols you set",
+      body: "On top of our SOPs, you decide the rules for your own family: who may be contacted, what needs your approval first, what they should never do without asking you.",
+    },
+    {
+      title: "Every task is monitored individually",
+      body: "Not sampled. Each task is tracked to completion and closed with proof - photos, receipts, a written note - so nothing depends on one person remembering.",
+    },
+  ],
+};
+
 export const US_FAQ: { q: string; a: string }[] = [
   {
     q: "Do my parents need to download anything?",
     a: "No. They message Niro on WhatsApp, send a voice note, or call - in English or their local language. Nothing new to learn.",
   },
   {
+    // Answer is rendered as the INDIA_SCOPE grid, not this string - kept as the
+    // fallback and for anything that reads the FAQ as plain text.
     q: "What can Niro handle in India?",
-    a: "Parents' appointments and cabs, home repairs and staff, EPF, pension and banking paperwork, property and tenants, and emergency coordination - through their own WhatsApp group.",
+    a: "Health admin and emergencies, home admin and chores, travel, paperwork and banking - and a good deal else besides.",
   },
   {
     q: "And what can Niro handle here in the US?",
@@ -684,8 +770,11 @@ export const US_FAQ: { q: string; a: string }[] = [
     a: "Niro India covers your family back home. Niro Prime Global covers that plus your US household admin - one person, both sides.",
   },
   {
-    q: "How do you vet the people who help my family?",
-    a: "Every concierge is background-checked and named - you're introduced by photo before day one, and every task is closed with proof: photos, receipts, a written note.",
+    // Merged with the older, shorter "how do you vet" question - two adjacent
+    // vetting answers read as though we were dodging one of them. Rendered from
+    // VETTING below; this string is the plain-text fallback.
+    q: "What is the process for vetting the concierges who will be interacting with my parents?",
+    a: "They are on our payroll, hired for compassion, communication and operational judgement, background-checked and named. They work to central SOPs and to the protocols you set for your own family, and every task is monitored individually and closed with proof.",
   },
   {
     q: "Will you ever ask for passwords or OTPs?",
