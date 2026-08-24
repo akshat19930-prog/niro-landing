@@ -383,7 +383,7 @@ function UsHero() {
               textWrap: "balance",
             }}
           >
-            Your parents in India, looked after. Your US household, handled too.
+            India and the US. One team to handle it all.
           </h1>
           <p
             style={{
@@ -394,20 +394,10 @@ function UsHero() {
               margin: "0 0 12px",
             }}
           >
-            One person for both sides of your family&rsquo;s life - on WhatsApp.
+            Your family back home. Your household here. Send Niro what needs doing -
+            we&rsquo;ll research it, make the calls and get it sorted.
           </p>
-          <p
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "var(--text-lg)",
-              lineHeight: 1.4,
-              color: "var(--text-strong)",
-              fontWeight: 500,
-              margin: "0 0 24px",
-            }}
-          >
-            Less to chase. More time to live.
-          </p>
+          <div style={{ height: 24 }} />
           <JoinCta className="btn btn-primary btn-lg" position="hero">
             Get Early Access
           </JoinCta>
@@ -441,10 +431,10 @@ function UsHero() {
 
 function UsHowItWorks() {
   const thread: { from: "you" | "niro"; sender?: string; text: React.ReactNode }[] = [
-    { from: "you", sender: "Arjun", text: <>Ma&rsquo;s BP meds are running out and she keeps putting off the refill.</> },
-    { from: "niro", text: <>I&rsquo;ll get her prescription renewed and a 3-month supply delivered this week. I&rsquo;ll confirm here once it&rsquo;s at her door.</> },
-    { from: "you", sender: "Meera", text: <>Also - our car registration expires Friday and I completely forgot.</> },
-    { from: "niro", text: <>On it. Renewing online now, and I&rsquo;ll flag if anything needs your signature. You won&rsquo;t miss the date.</> },
+    { from: "you", sender: "Arjun", text: <>Ma&rsquo;s prescription needs renewing and picking up in Bangalore.</> },
+    { from: "niro", text: <>On it - we&rsquo;ll coordinate with her doctor and the pharmacy, and keep you posted here.</> },
+    { from: "you", sender: "Meera", text: <>Our AC here has stopped working. Can you find someone for Friday?</> },
+    { from: "niro", text: <>Yes - we&rsquo;ll get quotes, book the visit and follow up until it&rsquo;s sorted.</> },
   ];
   return (
     <section data-screen-label="US how it works" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
@@ -470,7 +460,7 @@ function UsHowItWorks() {
             color: "var(--text-strong)",
           }}
         >
-          One message. Someone else handles the chasing.
+          India or the US. <span style={{ color: "var(--brand)" }}>You don&rsquo;t have to chase either.</span>
         </p>
       </div>
     </section>
@@ -481,16 +471,16 @@ function UsHowItWorks() {
 
 function UsTimeBack() {
   const gotBack = [
-    { label: "Your lunch break", line: "Not spent on hold with an insurer." },
-    { label: "Your evenings", line: "Not spent chasing repair quotes." },
-    { label: "Your weekends", line: "Not spent on forms and registrations." },
-    { label: "Your headspace", line: "Not spent worrying about your parents." },
+    { label: "Your lunch break", line: "Not spent calling insurance or service providers." },
+    { label: "Your evenings", line: "Not spent comparing quotes or chasing appointments." },
+    { label: "Your weekends", line: "Not spent on forms, registrations and things you\u2019ve been putting off." },
+    { label: "Your headspace", line: "Not constantly split between life here and family back home." },
   ];
   return (
     <section data-screen-label="US time back" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow>What you get back</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "12px 0 26px" }}>Your time.</h2>
+        <h2 style={{ ...h2Style, margin: "12px 0 26px" }}>Get your time back. And some headspace too.</h2>
         <div
           style={{
             display: "grid",
@@ -533,168 +523,190 @@ function UsTimeBack() {
   );
 }
 
-/* ------------------------------------------------------- what Niro handles */
+/* ============================================================ CORE POSITIONING
+   "Life here. Family in India. One Niro." - moved up to sit directly after
+   how-it-works, and rebuilt as two EQUAL sides joined by a single Niro node.
+   Previously the US column was gold-flagged as an "add-on", which made the page
+   read as "Niro India, plus some errands". Equal visual weight plus one shared
+   connector is what makes the dual proposition read as the core product. */
 
-type HandleCard = { icon: IconName; title: string; items: string; highlight?: boolean };
+type SideDef = { eyebrow: string; items: string[] };
 
-/** India cards first and marked as the core - the US card is explicitly the
- *  add-on, matching the hero's India-first promise. */
-const HANDLES: HandleCard[] = [
-  { icon: "heart-pulse", title: "Your parents in India", items: "Health & appointments · Emergencies · Daily needs · Someone who shows up" },
-  { icon: "file-text", title: "Your India paperwork", items: "EPF & pension · Banking · Property & tenants · Government work" },
-  { icon: "home", title: "Your home here", items: "Repairs & vendors · DMV & registration · Warranties · Everyday admin", highlight: true },
-  { icon: "star", title: "Your family here", items: "Camps & school forms · Activities · Appointments · Insurance chasing", highlight: true },
+const SIDES: SideDef[] = [
+  {
+    eyebrow: "Your family in India",
+    items: ["Parents & health", "Appointments", "Paperwork", "Property", "Repairs"],
+  },
+  {
+    eyebrow: "Your life in the US",
+    items: ["Home repairs", "Vendors", "Kids & family", "School forms", "Household admin"],
+  },
 ];
 
-function HandleCardView({ card }: { card: HandleCard }) {
-  const addOn = card.highlight;
+/** Secondary capability line - breadth cue, deliberately quieter than the two
+ *  sides above it. */
+const ALSO: string[] = [
+  "Travel planning",
+  "Experiences",
+  "Restaurants",
+  "Staycations",
+  "Bookings",
+  "Gifts & occasions",
+];
+
+function SideCard({ side }: { side: SideDef }) {
   return (
     <div
       style={{
-        background: addOn ? "var(--gold-50, #FBF6EA)" : "var(--surface-card)",
-        border: addOn ? "1.5px solid var(--gold-300)" : "1px solid var(--border)",
+        background: "var(--surface-card)",
+        border: "1px solid var(--border)",
         borderRadius: "var(--radius-xl)",
-        padding: "var(--space-4)",
-        boxShadow: addOn ? "var(--shadow-2)" : "var(--shadow-1)",
-        display: "flex",
-        alignItems: "center",
-        gap: 14,
+        padding: "var(--space-5)",
+        boxShadow: "var(--shadow-2)",
+        height: "100%",
       }}
     >
-      <span
+      <div
         style={{
-          width: 42,
-          height: 42,
-          flexShrink: 0,
-          borderRadius: 12,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: addOn ? "var(--gold-300)" : "var(--brand-soft)",
-          color: addOn ? "var(--forest-900)" : "var(--brand)",
+          fontSize: "var(--text-xs)",
+          fontWeight: 700,
+          textTransform: "uppercase",
+          letterSpacing: "var(--tracking-wide)",
+          color: "var(--brand)",
+          marginBottom: 12,
         }}
       >
-        <Icon name={card.icon} size={22} />
-      </span>
-      <div>
-        <div
-          style={{
-            fontSize: "var(--text-xs)",
-            fontWeight: 700,
-            textTransform: "uppercase",
-            letterSpacing: "var(--tracking-wide)",
-            color: "var(--text-strong)",
-            marginBottom: 5,
-          }}
-        >
-          {card.title}
-        </div>
-        <div style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)", lineHeight: 1.4 }}>
-          {card.items}
-        </div>
+        {side.eyebrow}
       </div>
+      <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 9 }}>
+        {side.items.map((i) => (
+          <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: 9, fontSize: "var(--text-md)" }}>
+            <Icon name="check-circle" size={16} style={{ marginTop: 3, flexShrink: 0, color: "var(--brand)" }} />
+            <span style={{ color: "var(--text-body)", lineHeight: 1.4 }}>{i}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-function labelStyle(color: string): React.CSSProperties {
-  return {
-    fontSize: "var(--text-xs)",
-    fontWeight: 700,
-    textTransform: "uppercase",
-    letterSpacing: "var(--tracking-wide)",
-    color: color,
-    whiteSpace: "nowrap",
-    alignSelf: "start",
-    paddingTop: 2,
-  };
+/** The connector between the two sides: one Niro mark. A vertical column on
+ *  desktop, a horizontal divider on mobile, so "one team between two sides"
+ *  survives the stack without becoming a literal diagram. */
+function NiroNode() {
+  return (
+    <div className="us-node" aria-hidden="true">
+      <span className="us-node-rule" />
+      <span className="us-node-mark">
+        <Icon name="user-check" size={20} />
+      </span>
+      <span className="us-node-rule" />
+    </div>
+  );
 }
 
-function UsHandles() {
+function UsPositioning() {
   return (
-    <section data-screen-label="US handles" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
+    <section data-screen-label="US positioning" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
-        <Eyebrow>What Niro handles</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>India first. Then everything here.</h2>
+        <Eyebrow>One Niro</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>Life here. Family in India. One Niro.</h2>
         <p
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "var(--text-xl)",
-            fontWeight: 500,
-            color: "var(--brand)",
-            margin: "0 0 22px",
+            fontSize: "var(--text-md)",
+            color: "var(--text-body)",
+            lineHeight: "var(--leading-body)",
+            margin: "0 0 26px",
+            maxWidth: 620,
           }}
         >
-          Research it. Make the calls. Get it done.
+          One team handling what needs doing on both sides of your life.
         </p>
-        <div className="gulf-handles-grid">
-          {HANDLES.map((c) => (
-            <HandleCardView key={c.title} card={c} />
-          ))}
+
+        <div className="us-sides">
+          <SideCard side={SIDES[0]} />
+          <NiroNode />
+          <SideCard side={SIDES[1]} />
         </div>
 
         <div
           style={{
-            marginTop: 16,
-            border: "1px solid var(--border)",
-            borderLeft: "3px solid var(--brand)",
-            borderRadius: "var(--radius-lg)",
-            background: "var(--surface-card)",
-            padding: "16px 18px",
-            display: "grid",
-            gridTemplateColumns: "auto 1fr",
-            gap: "8px 14px",
-            alignItems: "baseline",
-            boxShadow: "var(--shadow-1)",
+            marginTop: 22,
+            paddingTop: 18,
+            borderTop: "1px solid var(--border)",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            gap: "8px 10px",
           }}
         >
-          <span style={labelStyle("var(--text-muted)")}>You need</span>
-          <span style={{ fontSize: "var(--text-md)", color: "var(--text-strong)", fontWeight: 500, lineHeight: 1.4 }}>
-            A plumber, this week, who won&rsquo;t overcharge you.
+          <span
+            style={{
+              fontSize: "var(--text-xs)",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "var(--tracking-wide)",
+              color: "var(--text-muted)",
+              marginRight: 4,
+            }}
+          >
+            Also handled
           </span>
-          <span style={labelStyle("var(--brand)")}>Niro</span>
-          <span style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.5 }}>
-            Sources options <span style={{ color: "var(--brand)" }}>→</span> gets three quotes{" "}
-            <span style={{ color: "var(--brand)" }}>→</span> checks reviews{" "}
-            <span style={{ color: "var(--brand)" }}>→</span> books the slot that suits you.
-          </span>
+          {ALSO.map((a) => (
+            <span
+              key={a}
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "var(--text-body)",
+                background: "var(--bg-inset)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--radius-pill)",
+                padding: "5px 12px",
+              }}
+            >
+              {a}
+            </span>
+          ))}
         </div>
 
         <p
           style={{
             textAlign: "center",
-            marginTop: 22,
-            fontSize: "var(--text-lg)",
+            marginTop: 26,
+            marginBottom: 0,
             fontFamily: "var(--font-display)",
+            fontSize: "var(--text-xl)",
             fontWeight: 500,
             color: "var(--text-strong)",
           }}
         >
-          If you don&rsquo;t have time to deal with it, ask Niro.
+          Research it. Make the calls. Get it done.
         </p>
       </div>
     </section>
   );
 }
 
-/* --------------------------------------------------- the India differentiator */
+/* ==================================================== when India needs you */
 
-function UsIndiaSide() {
-  const bothSides = [
-    "Parents health admin & Emergencies",
-    "Home repairs, chores & Staff",
-    "EPF, pension & banking recovery",
+function UsIndiaDepth() {
+  const cases = [
+    "Parents' health & appointments",
+    "EPFO, pension & banking",
     "Property & tenant management",
+    "Home repairs & vendor coordination",
   ];
   return (
-    <section data-screen-label="US india side" style={{ padding: sectionPad }}>
+    <section data-screen-label="US india depth" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
-        <Eyebrow>Why families start with Niro</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>Life here. Family in India. One Niro.</h2>
+        <Eyebrow>When family needs you in India</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>
+          Some things can&rsquo;t wait until your next call home.
+        </h2>
         <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: "var(--leading-body)", margin: "0 0 24px" }}>
-          Anyone can book you a plumber. Almost nobody can be at your father&rsquo;s hospital
-          appointment in Lucknow on a Tuesday morning. Niro does both - and starts with the
-          one that matters most.
+          When your parents need something handled, Niro coordinates on the ground -
+          appointments, paperwork, repairs and the things that are hard to manage from
+          thousands of miles away.
         </p>
 
         <div
@@ -704,7 +716,7 @@ function UsIndiaSide() {
             gap: "12px 24px",
           }}
         >
-          {bothSides.map((item) => (
+          {cases.map((item) => (
             <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
               <Icon name="check-circle" size={18} style={{ marginTop: 2, flexShrink: 0, color: "var(--brand)" }} />
               <span style={{ fontSize: "var(--text-md)", color: "var(--text-strong)", lineHeight: 1.4 }}>{item}</span>
@@ -712,23 +724,28 @@ function UsIndiaSide() {
           ))}
         </div>
 
+        {/* The parents-don't-need-an-app insight, given real weight rather than
+            sitting as a footnote: it is why the India side actually works. */}
         <div
           style={{
+            marginTop: 28,
+            padding: "22px 24px",
+            borderRadius: "var(--radius-xl)",
+            background: "var(--surface-card)",
+            border: "1px solid var(--border)",
+            borderLeft: "4px solid var(--brand)",
+            boxShadow: "var(--shadow-2)",
             display: "flex",
             alignItems: "flex-start",
-            gap: 13,
-            marginTop: 26,
-            padding: "16px 18px",
-            borderRadius: "var(--radius-lg)",
-            background: "var(--brand-soft)",
+            gap: 16,
           }}
         >
           <span
             style={{
-              width: 42,
-              height: 42,
+              width: 46,
+              height: 46,
               flexShrink: 0,
-              borderRadius: 12,
+              borderRadius: 13,
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -736,14 +753,23 @@ function UsIndiaSide() {
               color: "#fff",
             }}
           >
-            <Icon name="message-circle" size={22} />
+            <Icon name="message-circle" size={24} />
           </span>
-          <div style={{ lineHeight: 1.5 }}>
-            <div style={{ fontSize: "var(--text-base)", fontWeight: 600, color: "var(--text-strong)" }}>
+          <div>
+            <div
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "var(--text-xl)",
+                fontWeight: 500,
+                color: "var(--text-strong)",
+                lineHeight: 1.3,
+                marginBottom: 6,
+              }}
+            >
               Your parents don&rsquo;t need another app to figure out.
             </div>
-            <div style={{ fontSize: "var(--text-sm)", color: "var(--text-body)" }}>
-              They can simply WhatsApp Niro, send a voice note or call - in English or their local language.
+            <div style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.5 }}>
+              They can simply message Niro or send a voice note - in English, Hindi or Tamil.
             </div>
           </div>
         </div>
@@ -1020,7 +1046,7 @@ function UsClosing() {
           Let Niro take it from here.
         </h2>
         <p style={{ fontSize: "var(--text-md)", color: "rgba(255,255,255,0.78)", margin: "0 0 24px", lineHeight: 1.6 }}>
-          Join the families who stopped running two households from one calendar.
+          Your family back home. Your life here. One less thing to manage.
         </p>
         <JoinCta className="btn btn-accent btn-lg" position="closing">
           Get Early Access
@@ -1039,9 +1065,9 @@ export function UsPage() {
       <main>
         <UsHero />
         <UsHowItWorks />
+        <UsPositioning />
         <UsTimeBack />
-        <UsHandles />
-        <UsIndiaSide />
+        <UsIndiaDepth />
         <UsFamilies />
         <UsTrustStrip />
         <UsPricing />
