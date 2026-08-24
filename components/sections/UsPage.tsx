@@ -8,7 +8,7 @@ import { Icon, type IconName } from "@/components/ds/Icon";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import { logEvent } from "@/lib/track";
-import { US_TESTIMONIALS, US_FAQ, US_PLANS, INDIA_SCOPE, VETTING } from "@/lib/content";
+import { US_TESTIMONIALS, US_FAQ, US_PLANS, INDIA_SCOPE, US_SCOPE, VETTING } from "@/lib/content";
 
 /* ------------------------------------------------------------ shared style */
 
@@ -472,7 +472,7 @@ function UsHowItWorks() {
             color: "var(--text-strong)",
           }}
         >
-          India or the US. <span style={{ color: "var(--brand)" }}>You don&rsquo;t have to chase either.</span>
+          India or here. <span style={{ color: "var(--brand)" }}>You don&rsquo;t have to chase either.</span>
         </p>
       </div>
     </section>
@@ -562,7 +562,7 @@ const SIDES: SideDef[] = [
     ],
   },
   {
-    eyebrow: "Your life in the US",
+    eyebrow: "Your life in the US or Canada",
     items: [
       { icon: "car", label: "Vehicle" },
       { icon: "wrench", label: "Household admin & repairs" },
@@ -1051,17 +1051,26 @@ function UsClosing() {
   );
 }
 
-/* --------------------------------------------------------------- india scope */
+/* --------------------------------------------------------------- scope lists */
 
-const SCOPE_ICONS: IconName[] = ["heart-pulse", "home", "plane", "wallet", "shield-check"];
+const INDIA_SCOPE_ICONS: IconName[] = ["heart-pulse", "home", "plane", "wallet", "shield-check"];
+/** Same icons, same order as the "Your life in the US or Canada" column above,
+ *  so the FAQ answer is legibly a double-click on that list. */
+const US_SCOPE_ICONS: IconName[] = ["car", "wrench", "calendar", "heart-pulse", "graduation-cap", "file-text"];
 
-/** The full India list, inside the FAQ answer. Column-flowed rather than a
+/** A full capability list, inside a FAQ answer. Column-flowed rather than a
  *  grid of equal boxes: the groups are very different lengths, and masonry-ish
- *  flow keeps it compact instead of leaving four ragged gaps. */
-function IndiaScope() {
+ *  flow keeps it compact instead of leaving ragged gaps. */
+function ScopeList({
+  groups,
+  icons,
+}: {
+  groups: { title: string; items: string[]; note?: string }[];
+  icons: IconName[];
+}) {
   return (
     <div className="us-scope">
-      {INDIA_SCOPE.map((group, gi) => (
+      {groups.map((group, gi) => (
         <div key={group.title} className="us-scope-group">
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 9 }}>
             <span
@@ -1078,7 +1087,7 @@ function IndiaScope() {
                 justifyContent: "center",
               }}
             >
-              <Icon name={SCOPE_ICONS[gi]} size={15} />
+              <Icon name={icons[gi]} size={15} />
             </span>
             <span
               style={{
@@ -1104,6 +1113,19 @@ function IndiaScope() {
               </li>
             ))}
           </ul>
+          {group.note && (
+            <div
+              style={{
+                marginTop: 9,
+                paddingLeft: 22,
+                fontSize: "var(--text-xs)",
+                color: "var(--text-muted)",
+                lineHeight: 1.5,
+              }}
+            >
+              {group.note}
+            </div>
+          )}
         </div>
       ))}
     </div>
@@ -1129,7 +1151,10 @@ function Vetting() {
 /** US_FAQ with the two long answers swapped for rendered versions. Kept here
  *  rather than in content.ts because that file is plain data, no JSX. */
 const US_FAQ_ITEMS = US_FAQ.map((f) => {
-  if (f.q === "What can Niro handle in India?") return { ...f, a: <IndiaScope />, wide: true };
+  if (f.q === "What can Niro handle in India?")
+    return { ...f, a: <ScopeList groups={INDIA_SCOPE} icons={INDIA_SCOPE_ICONS} />, wide: true };
+  if (f.q.startsWith("And what can Niro handle"))
+    return { ...f, a: <ScopeList groups={US_SCOPE} icons={US_SCOPE_ICONS} />, wide: true };
   if (f.q.startsWith("What is the process for vetting")) return { ...f, a: <Vetting /> };
   return f;
 });

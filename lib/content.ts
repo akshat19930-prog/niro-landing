@@ -589,7 +589,7 @@ export const US_PLANS: Plan[] = [
     price: "$169",
     per: "/month",
     sub: "For your family in India - and everything you need handled here.",
-    lead: "Everything in Niro India, plus your dedicated team for household, family and life admin in the US.",
+    lead: "Everything in Niro India, plus your dedicated team for household, family and life admin in the US or Canada.",
     features: [
       "Home repairs & vendor coordination",
       "DMV, registration & vehicle admin",
@@ -724,6 +724,75 @@ export const INDIA_SCOPE: { title: string; items: string[] }[] = [
 ];
 
 /**
+ * The other side of the same list: each capability from the "Your life in the
+ * US or Canada" column, opened up into what Niro actually does for it. Order
+ * mirrors that column exactly, so the FAQ reads as a double-click on the
+ * section rather than a second, different list.
+ */
+export const US_SCOPE: { title: string; items: string[]; note?: string }[] = [
+  {
+    title: "Vehicle",
+    items: [
+      "Servicing, repairs and roadside problems - quotes, booking and follow-up",
+      "DMV or provincial registration, licence renewals and title paperwork",
+      "Insurance quotes, renewals and chasing a claim through",
+      "Buying or selling: research, listings and dealer back-and-forth",
+    ],
+  },
+  {
+    title: "Household admin & repairs",
+    items: [
+      "Sourcing and vetting contractors - plumbing, HVAC, electrical, appliances",
+      "Booking the visit and following up until it is actually fixed",
+      "Recurring services: cleaning, lawn, pest control, snow removal",
+      "Utilities, internet and mobile - setup, disputes and switching",
+      "Chasing refunds, warranties and bills that are wrong",
+    ],
+  },
+  {
+    title: "Restaurant & events bookings",
+    items: [
+      "Restaurant reservations, including the ones that are hard to get",
+      "Birthdays, anniversaries and family gatherings - venue, catering, cake",
+      "Tickets for concerts, games and shows",
+      "Weekends away and family trips, researched and booked end to end",
+      "Gifts and flowers, sourced and delivered on the right day",
+    ],
+  },
+  {
+    title: "Health & insurance admin",
+    items: [
+      "Doctor, dentist and specialist appointments, with reminders",
+      "Finding in-network providers and checking coverage before you go",
+      "Claims, EOBs and billing disputes chased down",
+      "Prescription refills and pharmacy coordination",
+    ],
+  },
+  {
+    title: "Kids logistics & school",
+    items: [
+      "Camp and after-school signups, at the minute registration opens",
+      "School forms, permission slips and enrolment paperwork",
+      "Classes and coaching: research, trials and scheduling",
+      "Birthday parties - venue, invitations, the rest of it",
+    ],
+  },
+  {
+    title: "Immigration & paperwork support",
+    items: [
+      "Application paperwork prepared and assembled",
+      "Appointment booking - biometrics, interviews, consulate visits",
+      "Document collection, attestation and notarisation",
+      "Case status and deadlines tracked, so nothing lapses",
+      "Travel documents for family visiting you from India",
+    ],
+    // Stated up front rather than discovered later: we do the admin, we are not
+    // an immigration practice.
+    note: "We handle the admin and the chasing, not legal advice - we work alongside your attorney.",
+  },
+];
+
+/**
  * The vetting answer, broken into its four claims. Leads ask this one in almost
  * every WhatsApp thread and it is the question that decides them, so it gets a
  * scannable answer rather than a paragraph they have to read twice.
@@ -762,12 +831,13 @@ export const US_FAQ: { q: string; a: string }[] = [
     a: "Health admin and emergencies, home admin and chores, travel, paperwork and banking - and a good deal else besides.",
   },
   {
-    q: "And what can Niro handle here in the US?",
-    a: "The household admin that eats your evenings: sourcing and scheduling repair vendors, DMV and vehicle paperwork, kids' camp and school signups, and chasing refunds, warranties and insurance.",
+    // Answer is rendered as the US_SCOPE list; string is the fallback.
+    q: "And what can Niro handle in your US or Canada life?",
+    a: "The household admin that eats your evenings: vehicle and repairs, restaurant and event bookings, health and insurance admin, kids' school and camp signups, and immigration paperwork.",
   },
   {
     q: "What's the difference between the two memberships?",
-    a: "Niro India covers your family back home. Niro Prime Global covers that plus your US household admin - one person, both sides.",
+    a: "Niro India covers your family back home. Niro Prime Global covers that plus your household admin here in the US or Canada - one person, both sides.",
   },
   {
     // Merged with the older, shorter "how do you vet" question - two adjacent
