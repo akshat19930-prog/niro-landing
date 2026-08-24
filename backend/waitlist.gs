@@ -236,7 +236,7 @@ function backfillMarket_(dryRun) {
 /* =====================================================================
    LEAD NOTES from the founder's WhatsApp outreach (24 Aug 2026, 11 leads).
    Fills columns W (leadStatus), X (detailsShared), Y (leadNotes), matched on
-   email. Status is one of: "Engaged/Details Shared" | "Interested" |
+   email. Status is one of: "Engaged/Details shared" | "Interested" |
    "Dropped off".
 
    RUN IT: select applyLeadNotesDryRun and press Run, read the Execution log
@@ -245,15 +245,15 @@ function backfillMarket_(dryRun) {
    safe to re-run after editing an entry below.
    ===================================================================== */
 var LEAD_NOTES = [
-  { email: "yash.160@gmail.com", phone: "+919791118613", status: "Engaged/Details Shared",
+  { email: "yash.160@gmail.com", phone: "+919791118613", status: "Engaged/Details shared",
     details: "Self 35, Toronto, Canada. Parents in Bangalore and Kolkata (ages not shared).",
     notes: "Wants an emergency safety net for parents, plus health tasks (tests, consults, fitness) and home repairs/upkeep. Key concerns: how Niro chooses and vets the partners who interact with parents (trust), and whether tasks cost extra on top of $99 or whether $99 is platform access only. NEXT: answer the vetting and what's-included-in-$99 questions." },
 
-  { email: "sparshgarg56@gmail.com", phone: "16692044102", status: "Engaged/Details Shared",
+  { email: "sparshgarg56@gmail.com", phone: "16692044102", status: "Engaged/Details shared",
     details: "Self 33, California, US. Parents in Ghaziabad, UP (ages not shared).",
     notes: "Needs help with parents' doctor visits and emergencies. Key question: how it actually works - does the point of contact come themselves or send someone? Akshat explained the emergency protocol and on-demand concierge. NEXT: confirm beta interest." },
 
-  { email: "wadhwani.rahul@gmail.com", phone: "+971556464607", status: "Engaged/Details Shared",
+  { email: "wadhwani.rahul@gmail.com", phone: "+971556464607", status: "Engaged/Details shared",
     details: "Self 37, Dubai, UAE. Parents and in-laws both in Mumbai (ages not shared).",
     notes: "Signed up from an Instagram ad, exploring. No immediate task. Main needs: house repairs/technical support, and travel support for health appointments. Key question: what are the interview/qualifying criteria for the people providing the service. Offered to send more questions in real time." },
 
@@ -265,7 +265,7 @@ var LEAD_NOTES = [
     details: "Self 35, SF Bay Area, US. Parents/family in Hyderabad; aging grandparents. Has a 2-year-old; is a solo founder.",
     notes: "DECLINED the monthly subscription - 'I don't think I'd have enough use to pay for this monthly compared to per task.' Own need: Aadhaar-linked Airtel number deactivated, so he can't receive HDFC OTPs from the US; lost most of a 1L Yes Bank balance to minimum-balance fees. Wants a PACK OF 8-10 TASKS usable over 6 months, and said it would be good to gift. NEXT: come back with task-pack pricing. Warm contact - knows Rajesh from GSF." },
 
-  { email: "kusum.bhatia@gmail.com", phone: "97455726248", status: "Engaged/Details Shared",
+  { email: "kusum.bhatia@gmail.com", phone: "97455726248", status: "Engaged/Details shared",
     details: "Lives in Qatar. Mother in Bombay, father-in-law in Lavasa. Ages not shared. Travelling in the USA until end September.",
     notes: "'I love the concept of Niro.' Agreed to answer questions async on WhatsApp; wants a call once back, end of September, and asked to be re-contacted then 'lest I forget'. NEXT: send the parked questions (parents' ages, whether they live alone) and diarise a follow-up for end September." },
 
@@ -277,11 +277,11 @@ var LEAD_NOTES = [
     details: "Self 34, Doha, Qatar. Parents in Chennai (ages not shared).",
     notes: "Task-only interest: wants his EPF claim expedited (his own need, not a parent need). Said plainly that his parents 'don't have any specific need to be taken care of now' - no subscription intent. NEXT: decide whether to serve the one-off EPF task as a paid pack or a lead-in." },
 
-  { email: "mansi23gulati@gmail.com", phone: "+18479175607", status: "Engaged/Details Shared",
+  { email: "mansi23gulati@gmail.com", phone: "+18479175607", status: "Engaged/Details shared",
     details: "Self age not shared, US. Parents in early 60s, Delhi. Mother volunteers at the family NGO and doesn't drive.",
     notes: "Asked for beta pricing; Lite $55 / Prime $99 shared, awaiting her choice. Five concerns: (1) is it AI-driven, and what data is needed to file payments/ITR, (2) do parents pay for cab rides and maids or is it all covered, (3) how are the people who show up vetted - do you meet them, what are the hiring criteria, (4) continuity - will the same person keep showing up for her mother, (5) BIGGEST: privacy protection. NEXT: answer privacy, vetting and continuity, then close on a plan." },
 
-  { email: "rituarangaden@outlook.com", phone: "+918830639592", status: "Engaged/Details Shared",
+  { email: "rituarangaden@outlook.com", phone: "+918830639592", status: "Engaged/Details shared",
     details: "Based in the Gulf, does not currently live in India. Parents both in their 70s, will be based in New Delhi over the next few months.",
     notes: "Main need: a first point of contact in case of emergencies, rather than day-to-day help. Asked for the services to be elaborated before she can form a clear picture. Task-scope card shared and a 15-min call proposed. NEXT: get the call scheduled, or elaborate the services in writing." },
 
@@ -321,7 +321,7 @@ function applyLeadNotes_(dryRun) {
     if (t) byPhone[t] = n;
   });
 
-  var wrote = 0, matched = {}, rowsTouched = [];
+  var wrote = 0, matched = {}, rowsTouched = [], failures = [];
   for (var r = 1; r < values.length; r++) {
     var em = String(values[r][cEmail] || "").trim().toLowerCase();
     var n = byEmail[em];
@@ -333,7 +333,20 @@ function applyLeadNotes_(dryRun) {
     if (cur[0] === next[0] && cur[1] === next[1] && cur[2] === next[2]) continue;
     wrote++;
     rowsTouched.push("  row " + (r + 1) + "  " + em + "  -> " + n.status);
-    if (!dryRun) sheet.getRange(r + 1, cS + 1, 1, 3).setValues([next]);
+    if (dryRun) continue;
+
+    // Write each column on its own and never let one cell abort the run.
+    // Column W usually carries a data-validation dropdown: if the status text
+    // does not exactly match an allowed option the write is rejected, and we
+    // want the notes in X and Y to land regardless.
+    var cols = [[cS, next[0], "leadStatus (W)"], [cD, next[1], "detailsShared (X)"], [cN, next[2], "leadNotes (Y)"]];
+    for (var k = 0; k < cols.length; k++) {
+      try {
+        sheet.getRange(r + 1, cols[k][0] + 1).setValue(cols[k][1]);
+      } catch (err) {
+        failures.push("  row " + (r + 1) + "  " + em + "  " + cols[k][2] + " REJECTED: " + String(err));
+      }
+    }
   }
 
   Logger.log((dryRun ? "DRY RUN - nothing written.\n" : "APPLIED.\n") +
@@ -342,7 +355,13 @@ function applyLeadNotes_(dryRun) {
   LEAD_NOTES.forEach(function (n) {
     if (!matched[n.email.toLowerCase()]) Logger.log("  NOT FOUND in sheet: " + n.email);
   });
-  return { listed: LEAD_NOTES.length, updated: wrote };
+  if (failures.length) {
+    Logger.log("\n" + failures.length + " cell write(s) rejected - usually column W's dropdown:");
+    failures.forEach(function (l) { Logger.log(l); });
+    Logger.log("Fix: make each status in LEAD_NOTES match a dropdown option exactly " +
+      "(case-sensitive), or widen the validation list on column W.");
+  }
+  return { listed: LEAD_NOTES.length, updated: wrote, rejected: failures.length };
 }
 
 function getSheet_() {
