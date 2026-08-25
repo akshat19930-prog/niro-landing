@@ -142,6 +142,9 @@ const HERO_TASKS: HeroTask[] = [
   },
 ];
 
+/** Multiplier on every hero-chat dwell time. 1.2 = 20% longer per screen. */
+const PACE = 1.2;
+
 function usePrefersReducedMotion(): boolean {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
@@ -230,13 +233,18 @@ function UsHeroChat() {
     setOp(0);
     const raf = requestAnimationFrame(() => setOp(1));
     const timers: ReturnType<typeof setTimeout>[] = [];
+    // Every dwell time scales together, so the rhythm of the loop is unchanged
+    // and only its pace slows. The CSS fade durations below are deliberately
+    // NOT scaled - stretching the transitions as well would read as sluggish
+    // rather than calm.
+    const t = (ms: number) => Math.round(ms * PACE);
     if (isSummary) {
-      timers.push(setTimeout(() => setOp(0), 5200));
-      timers.push(setTimeout(() => setStep(0), 5800));
+      timers.push(setTimeout(() => setOp(0), t(5200)));
+      timers.push(setTimeout(() => setStep(0), t(5800)));
     } else {
-      timers.push(setTimeout(() => setShowReply(true), 1200));
-      timers.push(setTimeout(() => setOp(0), 4100));
-      timers.push(setTimeout(() => setStep((s) => s + 1), 4700));
+      timers.push(setTimeout(() => setShowReply(true), t(1200)));
+      timers.push(setTimeout(() => setOp(0), t(4100)));
+      timers.push(setTimeout(() => setStep((s) => s + 1), t(4700)));
     }
     return () => {
       cancelAnimationFrame(raf);
