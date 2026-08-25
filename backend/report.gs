@@ -91,8 +91,18 @@ var CONFIG = {
     // simply not rendered. Restore this entry to bring the table back.
     {
       key: "us_dual", label: "US (Dual)",
-      campaigns: ["Niro Test US Dual"],
-      adset: /(us\s*dual|\bUS\s*D[1-9]\b)/i
+      // "Niro Test North America H1-H2" does not read like a dual campaign, but
+      // every ad in it points at tellniro.com/us/ - checked against the creative
+      // destinations, not the name. Without it here the campaign matched no
+      // market at all (the NA regex wants a standalone "us"/"na"/"canada", and
+      // "North America H1-H2" has none), so US (Dual) reported zero spend while
+      // the campaign was live.
+      campaigns: ["Niro Test US Dual", "Niro Test North America H1-H2"],
+      // The H<n>-H<n> hero-pair suffix is how this test names its campaigns, so
+      // a follow-up like "... H3-H4" maps without another edit. Safe against the
+      // real NA campaigns: those match by exact name in step 1 of
+      // marketForAdset_, which short-circuits before any regex runs.
+      adset: /(us\s*dual|\bUS\s*D[1-9]\b|\bH[1-9]\s*-\s*H[1-9]\b)/i
     }
   ],
 
@@ -278,8 +288,11 @@ function marketForAdset_(name, campaign) {
   //    Gulf (Dual) is no longer a market, and the Gulf regex excludes "dual",
   //    so a dual ad set falls through unmapped - which is what we want: its
   //    spend still lists in the console without claiming a market table.
+  //    us_dual is tried first: its patterns are the most specific, and it was
+  //    missing from this list entirely, so its regex never ran and a US-dual
+  //    campaign outside the static map could only ever come back unmapped.
   var hay = String(name || "") + " " + String(campaign || "");
-  var order = ["gulf", "na"];
+  var order = ["us_dual", "gulf", "na"];
   for (var k = 0; k < order.length; k++) {
     var def = defForKey_(order[k]);
     if (def && def.adset && def.adset.test(hay)) return def.key;
