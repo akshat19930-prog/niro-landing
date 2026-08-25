@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Nav } from "@/components/ds/Nav";
 import { JoinCta } from "@/components/ds/JoinCta";
-import { AskOnWhatsApp } from "@/components/ds/WhatsAppLink";
+import { AskNiroCta } from "@/components/ds/WhatsAppLink";
 import { Badge } from "@/components/ds/Badge";
 import { Icon, type IconName } from "@/components/ds/Icon";
 import { Eyebrow } from "@/components/ds/Eyebrow";
@@ -119,13 +119,22 @@ function HeroB() {
             everything in between.
           </p>
           <JoinCta className="btn btn-primary btn-lg">Get Early Access</JoinCta>
+          {/* Matches /us placement-for-placement. The two pages are being
+              compared on signup rate, so an escape hatch on one and not the
+              other biases that comparison. */}
+          <AskNiroCta
+            placement="hero"
+            prompt="Got something specific in mind?"
+            label="Ask Niro on WhatsApp"
+            marginTop={14}
+          />
           <div
             style={{
               display: "flex",
               flexWrap: "wrap",
               alignItems: "center",
               gap: "6px 14px",
-              marginTop: 16,
+              marginTop: 14,
               fontSize: "var(--text-sm)",
               color: "var(--text-muted)",
             }}
@@ -332,6 +341,13 @@ function UseCasesB() {
         >
           &hellip; and anything else you need done in India.
         </p>
+        <AskNiroCta
+          placement="capabilities"
+          prompt="Not sure if Niro can handle something?"
+          label="Tell us what you need"
+          align="center"
+          marginTop={10}
+        />
       </div>
     </section>
   );
@@ -543,7 +559,13 @@ function PricingB() {
           })}
         </div>
         <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
-        <AskOnWhatsApp placement="pricing" />
+        <AskNiroCta
+          placement="pricing"
+          prompt="Questions before joining?"
+          label="Chat with us on WhatsApp"
+          align="center"
+          marginTop={14}
+        />
       </div>
     </section>
   );
@@ -592,7 +614,7 @@ export function VariantB() {
         <TrustB />
         <PricingB />
         <FinalCtaB />
-        <Faq />
+        <Faq showAsk={false} />
       </main>
       <StickyCta label="Get Early Access" />
     </>
