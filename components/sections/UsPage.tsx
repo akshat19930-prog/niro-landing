@@ -142,6 +142,19 @@ const HERO_TASKS: HeroTask[] = [
   },
 ];
 
+/**
+ * India-first ordering: two India asks back to back before a US one appears, so
+ * the India group is established as the point of the product rather than one of
+ * two equal halves. Same five tasks, reordered and re-weighted 4:1.
+ */
+const HERO_TASKS_INDIA_FIRST: HeroTask[] = [
+  HERO_TASKS[0], // Papa's cardiology follow-up
+  HERO_TASKS[2], // Ma's pension life certificate
+  HERO_TASKS[4], // Ma's quarterly blood tests
+  HERO_TASKS[1], // the US dishwasher - the single add-on beat
+  HERO_TASKS[3], // summer camp signups, still India-adjacent in framing
+];
+
 /** Multiplier on every hero-chat dwell time. 1.2 = 20% longer per screen. */
 const PACE = 1.2;
 
@@ -215,13 +228,13 @@ function HeroSummary() {
   );
 }
 
-function UsHeroChat() {
+function UsHeroChat({ tasks = HERO_TASKS }: { tasks?: HeroTask[] } = {}) {
   const reduced = usePrefersReducedMotion();
   const [step, setStep] = useState(0);
   const [showReply, setShowReply] = useState(false);
   const [op, setOp] = useState(0);
-  const isSummary = step >= HERO_TASKS.length;
-  const task = isSummary ? null : HERO_TASKS[step];
+  const isSummary = step >= tasks.length;
+  const task = isSummary ? null : tasks[step];
 
   useEffect(() => {
     if (reduced) {
@@ -349,7 +362,7 @@ function UsHeroChat() {
 
 /* -------------------------------------------------------------------- hero */
 
-function UsHero() {
+function UsHero({ indiaFirst = false }: { indiaFirst?: boolean }) {
   return (
     <section
       data-screen-label="US hero"
@@ -450,7 +463,7 @@ function UsHero() {
           </div>
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
-          <UsHeroChat />
+          <UsHeroChat tasks={indiaFirst ? HERO_TASKS_INDIA_FIRST : HERO_TASKS} />
         </div>
       </div>
     </section>
@@ -592,15 +605,17 @@ const SIDES: SideDef[] = [
   },
 ];
 
-function SideCard({ side }: { side: SideDef }) {
+/** `muted` is the add-on treatment: no card, no shadow, quieter heading. The
+ *  point is that the two sides should not read as equals. */
+function SideCard({ side, muted = false }: { side: SideDef; muted?: boolean }) {
   return (
     <div
       style={{
-        background: "var(--surface-card)",
-        border: "1px solid var(--border)",
+        background: muted ? "transparent" : "var(--surface-card)",
+        border: muted ? "1px solid var(--border)" : "1px solid var(--border)",
         borderRadius: "var(--radius-xl)",
         padding: "var(--space-5)",
-        boxShadow: "var(--shadow-2)",
+        boxShadow: muted ? "none" : "var(--shadow-2)",
         height: "100%",
       }}
     >
@@ -610,7 +625,7 @@ function SideCard({ side }: { side: SideDef }) {
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "var(--tracking-wide)",
-          color: "var(--brand)",
+          color: muted ? "var(--text-muted)" : "var(--brand)",
           marginBottom: 12,
         }}
       >
@@ -658,12 +673,55 @@ function NiroNode() {
   );
 }
 
-function UsPositioning() {
+/**
+ * The full India scope, promoted out of the FAQ and onto the page.
+ *
+ * "What can Niro handle in India?" is the most-opened question on this page and
+ * it outdraws the US-side equivalent 2:1 - on a page that leads with both sides
+ * equally. Burying the answer in an accordion was costing us the thing visitors
+ * most want to read.
+ */
+function UsIndiaScope() {
+  return (
+    <section data-screen-label="US india scope" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
+      <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
+        <Eyebrow>What Niro handles back home</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>Everything your parents need, handled.</h2>
+        <p
+          style={{
+            fontSize: "var(--text-md)",
+            color: "var(--text-body)",
+            lineHeight: "var(--leading-body)",
+            margin: "0 0 26px",
+            maxWidth: 640,
+          }}
+        >
+          Not a shortlist. This is the actual scope your family manager covers in
+          India, from a routine appointment to the call you dread getting.
+        </p>
+        <ScopeList groups={INDIA_SCOPE} icons={INDIA_SCOPE_ICONS} />
+        <AskNiroCta
+          placement="capabilities"
+          prompt="Need something that isn&rsquo;t on the list?"
+          label="Tell us what you need"
+          marginTop={22}
+        />
+      </div>
+    </section>
+  );
+}
+
+/** `indiaFirst` demotes the US column from an equal partner to the add-on it
+ *  was originally briefed as. The equal-sides treatment was a deliberate answer
+ *  to the repositioning brief; the engagement data says it was the wrong call. */
+function UsPositioning({ indiaFirst = false }: { indiaFirst?: boolean }) {
   return (
     <section data-screen-label="US positioning" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
-        <Eyebrow>One Niro</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>Life here. Family in India. One Niro.</h2>
+        <Eyebrow>{indiaFirst ? "And your side of the world" : "One Niro"}</Eyebrow>
+        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>
+          {indiaFirst ? "Family in India. Life here. One Niro." : "Life here. Family in India. One Niro."}
+        </h2>
         <p
           style={{
             fontSize: "var(--text-md)",
@@ -673,14 +731,23 @@ function UsPositioning() {
             maxWidth: 620,
           }}
         >
-          One team handling what needs doing on both sides of your life.
+          {indiaFirst
+            ? "The same team that looks after your parents can take the household admin off your plate here too - on Niro Prime Global."
+            : "One team handling what needs doing on both sides of your life."}
         </p>
 
-        <div className="us-sides">
-          <SideCard side={SIDES[0]} />
-          <NiroNode />
-          <SideCard side={SIDES[1]} />
-        </div>
+        {indiaFirst ? (
+          <div className="us-sides-lead">
+            <SideCard side={SIDES[0]} />
+            <SideCard side={SIDES[1]} muted />
+          </div>
+        ) : (
+          <div className="us-sides">
+            <SideCard side={SIDES[0]} />
+            <NiroNode />
+            <SideCard side={SIDES[1]} />
+          </div>
+        )}
 
         <p
           style={{
@@ -696,16 +763,18 @@ function UsPositioning() {
           Research it. Make the calls. Get it done.
         </p>
 
-        {/* The strategically important one: the two columns read as a catalogue
-            unless something says otherwise. This is what tells a visitor whose
-            need is not listed that the lists are examples, not limits. */}
-        <AskNiroCta
-          placement="capabilities"
-          prompt="Not sure if Niro can handle something?"
-          label="Tell us what you need"
-          align="center"
-          marginTop={14}
-        />
+        {/* In india-first the same invitation already sits under the India
+            scope section above, so repeating it here would be the fourth
+            WhatsApp CTA in three screens. */}
+        {!indiaFirst && (
+          <AskNiroCta
+            placement="capabilities"
+            prompt="Not sure if Niro can handle something?"
+            label="Tell us what you need"
+            align="center"
+            marginTop={14}
+          />
+        )}
       </div>
     </section>
   );
@@ -920,7 +989,7 @@ function UsTrustStrip() {
 
 /* ----------------------------------------------------------------- pricing */
 
-function UsPricing() {
+function UsPricing({ indiaFirst = false }: { indiaFirst?: boolean }) {
   return (
     <section id="pricing-fold" data-screen-label="US pricing" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
@@ -938,7 +1007,16 @@ function UsPricing() {
           }}
         >
           {US_PLANS.map((p) => {
-            const dark = p.highlight;
+            // india-first flips which SKU is the visual default. Shipping the
+            // $169 dual plan as the dark, badged card made it the recommended
+            // option on a page that is meant to lead with India at $99 - and it
+            // is the likeliest reason "what's the difference between the two
+            // memberships?" is the second-most-opened question here.
+            const dark = indiaFirst ? p.id === "prime" : p.highlight;
+            // The India plan carries no badge of its own, so give it one when it
+            // becomes the default - an unbadged dark card next to a badged light
+            // one reads as ambiguous rather than recommended.
+            const badge = indiaFirst && p.id === "prime" ? "Start here" : p.badge;
             return (
               <div
                 key={p.id}
@@ -963,7 +1041,7 @@ function UsPricing() {
                   >
                     {p.name}
                   </span>
-                  {p.badge && (
+                  {badge && (
                     <span
                       style={{
                         fontSize: 11,
@@ -977,7 +1055,7 @@ function UsPricing() {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      {p.badge}
+                      {badge}
                     </span>
                   )}
                 </div>
@@ -1195,22 +1273,45 @@ const US_FAQ_ITEMS = US_FAQ.map((f) => {
   return f;
 });
 
+/** India-first moves the India scope onto the page, so the FAQ drops that
+ *  question entirely rather than repeating 23 line items a screen later. */
+const US_FAQ_ITEMS_INDIA_FIRST = US_FAQ_ITEMS.filter(
+  (f) => f.q !== "What can Niro handle in India?"
+);
+
 /* -------------------------------------------------------------------- page */
 
-export function UsPage() {
+export function UsPage({ indiaFirst = false }: { indiaFirst?: boolean } = {}) {
   return (
     <>
-      <Nav cta="Get Early Access" homeHref="/us" ctaPosition="nav" />
+      <Nav cta="Get Early Access" homeHref={indiaFirst ? "/us-v2" : "/us"} ctaPosition="nav" />
       <main>
-        <UsHero />
+        <UsHero indiaFirst={indiaFirst} />
         <UsHowItWorks />
-        <UsPositioning />
-        <UsTimeBack />
-        <UsIndiaDepth />
+        {/* India-first puts the scope and the urgency together, high, and
+            demotes the two-equal-sides block to an add-on beat after them. */}
+        {indiaFirst ? (
+          <>
+            <UsIndiaScope />
+            <UsIndiaDepth />
+            <UsPositioning indiaFirst />
+            <UsTimeBack />
+          </>
+        ) : (
+          <>
+            <UsPositioning />
+            <UsTimeBack />
+            <UsIndiaDepth />
+          </>
+        )}
         <UsFamilies />
         <UsTrustStrip />
-        <UsPricing />
-        <Faq items={US_FAQ_ITEMS} heading="Questions" showAsk={false} />
+        <UsPricing indiaFirst={indiaFirst} />
+        <Faq
+          items={indiaFirst ? US_FAQ_ITEMS_INDIA_FIRST : US_FAQ_ITEMS}
+          heading="Questions"
+          showAsk={false}
+        />
         <UsClosing />
       </main>
       <StickyCta label="Get Early Access" />

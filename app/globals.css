@@ -690,6 +690,22 @@
   }
 }
 
+/* India-first positioning: the two sides stop being equals. India keeps the full
+   card; the US column sits beside it as the narrower add-on, and there is no
+   connector node because the relationship is no longer symmetrical. */
+.us-sides-lead {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  align-items: stretch;
+}
+@media (min-width: 720px) {
+  .us-sides-lead {
+    grid-template-columns: 1.35fr 1fr;
+    gap: 20px;
+  }
+}
+
 /* The India scope list inside the FAQ. Column flow rather than a grid: the five
    groups run from four to six items, and columns keep it compact. */
 .us-scope {
