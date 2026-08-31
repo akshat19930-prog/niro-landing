@@ -349,7 +349,7 @@ export const TESTIMONIALS_SHORT: {
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
     q: "What is the membership pricing?",
-    a: "Your first task is free. After that it is one membership at US $99 a month, covering your whole family in India.",
+    a: "Your first task is free. After that, the Niro membership is US $99 a month and covers your whole family in India with unlimited tasks, a dedicated family manager and emergency response with our concierge on the ground. If you only need a few things a year, Niro Lite is US $250 a year for 15 tasks, partner-network ambulance response, and $50 of wellness credits.",
   },
   {
     q: "Is Niro a human manager?",
@@ -383,7 +383,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
 
 /* ---- Membership plans (shown inside the join flow after email) ---- */
 export type Plan = {
-  id: "prime" | "global";
+  id: "prime" | "global" | "lite";
   name: string;
   price: string;
   per: string;
@@ -395,13 +395,9 @@ export type Plan = {
 };
 
 /**
- * One SKU, $99. Niro Lite ($55) was retired: across three independent reads
- * - the Gulf $149-vs-$99 test, this page's plan question, and the founder's
- * WhatsApp calls - price never showed up as the blocker (trust did), and among
- * the few who did express a preference the dearer plan won 9-3. A single tier
- * also removes the "not sure" escape that 76% of respondents were taking.
- * Lite's essentials are folded in explicitly, since there is no tier below to
- * inherit them from.
+ * The full membership, and the default. Stays first in PLANS so it sets the
+ * anchor: the research is unambiguous that whoever anchors first sets the
+ * price, and on mobile (~80% of traffic) the cards stack, so first == top.
  */
 export const MEMBERSHIP_SINGLE: Plan = {
   id: "prime",
@@ -417,9 +413,42 @@ export const MEMBERSHIP_SINGLE: Plan = {
     "$10/mo wellness credits - tests, physio & more",
   ],
   highlight: true,
+  badge: "Most families",
 };
 
-export const PLANS: Plan[] = [MEMBERSHIP_SINGLE];
+/**
+ * Niro Lite - a light annual entry point, re-introduced after the single-SKU
+ * period. Three deliberate choices, because a cheap second tier is the easiest
+ * way to damage a trust-led proposition:
+ *
+ * 1. Priced and displayed as $250/YEAR, never as its $20.83/month equivalent.
+ *    Six research respondents said unprompted that a sub-$50/mo price makes
+ *    them suspect the service isn't staffed by real people ("I would be
+ *    suspicious it's basically a glorified wrapper"). An annual number sits
+ *    outside that monthly comparison; a per-month figure would sit inside it.
+ * 2. The emergency line says exactly what it is. Emergency response is the #1
+ *    requested capability (68.9% of task picks) and the least believed one -
+ *    so the partner-ambulance version must not borrow the credibility of the
+ *    concierge-on-the-ground version. It names the absence.
+ * 3. It carries no badge and is not the dark card. Lite is the step down, not
+ *    the recommendation.
+ */
+export const NIRO_LITE: Plan = {
+  id: "lite",
+  name: "Niro Lite",
+  price: "$250",
+  per: "/year",
+  sub: "For a handful of things a year",
+  features: [
+    "15 tasks, used any time across the year",
+    "Same WhatsApp group, same vetted concierges",
+    "Emergency ambulance through our partner network - no Niro concierge on the ground",
+    "$50 a year in wellness credits - tests, physio & more",
+  ],
+  highlight: false,
+};
+
+export const PLANS: Plan[] = [MEMBERSHIP_SINGLE, NIRO_LITE];
 
 /* ---- Post-signup qualifiers (lead quality + needs). Tap-based, all optional;
    captured right after the email so we read intent at peak, from ~100% of

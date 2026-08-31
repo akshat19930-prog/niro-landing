@@ -492,19 +492,18 @@ function PricingB() {
     <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto", textAlign: "center" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>One membership. $99/month.</h2>
+        <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>Cover your whole family, or just the essentials.</h2>
         <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 28px" }}>
-          Covers your whole family in India. First task free — no card to join.
+          First task free. No card required to join.
         </p>
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr",
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))",
             gap: 16,
             textAlign: "left",
             marginBottom: 28,
-            maxWidth: 420,
-            marginInline: "auto",
+            alignItems: "start",
           }}
         >
           {PLANS.map((p) => {
