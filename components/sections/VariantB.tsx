@@ -7,11 +7,11 @@ import { AskNiroCta } from "@/components/ds/WhatsAppLink";
 import { Badge } from "@/components/ds/Badge";
 import { Icon, type IconName } from "@/components/ds/Icon";
 import { Eyebrow } from "@/components/ds/Eyebrow";
-import { ParentVoiceCard } from "@/components/ds/ParentVoiceCard";
+import { AskStream } from "@/components/ds/AskStream";
 import { ChatVideo } from "@/components/ds/ChatVideo";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
-import { PLANS, PARENT_VOICE, TESTIMONIALS_SHORT, COVERAGE_NOTE, GUARANTEE } from "@/lib/content";
+import { PLANS, TESTIMONIALS_SHORT, COVERAGE_NOTE, GUARANTEE } from "@/lib/content";
 
 /* ---------------------------------------------------------------- helpers */
 
@@ -157,76 +157,131 @@ function HeroB() {
 
 /* ----------------------------------------------------------- how it works */
 
-function AskBubble({ children }: { children: React.ReactNode }) {
-  return (
-    <div style={{ display: "flex", justifyContent: "flex-end" }}>
-      <div
-        style={{
-          background: "var(--brand-soft)",
-          color: "var(--text-strong)",
-          borderRadius: 16,
-          borderTopRightRadius: 5,
-          padding: "12px 16px",
-          maxWidth: 460,
-          fontSize: "var(--text-base)",
-          lineHeight: 1.45,
-          boxShadow: "var(--shadow-1)",
-        }}
-      >
-        {children}
-        <span style={{ float: "right", marginLeft: 10, marginTop: 4, fontSize: 10.5, color: "var(--brand)" }}>
-          ✓✓
-        </span>
-      </div>
-    </div>
-  );
-}
-
+/**
+ * How it works, as three beats.
+ *
+ * The section makes one argument: the member only does step one. So step one
+ * is the only thing that moves - a live feed of asks arriving - and steps two
+ * and three are calm. The asks deliberately alternate between the family's
+ * ("Mum") and the member's own India admin ("You"), because the research found
+ * two distinct jobs inside one product and a visitor who came for their stuck
+ * EPF claim has to see themselves in the feed too.
+ *
+ * Step two is split into the two halves of the service: the remote work, and
+ * Niro Visits. The visits card carries the accent border - it is the part no
+ * amount of software can imitate, and it was previously nowhere on the page.
+ */
 function HowItWorksB() {
-  const asks = [
-    "Get Mom a cab for her hospital appointment tomorrow.",
-    "Dad's AC isn't working. Can you get someone to fix it?",
-    "Can you check what's happening with my EPFO claim?",
+  const remoteVerbs = [
+    "Research", "Find", "Book", "Order", "Arrange",
+    "Plan end to end", "Coordinate with vendors",
   ];
   return (
     <section data-screen-label="How it works (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
-      <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
+      <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>How it works</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 28px" }}>
-          Just WhatsApp Niro. We&rsquo;ll take it from there.
-        </h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
-          {asks.map((a) => (
-            <AskBubble key={a}>{a}</AskBubble>
-          ))}
+        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>You ask. We do the running around.</h2>
+        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", maxWidth: 560, margin: "0 0 26px" }}>
+          One message is the whole of your job. Everything after it is ours.
+        </p>
+
+        <div className="beat">
+          <div className="beat-label">
+            <span className="beat-n">01</span>
+            <span className="beat-t">You or your family asks</span>
+          </div>
+          <div>
+            <AskStream />
+            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", marginTop: 12 }}>
+              On WhatsApp, by voice note or on a call &mdash; in English, Hindi or Tamil.
+              Your parents never need an app.
+            </p>
+          </div>
         </div>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "8px 14px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "var(--text-md)",
-            fontWeight: 600,
-            color: "var(--text-strong)",
-          }}
-        >
-          <span>You ask</span>
-          <Icon name="arrow-right" size={18} style={{ color: "var(--brand)" }} />
-          <span>Niro handles it</span>
-          <Icon name="arrow-right" size={18} style={{ color: "var(--brand)" }} />
-          <span>You get an update</span>
+
+        <div className="beat">
+          <div className="beat-label">
+            <span className="beat-n">02</span>
+            <span className="beat-t">Your Niro Assistant takes it from there</span>
+          </div>
+          <div className="does-grid">
+            <div className="does-card">
+              <div className="does-head">
+                <Icon name="message-circle" size={19} style={{ color: "var(--brand)" }} />
+                <span className="does-title">Handled remotely</span>
+              </div>
+              <div className="does-sub">The calls, the portals, the chasing.</div>
+              <div className="does-verbs">
+                {remoteVerbs.map((r) => (
+                  <span className="does-verb" key={r}>{r}</span>
+                ))}
+              </div>
+            </div>
+            <div className="does-card does-card-visit">
+              <div className="does-head">
+                <Icon name="map-pin" size={19} style={{ color: "var(--accent-strong)" }} />
+                <span className="does-title">Niro Visits</span>
+              </div>
+              <div className="does-sub">When it needs a person in the room.</div>
+              <ul className="does-visit-list">
+                <li><Icon name="check" size={15} /><span>Home maintenance inspections</span></li>
+                <li><Icon name="check" size={15} /><span>Accompanying your parents to appointments</span></li>
+                <li><Icon name="check" size={15} /><span>Standing in the queue at the office, so they don&rsquo;t</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="beat">
+          <div className="beat-label">
+            <span className="beat-n">03</span>
+            <span className="beat-t">It gets done &mdash; better and faster</span>
+          </div>
+          <div className="outcome">
+            <div className="outcome-line">
+              <Icon name="check-circle" size={20} />
+              <span>Closed with proof &mdash; photos, receipts and a written note in your family group.</span>
+            </div>
+            <div className="outcome-line">
+              <Icon name="check-circle" size={20} />
+              <span>No follow-ups from you at 3 a.m., and no running around for them.</span>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ marginTop: 26 }}>
+          <AskNiroCta placement="how-it-works" prompt="Got something specific in mind?" label="Ask Niro on WhatsApp" />
         </div>
       </div>
     </section>
   );
 }
 
-/* --------------------------------------------------------------- parents */
-
+/**
+ * For your parents.
+ *
+ * Replaces the single "my child is abroad" testimonial, which was warm but
+ * said nothing a competitor could not also say. The specific claim is that app
+ * literacy stops being a requirement: a parent who has never opened a cab app,
+ * a grocery app or a government portal still gets all three done by saying so
+ * out loud, in their own language. Three asks in their own words make that
+ * concrete; the footer names what each one replaces.
+ */
 function ParentsB() {
+  const voices = [
+    {
+      said: "Beta, kal subah doctor ke liye cab bhej dena \u2014 aur wapas bhi.",
+      means: "Send a cab for the doctor tomorrow morning, and one back.",
+    },
+    {
+      said: "Maid kal se nahi aa rahi. Koi bharosemand aadmi dekh lo.",
+      means: "The maid has stopped coming. Please find someone reliable.",
+    },
+    {
+      said: "Pension ka Jeevan Pramaan patra jama karwa do.",
+      means: "Please get my pension life certificate submitted.",
+    },
+  ];
   return (
     <section data-screen-label="Parents (B)" style={{ padding: sectionPad }}>
       <div
@@ -241,35 +296,58 @@ function ParentsB() {
       >
         <div>
           <Eyebrow>For your parents</Eyebrow>
-          <h2 style={{ ...h2Style, margin: "14px 0 16px" }}>
-            Your parents don&rsquo;t need to learn anything new.
-          </h2>
-          <p
-            style={{
-              fontSize: "var(--text-md)",
-              lineHeight: "var(--leading-body)",
-              color: "var(--text-body)",
-              maxWidth: 520,
-              margin: "0 0 18px",
-            }}
-          >
-            They can WhatsApp, send a voice note, or simply call Niro &mdash; in English,
-            Hindi or Tamil. No app to install, nothing new to figure out.
+          <h2 style={{ ...h2Style, margin: "14px 0 16px" }}>No app to learn. No English required.</h2>
+          <p style={{ fontSize: "var(--text-md)", lineHeight: "var(--leading-body)", color: "var(--text-body)", maxWidth: 520, margin: "0 0 14px" }}>
+            A cab, a grocery order, a reliable backup maid, an ITR filing, a pension
+            life certificate &mdash; each one normally needs a different app, a
+            different login, and a comfort with all of it your parents may simply
+            not have.
+          </p>
+          <p style={{ fontSize: "var(--text-md)", lineHeight: "var(--leading-body)", color: "var(--text-strong)", maxWidth: 520, margin: "0 0 18px", fontWeight: 500 }}>
+            With Niro all of it is one WhatsApp message, or a voice note in the
+            language they actually speak.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-            {["WhatsApp", "Voice note", "A phone call", "English · Hindi · Tamil"].map((t) => (
-              <Badge key={t} tone="neutral">
-                {t}
-              </Badge>
+            {["WhatsApp", "Voice note", "A phone call", "English \u00b7 Hindi \u00b7 Tamil"].map((t) => (
+              <Badge key={t} tone="neutral">{t}</Badge>
             ))}
           </div>
         </div>
-        <ParentVoiceCard
-          hinglish={PARENT_VOICE.hinglish}
-          translation={PARENT_VOICE.translation}
-          name={PARENT_VOICE.name}
-          relation={PARENT_VOICE.relation}
-        />
+        <div
+          style={{
+            background: "var(--wa-bg)",
+            borderRadius: "var(--radius-xl)",
+            padding: "var(--space-5)",
+            boxShadow: "var(--shadow-2)",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "var(--text-xs)",
+              fontWeight: 700,
+              letterSpacing: "var(--tracking-wide)",
+              textTransform: "uppercase",
+              color: "var(--ink-500)",
+              marginBottom: 12,
+            }}
+          >
+            What they actually send us
+          </div>
+          <div className="voices">
+            {voices.map((x) => (
+              <div className="voice" key={x.said}>
+                <div className="voice-said">{x.said}</div>
+                <div className="voice-means">{x.means}</div>
+              </div>
+            ))}
+          </div>
+          <div className="voice-foot">
+            <span>No <b>cab app</b></span>
+            <span>No <b>grocery app</b></span>
+            <span>No <b>government portal</b></span>
+            <span>No <b>English</b></span>
+          </div>
+        </div>
       </div>
     </section>
   );
