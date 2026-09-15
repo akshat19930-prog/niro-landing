@@ -403,6 +403,25 @@ export type Plan = {
 };
 
 /**
+ * Shared by both SKUs. The two plans are the SAME PRODUCT at two prices, so
+ * they carry an identical feature list on purpose - the repetition is what
+ * makes "$83 vs $99, nothing else changes" unmistakable at a glance.
+ *
+ * "Create up to 2 groups" states the multi-household allowance on the page.
+ * That supersedes the earlier decision to leave the unit undefined: read as a
+ * positive allowance rather than a ceiling, it pre-empts the in-laws question
+ * instead of provoking it, and it gives the later multi-household SKU a
+ * boundary that already exists in the customer's mind.
+ */
+export const MEMBERSHIP_FEATURES: string[] = [
+  "Unlimited tasks for you or your family",
+  "WhatsApp group chat for tasks",
+  "Niro assured emergency response",
+  "One free booked on-demand Niro visit",
+  "Create up to 2 groups",
+];
+
+/**
  * The full membership, and the default. Stays first in PLANS so it sets the
  * anchor: the research is unambiguous that whoever anchors first sets the
  * price, and on mobile (~80% of traffic) the cards stack, so first == top.
@@ -413,13 +432,11 @@ export const MEMBERSHIP_SINGLE: Plan = {
   price: "$99",
   per: "/month",
   sub: "Your family, fully covered",
-  features: [
-    "Dedicated family manager + WhatsApp group for tasks",
-    "Unlimited tasks",
-    "Emergency response - Niro's concierge on the ground with your family",
-    "Cyber-fraud cover - insurance up to ₹20L, monitoring & education",
-    "$10/mo wellness credits - tests, physio & more",
-  ],
+  // Balances the two cards' heights against the quarter plan's longer lead.
+  // Without it the cheaper card is the taller one, which quietly hands the
+  // discount more visual weight than the anchor.
+  lead: "The full membership, month to month. No lock-in, cancel any time - your first task is free either way.",
+  features: MEMBERSHIP_FEATURES,
   highlight: true,
   badge: "Most families",
 };
@@ -435,16 +452,15 @@ export const MEMBERSHIP_SINGLE: Plan = {
 export const MEMBERSHIP_QUARTER: Plan = {
   id: "quarter",
   name: "Three months",
-  price: "$250",
-  per: "for 3 months",
-  sub: "$83 a month - save $47",
-  lead: "Everything in the monthly membership, at a lower rate, for the time it actually takes to judge us.",
-  features: [
-    "Billed once, today",
-    "Continues at $99/month from month four",
-    "We remind you seven days before that first renewal",
-    "Cancel any time - no notice period",
-  ],
+  // Shown as a MONTHLY rate, not as "$250 for 3 months". Two reasons: it puts
+  // the two SKUs on the same unit so the saving is legible without arithmetic,
+  // and it keeps $250 off the page - the same number is the off-menu 15-task
+  // pack, and a salesperson quoting "250" on a call must not be ambiguous.
+  price: "$83",
+  per: "/month",
+  sub: "Save $47 - billed $250 once, today",
+  lead: "Exactly the same membership, at a lower monthly rate, for the three months it actually takes to judge us. Continues at $99/month from month four - we remind you seven days before.",
+  features: MEMBERSHIP_FEATURES,
   highlight: false,
 };
 
@@ -468,7 +484,7 @@ export const MEMBERSHIP_QUARTER: Plan = {
 export const NIRO_LITE: Plan = {
   id: "lite",
   name: "Niro Lite",
-  price: "$250",
+  price: "$270",
   per: "/year",
   sub: "For a handful of things a year",
   features: [
@@ -491,9 +507,10 @@ export const PLANS: Plan[] = [MEMBERSHIP_SINGLE, MEMBERSHIP_QUARTER];
  * becomes a refund request in week two.
  */
 export const COVERAGE_NOTE = {
-  covers: "Niro's time - the calls, the chasing, the coordination, and our concierge on the ground.",
+  covers:
+    "Niro's time - the calls, the chasing, the coordination - and one booked on-demand Niro assistant visit of four hours or less.",
   excludes:
-    "Third-party costs are billed at actual: lab charges, ambulance fees, government and legal fees, vendor payments, cab fares.",
+    "Vendor charges and the cost of any product or service ordered through Niro, at cost and with no commission added. Government and legal fees. Additional Niro visits in the same month, at $15 per four hours.",
   promise: "We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
 };
 

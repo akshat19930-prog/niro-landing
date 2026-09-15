@@ -864,3 +864,46 @@
 }
 .coverage dd:last-child { margin-bottom: 0; }
 .coverage .promise { color: var(--text-strong); font-weight: 500; }
+
+/* ------------------------------------------------------- /tasks15 pack card */
+.pack-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  margin: 26px 0 8px;
+  box-shadow: var(--shadow-2);
+}
+.pack-price { display: flex; align-items: baseline; gap: 6px; }
+.pack-amount {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+}
+.pack-per { font-size: var(--text-sm); color: var(--text-muted); }
+.prose .pack-sub {
+  margin: 8px 0 16px;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--brand);
+}
+.prose ul.pack-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.prose ul.pack-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+.prose ul.pack-features svg { margin-top: 2px; flex-shrink: 0; color: var(--brand); }

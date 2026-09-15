@@ -44,7 +44,7 @@ export default function CareersPage() {
                 ))}
               </ul>
               <a
-                className="btn btn-secondary"
+                className="btn btn-secondary btn-md"
                 href={`mailto:careers@tellniro.com?subject=${encodeURIComponent(
                   r.title + " - application"
                 )}`}
