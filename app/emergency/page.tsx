@@ -21,7 +21,7 @@ import { EMERGENCY_SLA, EMERGENCY_STEPS, SERVICE_CITIES } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Emergency response - Niro",
   description:
-    "What happens when your parents have a medical emergency: a person in 45 seconds, an ambulance dispatched in 3 minutes, and a Niro concierge at the hospital.",
+    "What happens when your parents have a medical emergency: a person in 45 seconds, an ambulance dispatched in 3 minutes, and a Niro Assistant at the hospital.",
   alternates: { canonical: "https://tellniro.com/emergency" },
 };
 
@@ -70,7 +70,7 @@ export default function EmergencyPage() {
           The ambulance is <strong>Medulance</strong>, our dispatch partner -
           a fleet of equipped ambulances with paramedics on board, not a taxi
           with a siren. The person who meets your parents at the hospital is a{" "}
-          <strong>Niro concierge on our own payroll</strong>, background-checked
+          <strong>Niro Assistant on our own payroll</strong>, background-checked
           and introduced to your family by name and photo before anything ever
           happens. You are not being handed to a marketplace at the worst moment
           of your year.
@@ -92,7 +92,7 @@ export default function EmergencyPage() {
           <strong>
             Niro is a coordination service, not a medical provider.
           </strong>{" "}
-          We do not diagnose, treat, or give medical advice, and our concierges
+          We do not diagnose, treat, or give medical advice, and Niro Assistants
           are not clinicians. In a life-threatening emergency, call your local
           emergency number directly - and then tell us, so we can get a person
           moving and be at the hospital when your parents arrive.

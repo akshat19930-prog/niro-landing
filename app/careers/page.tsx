@@ -16,7 +16,7 @@ import { SUPPORT_WHATSAPP } from "@/lib/config";
 export const metadata: Metadata = {
   title: "Careers - Niro",
   description:
-    "Open roles at Niro: Founding Engineer and Concierge Operations, both in Bengaluru.",
+    "Open roles at Niro: Founding Engineer and Niro Assistant Operations, both in Bengaluru.",
   alternates: { canonical: "https://tellniro.com/careers" },
 };
 

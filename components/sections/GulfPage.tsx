@@ -113,7 +113,7 @@ function GulfHero() {
               color: "var(--text-muted)",
             }}
           >
-            <span>Remote Human Concierge</span>
+            <span>Named Niro Assistant</span>
             <span aria-hidden="true">·</span>
             <span>WhatsApp-first</span>
             <span aria-hidden="true">·</span>
@@ -898,7 +898,7 @@ function GulfTrustStrip() {
     "A named person, accountable end to end",
     "Dedicated contact",
     "WhatsApp-first",
-    "No passwords or OTPs",
+    "We never ask for your passwords",
     "Clear pricing",
   ];
   return (

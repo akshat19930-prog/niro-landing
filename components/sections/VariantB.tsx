@@ -140,7 +140,7 @@ function HeroB() {
               color: "var(--text-muted)",
             }}
           >
-            <span>Named concierge</span>
+            <span>Named Niro Assistant</span>
             <span aria-hidden="true">·</span>
             <span>WhatsApp-first</span>
             <span aria-hidden="true">·</span>
@@ -286,7 +286,7 @@ function UseCasesB() {
     {
       icon: "heart-pulse",
       title: "Family's health admin & emergency response",
-      items: "Check-ups · appointments · ambulance in minutes, with our concierge at the hospital",
+      items: "Check-ups · appointments · ambulance in minutes, with our Niro Assistant at the hospital",
     },
     {
       icon: "wrench",
@@ -497,8 +497,8 @@ function TrustB() {
     },
     {
       icon: "lock",
-      text: "We never ask for OTPs or passwords",
-      sub: "Not for banking, not for anything. Anyone who asks in our name isn't us.",
+      text: "We never ask for your passwords",
+      sub: "Not your net-banking login, not your PINs. You set in advance what needs your approval first.",
     },
     {
       icon: "wallet",
@@ -714,7 +714,7 @@ function FinalCtaB() {
         </h2>
         <JoinCta className="btn btn-accent btn-lg">Get Early Access</JoinCta>
         <div style={{ marginTop: 14, fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.7)" }}>
-          Named concierge · WhatsApp-first · First task free
+          Named Niro Assistant · WhatsApp-first · First task free
         </div>
       </div>
     </section>

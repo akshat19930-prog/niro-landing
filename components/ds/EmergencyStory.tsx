@@ -14,7 +14,7 @@ const STEPS: { title: string; text: string; icon: IconName }[] = [
   {
     icon: "user-check",
     title: "On the ground",
-    text: "Our concierge reaches the hospital, handles the paperwork, and stays with your parent.",
+    text: "Your Niro Assistant reaches the hospital, handles the paperwork, and stays with your parent.",
   },
 ];
 

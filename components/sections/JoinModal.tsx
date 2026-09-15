@@ -332,7 +332,7 @@ export function JoinModal() {
                 textAlign: "center",
               }}
             >
-              We never ask for passwords or OTPs. Ever.
+              We never ask for your passwords or net-banking logins.
             </p>
           </form>
         )}

@@ -85,10 +85,10 @@ export const ASK_TASKS: string[] = [
 export const TRUST_ITEMS: TrustItem[] = [
   {
     icon: "shield-check",
-    text: "Named & verified concierges",
+    text: "Named & verified Niro Assistants",
     sub: "Introduced by photo before day one",
   },
-  { icon: "lock", text: "No passwords or OTPs, ever", sub: "We will never ask. Full stop." },
+  { icon: "lock", text: "We never ask for passwords", sub: "Not your net-banking login, not your PINs" },
   { icon: "map-pin", text: "We turn up in person", sub: "Hospital, office or their front door" },
   {
     icon: "camera",
@@ -205,7 +205,7 @@ export const HANDLE_GROUPS: {
       {
         icon: "heart-pulse",
         t: "Family\u2019s health admin & emergency response",
-        d: "Check-ups booked and samples collected at home, appointments and reports chased - and an ambulance in minutes with our concierge at the hospital when it matters.",
+        d: "Check-ups booked and samples collected at home, appointments and reports chased - and an ambulance in minutes with our Niro Assistant at the hospital when it matters.",
       },
       {
         icon: "wrench",
@@ -349,7 +349,7 @@ export const TESTIMONIALS_SHORT: {
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
     q: "What is the membership pricing?",
-    a: "Your first task is free. After that there are two ways to join: US $99 a month, or US $250 for three months ($83 a month) which then continues monthly. Both cover your whole family in India with unlimited tasks, a dedicated family manager and emergency response with our concierge on the ground. Cancel any time.",
+    a: "Your first task is free. After that there are two ways to join: US $99 a month, or US $250 for three months ($83 a month) which then continues monthly. Both cover your whole family in India with unlimited tasks, a dedicated family manager and emergency response with a Niro Assistant on the ground. Cancel any time.",
   },
   {
     q: "Who actually does the work?",
@@ -357,11 +357,11 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "How fast is the emergency response, really?",
-    a: "We answer the emergency line in 45 seconds, our partner Medulance dispatches an ambulance within 3 minutes, and median arrival across our launch cities is 20 minutes. A Niro concierge meets your parents at the hospital and handles admission. The full protocol is on our emergency response page.",
+    a: "We answer the emergency line in 45 seconds, our partner Medulance dispatches an ambulance within 3 minutes, and median arrival across our launch cities is 20 minutes. A Niro Assistant meets your parents at the hospital and handles admission. The full protocol is on our emergency response page.",
   },
   {
     q: "Are all tasks covered under the membership cost?",
-    a: "The membership covers Niro's time - the calls, the chasing, the coordination and our concierge on the ground - with no cap on the number of tasks. Third-party costs are billed at actual: lab charges, ambulance fees, government and legal fees, vendor payments, cab fares. We always tell you the cost and get your go-ahead before we spend anything on your behalf.",
+    a: "The membership covers Niro's time - the calls, the chasing, the coordination and a Niro Assistant on the ground - with no cap on the number of tasks. Third-party costs are billed at actual: lab charges, ambulance fees, government and legal fees, vendor payments, cab fares. We always tell you the cost and get your go-ahead before we spend anything on your behalf.",
   },
   {
     q: "What if it isn't right for us?",
@@ -377,11 +377,11 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "Is my family's data safe with Niro?",
-    a: "Yes - and here's exactly how. We never ask for OTPs, passwords, PINs, or bank logins - not ever, and anyone who does isn't us. We work only on documents you choose to share; never through access to your email, phone, or accounts. Everything is encrypted in transit and at rest, sensitive documents are visible only to the team handling that task, and we operate under India's DPDP Act with GDPR-aligned practices for members abroad. Your data is never sold. Leave Niro, and your family's records are permanently deleted within 30 days. Questions? hello@tellniro.com reaches the founders.",
+    a: "Yes - and here's exactly how. We never ask for your passwords, PINs or net-banking logins, and we never take access to your email, phone or accounts. Some tasks genuinely need a one-time code - releasing an EPFO claim, or fixing a bill on a government portal - and in those cases we tell you what we are about to do, ask you for that code at that moment, and use it only for that task. If you would rather not share one, tell us and we will find another route or stop. Everything is encrypted in transit and at rest, sensitive documents are visible only to the team handling that task, and we operate under India's DPDP Act with GDPR-aligned practices for members abroad. Your data is never sold. Leave Niro, and your family's records are permanently deleted within 30 days. Questions? hello@tellniro.com reaches the founders.",
   },
   {
     q: "Which cities are you serviceable in today?",
-    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad and Chennai - these are the cities where our concierges are on the ground and where our emergency response times hold. If your parents are somewhere else, join anyway and tell us their city: we open new cities where our members' families already are, and you'll hear from us the week we reach yours.",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad and Chennai - these are the cities where our Niro Assistants are on the ground and where our emergency response times hold. If your parents are somewhere else, join anyway and tell us their city: we open new cities where our members' families already are, and you'll hear from us the week we reach yours.",
   },
   {
     q: "Do my parents need to install anything?",
@@ -477,7 +477,7 @@ export const MEMBERSHIP_QUARTER: Plan = {
  * 2. The emergency line says exactly what it is. Emergency response is the #1
  *    requested capability (68.9% of task picks) and the least believed one -
  *    so the partner-ambulance version must not borrow the credibility of the
- *    concierge-on-the-ground version. It names the absence.
+ *    Niro-Assistant-on-the-ground version. It names the absence.
  * 3. It carries no badge and is not the dark card. Lite is the step down, not
  *    the recommendation.
  */
@@ -489,8 +489,8 @@ export const NIRO_LITE: Plan = {
   sub: "For a handful of things a year",
   features: [
     "15 tasks, used any time across the year",
-    "Same WhatsApp group, same vetted concierges",
-    "Emergency ambulance through our partner network - no Niro concierge on the ground",
+    "Same WhatsApp group, same vetted Niro Assistants",
+    "Emergency ambulance through our partner network - no Niro Assistant on the ground",
   ],
   highlight: false,
 };
@@ -568,7 +568,7 @@ export const EMERGENCY_STEPS: { title: string; body: string }[] = [
     body: "We do not wait to assess before moving. The ambulance is dispatched while we are still on the phone establishing what has happened.",
   },
   {
-    title: "A Niro concierge goes to the hospital",
+    title: "A Niro Assistant goes to the hospital",
     body: "A named person from our team meets your parents there, carries their medical history and insurance details, and handles admission paperwork so nobody is filling forms during a crisis.",
   },
   {
@@ -644,7 +644,7 @@ export const GULF_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "How do you keep my family's information safe?",
-    a: "We never ask for OTPs, passwords or bank logins, and anyone who does isn't us. We work only on what you choose to share, everything is encrypted, and your records are deleted within 30 days if you leave.",
+    a: "We never ask for your passwords or net-banking logins. Where a task genuinely needs a one-time code, we tell you what we are doing first and use it only for that task. Everything is encrypted, and your records are deleted within 30 days if you leave.",
   },
 ];
 
@@ -813,7 +813,7 @@ export const INDIA_SCOPE: { title: string; items: string[] }[] = [
     title: "Family\u2019s health admin & emergency response",
     items: [
       "Pre-set periodic health checkups, with home sample collection",
-      "Emergency response protocol - Niro arranges the ambulance and an on-ground concierge",
+      "Emergency response protocol - Niro arranges the ambulance and an on-ground Niro Assistant",
       "Medicines re-fulfilment",
       "Verified physio, massage, nutritionist and yoga sessions on demand",
       "Doctor appointments: booking and reminders",
@@ -841,7 +841,7 @@ export const INDIA_SCOPE: { title: string; items: string[] }[] = [
     title: "Travel concierge & admin",
     items: [
       "Visa and passport appointment booking, and paperwork prep",
-      "On-ground concierge for those appointments",
+      "A Niro Assistant alongside them for those appointments",
       "End-to-end domestic travel, cabs included",
       "End-to-end international travel, cabs included",
     ],
@@ -944,11 +944,11 @@ export const VETTING: { lead: string; points: { title: string; body: string }[] 
   points: [
     {
       title: "Hired for the job your parents actually need",
-      body: "We test three things before anyone joins: compassion and patience with older parents, communication skill in the language your family actually speaks, and the operational judgement to chase something until it is finished. Everyone is background-checked and named - you're introduced to your concierge by photo before day one.",
+      body: "We test three things before anyone joins: compassion and patience with older parents, communication skill in the language your family actually speaks, and the operational judgement to chase something until it is finished. Everyone is background-checked and named - you're introduced to your Niro Assistant by photo before day one.",
     },
     {
       title: "They work to central SOPs",
-      body: "What happens on a task is defined before it starts. Concierges execute the process, they don't improvise it.",
+      body: "What happens on a task is defined before it starts. Niro Assistants execute the process, they don't improvise it.",
     },
     {
       title: "And to the protocols you set",
@@ -985,12 +985,12 @@ export const US_FAQ: { q: string; a: string }[] = [
     // Merged with the older, shorter "how do you vet" question - two adjacent
     // vetting answers read as though we were dodging one of them. Rendered from
     // VETTING below; this string is the plain-text fallback.
-    q: "What is the process for vetting the concierges who will be interacting with my parents?",
+    q: "What is the process for vetting the Niro Assistants who will be interacting with my parents?",
     a: "They are on our payroll, hired for compassion, communication and operational judgement, background-checked and named. They work to central SOPs and to the protocols you set for your own family, and every task is monitored individually and closed with proof.",
   },
   {
-    q: "Will you ever ask for passwords or OTPs?",
-    a: "Never. Not for banking, not for anything. If someone claiming to be from Niro asks, it isn't us.",
+    q: "What will you ask my family for, and what will you never ask for?",
+    a: "We never ask for passwords, PINs or net-banking logins. Some tasks need a one-time code to complete - an EPFO release, a portal correction - and for those we explain what we are doing, ask at that moment, and use the code only for that task. Your parents never have to decide alone: you set in advance what needs your approval first.",
   },
 ];
 
@@ -1018,7 +1018,7 @@ export const ROLES: Role[] = [
     location: "Bengaluru",
     type: "Full-time",
     blurb:
-      "The first engineer. You will build the systems our concierges run on - task routing, the family record, the WhatsApp layer - and you will own what you ship end to end.",
+      "The first engineer. You will build the systems our Niro Assistants run on - task routing, the family record, the WhatsApp layer - and you will own what you ship end to end.",
     looking: [
       "5+ years building products people use daily, not internal tools",
       "Comfortable owning a surface from database to interface",
@@ -1026,7 +1026,7 @@ export const ROLES: Role[] = [
     ],
   },
   {
-    title: "Concierge Operations",
+    title: "Niro Assistant - Operations",
     location: "Bengaluru",
     type: "Full-time · 2 roles",
     blurb:
@@ -1040,7 +1040,7 @@ export const ROLES: Role[] = [
 ];
 
 export const CAREERS_INTRO =
-  "Niro is a small team in Bengaluru building a concierge service for families split between India and everywhere else. Everyone who works with our members' parents is on our payroll - we do not forward your family's requests to a marketplace, which is why this page exists at all.";
+  "Niro is a small team in Bengaluru building an assistant service for families split between India and everywhere else. Everyone who works with our members' parents is on our payroll - we do not forward your family's requests to a marketplace, which is why this page exists at all.";
 
 /* =====================================================================
    PHONE-FIRST QUALIFIERS (main page)

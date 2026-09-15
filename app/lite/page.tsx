@@ -78,7 +78,7 @@ export default function TasksPackPage() {
         <p>{COVERAGE_NOTE.excludes}</p>
         <p className="note">
           The pack does <strong>not</strong> include a dedicated family manager,
-          our concierge on the ground during an emergency, or a second family
+          a Niro Assistant on the ground during an emergency, or a second family
           group. Those are part of the monthly membership.
         </p>
 

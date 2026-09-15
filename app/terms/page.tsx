@@ -48,7 +48,7 @@ export default function TermsPage() {
         <h2>What your membership fee covers</h2>
         <p>
           Your fee covers Niro&rsquo;s own time - the calls, the chasing, the
-          coordination, and our concierge on the ground - with no cap on the
+          coordination, and a Niro Assistant on the ground - with no cap on the
           number of tasks. It does <strong>not</strong> cover third-party costs
           incurred on your behalf, which are billed to you at actual cost: lab
           charges, ambulance fees, government and legal fees, vendor and
@@ -105,7 +105,7 @@ export default function TermsPage() {
         <h2>Niro is not an emergency service</h2>
         <p>
           <strong>
-            Niro is a concierge and coordination service, not a medical, security,
+            Niro is an assistance and coordination service, not a medical, security,
             legal, or emergency service.
           </strong>{" "}
           In any emergency, contact your local emergency number and the appropriate
