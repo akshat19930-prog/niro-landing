@@ -1051,3 +1051,51 @@ export const ROLES: Role[] = [
 
 export const CAREERS_INTRO =
   "Niro is a small team in Bengaluru building a concierge service for families split between India and everywhere else. Everyone who works with our members' parents is on our payroll - we do not forward your family's requests to a marketplace, which is why this page exists at all.";
+
+/* =====================================================================
+   PHONE-FIRST QUALIFIERS (main page)
+   ===================================================================== */
+
+/** "What are you looking to sort out?" - multi-select. Grouped the way the ops
+ *  team scopes work, so an answer maps straight onto who picks the lead up. */
+export const SORT_OUT_OPTIONS: string[] = [
+  "Family's health admin & emergency response",
+  "Household chores, upkeep & staff",
+  "Bills, banking & customer support issues",
+  "EPFO, tax, govt paperwork & documents",
+  "Property management & misc",
+  "Travel concierge & admin",
+];
+
+/** Who the membership is for. "My India needs" is the own-admin wedge - the
+ *  segment that refused monthly billing and wanted a task pack instead, so a
+ *  lead answering this way is the one to show Niro Lite on a call. */
+export const SORT_OUT_WHO: string[] = [
+  "My family in India",
+  "My India needs",
+  "Both",
+];
+
+/** Autocomplete source for the parents' city. A datalist, not a dropdown: it
+ *  suggests without constraining, so the long tail still reaches the sheet -
+ *  and the long tail is exactly what decides which city we open next. Ordered
+ *  metros first, then the tier-2 cities our leads have actually named. */
+export const INDIA_CITIES: string[] = [
+  "Bengaluru", "Delhi", "New Delhi", "Noida", "Greater Noida", "Ghaziabad",
+  "Gurugram", "Faridabad", "Mumbai", "Navi Mumbai", "Thane", "Hyderabad",
+  "Secunderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad", "Surat",
+  "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Indore", "Bhopal", "Patna",
+  "Vadodara", "Ludhiana", "Agra", "Nashik", "Chandigarh", "Mohali", "Panchkula",
+  "Coimbatore", "Kochi", "Thiruvananthapuram", "Kozhikode", "Thrissur",
+  "Visakhapatnam", "Vijayawada", "Mysuru", "Mangaluru", "Hubballi",
+  "Madurai", "Tiruchirappalli", "Salem", "Puducherry", "Vellore",
+  "Guwahati", "Bhubaneswar", "Cuttack", "Ranchi", "Jamshedpur", "Bokaro",
+  "Dhanbad", "Asansol", "Durgapur", "Siliguri", "Raipur", "Jabalpur",
+  "Gwalior", "Ujjain", "Kota", "Udaipur", "Jodhpur", "Ajmer", "Bikaner",
+  "Amritsar", "Jalandhar", "Patiala", "Dehradun", "Haridwar", "Shimla",
+  "Jammu", "Srinagar", "Varanasi", "Prayagraj", "Gorakhpur", "Meerut",
+  "Bareilly", "Aligarh", "Rajkot", "Jamnagar", "Bhavnagar", "Gandhinagar",
+  "Aurangabad", "Solapur", "Kolhapur", "Goa", "Panaji", "Belagavi",
+  "Davanagere", "Shivamogga", "Tirupati", "Guntur", "Nellore", "Warangal",
+  "Karimnagar", "Kollam", "Kottayam", "Kannur", "Alappuzha", "Palakkad",
+];

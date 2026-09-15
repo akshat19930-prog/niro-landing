@@ -865,7 +865,7 @@
 .coverage dd:last-child { margin-bottom: 0; }
 .coverage .promise { color: var(--text-strong); font-weight: 500; }
 
-/* ------------------------------------------------------- /tasks15 pack card */
+/* ------------------------------------------------------- /lite pack card */
 .pack-card {
   background: var(--surface-card);
   border: 1px solid var(--border);

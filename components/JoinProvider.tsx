@@ -99,6 +99,7 @@ async function submitSignup(payload: {
   /** Phone-first fields. The Apps Script ignores unknown keys, so these are
    *  safe to send before backend/waitlist.gs is redeployed with the columns. */
   name?: string | null;
+  ownCity?: string | null;
   city?: string | null;
   cityServed?: string | null;
   /** Split-test market ("gulf" for /gulf); omitted on the main India page. */
@@ -177,8 +178,8 @@ type JoinCtx = {
   /** Capture phone + name + city, fire the funnel events, start the
    *  (non-blocking) signup, and advance. Returns an error to show, or null. */
   submitLead: (raw: LeadDetails) => string | null;
-  /** Record the chosen first task and finish. */
-  submitFirstTask: (task: string) => void;
+  /** Record what they want sorted out and who it is for, then finish. */
+  submitNeeds: (tasks: string[], whoFor: string | null) => void;
 };
 
 /** What we ask for up front now. Email is optional - we need it for receipts
@@ -186,6 +187,10 @@ type JoinCtx = {
 export type LeadDetails = {
   phone: string;
   name: string;
+  /** Where the member lives (NRI side). Drives geo segmentation without
+   *  relying on the time-zone guess. */
+  ownCity: string;
+  /** Where their family lives in India. Drives serviceability. */
   city: string;
   email?: string;
 };
@@ -317,8 +322,10 @@ export function JoinProvider({
     if (!phone) return error || "Please enter a valid phone number.";
     const name = raw.name.trim();
     if (name.length < 2) return "Please tell us your name.";
+    const ownCity = raw.ownCity.trim();
+    if (ownCity.length < 2) return "Which city do you live in?";
     const cityRaw = raw.city.trim();
-    if (cityRaw.length < 2) return "Which city are your parents in?";
+    if (cityRaw.length < 2) return "Which city is your family in?";
 
     // Email stays optional, but a typo'd one is worse than none.
     let email = "";
@@ -333,7 +340,7 @@ export function JoinProvider({
     const pageArm = readPageArm();
     const page = typeof window !== "undefined" ? window.location.pathname : "";
 
-    setLead({ phone, name, city: cityRaw, email });
+    setLead({ phone, name, ownCity, city: cityRaw, email });
     setCityMatch(match);
     setEmail(email);
     setResult({
@@ -362,6 +369,7 @@ export function JoinProvider({
       ref,
       phone,
       name,
+      ownCity,
       city: cityRaw,
       cityServed: match.served ? match.city : "",
       market,
@@ -371,13 +379,17 @@ export function JoinProvider({
     return null;
   }
 
-  /** The chosen first free task. Recorded before the WhatsApp handoff so the
-   *  founder sees what they picked even if they never send the message. */
-  function submitFirstTask(task: string) {
+  /** What they want sorted out, and who it is for. Written before the
+   *  WhatsApp handoff so sales sees the answers even if they never message. */
+  function submitNeeds(tasks: string[], whoFor: string | null) {
     const { pitch, ref } = getStoredAttribution();
     const pageArm = readPageArm();
     const page = typeof window !== "undefined" ? window.location.pathname : "";
-    logEvent("first_task_chosen", market ? { market } : undefined);
+    logEvent("qualified", {
+      tasks: tasks.join("|"),
+      whoFor: whoFor || "",
+      ...(market ? { market } : {}),
+    });
     logEvent("signup_completed", market ? { market } : undefined);
     void submitSignup({
       email,
@@ -388,9 +400,11 @@ export function JoinProvider({
       ref,
       phone: lead?.phone,
       name: lead?.name,
+      ownCity: lead?.ownCity,
       city: lead?.city,
       cityServed: cityMatch?.served ? cityMatch.city : "",
-      tasks: [task],
+      tasks,
+      whoFor,
       market,
       page,
     });
@@ -427,7 +441,7 @@ export function JoinProvider({
         lead,
         cityMatch,
         submitLead,
-        submitFirstTask,
+        submitNeeds,
       }}
     >
       {children}

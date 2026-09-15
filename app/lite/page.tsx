@@ -5,7 +5,7 @@ import { Icon } from "@/components/ds/Icon";
 import { SUPPORT_WHATSAPP } from "@/lib/config";
 
 /**
- * /tasks15 - UNLISTED. The 15-task annual pack, for sales to share on a call.
+ * /lite - UNLISTED. The 15-task annual pack, for sales to share on a call.
  *
  * Deliberately off the public pricing grid. At $270 a year it reads as $22.50
  * a month, which sits inside the band where six research respondents said a
@@ -57,7 +57,7 @@ export default function TasksPackPage() {
           <a
             className="btn btn-primary btn-md"
             href={`https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent(
-              "Hi Niro - I'd like the 15-task pack at $270 a year. Can you send me the payment link?"
+              "Hi Niro - I'd like the Niro Lite pack at $270 a year. Can you send me the payment link?"
             )}`}
             target="_blank"
             rel="noopener noreferrer"
