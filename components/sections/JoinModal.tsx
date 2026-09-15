@@ -442,7 +442,7 @@ export function JoinModal() {
                 textAlign: "center",
               }}
             >
-              A founder is on the other end for the first two months &mdash; not a bot.
+              A co-founder is on the other end for the first two months &mdash; not a support queue.
             </p>
           </div>
         )}

@@ -895,7 +895,7 @@ function GulfFamilies() {
 
 function GulfTrustStrip() {
   const items = [
-    "Human, not a chatbot",
+    "A named person, accountable end to end",
     "Dedicated contact",
     "WhatsApp-first",
     "No passwords or OTPs",

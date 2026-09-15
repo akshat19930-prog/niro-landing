@@ -89,7 +89,7 @@ export const TRUST_ITEMS: TrustItem[] = [
     sub: "Introduced by photo before day one",
   },
   { icon: "lock", text: "No passwords or OTPs, ever", sub: "We will never ask. Full stop." },
-  { icon: "user-check", text: "Built by NRIs", sub: "We lived this before we built it" },
+  { icon: "map-pin", text: "We turn up in person", sub: "Hospital, office or their front door" },
   {
     icon: "camera",
     text: "Every task closed with proof",
@@ -130,8 +130,8 @@ export const STEPS: { n: string; title: string; text: string }[] = [
   },
   {
     n: "03",
-    title: "Humans at your service",
-    text: "A dedicated house manager completes your tasks. Outsource the stuff you and your parents don't like doing.",
+    title: "A named person owns it",
+    text: "Your family manager runs the task to completion - chasing the vendor, standing in the queue, showing up in person when that is what it takes - and closes it with proof.",
   },
 ];
 
@@ -200,37 +200,42 @@ export const HANDLE_GROUPS: {
   items: { icon: IconName; t: string; d: string }[];
 }[] = [
   {
-    name: "Protect",
+    name: "Look after them",
     items: [
       {
         icon: "heart-pulse",
-        t: "Emergency response",
-        d: "A human showing up and following the protocol you set, within minutes of a medical emergency.",
+        t: "Family\u2019s health admin & emergency response",
+        d: "Check-ups booked and samples collected at home, appointments and reports chased - and an ambulance in minutes with our concierge at the hospital when it matters.",
       },
       {
-        icon: "clock",
-        t: "Health monitoring & admin",
-        d: "Pre-set at-home check-ups, plus the appointments, reports, and insurance paperwork that go with them.",
+        icon: "wrench",
+        t: "Household chores, upkeep & staff",
+        d: "Repairs, maintenance and pest control, plus verifying domestic help and finding a replacement when one walks out.",
+      },
+      {
+        icon: "home",
+        t: "Property management & misc",
+        d: "Tenants, rent follow-ups and the small things nobody else will chase - including tech support for your parents\u2019 how-to questions.",
       },
     ],
   },
   {
-    name: "Handle",
+    name: "Sort the admin",
     items: [
       {
         icon: "wallet",
-        t: "Bills & payments",
-        d: "Bill reminders and issue resolution for utilities, property tax, or ITR.",
-      },
-      {
-        icon: "home",
-        t: "Repairs & issues",
-        d: "Find and book verified repairs for home or appliance issues - and get the job done.",
+        t: "Bills, banking & customer support issues",
+        d: "Bill reminders and property tax, dormant accounts reactivated, and the wrong electricity bill argued down to what it should have been.",
       },
       {
         icon: "file-text",
-        t: "Passport, visa & government work",
-        d: "Appointments booked, forms filled, your EPFO recovery or PR-doc attestation - handled for you.",
+        t: "EPFO, tax, govt paperwork & documents",
+        d: "Stuck EPFO claims, attestation for NRI needs, CGHS and pension life certificates, India ITR filing.",
+      },
+      {
+        icon: "plane",
+        t: "Travel concierge & admin",
+        d: "Visa and passport appointments with someone alongside them on the day, and travel booked end to end, cabs included.",
       },
     ],
   },
@@ -347,8 +352,8 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
     a: "Your first task is free. After that there are two ways to join: US $99 a month, or US $250 for three months ($83 a month) which then continues monthly. Both cover your whole family in India with unlimited tasks, a dedicated family manager and emergency response with our concierge on the ground. Cancel any time.",
   },
   {
-    q: "Is Niro a human manager?",
-    a: "Every family is allocated a dedicated remote family manager, who is a Niro employee. Some tasks may be completed by Niro's AI, as per your instructions.",
+    q: "Who actually does the work?",
+    a: "Every family gets a named family manager on Niro's payroll, and they are accountable for every task from start to finish. Behind them is a team that can go to a hospital, an office or your parents' door in person, and software that keeps track so nothing is forgotten between time zones. You always know whose name is on your task, and nothing goes to your family without a person having checked it.",
   },
   {
     q: "How fast is the emergency response, really?",
@@ -574,28 +579,6 @@ export const EMERGENCY_STEPS: { title: string; body: string }[] = [
     title: "We follow your protocol, not our judgement",
     body: "You decide in advance which hospital, who gets called first, what needs your approval, and what we should never do without asking. We execute that.",
   },
-];
-
-/* ---- Post-signup qualifiers (lead quality + needs). Tap-based, all optional;
-   captured right after the email so we read intent at peak, from ~100% of
-   signups, with no email-open dependency. ---- */
-export const QUALIFY_TASKS: string[] = [
-  "Parents' health & appointments",
-  "Bills, banking & paperwork",
-  "EPF / pension / govt work",
-  "Home repairs & upkeep",
-  "Property / tenants",
-  "Emergencies & peace of mind",
-];
-export const QUALIFY_WHO: string[] = [
-  "My parents in India",
-  "My own household",
-  "Both",
-];
-export const QUALIFY_URGENCY: string[] = [
-  "I have a task right now",
-  "In the next few weeks",
-  "Just exploring",
 ];
 
 /* =====================================================================
@@ -827,7 +810,7 @@ export const US_TESTIMONIALS: {
  */
 export const INDIA_SCOPE: { title: string; items: string[] }[] = [
   {
-    title: "Health admin & emergency support",
+    title: "Family\u2019s health admin & emergency response",
     items: [
       "Pre-set periodic health checkups, with home sample collection",
       "Emergency response protocol - Niro arranges the ambulance and an on-ground concierge",
@@ -838,17 +821,24 @@ export const INDIA_SCOPE: { title: string; items: string[] }[] = [
     ],
   },
   {
-    title: "Home admin & chores",
+    title: "Household chores, upkeep & staff",
     items: [
-      "Bill reminders and property tax",
       "Verifying domestic help, and finding a replacement or backup",
       "Repairs, maintenance and periodic pest control",
-      "Customer support threads - wrong electricity bill, internet down, appliance in warranty",
       "Car servicing and repair",
     ],
   },
   {
-    title: "Travel",
+    title: "Bills, banking & customer support issues",
+    items: [
+      "Bill reminders and property tax",
+      "Customer support threads - wrong electricity bill, internet down, appliance in warranty",
+      "Reactivating a dormant bank account, without a branch visit",
+      "Chasing a refund or a claim until somebody actually pays it",
+    ],
+  },
+  {
+    title: "Travel concierge & admin",
     items: [
       "Visa and passport appointment booking, and paperwork prep",
       "On-ground concierge for those appointments",
@@ -857,16 +847,16 @@ export const INDIA_SCOPE: { title: string; items: string[] }[] = [
     ],
   },
   {
-    title: "Paperwork, banking & EPFO",
+    title: "EPFO, tax, govt paperwork & documents",
     items: [
-      "Recovery of an EPFO or bank account",
+      "Recovery of a stuck EPFO claim",
       "Document attestation - marriage certificate and others - for NRI needs",
       "CGHS renewals and pension life certificate",
       "India ITR filing",
     ],
   },
   {
-    title: "And the rest",
+    title: "Property management & misc",
     items: [
       "Reminders your parents can set themselves, for birthdays and events",
       "Property and tenant management",
