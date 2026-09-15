@@ -113,7 +113,7 @@ function GulfHero() {
               color: "var(--text-muted)",
             }}
           >
-            <span>Remote Human Concierge</span>
+            <span>Named Niro Assistant</span>
             <span aria-hidden="true">·</span>
             <span>WhatsApp-first</span>
             <span aria-hidden="true">·</span>
@@ -895,10 +895,10 @@ function GulfFamilies() {
 
 function GulfTrustStrip() {
   const items = [
-    "Human, not a chatbot",
+    "A named person, accountable end to end",
     "Dedicated contact",
     "WhatsApp-first",
-    "No passwords or OTPs",
+    "We never ask for your passwords",
     "Clear pricing",
   ];
   return (
@@ -946,7 +946,6 @@ function GulfPricing() {
     "Two WhatsApp groups - one for India, one for home here",
     "Your parents just WhatsApp. Nothing to install, nothing to learn.",
     "Emergency response for your parents in India - ambulance partner plus our own person at the hospital",
-    "₹20 lakh cyber-fraud cover for your parents in India, plus monitoring",
     "A named contact who knows your family",
   ];
   return (

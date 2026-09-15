@@ -21,6 +21,7 @@ import {
 } from "@/lib/analytics";
 import { startSession, registerAnalytics, logEvent, getGeo } from "@/lib/track";
 import { readPageArm } from "@/lib/abtest";
+import { matchCity, validatePhone, type CityMatch } from "@/lib/cities";
 import {
   WAITLIST_ENDPOINT,
   SITE_ORIGIN,
@@ -37,6 +38,13 @@ export type Qualifiers = {
   urgency: string | null;
   plan: string | null;
 };
+
+function slugFromName(name: string): string {
+  return (
+    (name || "friend").split(/\s+/)[0].replace(/[^a-z0-9]/gi, "").toLowerCase() ||
+    "friend"
+  );
+}
 
 function slugFromEmail(email: string): string {
   return (
@@ -88,6 +96,12 @@ async function submitSignup(payload: {
   whoFor?: string | null;
   urgency?: string | null;
   phone?: string | null;
+  /** Phone-first fields. The Apps Script ignores unknown keys, so these are
+   *  safe to send before backend/waitlist.gs is redeployed with the columns. */
+  name?: string | null;
+  ownCity?: string | null;
+  city?: string | null;
+  cityServed?: string | null;
   /** Split-test market ("gulf" for /gulf); omitted on the main India page. */
   market?: string;
   /** The path this signup came from (e.g. "/gulf"), for attribution. */
@@ -151,6 +165,34 @@ type JoinCtx = {
   submitQualifiers: (answers: Qualifiers) => void;
   /** Attach an optional WhatsApp number after the confirmation. */
   submitPhone: (phone: string) => void;
+
+  /* ---- Phone-first flow (main page only; /gulf and /us still lead with
+     email). The product runs on WhatsApp, so the phone IS the account, and
+     we are now selling on calls rather than measuring interest. Expect the
+     reported conversion rate to fall: that is the trade, not a regression.
+     Tag the switch date before comparing CPL across it. ---- */
+  /** Captured lead: phone is required, name and city too, email optional. */
+  lead: LeadDetails | null;
+  /** Whether the parents' city is one we serve. Null until they tell us. */
+  cityMatch: CityMatch | null;
+  /** Capture phone + name + city, fire the funnel events, start the
+   *  (non-blocking) signup, and advance. Returns an error to show, or null. */
+  submitLead: (raw: LeadDetails) => string | null;
+  /** Record what they want sorted out and who it is for, then finish. */
+  submitNeeds: (tasks: string[], whoFor: string | null) => void;
+};
+
+/** What we ask for up front now. Email is optional - we need it for receipts
+ *  once someone pays, not to start a conversation. */
+export type LeadDetails = {
+  phone: string;
+  name: string;
+  /** Where the member lives (NRI side). Drives geo segmentation without
+   *  relying on the time-zone guess. */
+  ownCity: string;
+  /** Where their family lives in India. Drives serviceability. */
+  city: string;
+  email?: string;
 };
 
 const Ctx = createContext<JoinCtx | null>(null);
@@ -173,6 +215,8 @@ export function JoinProvider({
   const [arm, setArm] = useState<PricingArm>("A");
   const [email, setEmail] = useState("");
   const [result, setResult] = useState<SignupResult | null>(null);
+  const [lead, setLead] = useState<LeadDetails | null>(null);
+  const [cityMatch, setCityMatch] = useState<CityMatch | null>(null);
   const [eventId] = useState(() => newEventId());
 
   useEffect(() => {
@@ -268,6 +312,105 @@ export function JoinProvider({
     setStep("done");
   }
 
+  /**
+   * Phone-first capture. Order matters: we write the lead BEFORE anything
+   * hands off to WhatsApp, because if the handoff were the only capture we
+   * would lose every visitor who doesn't send the message.
+   */
+  function submitLead(raw: LeadDetails): string | null {
+    const { phone, error } = validatePhone(raw.phone);
+    if (!phone) return error || "Please enter a valid phone number.";
+    const name = raw.name.trim();
+    if (name.length < 2) return "Please tell us your name.";
+    const ownCity = raw.ownCity.trim();
+    if (ownCity.length < 2) return "Which city do you live in?";
+    const cityRaw = raw.city.trim();
+    if (cityRaw.length < 2) return "Which city is your family in?";
+
+    // Email stays optional, but a typo'd one is worse than none.
+    let email = "";
+    if (raw.email && raw.email.trim()) {
+      const v = validateEmail(raw.email);
+      if (!v.email) return v.error || "Please check that email address.";
+      email = v.email;
+    }
+
+    const match = matchCity(cityRaw);
+    const { pitch, ref } = getStoredAttribution();
+    const pageArm = readPageArm();
+    const page = typeof window !== "undefined" ? window.location.pathname : "";
+
+    setLead({ phone, name, ownCity, city: cityRaw, email });
+    setCityMatch(match);
+    setEmail(email);
+    setResult({
+      position: FALLBACK_WAITLIST_POSITION,
+      referralCode: slugFromName(name),
+    });
+
+    logEvent("lead_captured", {
+      // `served` decides which half of the funnel this lead belongs to; keeping
+      // it on the beacon means we can read serviceable-lead CPL without waiting
+      // on the sheet.
+      placement: match.served ? `city_served:${match.city}` : "city_waitlist",
+      ...(market ? { market } : {}),
+    });
+    track(
+      "Lead",
+      { content_name: "waitlist_phone", arm, page_arm: pageArm, pitch, ...(market ? { market } : {}) },
+      eventId
+    );
+    void submitSignup({
+      email,
+      eventId,
+      arm,
+      pageArm,
+      pitch,
+      ref,
+      phone,
+      name,
+      ownCity,
+      city: cityRaw,
+      cityServed: match.served ? match.city : "",
+      market,
+      page,
+    });
+    setStep("qualify");
+    return null;
+  }
+
+  /** What they want sorted out, and who it is for. Written before the
+   *  WhatsApp handoff so sales sees the answers even if they never message. */
+  function submitNeeds(tasks: string[], whoFor: string | null) {
+    const { pitch, ref } = getStoredAttribution();
+    const pageArm = readPageArm();
+    const page = typeof window !== "undefined" ? window.location.pathname : "";
+    logEvent("qualified", {
+      tasks: tasks.join("|"),
+      whoFor: whoFor || "",
+      ...(market ? { market } : {}),
+    });
+    logEvent("signup_completed", market ? { market } : undefined);
+    void submitSignup({
+      email,
+      eventId,
+      arm,
+      pageArm,
+      pitch,
+      ref,
+      phone: lead?.phone,
+      name: lead?.name,
+      ownCity: lead?.ownCity,
+      city: lead?.city,
+      cityServed: cityMatch?.served ? cityMatch.city : "",
+      tasks,
+      whoFor,
+      market,
+      page,
+    });
+    setStep("done");
+  }
+
   function submitPhone(phone: string) {
     const clean = phone.replace(/[^\d+]/g, "");
     if (clean.length < 7) return;
@@ -295,6 +438,10 @@ export function JoinProvider({
         submitEmail,
         submitQualifiers,
         submitPhone,
+        lead,
+        cityMatch,
+        submitLead,
+        submitNeeds,
       }}
     >
       {children}

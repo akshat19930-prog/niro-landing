@@ -88,7 +88,7 @@ export function HowItWorks() {
       <div style={CONTAINER}>
         <Eyebrow>How it works</Eyebrow>
         <h2 style={{ ...h2Style, margin: "16px 0 0", maxWidth: 760 }}>
-          Niro is your 24/7 house manager, concierge &amp; your presence in India
+          Niro is your 24/7 house manager, assistant &amp; your presence in India
         </h2>
         <div
           style={{

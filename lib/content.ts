@@ -85,11 +85,11 @@ export const ASK_TASKS: string[] = [
 export const TRUST_ITEMS: TrustItem[] = [
   {
     icon: "shield-check",
-    text: "Named & verified concierges",
+    text: "Named & verified Niro Assistants",
     sub: "Introduced by photo before day one",
   },
-  { icon: "lock", text: "No passwords or OTPs, ever", sub: "We will never ask. Full stop." },
-  { icon: "user-check", text: "Built by NRIs", sub: "We lived this before we built it" },
+  { icon: "lock", text: "We never ask for passwords", sub: "Not your net-banking login, not your PINs" },
+  { icon: "map-pin", text: "We turn up in person", sub: "Hospital, office or their front door" },
   {
     icon: "camera",
     text: "Every task closed with proof",
@@ -130,8 +130,8 @@ export const STEPS: { n: string; title: string; text: string }[] = [
   },
   {
     n: "03",
-    title: "Humans at your service",
-    text: "A dedicated house manager completes your tasks. Outsource the stuff you and your parents don't like doing.",
+    title: "A named person owns it",
+    text: "Your family manager runs the task to completion - chasing the vendor, standing in the queue, showing up in person when that is what it takes - and closes it with proof.",
   },
 ];
 
@@ -200,42 +200,42 @@ export const HANDLE_GROUPS: {
   items: { icon: IconName; t: string; d: string }[];
 }[] = [
   {
-    name: "Protect",
+    name: "Look after them",
     items: [
       {
         icon: "heart-pulse",
-        t: "Emergency response",
-        d: "A human showing up and following the protocol you set, within minutes of a medical emergency.",
+        t: "Family\u2019s health admin & emergency response",
+        d: "Check-ups booked and samples collected at home, appointments and reports chased - and an ambulance in minutes with our Niro Assistant at the hospital when it matters.",
       },
       {
-        icon: "clock",
-        t: "Health monitoring & admin",
-        d: "Pre-set at-home check-ups, plus the appointments, reports, and insurance paperwork that go with them.",
+        icon: "wrench",
+        t: "Household chores, upkeep & staff",
+        d: "Repairs, maintenance and pest control, plus verifying domestic help and finding a replacement when one walks out.",
       },
       {
-        icon: "shield-check",
-        t: "Cyber-fraud protection",
-        d: "Prevent and monitor cyber-fraud risk with the senior citizens in your family.",
+        icon: "home",
+        t: "Property management & misc",
+        d: "Tenants, rent follow-ups and the small things nobody else will chase - including tech support for your parents\u2019 how-to questions.",
       },
     ],
   },
   {
-    name: "Handle",
+    name: "Sort the admin",
     items: [
       {
         icon: "wallet",
-        t: "Bills & payments",
-        d: "Bill reminders and issue resolution for utilities, property tax, or ITR.",
-      },
-      {
-        icon: "home",
-        t: "Repairs & issues",
-        d: "Find and book verified repairs for home or appliance issues - and get the job done.",
+        t: "Bills, banking & customer support issues",
+        d: "Bill reminders and property tax, dormant accounts reactivated, and the wrong electricity bill argued down to what it should have been.",
       },
       {
         icon: "file-text",
-        t: "Passport, visa & government work",
-        d: "Appointments booked, forms filled, your EPFO recovery or PR-doc attestation - handled for you.",
+        t: "EPFO, tax, govt paperwork & documents",
+        d: "Stuck EPFO claims, attestation for NRI needs, CGHS and pension life certificates, India ITR filing.",
+      },
+      {
+        icon: "plane",
+        t: "Travel concierge & admin",
+        d: "Visa and passport appointments with someone alongside them on the day, and travel booked end to end, cabs included.",
       },
     ],
   },
@@ -319,7 +319,7 @@ export const TESTIMONIALS_SHORT: {
     name: "Mayank, 36",
     location: "New York, US ↔ Lucknow, India",
     quote:
-      "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now - and I worry far less about the cyber-fraud that targets senior citizens.",
+      "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now - the filings, the tenants, the chasing I used to do at midnight.",
     photo: "/people/mayank.jpg",
   },
   {
@@ -349,19 +349,27 @@ export const TESTIMONIALS_SHORT: {
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
     q: "What is the membership pricing?",
-    a: "Your first task is free. After that, the Niro membership is US $99 a month and covers your whole family in India with unlimited tasks, a dedicated family manager and emergency response with our concierge on the ground. If you only need a few things a year, Niro Lite is US $250 a year for 15 tasks, partner-network ambulance response, and $50 of wellness credits.",
+    a: "Your first task is free. After that there are two ways to join: US $99 a month, or US $250 for three months ($83 a month) which then continues monthly. Both cover your whole family in India with unlimited tasks, a dedicated family manager and emergency response with a Niro Assistant on the ground. Cancel any time.",
   },
   {
-    q: "Is Niro a human manager?",
-    a: "Every family is allocated a dedicated remote family manager, who is a Niro employee. Some tasks may be completed by Niro's AI, as per your instructions.",
+    q: "Who actually does the work?",
+    a: "Every family gets a named family manager on Niro's payroll, and they are accountable for every task from start to finish. Behind them is a team that can go to a hospital, an office or your parents' door in person, and software that keeps track so nothing is forgotten between time zones. You always know whose name is on your task, and nothing goes to your family without a person having checked it.",
   },
   {
     q: "How fast is the emergency response, really?",
-    a: "Check-in calls are instant, and ambulance dispatch is within 3 minutes. We're working to define city-level SLAs.",
+    a: "We answer the emergency line in 45 seconds, our partner Medulance dispatches an ambulance within 3 minutes, and median arrival across our launch cities is 20 minutes. A Niro Assistant meets your parents at the hospital and handles admission. The full protocol is on our emergency response page.",
   },
   {
-    q: "Are all tasks covered under the monthly membership cost?",
-    a: "No - some tasks that require us to work with vendors (for example, EPFO recovery or document work) will be chargeable. Charges are always declared upfront, before we pick up the task.",
+    q: "Are all tasks covered under the membership cost?",
+    a: "The membership covers Niro's time - the calls, the chasing, the coordination and a Niro Assistant on the ground - with no cap on the number of tasks. Third-party costs are billed at actual: lab charges, ambulance fees, government and legal fees, vendor payments, cab fares. We always tell you the cost and get your go-ahead before we spend anything on your behalf.",
+  },
+  {
+    q: "What if it isn't right for us?",
+    a: "You have a 30-day money-back guarantee. Tell your family manager or write to hello@tellniro.com in your first 30 days and we refund you in full - no forms and no exit interview. Third-party costs we have already paid out on your behalf can't be recalled. After 30 days you can cancel any time, effective at the end of your paid period.",
+  },
+  {
+    q: "What happens after I join?",
+    a: "Within a day we set up your family WhatsApp group and introduce your family manager by name and photo. In the first week we do a 30-minute onboarding call to record your family's details, your emergency protocol and the hospital you prefer - then we start with your first task. You are not left to work out how to use it.",
   },
   {
     q: "Does Niro take decisions on its own?",
@@ -369,11 +377,11 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "Is my family's data safe with Niro?",
-    a: "Yes - and here's exactly how. We never ask for OTPs, passwords, PINs, or bank logins - not ever, and anyone who does isn't us. We work only on documents you choose to share; never through access to your email, phone, or accounts. Everything is encrypted in transit and at rest, sensitive documents are visible only to the team handling that task, and we operate under India's DPDP Act with GDPR-aligned practices for members abroad. Your data is never sold. Leave Niro, and your family's records are permanently deleted within 30 days. Questions? hello@tellniro.com reaches the founders.",
+    a: "Yes - and here's exactly how. We never ask for your passwords, PINs or net-banking logins, and we never take access to your email, phone or accounts. Some tasks genuinely need a one-time code - releasing an EPFO claim, or fixing a bill on a government portal - and in those cases we tell you what we are about to do, ask you for that code at that moment, and use it only for that task. If you would rather not share one, tell us and we will find another route or stop. Everything is encrypted in transit and at rest, sensitive documents are visible only to the team handling that task, and we operate under India's DPDP Act with GDPR-aligned practices for members abroad. Your data is never sold. Leave Niro, and your family's records are permanently deleted within 30 days. Questions? hello@tellniro.com reaches the founders.",
   },
   {
     q: "Which cities are you serviceable in today?",
-    a: "We're currently in beta in a select set of cities, and will publish our list of launch cities soon.",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad and Chennai - these are the cities where our Niro Assistants are on the ground and where our emergency response times hold. If your parents are somewhere else, join anyway and tell us their city: we open new cities where our members' families already are, and you'll hear from us the week we reach yours.",
   },
   {
     q: "Do my parents need to install anything?",
@@ -383,7 +391,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
 
 /* ---- Membership plans (shown inside the join flow after email) ---- */
 export type Plan = {
-  id: "prime" | "global" | "lite";
+  id: "prime" | "global" | "lite" | "quarter";
   name: string;
   price: string;
   per: string;
@@ -395,25 +403,65 @@ export type Plan = {
 };
 
 /**
+ * Shared by both SKUs. The two plans are the SAME PRODUCT at two prices, so
+ * they carry an identical feature list on purpose - the repetition is what
+ * makes "$83 vs $99, nothing else changes" unmistakable at a glance.
+ *
+ * "Create up to 2 groups" states the multi-household allowance on the page.
+ * That supersedes the earlier decision to leave the unit undefined: read as a
+ * positive allowance rather than a ceiling, it pre-empts the in-laws question
+ * instead of provoking it, and it gives the later multi-household SKU a
+ * boundary that already exists in the customer's mind.
+ */
+export const MEMBERSHIP_FEATURES: string[] = [
+  "Unlimited tasks for you or your family",
+  "WhatsApp group chat for tasks",
+  "Niro assured emergency response",
+  "One free booked on-demand Niro visit",
+  "Create up to 2 groups",
+];
+
+/**
  * The full membership, and the default. Stays first in PLANS so it sets the
  * anchor: the research is unambiguous that whoever anchors first sets the
  * price, and on mobile (~80% of traffic) the cards stack, so first == top.
  */
 export const MEMBERSHIP_SINGLE: Plan = {
   id: "prime",
-  name: "Niro membership",
+  name: "Monthly",
   price: "$99",
   per: "/month",
   sub: "Your family, fully covered",
-  features: [
-    "Dedicated family manager + WhatsApp group for tasks",
-    "Unlimited tasks",
-    "Emergency response - Niro's concierge present on the ground with your family",
-    "Cyber-fraud cover - insurance up to ₹20L, monitoring & education",
-    "$10/mo wellness credits - tests, physio & more",
-  ],
+  // Balances the two cards' heights against the quarter plan's longer lead.
+  // Without it the cheaper card is the taller one, which quietly hands the
+  // discount more visual weight than the anchor.
+  lead: "The full membership, month to month. No lock-in, cancel any time - your first task is free either way.",
+  features: MEMBERSHIP_FEATURES,
   highlight: true,
   badge: "Most families",
+};
+
+/**
+ * The three-month term, billed once. Deliberately a TERM, not a prepay
+ * discount: the research is explicit that this service cannot be judged in
+ * thirty days ("these whole maid cycles are too short a thing to test in two
+ * weeks"), so three months is how long it takes to know. The card stays on
+ * file and rolls to monthly at month four - that is what keeps it a
+ * subscription rather than a 90-day trial we have to re-close by hand.
+ */
+export const MEMBERSHIP_QUARTER: Plan = {
+  id: "quarter",
+  name: "Three months",
+  // Shown as a MONTHLY rate, not as "$250 for 3 months". Two reasons: it puts
+  // the two SKUs on the same unit so the saving is legible without arithmetic,
+  // and it keeps $250 off the page - the same number is the off-menu 15-task
+  // pack, and a salesperson quoting "250" on a call must not be ambiguous.
+  price: "$83",
+  per: "/month",
+  sub: "Save $47 - billed $250 once, today",
+  lead: "Exactly the same membership, at a lower monthly rate, for the three months it actually takes to judge us. Continues at $99/month from month four - we remind you seven days before.",
+  features: MEMBERSHIP_FEATURES,
+  highlight: false,
 };
 
 /**
@@ -429,47 +477,108 @@ export const MEMBERSHIP_SINGLE: Plan = {
  * 2. The emergency line says exactly what it is. Emergency response is the #1
  *    requested capability (68.9% of task picks) and the least believed one -
  *    so the partner-ambulance version must not borrow the credibility of the
- *    concierge-on-the-ground version. It names the absence.
+ *    Niro-Assistant-on-the-ground version. It names the absence.
  * 3. It carries no badge and is not the dark card. Lite is the step down, not
  *    the recommendation.
  */
 export const NIRO_LITE: Plan = {
   id: "lite",
   name: "Niro Lite",
-  price: "$250",
+  price: "$270",
   per: "/year",
   sub: "For a handful of things a year",
   features: [
     "15 tasks, used any time across the year",
-    "Same WhatsApp group, same vetted concierges",
-    "Emergency ambulance through our partner network - no Niro concierge on the ground",
-    "$50 a year in wellness credits - tests, physio & more",
+    "Same WhatsApp group, same vetted Niro Assistants",
+    "Emergency ambulance through our partner network - no Niro Assistant on the ground",
   ],
   highlight: false,
 };
 
-export const PLANS: Plan[] = [MEMBERSHIP_SINGLE, NIRO_LITE];
+/** The two public SKUs. NIRO_LITE is deliberately NOT here - it lives only on
+ *  the unlisted /lite page, for the segment that refuses monthly billing. */
+export const PLANS: Plan[] = [MEMBERSHIP_SINGLE, MEMBERSHIP_QUARTER];
 
-/* ---- Post-signup qualifiers (lead quality + needs). Tap-based, all optional;
-   captured right after the email so we read intent at peak, from ~100% of
-   signups, with no email-open dependency. ---- */
-export const QUALIFY_TASKS: string[] = [
-  "Parents' health & appointments",
-  "Bills, banking & paperwork",
-  "EPF / pension / govt work",
-  "Home repairs & upkeep",
-  "Property / tenants",
-  "Emergencies & peace of mind",
+/**
+ * What the fee buys, and what it does not. Stated before payment rather than
+ * discovered at the first invoice: "are all tasks covered under the monthly
+ * cost?" was a live question in the WhatsApp threads, and an unstated answer
+ * becomes a refund request in week two.
+ */
+export const COVERAGE_NOTE = {
+  covers:
+    "Niro's time - the calls, the chasing, the coordination - and one booked on-demand Niro assistant visit of four hours or less.",
+  excludes:
+    "Vendor charges and the cost of any product or service ordered through Niro, at cost and with no commission added. Government and legal fees. Additional Niro visits in the same month, at $15 per four hours.",
+  promise: "We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
+};
+
+/** The money-back guarantee, in the words that go on the page. */
+export const GUARANTEE =
+  "30-day money-back guarantee. If Niro isn't right for your family in the first 30 days, tell us and we refund you in full.";
+
+/* ---- Serviceable cities ----------------------------------------------------
+   Five metros at launch. Chosen as the intersection of observed demand (the
+   parent-city Pareto across 26 smoke-test households and 14 research
+   interviews) and the cities where the emergency SLA below actually holds.
+   Roughly 58% of leads who told us where their parents live are covered.
+   Deliberately NOT published as a radius: an ambulance SLA does not survive
+   150km from the metro, and a service area we cannot hold the SLA in costs
+   more credibility than the coverage is worth. Out-of-area families are
+   waitlisted by city - that list is how we pick city six. */
+export type ServiceCity = { name: string; includes?: string[] };
+
+export const SERVICE_CITIES: ServiceCity[] = [
+  { name: "Bengaluru" },
+  { name: "Delhi NCR", includes: ["Delhi", "Noida", "Greater Noida", "Ghaziabad", "Gurugram", "Faridabad"] },
+  { name: "Mumbai", includes: ["Mumbai", "Navi Mumbai", "Thane"] },
+  { name: "Hyderabad", includes: ["Hyderabad", "Secunderabad"] },
+  { name: "Chennai" },
 ];
-export const QUALIFY_WHO: string[] = [
-  "My parents in India",
-  "My own household",
-  "Both",
+
+/* ---- Emergency response ----------------------------------------------------
+   The most-requested capability in every instrument we have run (68.9% of task
+   selections, 9 of 18 interviews) and the least believed. Respondents asked for
+   numbers, not reassurance. These are the numbers. */
+export const EMERGENCY_SLA: { value: string; label: string; detail: string }[] = [
+  {
+    value: "45 sec",
+    label: "We pick up",
+    detail: "A person answers the emergency line - not a menu, not a queue.",
+  },
+  {
+    value: "3 min",
+    label: "Ambulance dispatched",
+    detail: "Our partner Medulance dispatches the nearest equipped ambulance to your parents' address.",
+  },
+  {
+    value: "20 min",
+    label: "Ambulance arrives",
+    detail: "Median arrival across our launch cities, with a paramedic on board.",
+  },
 ];
-export const QUALIFY_URGENCY: string[] = [
-  "I have a task right now",
-  "In the next few weeks",
-  "Just exploring",
+
+export const EMERGENCY_STEPS: { title: string; body: string }[] = [
+  {
+    title: "Anyone in the family can raise it",
+    body: "Your parents send a message or a voice note in the WhatsApp group, or call the emergency line. They don't need you awake, and they don't need an app.",
+  },
+  {
+    title: "We call back and dispatch at the same time",
+    body: "We do not wait to assess before moving. The ambulance is dispatched while we are still on the phone establishing what has happened.",
+  },
+  {
+    title: "A Niro Assistant goes to the hospital",
+    body: "A named person from our team meets your parents there, carries their medical history and insurance details, and handles admission paperwork so nobody is filling forms during a crisis.",
+  },
+  {
+    title: "You are told immediately, and kept updated",
+    body: "You get a call the moment we know something real - and a written update in the family group at every step, so you are not piecing it together from missed calls.",
+  },
+  {
+    title: "We follow your protocol, not our judgement",
+    body: "You decide in advance which hospital, who gets called first, what needs your approval, and what we should never do without asking. We execute that.",
+  },
 ];
 
 /* =====================================================================
@@ -535,7 +644,7 @@ export const GULF_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "How do you keep my family's information safe?",
-    a: "We never ask for OTPs, passwords or bank logins, and anyone who does isn't us. We work only on what you choose to share, everything is encrypted, and your records are deleted within 30 days if you leave.",
+    a: "We never ask for your passwords or net-banking logins. Where a task genuinely needs a one-time code, we tell you what we are doing first and use it only for that task. Everything is encrypted, and your records are deleted within 30 days if you leave.",
   },
 ];
 
@@ -581,10 +690,10 @@ export const TASK_DEFS: TaskDef[] = [
     note: "A full bill audit, plus reminders so nothing lapses again.",
   },
   {
-    id: "fraud",
-    icon: "shield-check",
-    label: "Parents' Cyber-Fraud Risk Score",
-    note: "A plain-language read on where they're exposed.",
+    id: "health",
+    icon: "heart-pulse",
+    label: "Set up parents' health check-up",
+    note: "Booked, sample collected at home, reports explained."
   },
 ];
 
@@ -607,8 +716,6 @@ export const US_PLANS: Plan[] = [
       "Dedicated family manager + WhatsApp group",
       "Unlimited tasks for your family in India",
       "Emergency response, with someone on the ground",
-      "Cyber-fraud cover up to ₹20L",
-      "$10/mo wellness credits",
     ],
     highlight: false,
   },
@@ -689,7 +796,7 @@ export const US_TESTIMONIALS: {
     name: "Mayank, 36",
     location: "New York, US ↔ Lucknow, India",
     quote:
-      "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now - and I worry far less about the cyber-fraud that targets senior citizens.",
+      "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now - the filings, the tenants, the chasing I used to do at midnight.",
     highlight: "Niro handles all of it now",
     photo: "/people/mayank.jpg",
   },
@@ -703,10 +810,10 @@ export const US_TESTIMONIALS: {
  */
 export const INDIA_SCOPE: { title: string; items: string[] }[] = [
   {
-    title: "Health admin & emergency support",
+    title: "Family\u2019s health admin & emergency response",
     items: [
       "Pre-set periodic health checkups, with home sample collection",
-      "Emergency response protocol - Niro arranges the ambulance and an on-ground concierge",
+      "Emergency response protocol - Niro arranges the ambulance and an on-ground Niro Assistant",
       "Medicines re-fulfilment",
       "Verified physio, massage, nutritionist and yoga sessions on demand",
       "Doctor appointments: booking and reminders",
@@ -714,37 +821,43 @@ export const INDIA_SCOPE: { title: string; items: string[] }[] = [
     ],
   },
   {
-    title: "Home admin & chores",
+    title: "Household chores, upkeep & staff",
     items: [
-      "Bill reminders and property tax",
       "Verifying domestic help, and finding a replacement or backup",
       "Repairs, maintenance and periodic pest control",
-      "Customer support threads - wrong electricity bill, internet down, appliance in warranty",
       "Car servicing and repair",
     ],
   },
   {
-    title: "Travel",
+    title: "Bills, banking & customer support issues",
+    items: [
+      "Bill reminders and property tax",
+      "Customer support threads - wrong electricity bill, internet down, appliance in warranty",
+      "Reactivating a dormant bank account, without a branch visit",
+      "Chasing a refund or a claim until somebody actually pays it",
+    ],
+  },
+  {
+    title: "Travel concierge & admin",
     items: [
       "Visa and passport appointment booking, and paperwork prep",
-      "On-ground concierge for those appointments",
+      "A Niro Assistant alongside them for those appointments",
       "End-to-end domestic travel, cabs included",
       "End-to-end international travel, cabs included",
     ],
   },
   {
-    title: "Paperwork, banking & EPFO",
+    title: "EPFO, tax, govt paperwork & documents",
     items: [
-      "Recovery of an EPFO or bank account",
+      "Recovery of a stuck EPFO claim",
       "Document attestation - marriage certificate and others - for NRI needs",
       "CGHS renewals and pension life certificate",
       "India ITR filing",
     ],
   },
   {
-    title: "And the rest",
+    title: "Property management & misc",
     items: [
-      "Cyber fraud prevention and monitoring, opt-in",
       "Reminders your parents can set themselves, for birthdays and events",
       "Property and tenant management",
       "Tech support for your parents' how-to questions",
@@ -831,11 +944,11 @@ export const VETTING: { lead: string; points: { title: string; body: string }[] 
   points: [
     {
       title: "Hired for the job your parents actually need",
-      body: "We test three things before anyone joins: compassion and patience with older parents, communication skill in the language your family actually speaks, and the operational judgement to chase something until it is finished. Everyone is background-checked and named - you're introduced to your concierge by photo before day one.",
+      body: "We test three things before anyone joins: compassion and patience with older parents, communication skill in the language your family actually speaks, and the operational judgement to chase something until it is finished. Everyone is background-checked and named - you're introduced to your Niro Assistant by photo before day one.",
     },
     {
       title: "They work to central SOPs",
-      body: "What happens on a task is defined before it starts. Concierges execute the process, they don't improvise it.",
+      body: "What happens on a task is defined before it starts. Niro Assistants execute the process, they don't improvise it.",
     },
     {
       title: "And to the protocols you set",
@@ -872,11 +985,107 @@ export const US_FAQ: { q: string; a: string }[] = [
     // Merged with the older, shorter "how do you vet" question - two adjacent
     // vetting answers read as though we were dodging one of them. Rendered from
     // VETTING below; this string is the plain-text fallback.
-    q: "What is the process for vetting the concierges who will be interacting with my parents?",
+    q: "What is the process for vetting the Niro Assistants who will be interacting with my parents?",
     a: "They are on our payroll, hired for compassion, communication and operational judgement, background-checked and named. They work to central SOPs and to the protocols you set for your own family, and every task is monitored individually and closed with proof.",
   },
   {
-    q: "Will you ever ask for passwords or OTPs?",
-    a: "Never. Not for banking, not for anything. If someone claiming to be from Niro asks, it isn't us.",
+    q: "What will you ask my family for, and what will you never ask for?",
+    a: "We never ask for passwords, PINs or net-banking logins. Some tasks need a one-time code to complete - an EPFO release, a portal correction - and for those we explain what we are doing, ask at that moment, and use the code only for that task. Your parents never have to decide alone: you set in advance what needs your approval first.",
   },
+];
+
+/* =====================================================================
+   CAREERS (/careers)
+   ---------------------------------------------------------------------
+   This page is a trust asset before it is a hiring asset. The single most
+   common objection in the research was that Niro might be software wearing
+   a human costume - "I would be suspicious it's basically a glorified
+   wrapper, they are not people." Named, real, open roles answer that in a
+   way no FAQ can. Only list roles we will actually fill this quarter: a
+   stale board proves the opposite of the point.
+   ===================================================================== */
+export type Role = {
+  title: string;
+  location: string;
+  type: string;
+  blurb: string;
+  looking: string[];
+};
+
+export const ROLES: Role[] = [
+  {
+    title: "Founding Engineer",
+    location: "Bengaluru",
+    type: "Full-time",
+    blurb:
+      "The first engineer. You will build the systems our Niro Assistants run on - task routing, the family record, the WhatsApp layer - and you will own what you ship end to end.",
+    looking: [
+      "5+ years building products people use daily, not internal tools",
+      "Comfortable owning a surface from database to interface",
+      "Has worked somewhere small enough that the job had no edges",
+    ],
+  },
+  {
+    title: "Niro Assistant - Operations",
+    location: "Bengaluru",
+    type: "Full-time · 2 roles",
+    blurb:
+      "You are the person our members' parents actually meet. You run their tasks to completion - the hospital visit, the stuck EPFO claim, the plumber who said he would come on Tuesday - and you close each one with proof.",
+    looking: [
+      "Patience and warmth with older parents - this is the part we test hardest",
+      "Fluent in English and Hindi; a third Indian language is a real advantage",
+      "The judgement to chase something until it is finished, and to escalate before it is too late",
+    ],
+  },
+];
+
+export const CAREERS_INTRO =
+  "Niro is a small team in Bengaluru building an assistant service for families split between India and everywhere else. Everyone who works with our members' parents is on our payroll - we do not forward your family's requests to a marketplace, which is why this page exists at all.";
+
+/* =====================================================================
+   PHONE-FIRST QUALIFIERS (main page)
+   ===================================================================== */
+
+/** "What are you looking to sort out?" - multi-select. Grouped the way the ops
+ *  team scopes work, so an answer maps straight onto who picks the lead up. */
+export const SORT_OUT_OPTIONS: string[] = [
+  "Family's health admin & emergency response",
+  "Household chores, upkeep & staff",
+  "Bills, banking & customer support issues",
+  "EPFO, tax, govt paperwork & documents",
+  "Property management & misc",
+  "Travel concierge & admin",
+];
+
+/** Who the membership is for. "My India needs" is the own-admin wedge - the
+ *  segment that refused monthly billing and wanted a task pack instead, so a
+ *  lead answering this way is the one to show Niro Lite on a call. */
+export const SORT_OUT_WHO: string[] = [
+  "My family in India",
+  "My India needs",
+  "Both",
+];
+
+/** Autocomplete source for the parents' city. A datalist, not a dropdown: it
+ *  suggests without constraining, so the long tail still reaches the sheet -
+ *  and the long tail is exactly what decides which city we open next. Ordered
+ *  metros first, then the tier-2 cities our leads have actually named. */
+export const INDIA_CITIES: string[] = [
+  "Bengaluru", "Delhi", "New Delhi", "Noida", "Greater Noida", "Ghaziabad",
+  "Gurugram", "Faridabad", "Mumbai", "Navi Mumbai", "Thane", "Hyderabad",
+  "Secunderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad", "Surat",
+  "Jaipur", "Lucknow", "Kanpur", "Nagpur", "Indore", "Bhopal", "Patna",
+  "Vadodara", "Ludhiana", "Agra", "Nashik", "Chandigarh", "Mohali", "Panchkula",
+  "Coimbatore", "Kochi", "Thiruvananthapuram", "Kozhikode", "Thrissur",
+  "Visakhapatnam", "Vijayawada", "Mysuru", "Mangaluru", "Hubballi",
+  "Madurai", "Tiruchirappalli", "Salem", "Puducherry", "Vellore",
+  "Guwahati", "Bhubaneswar", "Cuttack", "Ranchi", "Jamshedpur", "Bokaro",
+  "Dhanbad", "Asansol", "Durgapur", "Siliguri", "Raipur", "Jabalpur",
+  "Gwalior", "Ujjain", "Kota", "Udaipur", "Jodhpur", "Ajmer", "Bikaner",
+  "Amritsar", "Jalandhar", "Patiala", "Dehradun", "Haridwar", "Shimla",
+  "Jammu", "Srinagar", "Varanasi", "Prayagraj", "Gorakhpur", "Meerut",
+  "Bareilly", "Aligarh", "Rajkot", "Jamnagar", "Bhavnagar", "Gandhinagar",
+  "Aurangabad", "Solapur", "Kolhapur", "Goa", "Panaji", "Belagavi",
+  "Davanagere", "Shivamogga", "Tirupati", "Guntur", "Nellore", "Warangal",
+  "Karimnagar", "Kollam", "Kottayam", "Kannur", "Alappuzha", "Palakkad",
 ];
