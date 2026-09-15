@@ -724,3 +724,143 @@
     columns: 2;
   }
 }
+
+/* ---------------------------------------------------------------- /emergency
+   The SLA numbers. Big figures are earned here: these three times ARE the
+   page's argument, and the research says users wanted numbers rather than
+   reassurance. Everything else on the page stays quiet so they carry. */
+.sla-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 28px 0 18px;
+}
+@media (min-width: 620px) {
+  .sla-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.sla-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+.sla-value {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.05;
+  color: var(--brand);
+  font-variant-numeric: tabular-nums;
+}
+.sla-label {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-strong);
+  margin-top: 6px;
+}
+.prose .sla-detail {
+  font-size: var(--text-sm);
+  color: var(--text-body);
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+.prose .sla-scope {
+  font-size: var(--text-sm);
+  color: var(--text-body);
+  background: var(--bg-inset);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  margin-bottom: 8px;
+}
+/* Numbered because the emergency protocol genuinely is a sequence - the order
+   is the information. */
+.prose ol.emg-steps { list-style: none; padding: 0; margin: 0 0 8px; counter-reset: emg; }
+.prose ol.emg-steps li {
+  counter-increment: emg;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  gap: 0 12px;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+}
+.prose ol.emg-steps li:last-child { border-bottom: 1px solid var(--border); }
+.prose ol.emg-steps li::before {
+  content: counter(emg);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent-strong);
+  line-height: 1.5;
+}
+/* Both the title and the body sit in the second column; the counter occupies
+   the first. Without the explicit grid-column the body flows into the narrow
+   counter track and wraps one word per line. */
+.prose ol.emg-steps b {
+  grid-column: 2;
+  color: var(--text-strong);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.prose ol.emg-steps span {
+  grid-column: 2;
+  color: var(--text-body);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+/* ------------------------------------------------------------------ /careers */
+.roles { display: flex; flex-direction: column; gap: 16px; margin: 26px 0 8px; }
+.role-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+.role-head { margin-bottom: 10px; }
+.prose .role-card h2 { margin: 0; font-size: var(--text-xl); }
+.prose .role-meta {
+  margin: 4px 0 0;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+.prose .role-blurb { margin: 0 0 14px; }
+.prose .role-looking-label {
+  margin: 0 0 6px;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.prose ul.role-looking { margin: 0 0 18px; }
+
+/* --------------------------------------------- pricing: coverage disclosure */
+.coverage {
+  text-align: left;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+.coverage dt {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+.coverage dd {
+  margin: 0 0 12px;
+  font-size: var(--text-sm);
+  color: var(--text-body);
+  line-height: 1.5;
+}
+.coverage dd:last-child { margin-bottom: 0; }
+.coverage .promise { color: var(--text-strong); font-weight: 500; }

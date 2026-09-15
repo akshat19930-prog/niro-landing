@@ -349,7 +349,7 @@ export const TESTIMONIALS_SHORT: {
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
     q: "What is the membership pricing?",
-    a: "Your first task is free. After that, the Niro membership is US $99 a month and covers your whole family in India with unlimited tasks, a dedicated family manager and emergency response with our concierge on the ground. If you only need a few things a year, Niro Lite is US $250 a year for 15 tasks, partner-network ambulance response, and $50 of wellness credits.",
+    a: "Your first task is free. After that there are two ways to join: US $99 a month, or US $250 for three months ($83 a month) which then continues monthly. Both cover your whole family in India with unlimited tasks, a dedicated family manager and emergency response with our concierge on the ground. Cancel any time.",
   },
   {
     q: "Is Niro a human manager?",
@@ -357,11 +357,19 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "How fast is the emergency response, really?",
-    a: "Check-in calls are instant, and ambulance dispatch is within 3 minutes. We're working to define city-level SLAs.",
+    a: "We answer the emergency line in 45 seconds, our partner Medulance dispatches an ambulance within 3 minutes, and median arrival across our launch cities is 20 minutes. A Niro concierge meets your parents at the hospital and handles admission. The full protocol is on our emergency response page.",
   },
   {
-    q: "Are all tasks covered under the monthly membership cost?",
-    a: "No - some tasks that require us to work with vendors (for example, EPFO recovery or document work) will be chargeable. Charges are always declared upfront, before we pick up the task.",
+    q: "Are all tasks covered under the membership cost?",
+    a: "The membership covers Niro's time - the calls, the chasing, the coordination and our concierge on the ground - with no cap on the number of tasks. Third-party costs are billed at actual: lab charges, ambulance fees, government and legal fees, vendor payments, cab fares. We always tell you the cost and get your go-ahead before we spend anything on your behalf.",
+  },
+  {
+    q: "What if it isn't right for us?",
+    a: "You have a 30-day money-back guarantee. Tell your family manager or write to hello@tellniro.com in your first 30 days and we refund you in full - no forms and no exit interview. Third-party costs we have already paid out on your behalf can't be recalled. After 30 days you can cancel any time, effective at the end of your paid period.",
+  },
+  {
+    q: "What happens after I join?",
+    a: "Within a day we set up your family WhatsApp group and introduce your family manager by name and photo. In the first week we do a 30-minute onboarding call to record your family's details, your emergency protocol and the hospital you prefer - then we start with your first task. You are not left to work out how to use it.",
   },
   {
     q: "Does Niro take decisions on its own?",
@@ -373,7 +381,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "Which cities are you serviceable in today?",
-    a: "We're currently in beta in a select set of cities, and will publish our list of launch cities soon.",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad and Chennai - these are the cities where our concierges are on the ground and where our emergency response times hold. If your parents are somewhere else, join anyway and tell us their city: we open new cities where our members' families already are, and you'll hear from us the week we reach yours.",
   },
   {
     q: "Do my parents need to install anything?",
@@ -383,7 +391,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
 
 /* ---- Membership plans (shown inside the join flow after email) ---- */
 export type Plan = {
-  id: "prime" | "global" | "lite";
+  id: "prime" | "global" | "lite" | "quarter";
   name: string;
   price: string;
   per: string;
@@ -401,19 +409,43 @@ export type Plan = {
  */
 export const MEMBERSHIP_SINGLE: Plan = {
   id: "prime",
-  name: "Niro membership",
+  name: "Monthly",
   price: "$99",
   per: "/month",
   sub: "Your family, fully covered",
   features: [
     "Dedicated family manager + WhatsApp group for tasks",
     "Unlimited tasks",
-    "Emergency response - Niro's concierge present on the ground with your family",
+    "Emergency response - Niro's concierge on the ground with your family",
     "Cyber-fraud cover - insurance up to ₹20L, monitoring & education",
     "$10/mo wellness credits - tests, physio & more",
   ],
   highlight: true,
   badge: "Most families",
+};
+
+/**
+ * The three-month term, billed once. Deliberately a TERM, not a prepay
+ * discount: the research is explicit that this service cannot be judged in
+ * thirty days ("these whole maid cycles are too short a thing to test in two
+ * weeks"), so three months is how long it takes to know. The card stays on
+ * file and rolls to monthly at month four - that is what keeps it a
+ * subscription rather than a 90-day trial we have to re-close by hand.
+ */
+export const MEMBERSHIP_QUARTER: Plan = {
+  id: "quarter",
+  name: "Three months",
+  price: "$250",
+  per: "for 3 months",
+  sub: "$83 a month - save $47",
+  lead: "Everything in the monthly membership, at a lower rate, for the time it actually takes to judge us.",
+  features: [
+    "Billed once, today",
+    "Continues at $99/month from month four",
+    "We remind you seven days before that first renewal",
+    "Cancel any time - no notice period",
+  ],
+  highlight: false,
 };
 
 /**
@@ -448,7 +480,90 @@ export const NIRO_LITE: Plan = {
   highlight: false,
 };
 
-export const PLANS: Plan[] = [MEMBERSHIP_SINGLE, NIRO_LITE];
+/** The two public SKUs. NIRO_LITE is deliberately NOT here - it lives only on
+ *  the unlisted /lite page, for the segment that refuses monthly billing. */
+export const PLANS: Plan[] = [MEMBERSHIP_SINGLE, MEMBERSHIP_QUARTER];
+
+/**
+ * What the fee buys, and what it does not. Stated before payment rather than
+ * discovered at the first invoice: "are all tasks covered under the monthly
+ * cost?" was a live question in the WhatsApp threads, and an unstated answer
+ * becomes a refund request in week two.
+ */
+export const COVERAGE_NOTE = {
+  covers: "Niro's time - the calls, the chasing, the coordination, and our concierge on the ground.",
+  excludes:
+    "Third-party costs are billed at actual: lab charges, ambulance fees, government and legal fees, vendor payments, cab fares.",
+  promise: "We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
+};
+
+/** The money-back guarantee, in the words that go on the page. */
+export const GUARANTEE =
+  "30-day money-back guarantee. If Niro isn't right for your family in the first 30 days, tell us and we refund you in full.";
+
+/* ---- Serviceable cities ----------------------------------------------------
+   Five metros at launch. Chosen as the intersection of observed demand (the
+   parent-city Pareto across 26 smoke-test households and 14 research
+   interviews) and the cities where the emergency SLA below actually holds.
+   Roughly 58% of leads who told us where their parents live are covered.
+   Deliberately NOT published as a radius: an ambulance SLA does not survive
+   150km from the metro, and a service area we cannot hold the SLA in costs
+   more credibility than the coverage is worth. Out-of-area families are
+   waitlisted by city - that list is how we pick city six. */
+export type ServiceCity = { name: string; includes?: string[] };
+
+export const SERVICE_CITIES: ServiceCity[] = [
+  { name: "Bengaluru" },
+  { name: "Delhi NCR", includes: ["Delhi", "Noida", "Greater Noida", "Ghaziabad", "Gurugram", "Faridabad"] },
+  { name: "Mumbai", includes: ["Mumbai", "Navi Mumbai", "Thane"] },
+  { name: "Hyderabad", includes: ["Hyderabad", "Secunderabad"] },
+  { name: "Chennai" },
+];
+
+/* ---- Emergency response ----------------------------------------------------
+   The most-requested capability in every instrument we have run (68.9% of task
+   selections, 9 of 18 interviews) and the least believed. Respondents asked for
+   numbers, not reassurance. These are the numbers. */
+export const EMERGENCY_SLA: { value: string; label: string; detail: string }[] = [
+  {
+    value: "45 sec",
+    label: "We pick up",
+    detail: "A person answers the emergency line - not a menu, not a queue.",
+  },
+  {
+    value: "3 min",
+    label: "Ambulance dispatched",
+    detail: "Our partner Medulance dispatches the nearest equipped ambulance to your parents' address.",
+  },
+  {
+    value: "20 min",
+    label: "Ambulance arrives",
+    detail: "Median arrival across our launch cities, with a paramedic on board.",
+  },
+];
+
+export const EMERGENCY_STEPS: { title: string; body: string }[] = [
+  {
+    title: "Anyone in the family can raise it",
+    body: "Your parents send a message or a voice note in the WhatsApp group, or call the emergency line. They don't need you awake, and they don't need an app.",
+  },
+  {
+    title: "We call back and dispatch at the same time",
+    body: "We do not wait to assess before moving. The ambulance is dispatched while we are still on the phone establishing what has happened.",
+  },
+  {
+    title: "A Niro concierge goes to the hospital",
+    body: "A named person from our team meets your parents there, carries their medical history and insurance details, and handles admission paperwork so nobody is filling forms during a crisis.",
+  },
+  {
+    title: "You are told immediately, and kept updated",
+    body: "You get a call the moment we know something real - and a written update in the family group at every step, so you are not piecing it together from missed calls.",
+  },
+  {
+    title: "We follow your protocol, not our judgement",
+    body: "You decide in advance which hospital, who gets called first, what needs your approval, and what we should never do without asking. We execute that.",
+  },
+];
 
 /* ---- Post-signup qualifiers (lead quality + needs). Tap-based, all optional;
    captured right after the email so we read intent at peak, from ~100% of
@@ -880,3 +995,51 @@ export const US_FAQ: { q: string; a: string }[] = [
     a: "Never. Not for banking, not for anything. If someone claiming to be from Niro asks, it isn't us.",
   },
 ];
+
+/* =====================================================================
+   CAREERS (/careers)
+   ---------------------------------------------------------------------
+   This page is a trust asset before it is a hiring asset. The single most
+   common objection in the research was that Niro might be software wearing
+   a human costume - "I would be suspicious it's basically a glorified
+   wrapper, they are not people." Named, real, open roles answer that in a
+   way no FAQ can. Only list roles we will actually fill this quarter: a
+   stale board proves the opposite of the point.
+   ===================================================================== */
+export type Role = {
+  title: string;
+  location: string;
+  type: string;
+  blurb: string;
+  looking: string[];
+};
+
+export const ROLES: Role[] = [
+  {
+    title: "Founding Engineer",
+    location: "Bengaluru",
+    type: "Full-time",
+    blurb:
+      "The first engineer. You will build the systems our concierges run on - task routing, the family record, the WhatsApp layer - and you will own what you ship end to end.",
+    looking: [
+      "5+ years building products people use daily, not internal tools",
+      "Comfortable owning a surface from database to interface",
+      "Has worked somewhere small enough that the job had no edges",
+    ],
+  },
+  {
+    title: "Concierge Operations",
+    location: "Bengaluru",
+    type: "Full-time · 2 roles",
+    blurb:
+      "You are the person our members' parents actually meet. You run their tasks to completion - the hospital visit, the stuck EPFO claim, the plumber who said he would come on Tuesday - and you close each one with proof.",
+    looking: [
+      "Patience and warmth with older parents - this is the part we test hardest",
+      "Fluent in English and Hindi; a third Indian language is a real advantage",
+      "The judgement to chase something until it is finished, and to escalate before it is too late",
+    ],
+  },
+];
+
+export const CAREERS_INTRO =
+  "Niro is a small team in Bengaluru building a concierge service for families split between India and everywhere else. Everyone who works with our members' parents is on our payroll - we do not forward your family's requests to a marketplace, which is why this page exists at all.";

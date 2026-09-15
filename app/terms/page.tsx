@@ -12,11 +12,11 @@ export default function TermsPage() {
     <PageShell>
       <article className="prose">
         <h1>Terms of Use</h1>
-        <p className="updated">Last updated: 6 July 2026</p>
+        <p className="updated">Last updated: 15 September 2026</p>
 
         <p className="note">
-          These terms cover our pre-launch waitlist. We recommend a review by
-          legal counsel before launch.
+          These terms cover both paid memberships and the waitlist. They have not
+          yet been reviewed by legal counsel - that review is outstanding.
         </p>
 
         <p>
@@ -28,13 +28,71 @@ export default function TermsPage() {
           the Site.
         </p>
 
-        <h2>The waitlist is not a purchase</h2>
+        <h2>Membership, billing and renewal</h2>
         <p>
-          Joining the waitlist reserves your interest in Niro. It is{" "}
+          Niro is sold as a membership. There are two ways to start:{" "}
+          <strong>US $99 per month</strong>, or <strong>US $250 for three
+          months</strong>, billed once at the start of the term. Both continue at
+          US $99 per month afterwards, charged to the card you have on file, until
+          you cancel. We send you a reminder{" "}
+          <strong>seven days before every renewal</strong> so no charge is a
+          surprise.
+        </p>
+        <p>
+          Joining the waitlist without paying is{" "}
           <strong>not</strong> an order, a contract for services, or a payment. Any
-          prices, plans, or features shown are indicative and may change before
-          launch. A paid membership, when available, will be governed by separate
-          terms you agree to at that time.
+          prices, plans, or features shown to a waitlist member are indicative and
+          may change before they join.
+        </p>
+
+        <h2>What your membership fee covers</h2>
+        <p>
+          Your fee covers Niro&rsquo;s own time - the calls, the chasing, the
+          coordination, and our concierge on the ground - with no cap on the
+          number of tasks. It does <strong>not</strong> cover third-party costs
+          incurred on your behalf, which are billed to you at actual cost: lab
+          charges, ambulance fees, government and legal fees, vendor and
+          contractor payments, and cab fares among them. We will always tell you
+          the expected cost and obtain your approval before spending on your
+          behalf.
+        </p>
+
+        <h2>30-day money-back guarantee</h2>
+        <p>
+          If Niro is not right for your family, tell your family manager or write
+          to <a href="mailto:hello@tellniro.com">hello@tellniro.com</a> within{" "}
+          <strong>30 days</strong> of your first payment and we will refund you in
+          full. No forms, and no exit interview. Three boundaries apply:
+        </p>
+        <ul>
+          <li>
+            <strong>Third-party costs already paid out are not refundable.</strong>{" "}
+            We can refund our own fee; we cannot recall money already spent with a
+            hospital, vendor or government office on your behalf.
+          </li>
+          <li>
+            <strong>The three-month membership is refunded in full within the
+            first 30 days</strong>, less any such third-party costs. After day 30
+            it runs to the end of its term.
+          </li>
+          <li>
+            <strong>One guarantee per household.</strong>
+          </li>
+        </ul>
+        <p>
+          Refunds are returned to the original payment method within five working
+          days of us confirming them.
+        </p>
+
+        <h2>Cancelling</h2>
+        <p>
+          You can cancel at any time, with no notice period, by telling your
+          family manager or writing to{" "}
+          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Cancellation
+          stops future charges and takes effect at the end of the period you have
+          already paid for - you keep the service until then.{" "}
+          <strong>Cancelling is not the same as claiming a refund</strong>: outside
+          the 30-day guarantee, cancelling does not refund the current period.
         </p>
 
         <h2>Eligibility</h2>

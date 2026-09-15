@@ -11,7 +11,7 @@ import { ParentVoiceCard } from "@/components/ds/ParentVoiceCard";
 import { ChatVideo } from "@/components/ds/ChatVideo";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
-import { PLANS, PARENT_VOICE, TESTIMONIALS_SHORT } from "@/lib/content";
+import { PLANS, PARENT_VOICE, TESTIMONIALS_SHORT, COVERAGE_NOTE, GUARANTEE } from "@/lib/content";
 
 /* ---------------------------------------------------------------- helpers */
 
@@ -492,9 +492,9 @@ function PricingB() {
     <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto", textAlign: "center" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>Cover your whole family, or just the essentials.</h2>
+        <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>One membership. Two ways to start.</h2>
         <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 28px" }}>
-          First task free. No card required to join.
+          Your first task is free. Cancel any time.
         </p>
         <div
           style={{
@@ -545,6 +545,18 @@ function PricingB() {
                 <div style={{ fontSize: "var(--text-sm)", color: dark ? "var(--gold-300)" : "var(--brand)", fontWeight: 500, marginBottom: 12 }}>
                   {p.sub}
                 </div>
+                {p.lead && (
+                  <p
+                    style={{
+                      fontSize: "var(--text-xs)",
+                      lineHeight: 1.5,
+                      color: dark ? "rgba(255,255,255,0.82)" : "var(--text-body)",
+                      margin: "0 0 12px",
+                    }}
+                  >
+                    {p.lead}
+                  </p>
+                )}
                 <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
                   {p.features.map((f) => (
                     <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-xs)" }}>
@@ -557,6 +569,31 @@ function PricingB() {
             );
           })}
         </div>
+        {/* What the fee buys and what it doesn't, stated BEFORE payment. "Are
+            all tasks covered?" was a live question in the WhatsApp threads, and
+            an unstated answer becomes a refund request in week two. */}
+        <dl className="coverage">
+          <dt>What the membership covers</dt>
+          <dd>{COVERAGE_NOTE.covers}</dd>
+          <dt>Billed separately, at actual cost</dt>
+          <dd>{COVERAGE_NOTE.excludes}</dd>
+          <dd className="promise">{COVERAGE_NOTE.promise}</dd>
+        </dl>
+        <p
+          style={{
+            fontSize: "var(--text-sm)",
+            color: "var(--text-body)",
+            margin: "0 0 20px",
+            display: "flex",
+            alignItems: "flex-start",
+            gap: 8,
+            justifyContent: "center",
+            textAlign: "left",
+          }}
+        >
+          <Icon name="shield-check" size={17} style={{ marginTop: 2, flexShrink: 0, color: "var(--brand)" }} />
+          <span>{GUARANTEE}</span>
+        </p>
         <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
         <AskNiroCta
           placement="pricing"
