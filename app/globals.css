@@ -907,3 +907,52 @@
   line-height: 1.45;
 }
 .prose ul.pack-features svg { margin-top: 2px; flex-shrink: 0; color: var(--brand); }
+
+/* --------------------------------------------------------- /what-we-do grid
+   Column flow rather than a card grid: the groups are wildly uneven in length
+   (six items against four), and cards would stretch the short ones over dead
+   space. Two columns from tablet up, one on phones. */
+.scope-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 26px 32px;
+  margin: 28px 0 8px;
+}
+@media (min-width: 660px) {
+  .scope-grid { grid-template-columns: 1fr 1fr; }
+}
+.scope-group { break-inside: avoid; }
+.prose .scope-group h2 {
+  font-size: var(--text-lg);
+  margin: 0 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-strong);
+}
+.prose .scope-group ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.prose .scope-group li {
+  position: relative;
+  padding-left: 16px;
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--text-body);
+}
+.prose .scope-group li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.scope-cta { margin-top: 28px; }

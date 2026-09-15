@@ -212,11 +212,6 @@ export const HANDLE_GROUPS: {
         t: "Health monitoring & admin",
         d: "Pre-set at-home check-ups, plus the appointments, reports, and insurance paperwork that go with them.",
       },
-      {
-        icon: "shield-check",
-        t: "Cyber-fraud protection",
-        d: "Prevent and monitor cyber-fraud risk with the senior citizens in your family.",
-      },
     ],
   },
   {
@@ -319,7 +314,7 @@ export const TESTIMONIALS_SHORT: {
     name: "Mayank, 36",
     location: "New York, US ↔ Lucknow, India",
     quote:
-      "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now - and I worry far less about the cyber-fraud that targets senior citizens.",
+      "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now - the filings, the tenants, the chasing I used to do at midnight.",
     photo: "/people/mayank.jpg",
   },
   {
@@ -491,7 +486,6 @@ export const NIRO_LITE: Plan = {
     "15 tasks, used any time across the year",
     "Same WhatsApp group, same vetted concierges",
     "Emergency ambulance through our partner network - no Niro concierge on the ground",
-    "$50 a year in wellness credits - tests, physio & more",
   ],
   highlight: false,
 };
@@ -713,10 +707,10 @@ export const TASK_DEFS: TaskDef[] = [
     note: "A full bill audit, plus reminders so nothing lapses again.",
   },
   {
-    id: "fraud",
-    icon: "shield-check",
-    label: "Parents' Cyber-Fraud Risk Score",
-    note: "A plain-language read on where they're exposed.",
+    id: "health",
+    icon: "heart-pulse",
+    label: "Set up parents' health check-up",
+    note: "Booked, sample collected at home, reports explained."
   },
 ];
 
@@ -739,8 +733,6 @@ export const US_PLANS: Plan[] = [
       "Dedicated family manager + WhatsApp group",
       "Unlimited tasks for your family in India",
       "Emergency response, with someone on the ground",
-      "Cyber-fraud cover up to ₹20L",
-      "$10/mo wellness credits",
     ],
     highlight: false,
   },
@@ -821,7 +813,7 @@ export const US_TESTIMONIALS: {
     name: "Mayank, 36",
     location: "New York, US ↔ Lucknow, India",
     quote:
-      "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now - and I worry far less about the cyber-fraud that targets senior citizens.",
+      "We have property across three cities, and between my schedule I kept missing property-tax filings and rent follow-ups. Niro handles all of it now - the filings, the tenants, the chasing I used to do at midnight.",
     highlight: "Niro handles all of it now",
     photo: "/people/mayank.jpg",
   },
@@ -876,7 +868,6 @@ export const INDIA_SCOPE: { title: string; items: string[] }[] = [
   {
     title: "And the rest",
     items: [
-      "Cyber fraud prevention and monitoring, opt-in",
       "Reminders your parents can set themselves, for birthdays and events",
       "Property and tenant management",
       "Tech support for your parents' how-to questions",

@@ -76,6 +76,7 @@ function doPost(e) {
     var C_REFCODE = 13, C_POSITION = 14;
     var C_TASKS = 15, C_WHOFOR = 16, C_URGENCY = 17, C_PHONE = 18;
     var C_MARKET = 19, C_PAGE = 20, C_GEO = 21, C_PRICEARM = 22;
+    var C_NAME = 26, C_CITY = 27, C_CITYSERVED = 28;
     var tasksStr = (data.tasks && data.tasks.length) ? data.tasks.join(" | ") : "";
     // Geography: prefer the market the page declared ("gulf" on /gulf), else the
     // coarse region the client inferred from its time zone ("gulf"/"na"/"other").
@@ -84,6 +85,11 @@ function doPost(e) {
     var geo = String(data.geo || "");
     // /gulf price A/B arm ("149" | "99"); blank for non-gulf leads.
     var priceArm = String(data.priceArm || "");
+    // Phone-first fields. Appended AFTER the sales columns (W/X/Y) so no
+    // existing column index shifts and applyLeadNotes() keeps working.
+    var leadName = String(data.name || "").trim();
+    var leadCity = String(data.city || "").trim();
+    var cityServed = String(data.cityServed || "").trim();
 
     if (rowIndex === -1) {
       // New signup. Order must match HEADER.
@@ -95,7 +101,9 @@ function doPost(e) {
         utm.utm_source || "", utm.utm_medium || "", utm.utm_campaign || "",
         utm.utm_content || "", utm.fbclid || "", referralCode, position,
         tasksStr, data.whoFor || "", data.urgency || "", data.phone || "",
-        market, pagePath, geo, priceArm
+        market, pagePath, geo, priceArm,
+        "", "", "",                       // leadStatus, detailsShared, leadNotes
+        leadName, leadCity, cityServed
       ]);
     } else {
       // Existing signup - enrich the row, keep its position/referralCode.
@@ -117,6 +125,9 @@ function doPost(e) {
       if (pagePath && !row[C_PAGE - 1]) sheet.getRange(rowIndex, C_PAGE).setValue(pagePath);
       if (geo && !row[C_GEO - 1]) sheet.getRange(rowIndex, C_GEO).setValue(geo);
       if (priceArm && !row[C_PRICEARM - 1]) sheet.getRange(rowIndex, C_PRICEARM).setValue(priceArm);
+      if (leadName) sheet.getRange(rowIndex, C_NAME).setValue(leadName);
+      if (leadCity) sheet.getRange(rowIndex, C_CITY).setValue(leadCity);
+      if (cityServed) sheet.getRange(rowIndex, C_CITYSERVED).setValue(cityServed);
     }
 
     return json_({ position: position, referralCode: referralCode });
@@ -145,7 +156,11 @@ var HEADER = [
   "priceArm",
   // Sales/CRM columns (W, X, Y) - filled by hand or by applyLeadNotes() from
   // the WhatsApp outreach. Never written by doPost, so signups can't clobber them.
-  "leadStatus", "detailsShared", "leadNotes"
+  "leadStatus", "detailsShared", "leadNotes",
+  // Phone-first capture (Z, AA, AB). cityServed carries the CANONICAL launch
+  // city when we serve them and is blank when we do not - so the waitlist-by-
+  // city view that decides city six is a single filter on this column.
+  "name", "city", "cityServed"
 ];
 
 /* =====================================================================

@@ -1,19 +1,40 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card } from "@/components/ds/Card";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
 import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
-import {
-  QUALIFY_TASKS,
-  QUALIFY_WHO,
-  QUALIFY_URGENCY,
-} from "@/lib/content";
-import { FALLBACK_WAITLIST_POSITION } from "@/lib/config";
+import { TASK_DEFS, SERVICE_CITIES } from "@/lib/content";
+import { SUPPORT_WHATSAPP } from "@/lib/config";
 import { dialCode } from "@/lib/track";
+import { whatsappUrl } from "@/lib/whatsapp";
+import { logEvent } from "@/lib/track";
+
+/**
+ * The join modal, phone-first.
+ *
+ * The flow is: phone + name + parents' city -> pick your free first task ->
+ * hand off to WhatsApp with everything pre-filled.
+ *
+ * Three decisions worth keeping:
+ *
+ *  1. PHONE, NOT EMAIL. The product runs on WhatsApp, so the phone is the
+ *     account identifier, and we are now selling on calls rather than
+ *     measuring interest. Email drops to optional - we need it for receipts
+ *     once someone pays, not to start a conversation. Roughly 70% of leads
+ *     were volunteering a number anyway.
+ *  2. THE CITY IS A CHECKER, NOT A GATE. Hiding the launch cities behind the
+ *     form would be a dark pattern on a trust-constrained product, and the
+ *     out-of-area lead is worth more waitlisted-by-city than sold something
+ *     we cannot deliver. Both branches capture.
+ *  3. WE WRITE THE LEAD BEFORE THE HANDOFF. If the WhatsApp click were the
+ *     only capture we would lose everyone who doesn't send the message - and
+ *     the handoff carries name, city and task into the prefilled text, which
+ *     is what stops leads arriving on the support line unidentifiable.
+ */
 
 const h2Style = {
   fontFamily: "var(--font-display)",
@@ -22,296 +43,379 @@ const h2Style = {
   fontWeight: 500,
 } as const;
 
-/** A tap-to-select pill used across the qualifier questions. */
-function Chip({
-  label,
-  selected,
-  onClick,
-  multi = false,
-}: {
-  label: string;
-  selected: boolean;
-  onClick: () => void;
-  multi?: boolean;
-}) {
-  return (
-    <button
-      type="button"
-      role={multi ? "checkbox" : "radio"}
-      aria-checked={selected}
-      onClick={onClick}
-      style={{
-        padding: "9px 14px",
-        borderRadius: "var(--radius-pill)",
-        cursor: "pointer",
-        fontFamily: "var(--font-sans)",
-        fontSize: "var(--text-sm)",
-        fontWeight: 500,
-        lineHeight: 1.2,
-        border: `1.5px solid ${selected ? "var(--brand)" : "var(--border-strong)"}`,
-        background: selected ? "var(--brand-soft)" : "transparent",
-        color: selected ? "var(--brand)" : "var(--text-body)",
-        transition:
-          "background var(--dur-fast) var(--ease-calm), border-color var(--dur-fast) var(--ease-calm), color var(--dur-fast) var(--ease-calm)",
-      }}
-    >
-      {label}
-    </button>
-  );
+const labelStyle = {
+  display: "block",
+  fontSize: "var(--text-sm)",
+  fontWeight: 600,
+  color: "var(--text-strong)",
+  marginBottom: 6,
+} as const;
+
+/** Fisher-Yates, seeded per visitor at mount. The first-task cards are order-
+ *  randomized per the brief, so position bias doesn't masquerade as preference. */
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
-/** A labelled group of chips. */
-function Question({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div style={{ marginBottom: 18 }}>
-      <div
-        style={{
-          fontSize: "var(--text-sm)",
-          fontWeight: 600,
-          color: "var(--text-strong)",
-          marginBottom: 10,
-        }}
-      >
-        {label}
-      </div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>{children}</div>
-    </div>
-  );
-}
-
-/** The join modal - email → qualifiers (needs + lead quality) → confirmation.
- *  Email capture + submission live in JoinProvider, so the hero inline form and
- *  this modal share one submission and one eventId. */
 export function JoinModal() {
-  const {
-    open,
-    setOpen,
-    step,
-    email,
-    setEmail,
-    result,
-    submitEmail,
-    submitQualifiers,
-    submitPhone,
-  } = useJoin();
+  const { open, setOpen, step, setStep, lead, cityMatch, submitLead, submitFirstTask } =
+    useJoin();
 
   const [error, setError] = useState<string | undefined>();
-
-  // Qualifier answers (all optional).
-  const [tasks, setTasks] = useState<string[]>([]);
-  const [whoFor, setWhoFor] = useState<string | null>(null);
-  const [urgency, setUrgency] = useState<string | null>(null);
-
-  // Optional WhatsApp number on the confirmation.
   const [phone, setPhone] = useState("");
-  const [phoneAdded, setPhoneAdded] = useState(false);
+  const [name, setName] = useState("");
+  const [city, setCity] = useState("");
+  const [email, setEmailField] = useState("");
+  const [showEmail, setShowEmail] = useState(false);
 
-  // Put the cursor in the email field the moment the modal opens at the email step.
-  useEffect(() => {
-    if (!open || step !== "form") return;
-    const t = setTimeout(() => {
-      const el = document.getElementById("email-input") as HTMLInputElement | null;
-      el?.focus();
-    }, 60);
-    return () => clearTimeout(t);
-  }, [open, step]);
+  const [picked, setPicked] = useState<string | null>(null);
+  const [ownTask, setOwnTask] = useState("");
 
-  // On the confirmation step, pre-fill the WhatsApp field with the visitor's
-  // country dialling code (from their time zone) so they only type the local
-  // number — lowers the friction on the highest-intent signal.
+  // Randomized once per mount, not per render.
+  const tasks = useMemo(() => shuffle(TASK_DEFS), []);
+
+  // Prefill the dial code from the visitor's time zone so the number they type
+  // is complete enough to message.
   useEffect(() => {
-    if (step !== "done" || phoneAdded) return;
+    if (step !== "form") return;
     setPhone((cur) => (cur ? cur : dialCode() ? dialCode() + " " : ""));
-  }, [step, phoneAdded]);
+  }, [step]);
+
+  useEffect(() => {
+    if (!open) setError(undefined);
+  }, [open]);
 
   if (!open) return null;
 
-  function onEmailSubmit(e: React.FormEvent) {
+  const served = cityMatch?.served === true;
+  const chosenTask = picked === "__own" ? ownTask.trim() : picked;
+
+  function onDetailsSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const err = submitEmail(email);
+    const err = submitLead({ phone, name, city, email: showEmail ? email : undefined });
     setError(err || undefined);
   }
 
-  function toggleTask(t: string) {
-    setTasks((cur) => (cur.includes(t) ? cur.filter((x) => x !== t) : [...cur, t]));
+  function onTaskSubmit() {
+    if (!chosenTask) return;
+    submitFirstTask(chosenTask);
   }
 
-  function finishQualifiers(skip = false) {
-    submitQualifiers(
-      skip
-        ? { tasks: [], whoFor: null, urgency: null, plan: null }
-        : { tasks, whoFor, urgency, plan: null }
-    );
-  }
-
-  function onPhoneAdd() {
-    submitPhone(phone);
-    setPhoneAdded(true);
+  /** The handoff. Everything the founder needs is in the message, so the lead
+   *  never lands on the support line as an unknown number. */
+  function waMessage(): string {
+    const parts = [
+      `Hi Niro, I'm ${lead?.name || ""}.`,
+      lead?.city ? `My family is in ${lead.city}.` : "",
+      chosenTask ? `I'd like my free first task: ${chosenTask}` : "",
+    ].filter(Boolean);
+    return parts.join(" ");
   }
 
   return (
     <div
-      className="join-overlay"
       role="dialog"
       aria-modal="true"
-      aria-label="Join the waitlist"
+      aria-label="Join Niro"
       onClick={(e) => {
         if (e.target === e.currentTarget) setOpen(false);
       }}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 100,
+        background: "rgba(12,31,24,0.55)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "20px var(--gutter)",
+        overflowY: "auto",
+      }}
     >
-      <div className="join-sheet">
-        <button className="join-close" aria-label="Close" onClick={() => setOpen(false)}>
+      <Card
+        style={{
+          width: "100%",
+          maxWidth: 460,
+          background: "var(--surface-card)",
+          padding: "var(--space-5)",
+          position: "relative",
+        }}
+      >
+        <button
+          type="button"
+          aria-label="Close"
+          onClick={() => setOpen(false)}
+          style={{
+            position: "absolute",
+            top: 12,
+            right: 12,
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
+            color: "var(--text-muted)",
+            padding: 6,
+            lineHeight: 0,
+          }}
+        >
           <Icon name="x" size={20} />
         </button>
 
+        {/* ---------------------------------------------- 1. details */}
         {step === "form" && (
-          <>
-            <Eyebrow>Step 1 of 2</Eyebrow>
-            <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>Join the waitlist</h2>
-            <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 24px" }}>
-              First task free - no card to join. Just your email to hold your family&apos;s
-              place.
-            </p>
-            <form onSubmit={onEmailSubmit} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-              <Input
-                id="email-input"
-                label="Email"
-                type="email"
-                placeholder="you@email.com"
-                value={email}
-                error={error}
-                onChange={(e) => setEmail(e.target.value)}
-                autoComplete="email"
-              />
-              <Button type="submit" size="lg" full>
-                Join the waitlist
-              </Button>
-            </form>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 16, fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
-              <Icon name="lock" size={14} />
-              No payment, ever, to join the list.
-            </div>
-          </>
-        )}
-
-        {step === "qualify" && (
-          <>
-            <Eyebrow>Step 2 of 2</Eyebrow>
-            <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>Help us set up your Niro</h2>
-            <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 22px" }}>
-              A few taps so your associate is ready for you. Optional &mdash; skip anytime.
-            </p>
-
-            <Question label="What would you hand off first?">
-              {QUALIFY_TASKS.map((t) => (
-                <Chip key={t} label={t} multi selected={tasks.includes(t)} onClick={() => toggleTask(t)} />
-              ))}
-            </Question>
-
-            <Question label="Who&rsquo;s it for?">
-              {QUALIFY_WHO.map((w) => (
-                <Chip key={w} label={w} selected={whoFor === w} onClick={() => setWhoFor(w)} />
-              ))}
-            </Question>
-
-            <Question label="When do you need it?">
-              {QUALIFY_URGENCY.map((u) => (
-                <Chip key={u} label={u} selected={urgency === u} onClick={() => setUrgency(u)} />
-              ))}
-            </Question>
-
-            <div style={{ marginTop: 22 }}>
-              <Button size="lg" full onClick={() => finishQualifiers(false)}>
-                Done
-              </Button>
-            </div>
-            <button
-              onClick={() => finishQualifiers(true)}
-              style={{
-                display: "block",
-                margin: "14px auto 0",
-                background: "none",
-                border: "none",
-                color: "var(--text-muted)",
-                fontSize: "var(--text-sm)",
-                cursor: "pointer",
-                fontFamily: "var(--font-sans)",
-              }}
-            >
-              Skip for now
-            </button>
-          </>
-        )}
-
-        {step === "done" && (
-          <Card>
-            <span
-              style={{
-                display: "inline-flex",
-                width: 56,
-                height: 56,
-                borderRadius: "50%",
-                background: "var(--brand-soft)",
-                color: "var(--brand)",
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: 18,
-              }}
-            >
-              <Icon name="check-circle" size={28} />
-            </span>
-            <h2 style={{ ...h2Style, margin: "0 0 6px" }}>
-              You&apos;re #{(result?.position ?? FALLBACK_WAITLIST_POSITION).toLocaleString()} on the list
+          <form onSubmit={onDetailsSubmit}>
+            <Eyebrow>Get started</Eyebrow>
+            <h2 style={{ ...h2Style, margin: "10px 0 6px" }}>
+              Your first task is on us.
             </h2>
+            <p
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "var(--text-body)",
+                margin: "0 0 18px",
+              }}
+            >
+              Tell us where to reach you and where your family is. No card, and
+              nothing to install.
+            </p>
 
-            {/* PRIMARY: WhatsApp number — benefit-framed, the highest-intent
-                signal + the handoff into the product's own channel. */}
-            {phoneAdded ? (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
-                  marginTop: 14,
-                  padding: "12px 14px",
-                  borderRadius: "var(--radius-lg)",
-                  background: "var(--brand-soft)",
-                  color: "var(--brand)",
-                  fontSize: "var(--text-sm)",
-                  fontWeight: 500,
-                }}
-              >
-                <Icon name="check-circle" size={16} /> Got it &mdash; a named associate will WhatsApp you shortly.
+            <div style={{ marginBottom: 14 }}>
+              <label style={labelStyle} htmlFor="join-phone">
+                WhatsApp number
+              </label>
+              <Input
+                id="join-phone"
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                placeholder="+1 415 555 0134"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
+
+            <div style={{ marginBottom: 14 }}>
+              <label style={labelStyle} htmlFor="join-name">
+                Your name
+              </label>
+              <Input
+                id="join-name"
+                autoComplete="given-name"
+                placeholder="Arjun"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+
+            <div style={{ marginBottom: 12 }}>
+              <label style={labelStyle} htmlFor="join-city">
+                Which city is your family in?
+              </label>
+              <Input
+                id="join-city"
+                autoComplete="off"
+                placeholder="Bengaluru"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+            </div>
+
+            {showEmail ? (
+              <div style={{ marginBottom: 12 }}>
+                <label style={labelStyle} htmlFor="join-email">
+                  Email <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>(optional)</span>
+                </label>
+                <Input
+                  id="join-email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmailField(e.target.value)}
+                />
               </div>
             ) : (
-              <>
-                <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 14px" }}>
-                  Want your first task started this week? Add your WhatsApp number and a
-                  named associate will message you to get going &mdash; on us.
-                </p>
+              <button
+                type="button"
+                onClick={() => setShowEmail(true)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  padding: 0,
+                  marginBottom: 14,
+                  cursor: "pointer",
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "var(--text-xs)",
+                  color: "var(--text-muted)",
+                  textDecoration: "underline",
+                }}
+              >
+                Add an email as well
+              </button>
+            )}
+
+            {error && (
+              <p
+                role="alert"
+                style={{ color: "var(--danger)", fontSize: "var(--text-sm)", margin: "0 0 12px" }}
+              >
+                {error}
+              </p>
+            )}
+
+            <Button full type="submit">
+              Continue
+            </Button>
+            <p
+              style={{
+                fontSize: "var(--text-xs)",
+                color: "var(--text-muted)",
+                margin: "12px 0 0",
+                textAlign: "center",
+              }}
+            >
+              We never ask for passwords or OTPs. Ever.
+            </p>
+          </form>
+        )}
+
+        {/* ------------------------------------------- 2. first task */}
+        {step === "qualify" && (
+          <div>
+            <Eyebrow>{served ? "You're in a city we serve" : "Pick your first task"}</Eyebrow>
+            <h2 style={{ ...h2Style, margin: "10px 0 6px" }}>
+              What should we take off your plate first?
+            </h2>
+            <p
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "var(--text-body)",
+                margin: "0 0 16px",
+              }}
+            >
+              {served
+                ? `We're live in ${cityMatch?.city}. Choose one and we'll start on it - free.`
+                : "Tell us what you need most. We'll use it to decide which city we open next."}
+            </p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
+              {tasks.map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  className={`task-card${picked === t.label ? " task-card-on" : ""}`}
+                  onClick={() => setPicked(t.label)}
+                >
+                  <Icon name={t.icon} size={22} style={{ flexShrink: 0, color: "var(--brand)" }} />
+                  <span>
+                    <span style={{ display: "block", fontWeight: 600, color: "var(--text-strong)", fontSize: "var(--text-sm)" }}>
+                      {t.label}
+                    </span>
+                    <span style={{ display: "block", fontSize: "var(--text-xs)", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                      {t.note}
+                    </span>
+                  </span>
+                </button>
+              ))}
+              <button
+                type="button"
+                className={`task-card${picked === "__own" ? " task-card-on" : ""}`}
+                onClick={() => setPicked("__own")}
+              >
+                <Icon name="message-circle" size={22} style={{ flexShrink: 0, color: "var(--brand)" }} />
+                <span style={{ fontWeight: 600, color: "var(--text-strong)", fontSize: "var(--text-sm)" }}>
+                  Something else
+                </span>
+              </button>
+            </div>
+
+            {picked === "__own" && (
+              <div style={{ marginBottom: 14 }}>
+                <label style={labelStyle} htmlFor="join-own-task">
+                  What do you need done?
+                </label>
                 <Input
-                  id="phone-input"
-                  type="tel"
-                  inputMode="tel"
-                  placeholder="WhatsApp number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  autoComplete="tel"
-                  aria-label="WhatsApp number"
+                  id="join-own-task"
+                  placeholder="Sort out Dad's electricity bill"
+                  value={ownTask}
+                  onChange={(e) => setOwnTask(e.target.value)}
                 />
-                <div style={{ marginTop: 10 }}>
-                  <Button full onClick={onPhoneAdd} disabled={phone.replace(/[^\d]/g, "").length < 8}>
-                    Notify me on WhatsApp
-                  </Button>
+              </div>
+            )}
+
+            <Button full onClick={onTaskSubmit} disabled={!chosenTask}>
+              Continue
+            </Button>
+          </div>
+        )}
+
+        {/* ------------------------------------------ 3. confirmation */}
+        {step === "done" && (
+          <div>
+            {served ? (
+              <>
+                <div style={{ marginBottom: 12 }}>
+                  <Icon name="check-circle" size={34} style={{ color: "var(--brand)" }} />
                 </div>
-                <div style={{ marginTop: 8, fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
-                  Only about your Niro &mdash; no spam, opt out anytime.
+                <h2 style={{ ...h2Style, margin: "0 0 8px" }}>
+                  You&rsquo;re in, {lead?.name?.split(" ")[0]}.
+                </h2>
+                <p style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", margin: "0 0 18px" }}>
+                  Send us one message and we&rsquo;ll pick up your first task
+                  today. We&rsquo;ll set up your family group and introduce your
+                  manager by name and photo.
+                </p>
+                <a
+                  className="btn btn-primary btn-md btn-full"
+                  href={whatsappUrl(waMessage())}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    // Rebuild at click time so the ref carries the latest
+                    // attribution rather than whatever was current at mount.
+                    e.currentTarget.href = whatsappUrl(waMessage());
+                    logEvent("whatsapp_click", { placement: "join_confirm" });
+                  }}
+                >
+                  Start on WhatsApp
+                </a>
+                <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", margin: "12px 0 0", textAlign: "center" }}>
+                  Or save {SUPPORT_WHATSAPP.replace(/^(\d{2})(\d+)$/, "+$1 $2")} and message us any time.
+                </p>
+              </>
+            ) : (
+              <>
+                <div style={{ marginBottom: 12 }}>
+                  <Icon name="map-pin" size={32} style={{ color: "var(--accent-strong)" }} />
                 </div>
+                <h2 style={{ ...h2Style, margin: "0 0 8px" }}>
+                  We&rsquo;re not in {lead?.city} yet.
+                </h2>
+                <p style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", margin: "0 0 14px" }}>
+                  We&rsquo;d rather tell you now than promise something we
+                  can&rsquo;t do well. You&rsquo;re on the list, and we open new
+                  cities where our members&rsquo; families already are &mdash; so
+                  your answer genuinely moves {lead?.city} up it.
+                </p>
+                <p style={{ fontSize: "var(--text-sm)", color: "var(--text-body)", margin: "0 0 18px" }}>
+                  Today we&rsquo;re live in{" "}
+                  <strong>
+                    {SERVICE_CITIES.map((c) => c.name).join(", ").replace(/, ([^,]*)$/, " and $1")}
+                  </strong>
+                  . We&rsquo;ll message you the week we reach yours.
+                </p>
+                <Button full variant="secondary" onClick={() => setOpen(false)}>
+                  Got it
+                </Button>
               </>
             )}
-          </Card>
+          </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }

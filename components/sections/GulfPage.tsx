@@ -946,7 +946,6 @@ function GulfPricing() {
     "Two WhatsApp groups - one for India, one for home here",
     "Your parents just WhatsApp. Nothing to install, nothing to learn.",
     "Emergency response for your parents in India - ambulance partner plus our own person at the hospital",
-    "₹20 lakh cyber-fraud cover for your parents in India, plus monitoring",
     "A named contact who knows your family",
   ];
   return (
