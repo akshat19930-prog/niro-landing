@@ -12,7 +12,7 @@ import { VoiceStream } from "@/components/ds/VoiceStream";
 import { ChatVideo } from "@/components/ds/ChatVideo";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
-import { PLANS, TESTIMONIALS_SHORT, COVERAGE_NOTE, GUARANTEE } from "@/lib/content";
+import { PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE } from "@/lib/content";
 
 /* ---------------------------------------------------------------- helpers */
 
@@ -604,91 +604,72 @@ function TrustB() {
 
 /* ---------------------------------------------------------------- pricing */
 
+/**
+ * Pricing.
+ *
+ * Both SKUs carry an identical feature list, so showing that list twice made
+ * the section look like a comparison when there is nothing to compare. The
+ * benefits move into a single shared grid underneath, and the two prices sit
+ * above it as equal options - no dark card, no "most families" badge. Nothing
+ * on the page should push someone toward a term length; we would rather they
+ * pick the one they actually want and stay.
+ *
+ * The guarantee is promoted out of a footnote into its own band. It is the
+ * single strongest answer to the objection the research kept finding - a
+ * stranger asking $99 from someone who has never met them - and it was
+ * previously smaller than the price.
+ */
 function PricingB() {
   return (
     <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad }}>
-      <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto", textAlign: "center" }}>
+      <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>One membership. Two ways to start.</h2>
-        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 28px" }}>
-          Your first task is free. Cancel any time.
+        <h2 style={{ ...h2Style, margin: "14px 0 8px", textAlign: "center" }}>
+          One membership. Two ways to pay.
+        </h2>
+        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 26px", textAlign: "center" }}>
+          Same service either way. Your first task is free, and you can cancel
+          any time.
         </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))",
-            gap: 16,
-            textAlign: "left",
-            marginBottom: 28,
-            alignItems: "start",
-          }}
-        >
-          {PLANS.map((p) => {
-            const dark = p.highlight;
-            return (
-              <div
-                key={p.id}
-                style={{
-                  background: dark ? "var(--forest-700)" : "var(--surface-card)",
-                  color: dark ? "var(--ivory)" : "var(--text-body)",
-                  border: `1px solid ${dark ? "var(--forest-700)" : "var(--border)"}`,
-                  borderRadius: "var(--radius-xl)",
-                  padding: "var(--space-5)",
-                  boxShadow: dark ? "var(--shadow-brand)" : "var(--shadow-2)",
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                  <span
-                    style={{
-                      fontSize: "var(--text-sm)",
-                      fontWeight: 600,
-                      textTransform: "uppercase",
-                      letterSpacing: "var(--tracking-wide)",
-                      color: dark ? "var(--gold-300)" : "var(--accent-strong)",
-                    }}
-                  >
-                    {p.name}
-                  </span>
-                  {p.badge && <Badge tone={dark ? "solid" : "brand"}>{p.badge}</Badge>}
-                </div>
-                <div style={{ margin: "10px 0 4px", display: "flex", alignItems: "baseline", gap: 4 }}>
-                  <span style={{ fontFamily: "var(--font-display)", fontSize: 34, fontWeight: 600, color: dark ? "#fff" : "var(--text-strong)" }}>
-                    {p.price}
-                  </span>
-                  <span style={{ fontSize: "var(--text-sm)", color: dark ? "rgba(255,255,255,0.7)" : "var(--text-muted)" }}>
-                    {p.per}
-                  </span>
-                </div>
-                <div style={{ fontSize: "var(--text-sm)", color: dark ? "var(--gold-300)" : "var(--brand)", fontWeight: 500, marginBottom: 12 }}>
-                  {p.sub}
-                </div>
-                {p.lead && (
-                  <p
-                    style={{
-                      fontSize: "var(--text-xs)",
-                      lineHeight: 1.5,
-                      color: dark ? "rgba(255,255,255,0.82)" : "var(--text-body)",
-                      margin: "0 0 12px",
-                    }}
-                  >
-                    {p.lead}
-                  </p>
-                )}
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-                  {p.features.map((f) => (
-                    <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-xs)" }}>
-                      <Icon name="check-circle" size={15} style={{ marginTop: 1, flexShrink: 0, color: dark ? "var(--gold-300)" : "var(--brand)" }} />
-                      <span style={{ color: dark ? "rgba(255,255,255,0.92)" : "var(--text-body)", lineHeight: 1.4 }}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
+
+        <div className="price-pair">
+          {PLANS.map((p) => (
+            <div className="price-opt" key={p.id}>
+              <div className="price-opt-name">{p.name}</div>
+              <div className="price-opt-amount">
+                <span className="price-opt-num">{p.price}</span>
+                <span className="price-opt-per">{p.per}</span>
               </div>
-            );
-          })}
+              <div className="price-opt-note">
+                {p.id === "quarter" ? "Billed $250 once, today. Then $99/month." : "Billed monthly. No lock-in."}
+              </div>
+            </div>
+          ))}
         </div>
-        {/* What the fee buys and what it doesn't, stated BEFORE payment. "Are
-            all tasks covered?" was a live question in the WhatsApp threads, and
-            an unstated answer becomes a refund request in week two. */}
+
+        <div className="price-includes">
+          <div className="price-includes-title">Every membership includes</div>
+          <ul className="price-includes-list">
+            {MEMBERSHIP_FEATURES.map((f) => (
+              <li key={f}>
+                <Icon name="check-circle" size={17} />
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="guarantee">
+          <Icon name="shield-check" size={26} />
+          <div>
+            <div className="guarantee-title">30-day money-back guarantee</div>
+            <div className="guarantee-body">
+              If Niro isn&rsquo;t right for your family in the first 30 days, tell
+              us and we refund you in full. No forms, and no exit interview.
+            </div>
+          </div>
+        </div>
+
         <dl className="coverage">
           <dt>What the membership covers</dt>
           <dd>{COVERAGE_NOTE.covers}</dd>
@@ -696,55 +677,16 @@ function PricingB() {
           <dd>{COVERAGE_NOTE.excludes}</dd>
           <dd className="promise">{COVERAGE_NOTE.promise}</dd>
         </dl>
-        <p
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--text-body)",
-            margin: "0 0 20px",
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 8,
-            justifyContent: "center",
-            textAlign: "left",
-          }}
-        >
-          <Icon name="shield-check" size={17} style={{ marginTop: 2, flexShrink: 0, color: "var(--brand)" }} />
-          <span>{GUARANTEE}</span>
-        </p>
-        <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
-        <AskNiroCta
-          placement="pricing"
-          prompt="Questions before joining?"
-          label="Chat with us on WhatsApp"
-          align="center"
-          marginTop={14}
-        />
-      </div>
-    </section>
-  );
-}
 
-/* -------------------------------------------------------------- final CTA */
-
-function FinalCtaB() {
-  return (
-    <section data-screen-label="Final CTA (B)" style={{ padding: "72px var(--gutter)", background: "var(--forest-800)" }}>
-      <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto", textAlign: "center" }}>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "var(--text-3xl)",
-            lineHeight: "var(--leading-tight)",
-            color: "#fff",
-            fontWeight: 500,
-            margin: "0 0 20px",
-          }}
-        >
-          You can&rsquo;t always be in India. Niro can.
-        </h2>
-        <JoinCta className="btn btn-accent btn-lg">Get Early Access</JoinCta>
-        <div style={{ marginTop: 14, fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.7)" }}>
-          Named Niro Assistant · WhatsApp-first · First task free
+        <div style={{ textAlign: "center" }}>
+          <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
+          <AskNiroCta
+            placement="pricing"
+            prompt="Questions before joining?"
+            label="Chat with us on WhatsApp"
+            align="center"
+            marginTop={14}
+          />
         </div>
       </div>
     </section>
@@ -766,7 +708,6 @@ export function VariantB() {
         <StoriesB />
         <TrustB />
         <PricingB />
-        <FinalCtaB />
         <Faq showAsk={false} />
       </main>
       <StickyCta label="Get Early Access" />

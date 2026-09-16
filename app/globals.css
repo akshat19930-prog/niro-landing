@@ -1145,3 +1145,91 @@
 /* Why families trust Niro: a clean 2x2 rather than 3 + an orphan. */
 .trust-grid { display: grid; grid-template-columns: 1fr; gap: 24px 32px; }
 @media (min-width: 720px) { .trust-grid { grid-template-columns: 1fr 1fr; } }
+
+/* ===================================================================== pricing
+   Two equal options over one shared benefit grid. Neither price is styled as
+   the recommended one: the SKUs are the same service, and nudging someone onto
+   a term length they did not want is a churn problem, not a win. */
+.price-pair { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 16px; }
+@media (min-width: 560px) { .price-pair { grid-template-columns: 1fr 1fr; } }
+.price-opt {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  text-align: left;
+}
+.price-opt-name {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+.price-opt-amount { display: flex; align-items: baseline; gap: 5px; margin: 8px 0 6px; }
+.price-opt-num {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text-strong);
+  font-variant-numeric: tabular-nums;
+}
+.price-opt-per { font-size: var(--text-sm); color: var(--text-muted); }
+.price-opt-note { font-size: var(--text-sm); color: var(--text-body); line-height: 1.45; }
+
+.price-includes {
+  background: var(--surface-brand);
+  color: var(--text-on-brand);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  margin-bottom: 16px;
+}
+.price-includes-title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--gold-300);
+  margin-bottom: 14px;
+}
+.price-includes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 11px 26px;
+}
+@media (min-width: 620px) { .price-includes-list { grid-template-columns: 1fr 1fr; } }
+.price-includes-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.93);
+}
+.price-includes-list svg { margin-top: 1px; flex-shrink: 0; color: var(--gold-300); }
+
+/* The guarantee, promoted out of a footnote. */
+.guarantee {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+.guarantee svg { flex-shrink: 0; margin-top: 2px; color: var(--accent-strong); }
+.guarantee-title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--text-strong);
+  margin-bottom: 3px;
+}
+.guarantee-body { font-size: var(--text-sm); color: var(--text-body); line-height: 1.5; }
