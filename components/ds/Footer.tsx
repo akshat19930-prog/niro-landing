@@ -15,7 +15,7 @@ const links: { label: string; href: string }[] = [
 ];
 
 export function Footer({
-  tagline = "Niro: your presence in India - a go-getter home manager to get things done for you and your family.",
+  tagline = "Niro: your presence in India, and your family\u2019s 24\u00d77 personal assistant.",
 }: {
   tagline?: string;
 } = {}) {
@@ -51,7 +51,7 @@ export function Footer({
               {tagline}
             </p>
           </div>
-          <nav style={{ display: "flex", flexWrap: "wrap", gap: 24 }}>
+          <nav className="footer-nav">
             {/* Internal pages use client-side navigation (prefetched) so the
                 footer never triggers a full-document reload. */}
             {links.map((l) => (

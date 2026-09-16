@@ -99,13 +99,6 @@ export default function EmergencyPage() {
           moving and be at the hospital when your parents arrive.
         </p>
 
-        <h2>If we miss our own numbers</h2>
-        <p>
-          We will tell you that we missed them, in writing, with what went wrong
-          - the same day. A service that only reports its good days is not
-          measurable, and a promise you cannot audit is marketing. Every
-          emergency we handle is logged against these three times and reviewed.
-        </p>
       </article>
     </PageShell>
   );
