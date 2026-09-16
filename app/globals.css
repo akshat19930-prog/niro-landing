@@ -1268,3 +1268,21 @@
   background: var(--accent);
 }
 .faq-points b { color: var(--text-strong); font-weight: 600; }
+
+/* Sign-up phone row: ISD select + national number. The select is sized to its
+   longest option so the number field keeps a usable width on a phone. */
+.phone-row { display: flex; gap: 8px; align-items: stretch; }
+.phone-row > *:last-child { flex: 1; min-width: 0; }
+.dial-select {
+  width: auto;
+  flex: 0 0 auto;
+  max-width: 45%;
+  padding-right: 34px;
+  cursor: pointer;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% + 2px), calc(100% - 13px) calc(50% + 2px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}

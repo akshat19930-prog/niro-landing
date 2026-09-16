@@ -43,6 +43,33 @@ const h2Style = {
   fontWeight: 500,
 } as const;
 
+/**
+ * ISD codes, ordered by where our leads actually are rather than
+ * alphabetically: North America and the Gulf first, then the rest of the
+ * English-speaking diaspora, then India for members who are already home.
+ * A select rather than a free-text prefix - a mistyped country code is a lead
+ * we can never message back.
+ */
+const DIAL_CODES: { code: string; label: string }[] = [
+  { code: "+1", label: "US / Canada +1" },
+  { code: "+971", label: "UAE +971" },
+  { code: "+966", label: "Saudi Arabia +966" },
+  { code: "+974", label: "Qatar +974" },
+  { code: "+965", label: "Kuwait +965" },
+  { code: "+968", label: "Oman +968" },
+  { code: "+973", label: "Bahrain +973" },
+  { code: "+44", label: "UK +44" },
+  { code: "+353", label: "Ireland +353" },
+  { code: "+49", label: "Germany +49" },
+  { code: "+31", label: "Netherlands +31" },
+  { code: "+41", label: "Switzerland +41" },
+  { code: "+61", label: "Australia +61" },
+  { code: "+64", label: "New Zealand +64" },
+  { code: "+65", label: "Singapore +65" },
+  { code: "+852", label: "Hong Kong +852" },
+  { code: "+91", label: "India +91" },
+];
+
 const labelStyle = {
   display: "block",
   fontSize: "var(--text-sm)",
@@ -93,19 +120,21 @@ export function JoinModal() {
   const { open, setOpen, step, lead, submitLead, submitNeeds } = useJoin();
 
   const [error, setError] = useState<string | undefined>();
+  const [dial, setDial] = useState("+1");
   const [phone, setPhone] = useState("");
   const [name, setName] = useState("");
   const [ownCity, setOwnCity] = useState("");
   const [city, setCity] = useState("");
-  const [email, setEmailField] = useState("");
-  const [showEmail, setShowEmail] = useState(false);
 
   const [tasks, setTasks] = useState<string[]>([]);
   const [whoFor, setWhoFor] = useState<string | null>(null);
 
+  // Preselect the country from the visitor's time zone where we can read it;
+  // otherwise leave the default. Never overwrites a choice they have made.
   useEffect(() => {
     if (step !== "form") return;
-    setPhone((cur) => (cur ? cur : dialCode() ? dialCode() + " " : ""));
+    const guess = dialCode();
+    if (guess && DIAL_CODES.some((d) => d.code === guess)) setDial(guess);
   }, [step]);
 
   useEffect(() => {
@@ -121,11 +150,10 @@ export function JoinModal() {
   function onDetailsSubmit(e: React.FormEvent) {
     e.preventDefault();
     const err = submitLead({
-      phone,
+      phone: `${dial} ${phone}`.trim(),
       name,
       ownCity,
       city,
-      email: showEmail ? email : undefined,
     });
     setError(err || undefined);
   }
@@ -204,23 +232,38 @@ export function JoinModal() {
                 margin: "0 0 18px",
               }}
             >
-              Tell us where to reach you and where your family is. No card, and
-              nothing to install.
+              Your basic details to sign you up. We <strong>never</strong> call
+              you without you asking us to.
             </p>
 
             <div style={{ marginBottom: 14 }}>
               <label style={labelStyle} htmlFor="join-phone">
-                WhatsApp number or ID
+                WhatsApp number
               </label>
-              <Input
-                id="join-phone"
-                type="tel"
-                inputMode="tel"
-                autoComplete="tel"
-                placeholder="+1 415 555 0134"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
+              <div className="phone-row">
+                <select
+                  id="join-dial"
+                  aria-label="Country code"
+                  className="ds-input dial-select"
+                  value={dial}
+                  onChange={(e) => setDial(e.target.value)}
+                >
+                  {DIAL_CODES.map((d) => (
+                    <option key={d.code} value={d.code}>
+                      {d.label}
+                    </option>
+                  ))}
+                </select>
+                <Input
+                  id="join-phone"
+                  type="tel"
+                  inputMode="tel"
+                  autoComplete="tel-national"
+                  placeholder="415 555 0134"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
             </div>
 
             <div style={{ marginBottom: 14 }}>
@@ -271,43 +314,6 @@ export function JoinModal() {
               </datalist>
             </div>
 
-            {showEmail ? (
-              <div style={{ marginBottom: 12 }}>
-                <label style={labelStyle} htmlFor="join-email">
-                  Email{" "}
-                  <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>
-                    (optional)
-                  </span>
-                </label>
-                <Input
-                  id="join-email"
-                  type="email"
-                  autoComplete="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmailField(e.target.value)}
-                />
-              </div>
-            ) : (
-              <button
-                type="button"
-                onClick={() => setShowEmail(true)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: 0,
-                  marginBottom: 14,
-                  cursor: "pointer",
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "var(--text-xs)",
-                  color: "var(--text-muted)",
-                  textDecoration: "underline",
-                }}
-              >
-                Add an email as well
-              </button>
-            )}
-
             {error && (
               <p
                 role="alert"
@@ -324,16 +330,6 @@ export function JoinModal() {
             <Button full type="submit">
               Continue
             </Button>
-            <p
-              style={{
-                fontSize: "var(--text-xs)",
-                color: "var(--text-muted)",
-                margin: "12px 0 0",
-                textAlign: "center",
-              }}
-            >
-              We never ask for your passwords or net-banking logins.
-            </p>
           </form>
         )}
 
@@ -404,21 +400,11 @@ export function JoinModal() {
               style={{
                 fontSize: "var(--text-sm)",
                 color: "var(--text-body)",
-                margin: "0 0 8px",
-              }}
-            >
-              We&rsquo;re onboarding families gradually so every one of them gets
-              a manager who actually knows them. We&rsquo;ll reach out shortly on
-              WhatsApp to set yours up.
-            </p>
-            <p
-              style={{
-                fontSize: "var(--text-sm)",
-                color: "var(--text-body)",
                 margin: "0 0 18px",
               }}
             >
-              In a hurry, or want to ask something first?
+              We&rsquo;ll reach out shortly to answer your questions and get you
+              started.
             </p>
             <a
               className="btn btn-primary btn-md btn-full"
@@ -434,16 +420,6 @@ export function JoinModal() {
             >
               Chat with a co-founder
             </a>
-            <p
-              style={{
-                fontSize: "var(--text-xs)",
-                color: "var(--text-muted)",
-                margin: "12px 0 0",
-                textAlign: "center",
-              }}
-            >
-              A co-founder is on the other end for the first two months &mdash; not a support queue.
-            </p>
           </div>
         )}
       </Card>
