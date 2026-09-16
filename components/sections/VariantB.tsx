@@ -627,8 +627,7 @@ function PricingB() {
           One membership. Two ways to pay.
         </h2>
         <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 26px", textAlign: "center" }}>
-          Same service either way. Your first task is free, and you can cancel
-          any time.
+          Your first trial task is free. And you can cancel any time.
         </p>
 
         <div className="price-pair">
@@ -674,7 +673,6 @@ function PricingB() {
           <dd>{COVERAGE_NOTE.covers}</dd>
           <dt>Billed separately, at actual cost</dt>
           <dd>{COVERAGE_NOTE.excludes}</dd>
-          <dd className="promise">{COVERAGE_NOTE.promise}</dd>
         </dl>
 
         <div style={{ textAlign: "center" }}>
