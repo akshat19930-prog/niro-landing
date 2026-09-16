@@ -6,15 +6,23 @@
  *     as the visitor progresses email -> tasks -> plan; we enrich the same row),
  *   - returns { position, referralCode } as JSON.
  *
- * DEPLOY (2 minutes):
- *   1. Create a new Google Sheet (this stores the signups).
- *   2. Extensions -> Apps Script. Select ALL existing code, delete it, paste
- *      this whole file. Save (disk icon / Ctrl-S).
- *   3. Deploy -> New deployment -> type "Web app".
- *        Execute as: Me.   Who has access: Anyone.
- *      Authorize when prompted. Copy the Web app URL (ends in /exec).
- *   4. In the GitHub repo: Settings -> Secrets and variables -> Actions ->
- *      Variables -> add NEXT_PUBLIC_WAITLIST_ENDPOINT = that /exec URL.
+ * UPDATING THE LIVE SCRIPT (this is the normal case):
+ *   1. "Niro Sign ups" Sheet -> Extensions -> Apps Script.
+ *   2. Open Code.gs, select ALL, delete, paste this whole file. Ctrl-S.
+ *   3. Deploy -> Manage deployments -> pencil on the EXISTING deployment ->
+ *      Version: New version -> Deploy.
+ *      !! Do NOT use "New deployment". That mints a NEW /exec URL, the site
+ *      keeps POSTing to the old one, and signups stop reaching the Sheet with
+ *      no visible error.
+ *   4. Nothing to change in the repo - the /exec URL is unchanged.
+ *   The `waitlist` header row re-syncs itself on the next POST, so new trailing
+ *   columns appear automatically and stay blank for older rows.
+ *
+ * FIRST-TIME SETUP (only if starting from a fresh Sheet):
+ *   Steps 1-2 above, then Deploy -> New deployment -> type "Web app",
+ *   Execute as: Me, Who has access: Anyone. Authorize, copy the /exec URL, and
+ *   put it in the repo: Settings -> Secrets and variables -> Actions ->
+ *   Variables -> NEXT_PUBLIC_WAITLIST_ENDPOINT.
  *
  * (Meta CAPI server-side events were removed for simplicity; email capture does
  * not need them. Ask if you want them back later.)
@@ -76,7 +84,7 @@ function doPost(e) {
     var C_REFCODE = 13, C_POSITION = 14;
     var C_TASKS = 15, C_WHOFOR = 16, C_URGENCY = 17, C_PHONE = 18;
     var C_MARKET = 19, C_PAGE = 20, C_GEO = 21, C_PRICEARM = 22;
-    var C_NAME = 26, C_CITY = 27, C_CITYSERVED = 28;
+    var C_NAME = 26, C_CITY = 27, C_CITYSERVED = 28, C_OWNCITY = 29;
     var tasksStr = (data.tasks && data.tasks.length) ? data.tasks.join(" | ") : "";
     // Geography: prefer the market the page declared ("gulf" on /gulf), else the
     // coarse region the client inferred from its time zone ("gulf"/"na"/"other").
@@ -90,6 +98,9 @@ function doPost(e) {
     var leadName = String(data.name || "").trim();
     var leadCity = String(data.city || "").trim();
     var cityServed = String(data.cityServed || "").trim();
+    // Where the MEMBER lives (US/Gulf/etc) - distinct from `city`, which is
+    // where their family lives in India. Drives market sizing and call timing.
+    var leadOwnCity = String(data.ownCity || "").trim();
 
     if (rowIndex === -1) {
       // New signup. Order must match HEADER.
@@ -103,7 +114,7 @@ function doPost(e) {
         tasksStr, data.whoFor || "", data.urgency || "", data.phone || "",
         market, pagePath, geo, priceArm,
         "", "", "",                       // leadStatus, detailsShared, leadNotes
-        leadName, leadCity, cityServed
+        leadName, leadCity, cityServed, leadOwnCity
       ]);
     } else {
       // Existing signup - enrich the row, keep its position/referralCode.
@@ -128,6 +139,7 @@ function doPost(e) {
       if (leadName) sheet.getRange(rowIndex, C_NAME).setValue(leadName);
       if (leadCity) sheet.getRange(rowIndex, C_CITY).setValue(leadCity);
       if (cityServed) sheet.getRange(rowIndex, C_CITYSERVED).setValue(cityServed);
+      if (leadOwnCity) sheet.getRange(rowIndex, C_OWNCITY).setValue(leadOwnCity);
     }
 
     return json_({ position: position, referralCode: referralCode });
@@ -157,10 +169,11 @@ var HEADER = [
   // Sales/CRM columns (W, X, Y) - filled by hand or by applyLeadNotes() from
   // the WhatsApp outreach. Never written by doPost, so signups can't clobber them.
   "leadStatus", "detailsShared", "leadNotes",
-  // Phone-first capture (Z, AA, AB). cityServed carries the CANONICAL launch
-  // city when we serve them and is blank when we do not - so the waitlist-by-
-  // city view that decides city six is a single filter on this column.
-  "name", "city", "cityServed"
+  // Phone-first capture (Z, AA, AB, AC). `city` is where the FAMILY lives in
+  // India; `ownCity` is where the MEMBER lives. cityServed carries the
+  // CANONICAL launch city when we serve them and is blank when we do not - so
+  // the waitlist-by-city view that decides city six is a single filter on it.
+  "name", "city", "cityServed", "ownCity"
 ];
 
 /* =====================================================================
