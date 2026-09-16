@@ -86,7 +86,7 @@ curl -s https://tellniro.com/ | grep -o "<some new copy>"
 
 ---
 
-## 4. The backend — and the one thing that is currently broken
+## 4. The backend
 
 Sign-ups POST to a **Google Apps Script web app**, which appends a row to the
 "Niro Sign ups" Google Sheet. That is the entire backend.
@@ -97,15 +97,27 @@ Sign-ups POST to a **Google Apps Script web app**, which appends a row to the
 
 Both files are **copies for version control**. Editing them here changes
 nothing. To actually change behaviour you must paste the file into the Apps
-Script editor **and redeploy the web app** (Deploy → Manage deployments → edit
-→ deploy). Forgetting the redeploy is the classic failure: the code looks
-updated and the live endpoint is not.
+Script editor **and redeploy the web app**. Forgetting the redeploy is the
+classic failure: the code looks updated and the live endpoint is not.
 
-> **⚠ Outstanding:** `backend/waitlist.gs` has columns for `name`, `ownCity`,
-> `city` and `cityServed` that have **not been pasted and redeployed**. Until
-> that happens the script silently ignores those fields, and every lead is
-> landing without the city data the launch-city decision depends on. Nothing
-> breaks, but the data is being lost, not queued.
+**To update the live script:** Sheet → Extensions → Apps Script → replace the
+code → **Deploy → Manage deployments → pencil on the existing deployment →
+Version: New version → Deploy.**
+
+> **Never use "New deployment" for an update.** It mints a fresh `/exec` URL
+> while the site keeps POSTing to the old one, which still answers HTTP 200.
+> Sign-ups stop reaching the Sheet with no error anywhere. If the URL ever does
+> change, the single fix point is `NEXT_PUBLIC_WAITLIST_ENDPOINT` (a repo
+> Actions variable, falling back to the hardcoded URL in `lib/config.ts`).
+
+The `waitlist` header row re-syncs itself from the `HEADER` array on the next
+POST, so new trailing columns appear on their own and stay blank for older
+rows. New columns are always appended **after** the sales columns W/X/Y, so no
+existing column index shifts and `applyLeadNotes()` keeps working.
+
+To check which version is actually deployed, POST anything without an email:
+the script answers `{"ignored":true}` without writing a row, but still re-syncs
+row 1 — so the header tells you what is live.
 
 **Secrets never go in this repo.** The Meta access token lives in Apps Script
 Properties only. `META_ACCESS_TOKEN` in `backend/report.gs` must stay `""`.
@@ -183,19 +195,18 @@ not just the change. `git log --oneline` then `git show <sha>` beats asking.
    email-first flow, old plan names, no city checker, no Niro Assured link. If
    ads resume to `/us`, those leads see a different product. Either bring them
    into line or retire them and point all traffic at `/`.
-2. **`backend/waitlist.gs` needs pasting and redeploying** — see §4.
-3. **No email is captured at sign-up any more.** Sales must collect one on
+2. **No email is captured at sign-up any more.** Sales must collect one on
    WhatsApp before anyone is invoiced; the checkout needs it for receipts.
-4. **Payment rails are not live.** Recurring cross-border card billing from an
+3. **Payment rails are not live.** Recurring cross-border card billing from an
    India entity is the open question — verify a foreign-issued card can be
    stored for auto-debit before promising monthly billing.
-5. **Three live claims need an owner**: the monthly free Niro visit, the data
+4. **Three live claims need an owner**: the monthly free Niro visit, the data
    commitments in the FAQ (one-click deletion, periodic disclosure,
    task-scoped logged access), and the 20-minute ambulance median.
-6. **`CLAUDE.md` describes the page's rules for AI coding agents.** It was
+5. **`CLAUDE.md` describes the page's rules for AI coding agents.** It was
    rewritten at handover to match reality — keep it that way, or the next agent
    will confidently build the wrong thing.
-7. **The parents' voices are Hindi-transliterated only**, while the page offers
+6. **The parents' voices are Hindi-transliterated only**, while the page offers
    Tamil. Add a Tamil and a Bengali one once a native speaker can check them.
 
 ---
