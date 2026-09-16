@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Nav } from "@/components/ds/Nav";
 import { JoinCta } from "@/components/ds/JoinCta";
-import { AskNiroCta } from "@/components/ds/WhatsAppLink";
+import { AskNiroCta, WhatsAppLink, ASK_MESSAGE } from "@/components/ds/WhatsAppLink";
 import { Badge } from "@/components/ds/Badge";
 import { Icon, type IconName } from "@/components/ds/Icon";
 import { Eyebrow } from "@/components/ds/Eyebrow";
@@ -12,7 +12,7 @@ import { VoiceStream } from "@/components/ds/VoiceStream";
 import { ChatVideo } from "@/components/ds/ChatVideo";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
-import { PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE } from "@/lib/content";
+import { PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, FAQ } from "@/lib/content";
 
 /* ---------------------------------------------------------------- helpers */
 
@@ -555,8 +555,7 @@ function TrustB() {
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>Why families trust Niro</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 30px", maxWidth: 900 }}>
-          Purpose-built for NRIs, with an obsession for convenience and
-          reliability at the heart of it.
+          Purpose-built for NRIs and their families&rsquo; daily needs.
         </h2>
         {/* Four items, so an explicit two-up rather than auto-fit: auto-fit
             gives three columns at this width and orphans the fourth. */}
@@ -693,6 +692,83 @@ function PricingB() {
   );
 }
 
+/* -------------------------------------------------------------------- faq */
+
+/**
+ * The page FAQ. Answers come from lib/content FAQ, except the three that carry
+ * structure a plain string cannot: the data answer needs its four commitments
+ * as separate lines, the emergency answer links through to Niro Assured, and
+ * the trial answer needs a live WhatsApp link to claim the free task.
+ */
+const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
+  if (i === 2) {
+    return {
+      q: f.q,
+      a: (
+        <>
+          <p style={{ margin: "0 0 10px" }}>
+            Yes, and here is how we are building it rather than how we are
+            describing it.
+          </p>
+          <ul className="faq-points">
+            <li>
+              <b>You keep control.</b> We periodically tell you exactly what data we
+              hold on your family, and you can delete all of it in one click. Leave
+              Niro and your records are permanently erased within 30 days.
+            </li>
+            <li>
+              <b>Documents live in a secure vault.</b> Encrypted in transit and at
+              rest, and inaccessible to our staff without an open task that requires
+              them &mdash; access is scoped to the task and logged.
+            </li>
+            <li>
+              <b>We never ask for passwords, PINs or net-banking logins.</b> Some
+              tasks need a one-time code to finish. When one does, we tell you what
+              we are about to do, ask you at that moment, and use it only for that
+              task. Say no and we find another route.
+            </li>
+            <li>
+              <b>Built to DPDP, and to global standards.</b> We operate under
+              India&rsquo;s DPDP Act and are building to GDPR-aligned practices for
+              members abroad. Your data is never sold.
+            </li>
+          </ul>
+          <p style={{ margin: 0 }}>
+            Questions? hello@tellniro.com reaches the founders.
+          </p>
+        </>
+      ),
+    };
+  }
+  if (i === 3) {
+    return {
+      q: f.q,
+      a: (
+        <>
+          <p style={{ margin: "0 0 10px" }}>{f.a}</p>
+          <a href="/niro-assured/" style={{ fontWeight: 600 }}>
+            Read the full protocol on Niro Assured &rarr;
+          </a>
+        </>
+      ),
+    };
+  }
+  if (i === 5) {
+    return {
+      q: f.q,
+      a: (
+        <>
+          <p style={{ margin: "0 0 10px" }}>{f.a}</p>
+          <WhatsAppLink placement="faq-trial" message={ASK_MESSAGE}>
+            Chat with Niro to claim your free task
+          </WhatsAppLink>
+        </>
+      ),
+    };
+  }
+  return { q: f.q, a: f.a };
+});
+
 /* ---------------------------------------------------------------- variant */
 
 /** Variant B — the "You can't always be in India. Niro can." reposition. */
@@ -708,7 +784,7 @@ export function VariantB() {
         <StoriesB />
         <TrustB />
         <PricingB />
-        <Faq showAsk={false} />
+        <Faq items={MAIN_FAQ_ITEMS} showAsk={false} />
       </main>
       <StickyCta label="Get Early Access" />
     </>

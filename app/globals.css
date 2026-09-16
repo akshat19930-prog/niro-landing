@@ -1233,3 +1233,18 @@
   margin-bottom: 3px;
 }
 .guarantee-body { font-size: var(--text-sm); color: var(--text-body); line-height: 1.5; }
+
+/* Bulleted commitments inside an FAQ answer (the data question). */
+.faq-points { list-style: none; padding: 0; margin: 0 0 10px; display: flex; flex-direction: column; gap: 9px; }
+.faq-points li { position: relative; padding-left: 15px; }
+.faq-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.faq-points b { color: var(--text-strong); font-weight: 600; }
