@@ -60,7 +60,7 @@ export default function TermsPage() {
         <h2>30-day money-back guarantee</h2>
         <p>
           If Niro is not right for your family, tell your family manager or write
-          to <a href="mailto:hello@tellniro.com">hello@tellniro.com</a> within{" "}
+          to <a href="mailto:akshat@tellniro.com">akshat@tellniro.com</a> within{" "}
           <strong>30 days</strong> of your first payment and we will refund you in
           full. No forms, and no exit interview. Three boundaries apply:
         </p>
@@ -88,7 +88,7 @@ export default function TermsPage() {
         <p>
           You can cancel at any time, with no notice period, by telling your
           family manager or writing to{" "}
-          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Cancellation
+          <a href="mailto:akshat@tellniro.com">akshat@tellniro.com</a>. Cancellation
           stops future charges and takes effect at the end of the period you have
           already paid for - you keep the service until then.{" "}
           <strong>Cancelling is not the same as claiming a refund</strong>: outside
@@ -159,7 +159,7 @@ export default function TermsPage() {
         <h2>Contact</h2>
         <p>
           Questions about these Terms? Email us at{" "}
-          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Registered
+          <a href="mailto:akshat@tellniro.com">akshat@tellniro.com</a>. Registered
           office: Indique Orion, 4th Main Rd, Agara Village, 1st Sector, HSR
           Layout, Bengaluru, Karnataka 560102.
         </p>

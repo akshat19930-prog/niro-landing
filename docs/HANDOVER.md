@@ -126,7 +126,7 @@ Code access alone is not enough to run this. All of these are separate:
 | **Meta Pixel / CAPI** | Pixel access for event debugging | Business Manager → Data sources |
 | **PostHog** (project 415260) | Member | PostHog → Settings → Members |
 | **The WhatsApp support line** | It is a founder's number today — decide whether it transfers or the page points somewhere new | — |
-| **`hello@` and `careers@tellniro.com`** | Both are published on the live site; Paarth should receive them | Email admin |
+| **`akshat@tellniro.com`** | The only address published on the live site - it is the refund route in Terms and the apply route on `/careers`. Either forward it to Paarth or swap the address on the page. | Email admin |
 
 **Do not send the Meta access token over chat or email.** Rotate it and let him
 set it in Apps Script Properties himself.

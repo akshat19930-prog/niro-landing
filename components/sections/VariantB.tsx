@@ -732,7 +732,7 @@ const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
             </li>
           </ul>
           <p style={{ margin: 0 }}>
-            Questions? hello@tellniro.com reaches the founders.
+            Questions? akshat@tellniro.com reaches the founders.
           </p>
         </>
       ),
