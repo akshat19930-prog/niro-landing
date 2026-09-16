@@ -21,7 +21,7 @@ import {
 } from "@/lib/analytics";
 import { startSession, registerAnalytics, logEvent, getGeo } from "@/lib/track";
 import { readPageArm } from "@/lib/abtest";
-import { matchCity, validatePhone, type CityMatch } from "@/lib/cities";
+import { matchCity, validateContact, type CityMatch } from "@/lib/cities";
 import {
   WAITLIST_ENDPOINT,
   SITE_ORIGIN,
@@ -318,8 +318,8 @@ export function JoinProvider({
    * would lose every visitor who doesn't send the message.
    */
   function submitLead(raw: LeadDetails): string | null {
-    const { phone, error } = validatePhone(raw.phone);
-    if (!phone) return error || "Please enter a valid phone number.";
+    const { value: phone, error } = validateContact(raw.phone);
+    if (!phone) return error || "Please enter a valid WhatsApp number or ID.";
     const name = raw.name.trim();
     if (name.length < 2) return "Please tell us your name.";
     const ownCity = raw.ownCity.trim();

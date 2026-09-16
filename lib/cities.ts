@@ -70,12 +70,40 @@ export function matchCity(raw: string): CityMatch {
   return { served: false, city: raw.trim() };
 }
 
-/** Phone validation that accepts the international formats our leads actually
- *  use (+1 415..., 00971..., 0091...), without pretending to be libphonenumber. */
-export function validatePhone(raw: string): { phone?: string; error?: string } {
-  const digits = raw.replace(/[^\d]/g, "");
-  if (digits.length < 8) return { error: "Please enter your full number, with country code." };
+/**
+ * Contact validation that accepts EITHER a phone number or a WhatsApp ID,
+ * without weakening the digit check on numbers.
+ *
+ * The split is made on the input itself rather than on a toggle the visitor
+ * has to find: anything containing a letter or an "@" is treated as an ID and
+ * keeps its digit rules relaxed; anything else is a number and still has to be
+ * 8-15 digits. That way a fat-fingered number ("9198") is still rejected,
+ * while "arjun.mehta" or "arjun@niro" passes through untouched.
+ *
+ * An ID also suppresses the country-code prefix at the call site - prepending
+ * "+1 " to a username would corrupt the only handle we have for that lead.
+ */
+export function looksLikeWhatsAppId(raw: string): boolean {
+  return /[a-z@]/i.test(raw.trim());
+}
+
+export function validateContact(raw: string): { value?: string; isId?: boolean; error?: string } {
+  const trimmed = raw.trim();
+  if (!trimmed) return { error: "Please enter your WhatsApp number or ID." };
+
+  if (looksLikeWhatsAppId(trimmed)) {
+    // Loose on purpose - WhatsApp IDs vary, and we would rather accept an
+    // unusual one and sort it out in the first message than turn a real lead
+    // away at the form.
+    if (trimmed.length < 4) return { error: "That ID looks too short - please check it." };
+    if (trimmed.length > 60) return { error: "That looks too long - please check it." };
+    if (!/^[\w.@+\- ]+$/.test(trimmed))
+      return { error: "Please use letters, numbers, dots, dashes or @ only." };
+    return { value: trimmed, isId: true };
+  }
+
+  const digits = trimmed.replace(/[^\d]/g, "");
+  if (digits.length < 8) return { error: "Please enter your full number." };
   if (digits.length > 15) return { error: "That number looks too long - please check it." };
-  const clean = raw.trim().startsWith("+") ? `+${digits}` : digits;
-  return { phone: clean };
+  return { value: trimmed, isId: false };
 }
