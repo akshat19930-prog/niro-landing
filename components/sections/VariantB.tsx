@@ -3,15 +3,16 @@
 import { useEffect, useState } from "react";
 import { Nav } from "@/components/ds/Nav";
 import { JoinCta } from "@/components/ds/JoinCta";
-import { AskNiroCta } from "@/components/ds/WhatsAppLink";
+import { AskNiroCta, WhatsAppLink, ASK_MESSAGE } from "@/components/ds/WhatsAppLink";
 import { Badge } from "@/components/ds/Badge";
 import { Icon, type IconName } from "@/components/ds/Icon";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { AskStream } from "@/components/ds/AskStream";
+import { VoiceStream } from "@/components/ds/VoiceStream";
 import { ChatVideo } from "@/components/ds/ChatVideo";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
-import { PLANS, TESTIMONIALS_SHORT, COVERAGE_NOTE, GUARANTEE } from "@/lib/content";
+import { PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, FAQ } from "@/lib/content";
 
 /* ---------------------------------------------------------------- helpers */
 
@@ -114,10 +115,9 @@ function HeroB() {
               margin: "0 0 24px",
             }}
           >
-            A named person in India who gets things done for you and your family &mdash;
-            from government paperwork to parents&rsquo; appointments, home repairs and
-            everything in between. They chase it, and they show up in person when that is
-            what it takes.
+            Your family&rsquo;s personal assistant in India, getting things done for
+            them and for you. Peace of mind for you, unmatched convenience for
+            them - all delivered over WhatsApp.
           </p>
           <JoinCta className="btn btn-primary btn-lg">Get Early Access</JoinCta>
           {/* Matches /us placement-for-placement. The two pages are being
@@ -140,11 +140,11 @@ function HeroB() {
               color: "var(--text-muted)",
             }}
           >
-            <span>Named Niro Assistant</span>
+            <span>Remote Assistant</span>
             <span aria-hidden="true">·</span>
-            <span>WhatsApp-first</span>
+            <span>WhatsApp groups</span>
             <span aria-hidden="true">·</span>
-            <span>We show up in person</span>
+            <span>Shows up in person when needed</span>
           </div>
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
@@ -192,10 +192,6 @@ function HowItWorksB() {
           </div>
           <div>
             <AskStream />
-            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", marginTop: 12 }}>
-              On WhatsApp, by voice note or on a call &mdash; in English, Hindi or Tamil.
-              Your parents never need an app.
-            </p>
           </div>
         </div>
 
@@ -220,7 +216,7 @@ function HowItWorksB() {
             <div className="does-card does-card-visit">
               <div className="does-head">
                 <Icon name="map-pin" size={19} style={{ color: "var(--accent-strong)" }} />
-                <span className="does-title">Niro Visits</span>
+                <span className="does-title">Niro Visits - booked on demand</span>
               </div>
               <div className="does-sub">When it needs a person in the room.</div>
               <ul className="does-visit-list">
@@ -235,16 +231,23 @@ function HowItWorksB() {
         <div className="beat">
           <div className="beat-label">
             <span className="beat-n">03</span>
-            <span className="beat-t">It gets done &mdash; better and faster</span>
+            <span className="beat-t">It gets done - better and faster</span>
           </div>
           <div className="outcome">
             <div className="outcome-line">
               <Icon name="check-circle" size={20} />
-              <span>Closed with proof &mdash; photos, receipts and a written note in your family group.</span>
+              <span>
+                <b>All tasks closed with proof</b> - photos, receipts and a written
+                note in the group. You stop chasing, and you get your evenings back.
+              </span>
             </div>
             <div className="outcome-line">
               <Icon name="check-circle" size={20} />
-              <span>No follow-ups from you at 3 a.m., and no running around for them.</span>
+              <span>
+                <b>Your parents ask freely</b> - because asking Niro doesn&rsquo;t
+                mean worrying you. The small things they used to swallow finally
+                get said, and handled.
+              </span>
             </div>
           </div>
         </div>
@@ -260,28 +263,16 @@ function HowItWorksB() {
 /**
  * For your parents.
  *
- * Replaces the single "my child is abroad" testimonial, which was warm but
- * said nothing a competitor could not also say. The specific claim is that app
- * literacy stops being a requirement: a parent who has never opened a cab app,
- * a grocery app or a government portal still gets all three done by saying so
- * out loud, in their own language. Three asks in their own words make that
- * concrete; the footer names what each one replaces.
+ * The claim is not "we are kind to your parents" - anyone can say that. It is
+ * that the things they quietly put up with, and never mention on a call, stop
+ * being their problem: the haggling, the scam risk, the maid who vanished, the
+ * grocery run on bad knees, the ten apps they were never going to learn.
+ *
+ * Six asks cycle three at a time so the breadth reads without a wall of text,
+ * and the untranslated English ones sit alongside the Hindi ones because that
+ * is how parents actually write.
  */
 function ParentsB() {
-  const voices = [
-    {
-      said: "Beta, kal subah doctor ke liye cab bhej dena \u2014 aur wapas bhi.",
-      means: "Send a cab for the doctor tomorrow morning, and one back.",
-    },
-    {
-      said: "Maid kal se nahi aa rahi. Koi bharosemand aadmi dekh lo.",
-      means: "The maid has stopped coming. Please find someone reliable.",
-    },
-    {
-      said: "Pension ka Jeevan Pramaan patra jama karwa do.",
-      means: "Please get my pension life certificate submitted.",
-    },
-  ];
   return (
     <section data-screen-label="Parents (B)" style={{ padding: sectionPad }}>
       <div
@@ -295,16 +286,17 @@ function ParentsB() {
         }}
       >
         <div>
-          <Eyebrow>For your parents</Eyebrow>
-          <h2 style={{ ...h2Style, margin: "14px 0 16px" }}>No app to learn. No English required.</h2>
+          <Eyebrow>For your parents in India</Eyebrow>
+          <h2 style={{ ...h2Style, margin: "14px 0 16px" }}>
+            The struggles they don&rsquo;t tell you about, quietly solved.
+          </h2>
           <p style={{ fontSize: "var(--text-md)", lineHeight: "var(--leading-body)", color: "var(--text-body)", maxWidth: 520, margin: "0 0 14px" }}>
-            A cab, a grocery order, a reliable backup maid, an ITR filing, a pension
-            life certificate &mdash; each one normally needs a different app, a
-            different login, and a comfort with all of it your parents may simply
-            not have.
+            The haggling with vendors. The fear of being scammed. The maid who
+            stopped turning up. The grocery run on a bad knee. The ten apps they
+            were never going to learn.
           </p>
           <p style={{ fontSize: "var(--text-md)", lineHeight: "var(--leading-body)", color: "var(--text-strong)", maxWidth: 520, margin: "0 0 18px", fontWeight: 500 }}>
-            With Niro all of it is one WhatsApp message, or a voice note in the
+            All of it solved with one WhatsApp message, or a voice note in the
             language they actually speak.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
@@ -333,20 +325,7 @@ function ParentsB() {
           >
             What they actually send us
           </div>
-          <div className="voices">
-            {voices.map((x) => (
-              <div className="voice" key={x.said}>
-                <div className="voice-said">{x.said}</div>
-                <div className="voice-means">{x.means}</div>
-              </div>
-            ))}
-          </div>
-          <div className="voice-foot">
-            <span>No <b>cab app</b></span>
-            <span>No <b>grocery app</b></span>
-            <span>No <b>government portal</b></span>
-            <span>No <b>English</b></span>
-          </div>
+          <VoiceStream />
         </div>
       </div>
     </section>
@@ -396,7 +375,7 @@ function UseCasesB() {
     <section data-screen-label="Use cases (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>What Niro handles</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 28px" }}>The things that pull you back to India.</h2>
+        <h2 style={{ ...h2Style, margin: "14px 0 28px" }}>Everything that makes you wish you were in India. And more.</h2>
         <div
           style={{
             display: "grid",
@@ -543,72 +522,44 @@ function StoriesB() {
 /* ------------------------------------------------------------------ trust */
 
 function TrustB() {
-  // Reframed from "a human does every keystroke" to "a named person is
-  // accountable, and somebody actually shows up". The old list led with "a real
-  // human, not a chatbot" - a promise that gets harder to keep as more of the
-  // chasing is assisted by software, and one we would rather not have to keep
-  // re-making. Accountability and physical presence are true under the model we
-  // are actually building, and presence is the one thing no amount of software
-  // can imitate. Every line here is checkable: two link out to the page that
-  // proves them.
-  const items: { icon: IconName; text: string; sub: string; href?: string }[] = [
+  // Four claims, not six. Each is something a member could hold us to, and
+  // each answers a different objection the research actually recorded: the
+  // emergency nobody believes, the visit nobody else does, the commission
+  // everyone suspects, and the stranger nobody vetted.
+  const items: { icon: IconName; text: string; sub: string; href?: string; hrefLabel?: string }[] = [
     {
-      icon: "user-check",
-      text: "One name is accountable",
-      sub: "A family manager on our payroll, introduced by photo before day one - not a queue, not a ticket number.",
+      icon: "heart-pulse",
+      text: "Emergency protocol",
+      sub: "The assurance of a rapid, contextual response to a medical emergency back home. You define it, we execute it.",
+      href: "/niro-assured/",
+      hrefLabel: "Read more on Niro Assured",
     },
     {
       icon: "map-pin",
-      text: "We turn up in person",
-      sub: "Niro Visits: the hospital, the passport office, your parents' front door. The part nobody else does.",
+      text: "Niro Visits",
+      sub: "Booked on demand, for whatever your family needs: a doctor or visa appointment, home maintenance, or a government office visit.",
     },
     {
-      icon: "heart-pulse",
-      text: "Emergency times we publish",
-      sub: "45 seconds to answer, 3 minutes to dispatch - and we tell you in writing when we miss.",
-      href: "/emergency/",
+      icon: "shield-check",
+      text: "Honest recommendations",
+      sub: "We never earn a commission from any third-party vendor. We find and book only what is actually best for you.",
     },
     {
-      icon: "camera",
-      text: "Every task closed with proof",
-      sub: "Photos, receipts and a written note in your family group. Nothing rests on someone remembering.",
-    },
-    {
-      icon: "lock",
-      text: "We never ask for your passwords",
-      sub: "Not your net-banking login, not your PINs. You set in advance what needs your approval first.",
-    },
-    {
-      icon: "wallet",
-      text: "Priced in the open, with a way out",
-      sub: "$99 a month, third-party costs at cost with no commission, and 30 days to change your mind.",
+      icon: "user-check",
+      text: "Verified Niro managers",
+      sub: "Vetted extensively, on our own payroll, and appraised on one thing: whether your family is satisfied.",
     },
   ];
   return (
     <section data-screen-label="Trust (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>Why families trust Niro</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>
-          You&rsquo;re handing us your parents. We don&rsquo;t take that lightly.
+        <h2 style={{ ...h2Style, margin: "14px 0 30px", maxWidth: 900 }}>
+          Purpose-built for NRIs and their families&rsquo; daily needs.
         </h2>
-        <p
-          style={{
-            fontSize: "var(--text-md)",
-            color: "var(--text-body)",
-            maxWidth: 620,
-            margin: "0 0 30px",
-          }}
-        >
-          Trust isn&rsquo;t a promise you make on a landing page, so here are six
-          things you can actually hold us to.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))",
-            gap: 22,
-          }}
-        >
+        {/* Four items, so an explicit two-up rather than auto-fit: auto-fit
+            gives three columns at this width and orphans the fourth. */}
+        <div className="trust-grid">
           {items.map((it) => (
             <div key={it.text} style={{ display: "flex", alignItems: "flex-start", gap: 13 }}>
               <span
@@ -636,7 +587,7 @@ function TrustB() {
                     <>
                       {" "}
                       <a href={it.href} style={{ color: "var(--brand)", fontWeight: 500 }}>
-                        Read the protocol &rarr;
+                        {it.hrefLabel} &rarr;
                       </a>
                     </>
                   )}
@@ -652,91 +603,72 @@ function TrustB() {
 
 /* ---------------------------------------------------------------- pricing */
 
+/**
+ * Pricing.
+ *
+ * Both SKUs carry an identical feature list, so showing that list twice made
+ * the section look like a comparison when there is nothing to compare. The
+ * benefits move into a single shared grid underneath, and the two prices sit
+ * above it as equal options - no dark card, no "most families" badge. Nothing
+ * on the page should push someone toward a term length; we would rather they
+ * pick the one they actually want and stay.
+ *
+ * The guarantee is promoted out of a footnote into its own band. It is the
+ * single strongest answer to the objection the research kept finding - a
+ * stranger asking $99 from someone who has never met them - and it was
+ * previously smaller than the price.
+ */
 function PricingB() {
   return (
     <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad }}>
-      <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto", textAlign: "center" }}>
+      <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 8px" }}>One membership. Two ways to start.</h2>
-        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 28px" }}>
-          Your first task is free. Cancel any time.
+        <h2 style={{ ...h2Style, margin: "14px 0 8px", textAlign: "center" }}>
+          One membership. Two ways to pay.
+        </h2>
+        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 26px", textAlign: "center" }}>
+          Same service either way. Your first task is free, and you can cancel
+          any time.
         </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(280px, 100%), 1fr))",
-            gap: 16,
-            textAlign: "left",
-            marginBottom: 28,
-            alignItems: "start",
-          }}
-        >
-          {PLANS.map((p) => {
-            const dark = p.highlight;
-            return (
-              <div
-                key={p.id}
-                style={{
-                  background: dark ? "var(--forest-700)" : "var(--surface-card)",
-                  color: dark ? "var(--ivory)" : "var(--text-body)",
-                  border: `1px solid ${dark ? "var(--forest-700)" : "var(--border)"}`,
-                  borderRadius: "var(--radius-xl)",
-                  padding: "var(--space-5)",
-                  boxShadow: dark ? "var(--shadow-brand)" : "var(--shadow-2)",
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                  <span
-                    style={{
-                      fontSize: "var(--text-sm)",
-                      fontWeight: 600,
-                      textTransform: "uppercase",
-                      letterSpacing: "var(--tracking-wide)",
-                      color: dark ? "var(--gold-300)" : "var(--accent-strong)",
-                    }}
-                  >
-                    {p.name}
-                  </span>
-                  {p.badge && <Badge tone={dark ? "solid" : "brand"}>{p.badge}</Badge>}
-                </div>
-                <div style={{ margin: "10px 0 4px", display: "flex", alignItems: "baseline", gap: 4 }}>
-                  <span style={{ fontFamily: "var(--font-display)", fontSize: 34, fontWeight: 600, color: dark ? "#fff" : "var(--text-strong)" }}>
-                    {p.price}
-                  </span>
-                  <span style={{ fontSize: "var(--text-sm)", color: dark ? "rgba(255,255,255,0.7)" : "var(--text-muted)" }}>
-                    {p.per}
-                  </span>
-                </div>
-                <div style={{ fontSize: "var(--text-sm)", color: dark ? "var(--gold-300)" : "var(--brand)", fontWeight: 500, marginBottom: 12 }}>
-                  {p.sub}
-                </div>
-                {p.lead && (
-                  <p
-                    style={{
-                      fontSize: "var(--text-xs)",
-                      lineHeight: 1.5,
-                      color: dark ? "rgba(255,255,255,0.82)" : "var(--text-body)",
-                      margin: "0 0 12px",
-                    }}
-                  >
-                    {p.lead}
-                  </p>
-                )}
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-                  {p.features.map((f) => (
-                    <li key={f} style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-xs)" }}>
-                      <Icon name="check-circle" size={15} style={{ marginTop: 1, flexShrink: 0, color: dark ? "var(--gold-300)" : "var(--brand)" }} />
-                      <span style={{ color: dark ? "rgba(255,255,255,0.92)" : "var(--text-body)", lineHeight: 1.4 }}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
+
+        <div className="price-pair">
+          {PLANS.map((p) => (
+            <div className="price-opt" key={p.id}>
+              <div className="price-opt-name">{p.name}</div>
+              <div className="price-opt-amount">
+                <span className="price-opt-num">{p.price}</span>
+                <span className="price-opt-per">{p.per}</span>
               </div>
-            );
-          })}
+              <div className="price-opt-note">
+                {p.id === "quarter" ? "Billed $250 once, today. Then $99/month." : "Billed monthly. No lock-in."}
+              </div>
+            </div>
+          ))}
         </div>
-        {/* What the fee buys and what it doesn't, stated BEFORE payment. "Are
-            all tasks covered?" was a live question in the WhatsApp threads, and
-            an unstated answer becomes a refund request in week two. */}
+
+        <div className="price-includes">
+          <div className="price-includes-title">Every membership includes</div>
+          <ul className="price-includes-list">
+            {MEMBERSHIP_FEATURES.map((f) => (
+              <li key={f}>
+                <Icon name="check-circle" size={17} />
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="guarantee">
+          <Icon name="shield-check" size={26} />
+          <div>
+            <div className="guarantee-title">30-day money-back guarantee</div>
+            <div className="guarantee-body">
+              If Niro isn&rsquo;t right for your family in the first 30 days, tell
+              us and we refund you in full. No forms, and no exit interview.
+            </div>
+          </div>
+        </div>
+
         <dl className="coverage">
           <dt>What the membership covers</dt>
           <dd>{COVERAGE_NOTE.covers}</dd>
@@ -744,60 +676,98 @@ function PricingB() {
           <dd>{COVERAGE_NOTE.excludes}</dd>
           <dd className="promise">{COVERAGE_NOTE.promise}</dd>
         </dl>
-        <p
-          style={{
-            fontSize: "var(--text-sm)",
-            color: "var(--text-body)",
-            margin: "0 0 20px",
-            display: "flex",
-            alignItems: "flex-start",
-            gap: 8,
-            justifyContent: "center",
-            textAlign: "left",
-          }}
-        >
-          <Icon name="shield-check" size={17} style={{ marginTop: 2, flexShrink: 0, color: "var(--brand)" }} />
-          <span>{GUARANTEE}</span>
-        </p>
-        <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
-        <AskNiroCta
-          placement="pricing"
-          prompt="Questions before joining?"
-          label="Chat with us on WhatsApp"
-          align="center"
-          marginTop={14}
-        />
-      </div>
-    </section>
-  );
-}
 
-/* -------------------------------------------------------------- final CTA */
-
-function FinalCtaB() {
-  return (
-    <section data-screen-label="Final CTA (B)" style={{ padding: "72px var(--gutter)", background: "var(--forest-800)" }}>
-      <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto", textAlign: "center" }}>
-        <h2
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "var(--text-3xl)",
-            lineHeight: "var(--leading-tight)",
-            color: "#fff",
-            fontWeight: 500,
-            margin: "0 0 20px",
-          }}
-        >
-          You can&rsquo;t always be in India. Niro can.
-        </h2>
-        <JoinCta className="btn btn-accent btn-lg">Get Early Access</JoinCta>
-        <div style={{ marginTop: 14, fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.7)" }}>
-          Named Niro Assistant · WhatsApp-first · First task free
+        <div style={{ textAlign: "center" }}>
+          <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
+          <AskNiroCta
+            placement="pricing"
+            prompt="Questions before joining?"
+            label="Chat with us on WhatsApp"
+            align="center"
+            marginTop={14}
+          />
         </div>
       </div>
     </section>
   );
 }
+
+/* -------------------------------------------------------------------- faq */
+
+/**
+ * The page FAQ. Answers come from lib/content FAQ, except the three that carry
+ * structure a plain string cannot: the data answer needs its four commitments
+ * as separate lines, the emergency answer links through to Niro Assured, and
+ * the trial answer needs a live WhatsApp link to claim the free task.
+ */
+const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
+  if (i === 2) {
+    return {
+      q: f.q,
+      a: (
+        <>
+          <p style={{ margin: "0 0 10px" }}>
+            Yes, and here is how we are building it rather than how we are
+            describing it.
+          </p>
+          <ul className="faq-points">
+            <li>
+              <b>You keep control.</b> We periodically tell you exactly what data we
+              hold on your family, and you can delete all of it in one click. Leave
+              Niro and your records are permanently erased within 30 days.
+            </li>
+            <li>
+              <b>Documents live in a secure vault.</b> Encrypted in transit and at
+              rest, and inaccessible to our staff without an open task that requires
+              them &mdash; access is scoped to the task and logged.
+            </li>
+            <li>
+              <b>We never ask for passwords, PINs or net-banking logins.</b> Some
+              tasks need a one-time code to finish. When one does, we tell you what
+              we are about to do, ask you at that moment, and use it only for that
+              task. Say no and we find another route.
+            </li>
+            <li>
+              <b>Built to DPDP, and to global standards.</b> We operate under
+              India&rsquo;s DPDP Act and are building to GDPR-aligned practices for
+              members abroad. Your data is never sold.
+            </li>
+          </ul>
+          <p style={{ margin: 0 }}>
+            Questions? hello@tellniro.com reaches the founders.
+          </p>
+        </>
+      ),
+    };
+  }
+  if (i === 3) {
+    return {
+      q: f.q,
+      a: (
+        <>
+          <p style={{ margin: "0 0 10px" }}>{f.a}</p>
+          <a href="/niro-assured/" style={{ fontWeight: 600 }}>
+            Read the full protocol on Niro Assured &rarr;
+          </a>
+        </>
+      ),
+    };
+  }
+  if (i === 5) {
+    return {
+      q: f.q,
+      a: (
+        <>
+          <p style={{ margin: "0 0 10px" }}>{f.a}</p>
+          <WhatsAppLink placement="faq-trial" message={ASK_MESSAGE}>
+            Chat with Niro to claim your free task
+          </WhatsAppLink>
+        </>
+      ),
+    };
+  }
+  return { q: f.q, a: f.a };
+});
 
 /* ---------------------------------------------------------------- variant */
 
@@ -814,8 +784,7 @@ export function VariantB() {
         <StoriesB />
         <TrustB />
         <PricingB />
-        <FinalCtaB />
-        <Faq showAsk={false} />
+        <Faq items={MAIN_FAQ_ITEMS} showAsk={false} />
       </main>
       <StickyCta label="Get Early Access" />
     </>

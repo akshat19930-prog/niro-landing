@@ -345,47 +345,52 @@ export const TESTIMONIALS_SHORT: {
   },
 ];
 
-/* ---- FAQ (first item is the trust moment) ---- */
+/* ---- FAQ ------------------------------------------------------------------
+   Nine questions, ordered by what a buyer needs settled before paying rather
+   than by what is easiest to answer. Vetting moves to second: it is the only
+   answer people re-read (2.25 opens per session against ~1.1 for everything
+   else), and it sat at position five.
+
+   These strings are the plain-text source of truth. The main page renders a
+   richer version of three of them - bullets in the data answer, a link to Niro
+   Assured, a WhatsApp link on the trial - from MAIN_FAQ_ITEMS in VariantB. Keep
+   the two in sync. ------------------------------------------------------- */
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
-    q: "What is the membership pricing?",
-    a: "Your first task is free. After that there are two ways to join: US $99 a month, or US $250 for three months ($83 a month) which then continues monthly. Both cover your whole family in India with unlimited tasks, a dedicated family manager and emergency response with a Niro Assistant on the ground. Cancel any time.",
+    q: "What does the membership include, and what does it not?",
+    a: "The membership covers Niro's time - the calls, the portals, the chasing, the coordination - with no cap on how many tasks you send us. It includes one booked on-demand Niro visit of four hours or less each month, your family WhatsApp group, and Niro Assured emergency response. What it doesn't cover is anyone else's costs. Vendor charges and anything ordered through us are billed at exactly what they cost, with no commission added. So are government and legal fees. Additional Niro visits in the same month are $15 per four hours. We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
   },
   {
-    q: "Who actually does the work?",
-    a: "Every family gets a named family manager on Niro's payroll, and they are accountable for every task from start to finish. Behind them is a team that can go to a hospital, an office or your parents' door in person, and software that keeps track so nothing is forgotten between time zones. You always know whose name is on your task, and nothing goes to your family without a person having checked it.",
-  },
-  {
-    q: "How fast is the emergency response, really?",
-    a: "We answer the emergency line in 45 seconds, our partner Medulance dispatches an ambulance within 3 minutes, and median arrival across our launch cities is 20 minutes. A Niro Assistant meets your parents at the hospital and handles admission. The full protocol is on our emergency response page.",
-  },
-  {
-    q: "Are all tasks covered under the membership cost?",
-    a: "The membership covers Niro's time - the calls, the chasing, the coordination and a Niro Assistant on the ground - with no cap on the number of tasks. Third-party costs are billed at actual: lab charges, ambulance fees, government and legal fees, vendor payments, cab fares. We always tell you the cost and get your go-ahead before we spend anything on your behalf.",
-  },
-  {
-    q: "What if it isn't right for us?",
-    a: "You have a 30-day money-back guarantee. Tell your family manager or write to hello@tellniro.com in your first 30 days and we refund you in full - no forms and no exit interview. Third-party costs we have already paid out on your behalf can't be recalled. After 30 days you can cancel any time, effective at the end of your paid period.",
-  },
-  {
-    q: "What happens after I join?",
-    a: "Within a day we set up your family WhatsApp group and introduce your family manager by name and photo. In the first week we do a 30-minute onboarding call to record your family's details, your emergency protocol and the hospital you prefer - then we start with your first task. You are not left to work out how to use it.",
-  },
-  {
-    q: "Does Niro take decisions on its own?",
-    a: "No. Niro simply understands what you need and does what it takes to fulfil it the best way. Even when it recommends something proactively, it waits for your go-ahead.",
+    q: "How are Niro Assistants vetted and verified?",
+    a: "They are on our payroll - not a marketplace we forward your family's request to. Before anyone joins we test three things: patience and warmth with older parents, communication in the language your family actually speaks, and the operational judgement to chase something until it is finished. Everyone is background-checked and identity-verified. You are introduced to your assistant by name and photo before day one. They work to central SOPs and to the protocols you set for your own family, every task is tracked to completion and closed with proof, and they are appraised on one thing: whether your family is satisfied.",
   },
   {
     q: "Is my family's data safe with Niro?",
-    a: "Yes - and here's exactly how. We never ask for your passwords, PINs or net-banking logins, and we never take access to your email, phone or accounts. Some tasks genuinely need a one-time code - releasing an EPFO claim, or fixing a bill on a government portal - and in those cases we tell you what we are about to do, ask you for that code at that moment, and use it only for that task. If you would rather not share one, tell us and we will find another route or stop. Everything is encrypted in transit and at rest, sensitive documents are visible only to the team handling that task, and we operate under India's DPDP Act with GDPR-aligned practices for members abroad. Your data is never sold. Leave Niro, and your family's records are permanently deleted within 30 days. Questions? hello@tellniro.com reaches the founders.",
+    a: "Yes, and here is how we are building it rather than how we are describing it. You keep control: we periodically tell you exactly what data we hold on your family, you can delete all of it in one click, and leaving Niro erases your records permanently within 30 days. Documents live in a secure vault, encrypted in transit and at rest, inaccessible to our staff without an open task that requires them - access is scoped to the task and logged. We never ask for your passwords, PINs or net-banking logins; where a task genuinely needs a one-time code we tell you what we are about to do, ask you at that moment, and use it only for that task. We operate under India's DPDP Act and are building to GDPR-aligned practices for members abroad. Your data is never sold. Questions? hello@tellniro.com reaches the founders.",
   },
   {
-    q: "Which cities are you serviceable in today?",
-    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad and Chennai - these are the cities where our Niro Assistants are on the ground and where our emergency response times hold. If your parents are somewhere else, join anyway and tell us their city: we open new cities where our members' families already are, and you'll hear from us the week we reach yours.",
+    q: "How fast is the emergency response, really?",
+    a: "We answer the emergency line in 45 seconds - a person, not a menu. Our partner Medulance dispatches the nearest equipped ambulance within 3 minutes, and median arrival across our launch cities is 20 minutes. A Niro Assistant meets your parents at the hospital, carries their medical history and insurance details, and handles admission. Most of that speed comes from work done before anything happens: on your onboarding call we record their history, medication, blood group, insurance and preferred hospital, and write down your family's protocol. In an emergency we execute that document - we don't improvise. If we miss our own numbers, we tell you in writing the same day.",
   },
   {
-    q: "Do my parents need to install anything?",
-    a: "No. For your parents, everything runs over a WhatsApp group and calls. You get an app that acts as the interface, data vault, and payments platform for the membership.",
+    q: "Who actually does the work - humans or AI?",
+    a: "Both, in a specific order. Every remote task is run by a human Niro Assistant, with AI doing the parts software is genuinely better at: drafting, tracking, remembering, never letting a follow-up slip between time zones. Nothing reaches your family without a person having checked it, and one named person is accountable for the task from start to finish. And for Niro Visits there is no software involved at all - a Niro Assistant physically goes to the hospital, the government office, or your parents' front door.",
+  },
+  {
+    q: "Can I try Niro before I pay?",
+    a: "Yes, twice over. Your first task is free - tell us what you need, we do it, and you decide afterwards whether to join. And once you join, you have a 30-day money-back guarantee: if Niro isn't right for your family in the first 30 days, tell us and we refund you in full. No forms, no exit interview. Between the two, you can see the service work before any money is at risk.",
+  },
+  {
+    q: "Does Niro take decisions on its own?",
+    a: "No. Niro understands what you need and does what it takes to get it done, but the decisions stay yours. You set in advance what needs your approval, who we may contact, and what we should never do without asking. Even when we recommend something proactively - a better vendor, a cheaper option, an appointment worth moving - we wait for your go-ahead. We spend nothing on your behalf without telling you the cost first.",
+  },
+  {
+    q: "Which cities is Niro serviceable in today?",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad and Chennai. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
+  },
+  {
+    q: "How many people can I add, and how many groups can I create?",
+    a: "You can add up to 5 family members including yourself to a family group - your parents, a sibling, anyone who needs to be able to ask. You also get a private 1:1 chat with Niro for anything you'd rather keep between us. And you can create up to 2 groups, for two separate family locations - your parents in one city and your in-laws in another, say.",
   },
 ];
 

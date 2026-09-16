@@ -113,7 +113,7 @@ export function AskOnWhatsApp({
 
 /** The opening line for a pre-signup question. Kept in one place so all three
  *  /us placements arrive in the inbox reading the same way. */
-const ASK_MESSAGE =
+export const ASK_MESSAGE =
   "Hi, I came across Niro and wanted to understand whether it could help with something specific.";
 
 /**
