@@ -1286,3 +1286,6 @@
   background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
 }
+
+/* The country code stops applying once a WhatsApp ID is typed. */
+.dial-select:disabled { opacity: 0.45; cursor: not-allowed; }

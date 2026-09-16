@@ -10,6 +10,7 @@ import { useJoin } from "@/components/JoinProvider";
 import { SORT_OUT_OPTIONS, SORT_OUT_WHO, INDIA_CITIES } from "@/lib/content";
 import { dialCode, logEvent } from "@/lib/track";
 import { whatsappUrl } from "@/lib/whatsapp";
+import { looksLikeWhatsAppId } from "@/lib/cities";
 
 /**
  * The join modal, phone-first.
@@ -134,7 +135,10 @@ export function JoinModal() {
   useEffect(() => {
     if (step !== "form") return;
     const guess = dialCode();
-    if (guess && DIAL_CODES.some((d) => d.code === guess)) setDial(guess);
+    // +91 is deliberately excluded from the auto-guess. Our ads run to North
+    // America and the Gulf, so an India time zone is far likelier to be a VPN
+    // or a stopover than a member - and +1 is the right default to land on.
+    if (guess && guess !== "+91" && DIAL_CODES.some((d) => d.code === guess)) setDial(guess);
   }, [step]);
 
   useEffect(() => {
@@ -143,6 +147,9 @@ export function JoinModal() {
 
   if (!open) return null;
 
+  // Switching on the input itself, so nobody has to find a toggle.
+  const isId = looksLikeWhatsAppId(phone);
+
   function toggleTask(t: string) {
     setTasks((cur) => (cur.includes(t) ? cur.filter((x) => x !== t) : [...cur, t]));
   }
@@ -150,7 +157,7 @@ export function JoinModal() {
   function onDetailsSubmit(e: React.FormEvent) {
     e.preventDefault();
     const err = submitLead({
-      phone: `${dial} ${phone}`.trim(),
+      phone: isId ? phone.trim() : `${dial} ${phone}`.trim(),
       name,
       ownCity,
       city,
@@ -238,7 +245,7 @@ export function JoinModal() {
 
             <div style={{ marginBottom: 14 }}>
               <label style={labelStyle} htmlFor="join-phone">
-                WhatsApp number
+                WhatsApp number or ID
               </label>
               <div className="phone-row">
                 <select
@@ -246,6 +253,7 @@ export function JoinModal() {
                   aria-label="Country code"
                   className="ds-input dial-select"
                   value={dial}
+                  disabled={isId}
                   onChange={(e) => setDial(e.target.value)}
                 >
                   {DIAL_CODES.map((d) => (
@@ -264,6 +272,18 @@ export function JoinModal() {
                   onChange={(e) => setPhone(e.target.value)}
                 />
               </div>
+              {isId && (
+                <p
+                  style={{
+                    fontSize: "var(--text-xs)",
+                    color: "var(--text-muted)",
+                    margin: "7px 0 0",
+                  }}
+                >
+                  Looks like a WhatsApp ID &mdash; we&rsquo;ll use it exactly as
+                  you typed it, no country code.
+                </p>
+              )}
             </div>
 
             <div style={{ marginBottom: 14 }}>
