@@ -121,12 +121,25 @@ Code access alone is not enough to run this. All of these are separate:
 | **GitHub repo** | Write access to `akshat19930-prog/niro-landing` | Repo Settings → Collaborators |
 | **GitHub Pages / DNS** | Admin on the repo; check where the `tellniro.com` DNS is registered | Repo admin + domain registrar |
 | **Google Sheet** ("Niro Sign ups") | **Editor** — it holds every lead | Sheet share menu |
-| **Apps Script** (waitlist + report) | Editor on both script projects, and the right to deploy | Comes with the Sheet for the bound script; the report project is separate |
+| **Apps Script** (waitlist + report) | Editor, and the right to deploy the web app | Comes with the Sheet - see the note below |
 | **Meta Ads** (`act_2246578592783321`) | Advertiser or Admin | Business Manager → People |
 | **Meta Pixel / CAPI** | Pixel access for event debugging | Business Manager → Data sources |
 | **PostHog** (project 415260) | Member | PostHog → Settings → Members |
 | **The WhatsApp support line** | It is a founder's number today — decide whether it transfers or the page points somewhere new | — |
 | **`akshat@tellniro.com`** | The only address published on the live site - it is the refund route in Terms and the apply route on `/careers`. Either forward it to Paarth or swap the address on the page. | Email admin |
+
+**On Apps Script specifically.** Both `.gs` files live in **one** project, bound
+to the "Niro Sign ups" Sheet. There is no separate report project and no Share
+button in the script editor - a bound project is shared by sharing its Sheet.
+Three consequences:
+
+- Only `waitlist.gs` has a **web-app deployment**. `report.gs` runs on
+  time-driven triggers, so there is no URL to break there.
+- **Triggers are per-user.** The thrice-daily report fires under whoever ran
+  `setupTriggers()`. A second person running it means two reports a day, not a
+  handover - so don't, unless you are deliberately moving it.
+- Editor access **includes Script Properties**, which is where the Meta access
+  token lives. Sharing the Sheet shares the token.
 
 **Do not send the Meta access token over chat or email.** Rotate it and let him
 set it in Apps Script Properties himself.
