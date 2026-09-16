@@ -357,7 +357,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "How fast is the emergency response, really?",
-    a: "We answer the emergency line in 45 seconds, our partner Medulance dispatches an ambulance within 3 minutes, and median arrival across our launch cities is 20 minutes. A Niro Assistant meets your parents at the hospital and handles admission. The full protocol is on our emergency response page.",
+    a: "We answer the emergency line in 45 seconds, our partner Medulance dispatches an ambulance within 3 minutes, and median arrival across our launch cities is 20 minutes. A Niro Assistant meets your parents at the hospital and handles admission. The full protocol is on our Niro Assured page.",
   },
   {
     q: "Are all tasks covered under the membership cost?",

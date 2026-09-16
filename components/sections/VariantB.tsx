@@ -8,6 +8,7 @@ import { Badge } from "@/components/ds/Badge";
 import { Icon, type IconName } from "@/components/ds/Icon";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { AskStream } from "@/components/ds/AskStream";
+import { VoiceStream } from "@/components/ds/VoiceStream";
 import { ChatVideo } from "@/components/ds/ChatVideo";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
@@ -114,10 +115,9 @@ function HeroB() {
               margin: "0 0 24px",
             }}
           >
-            A named person in India who gets things done for you and your family &mdash;
-            from government paperwork to parents&rsquo; appointments, home repairs and
-            everything in between. They chase it, and they show up in person when that is
-            what it takes.
+            Your family&rsquo;s personal assistant in India, getting things done for
+            them and for you. Peace of mind for you, unmatched convenience for
+            them - all delivered over WhatsApp.
           </p>
           <JoinCta className="btn btn-primary btn-lg">Get Early Access</JoinCta>
           {/* Matches /us placement-for-placement. The two pages are being
@@ -140,11 +140,11 @@ function HeroB() {
               color: "var(--text-muted)",
             }}
           >
-            <span>Named Niro Assistant</span>
+            <span>Remote Assistant</span>
             <span aria-hidden="true">·</span>
-            <span>WhatsApp-first</span>
+            <span>WhatsApp groups</span>
             <span aria-hidden="true">·</span>
-            <span>We show up in person</span>
+            <span>Shows up in person when needed</span>
           </div>
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
@@ -192,10 +192,6 @@ function HowItWorksB() {
           </div>
           <div>
             <AskStream />
-            <p style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)", marginTop: 12 }}>
-              On WhatsApp, by voice note or on a call &mdash; in English, Hindi or Tamil.
-              Your parents never need an app.
-            </p>
           </div>
         </div>
 
@@ -220,7 +216,7 @@ function HowItWorksB() {
             <div className="does-card does-card-visit">
               <div className="does-head">
                 <Icon name="map-pin" size={19} style={{ color: "var(--accent-strong)" }} />
-                <span className="does-title">Niro Visits</span>
+                <span className="does-title">Niro Visits - booked on demand</span>
               </div>
               <div className="does-sub">When it needs a person in the room.</div>
               <ul className="does-visit-list">
@@ -235,16 +231,23 @@ function HowItWorksB() {
         <div className="beat">
           <div className="beat-label">
             <span className="beat-n">03</span>
-            <span className="beat-t">It gets done &mdash; better and faster</span>
+            <span className="beat-t">It gets done - better and faster</span>
           </div>
           <div className="outcome">
             <div className="outcome-line">
               <Icon name="check-circle" size={20} />
-              <span>Closed with proof &mdash; photos, receipts and a written note in your family group.</span>
+              <span>
+                <b>All tasks closed with proof</b> - photos, receipts and a written
+                note in the group. You stop chasing, and you get your evenings back.
+              </span>
             </div>
             <div className="outcome-line">
               <Icon name="check-circle" size={20} />
-              <span>No follow-ups from you at 3 a.m., and no running around for them.</span>
+              <span>
+                <b>Your parents ask freely</b> - because asking Niro doesn&rsquo;t
+                mean worrying you. The small things they used to swallow finally
+                get said, and handled.
+              </span>
             </div>
           </div>
         </div>
@@ -260,28 +263,16 @@ function HowItWorksB() {
 /**
  * For your parents.
  *
- * Replaces the single "my child is abroad" testimonial, which was warm but
- * said nothing a competitor could not also say. The specific claim is that app
- * literacy stops being a requirement: a parent who has never opened a cab app,
- * a grocery app or a government portal still gets all three done by saying so
- * out loud, in their own language. Three asks in their own words make that
- * concrete; the footer names what each one replaces.
+ * The claim is not "we are kind to your parents" - anyone can say that. It is
+ * that the things they quietly put up with, and never mention on a call, stop
+ * being their problem: the haggling, the scam risk, the maid who vanished, the
+ * grocery run on bad knees, the ten apps they were never going to learn.
+ *
+ * Six asks cycle three at a time so the breadth reads without a wall of text,
+ * and the untranslated English ones sit alongside the Hindi ones because that
+ * is how parents actually write.
  */
 function ParentsB() {
-  const voices = [
-    {
-      said: "Beta, kal subah doctor ke liye cab bhej dena \u2014 aur wapas bhi.",
-      means: "Send a cab for the doctor tomorrow morning, and one back.",
-    },
-    {
-      said: "Maid kal se nahi aa rahi. Koi bharosemand aadmi dekh lo.",
-      means: "The maid has stopped coming. Please find someone reliable.",
-    },
-    {
-      said: "Pension ka Jeevan Pramaan patra jama karwa do.",
-      means: "Please get my pension life certificate submitted.",
-    },
-  ];
   return (
     <section data-screen-label="Parents (B)" style={{ padding: sectionPad }}>
       <div
@@ -295,16 +286,17 @@ function ParentsB() {
         }}
       >
         <div>
-          <Eyebrow>For your parents</Eyebrow>
-          <h2 style={{ ...h2Style, margin: "14px 0 16px" }}>No app to learn. No English required.</h2>
+          <Eyebrow>For your parents in India</Eyebrow>
+          <h2 style={{ ...h2Style, margin: "14px 0 16px" }}>
+            The struggles they don&rsquo;t tell you about, quietly solved.
+          </h2>
           <p style={{ fontSize: "var(--text-md)", lineHeight: "var(--leading-body)", color: "var(--text-body)", maxWidth: 520, margin: "0 0 14px" }}>
-            A cab, a grocery order, a reliable backup maid, an ITR filing, a pension
-            life certificate &mdash; each one normally needs a different app, a
-            different login, and a comfort with all of it your parents may simply
-            not have.
+            The haggling with vendors. The fear of being scammed. The maid who
+            stopped turning up. The grocery run on a bad knee. The ten apps they
+            were never going to learn.
           </p>
           <p style={{ fontSize: "var(--text-md)", lineHeight: "var(--leading-body)", color: "var(--text-strong)", maxWidth: 520, margin: "0 0 18px", fontWeight: 500 }}>
-            With Niro all of it is one WhatsApp message, or a voice note in the
+            All of it solved with one WhatsApp message, or a voice note in the
             language they actually speak.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
@@ -333,20 +325,7 @@ function ParentsB() {
           >
             What they actually send us
           </div>
-          <div className="voices">
-            {voices.map((x) => (
-              <div className="voice" key={x.said}>
-                <div className="voice-said">{x.said}</div>
-                <div className="voice-means">{x.means}</div>
-              </div>
-            ))}
-          </div>
-          <div className="voice-foot">
-            <span>No <b>cab app</b></span>
-            <span>No <b>grocery app</b></span>
-            <span>No <b>government portal</b></span>
-            <span>No <b>English</b></span>
-          </div>
+          <VoiceStream />
         </div>
       </div>
     </section>
@@ -396,7 +375,7 @@ function UseCasesB() {
     <section data-screen-label="Use cases (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>What Niro handles</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 28px" }}>The things that pull you back to India.</h2>
+        <h2 style={{ ...h2Style, margin: "14px 0 28px" }}>Everything that makes you wish you were in India. And more.</h2>
         <div
           style={{
             display: "grid",
@@ -543,72 +522,45 @@ function StoriesB() {
 /* ------------------------------------------------------------------ trust */
 
 function TrustB() {
-  // Reframed from "a human does every keystroke" to "a named person is
-  // accountable, and somebody actually shows up". The old list led with "a real
-  // human, not a chatbot" - a promise that gets harder to keep as more of the
-  // chasing is assisted by software, and one we would rather not have to keep
-  // re-making. Accountability and physical presence are true under the model we
-  // are actually building, and presence is the one thing no amount of software
-  // can imitate. Every line here is checkable: two link out to the page that
-  // proves them.
-  const items: { icon: IconName; text: string; sub: string; href?: string }[] = [
+  // Four claims, not six. Each is something a member could hold us to, and
+  // each answers a different objection the research actually recorded: the
+  // emergency nobody believes, the visit nobody else does, the commission
+  // everyone suspects, and the stranger nobody vetted.
+  const items: { icon: IconName; text: string; sub: string; href?: string; hrefLabel?: string }[] = [
     {
-      icon: "user-check",
-      text: "One name is accountable",
-      sub: "A family manager on our payroll, introduced by photo before day one - not a queue, not a ticket number.",
+      icon: "heart-pulse",
+      text: "Emergency protocol",
+      sub: "The assurance of a rapid, contextual response to a medical emergency back home. You define it, we execute it.",
+      href: "/niro-assured/",
+      hrefLabel: "Read more on Niro Assured",
     },
     {
       icon: "map-pin",
-      text: "We turn up in person",
-      sub: "Niro Visits: the hospital, the passport office, your parents' front door. The part nobody else does.",
+      text: "Niro Visits",
+      sub: "Booked on demand, for whatever your family needs: a doctor or visa appointment, home maintenance, or a government office visit.",
     },
     {
-      icon: "heart-pulse",
-      text: "Emergency times we publish",
-      sub: "45 seconds to answer, 3 minutes to dispatch - and we tell you in writing when we miss.",
-      href: "/emergency/",
+      icon: "shield-check",
+      text: "Honest recommendations",
+      sub: "We never earn a commission from any third-party vendor. We find and book only what is actually best for you.",
     },
     {
-      icon: "camera",
-      text: "Every task closed with proof",
-      sub: "Photos, receipts and a written note in your family group. Nothing rests on someone remembering.",
-    },
-    {
-      icon: "lock",
-      text: "We never ask for your passwords",
-      sub: "Not your net-banking login, not your PINs. You set in advance what needs your approval first.",
-    },
-    {
-      icon: "wallet",
-      text: "Priced in the open, with a way out",
-      sub: "$99 a month, third-party costs at cost with no commission, and 30 days to change your mind.",
+      icon: "user-check",
+      text: "Verified Niro managers",
+      sub: "Vetted extensively, on our own payroll, and appraised on one thing: whether your family is satisfied.",
     },
   ];
   return (
     <section data-screen-label="Trust (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>Why families trust Niro</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>
-          You&rsquo;re handing us your parents. We don&rsquo;t take that lightly.
+        <h2 style={{ ...h2Style, margin: "14px 0 30px", maxWidth: 900 }}>
+          Purpose-built for NRIs, with an obsession for convenience and
+          reliability at the heart of it.
         </h2>
-        <p
-          style={{
-            fontSize: "var(--text-md)",
-            color: "var(--text-body)",
-            maxWidth: 620,
-            margin: "0 0 30px",
-          }}
-        >
-          Trust isn&rsquo;t a promise you make on a landing page, so here are six
-          things you can actually hold us to.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))",
-            gap: 22,
-          }}
-        >
+        {/* Four items, so an explicit two-up rather than auto-fit: auto-fit
+            gives three columns at this width and orphans the fourth. */}
+        <div className="trust-grid">
           {items.map((it) => (
             <div key={it.text} style={{ display: "flex", alignItems: "flex-start", gap: 13 }}>
               <span
@@ -636,7 +588,7 @@ function TrustB() {
                     <>
                       {" "}
                       <a href={it.href} style={{ color: "var(--brand)", fontWeight: 500 }}>
-                        Read the protocol &rarr;
+                        {it.hrefLabel} &rarr;
                       </a>
                     </>
                   )}

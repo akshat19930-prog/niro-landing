@@ -990,30 +990,11 @@
 }
 
 /* ---- the live ask feed ---- */
-.ask-stream {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  /* Reserve just enough that the section does not jump as bubbles of different
-     lengths cycle through. Desktop bubbles are mostly one line; phones wrap to
-     two, so the floor is taller there. Over-reserving leaves a dead gap under
-     the third bubble, which reads as a layout bug rather than as breathing room. */
-  min-height: 152px;
-}
-.ask-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  animation: ask-in var(--dur-base, 260ms) var(--ease-calm, cubic-bezier(.2,.7,.3,1)) both;
-}
-.ask-row-static { animation: none; }
-@keyframes ask-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ask-row { animation: none; }
-}
+/* Fixed slots that crossfade in place: nothing moves, so nothing can jerk.
+   Equal minimum row height means a one-line ask swapping for a two-line one
+   cannot shift the rows beneath it. */
+.ask-stream { display: flex; flex-direction: column; gap: 10px; }
+.ask-row { display: flex; align-items: center; gap: 10px; min-height: 62px; }
 .ask-who {
   flex-shrink: 0;
   min-width: 42px;
@@ -1023,11 +1004,13 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-align: center;
-  margin-top: 3px;
 }
 .ask-who-you { background: var(--brand-soft); color: var(--brand); }
 .ask-who-family { background: var(--accent-soft); color: var(--gold-700); }
 .ask-text {
+  display: flex;
+  align-items: center;
+  min-height: 62px;
   background: var(--surface-card);
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -1039,9 +1022,22 @@
   box-shadow: var(--shadow-1);
 }
 @media (max-width: 619px) {
-  .ask-stream { min-height: 210px; }
+  .ask-row, .ask-text { min-height: 74px; }
 }
 .ask-tick { margin-left: 8px; font-size: 10px; color: var(--brand); white-space: nowrap; }
+
+/* A soft dissolve, not a blink. Starting at 0.2 rather than 0 means there is
+   never a fully blank frame - an opacity hold at 0 reads as a flash, which is
+   the same jerkiness the stack-shift version had, just in a different form.
+   No travel, so nothing moves. */
+.ask-fade, .voice-fade { animation: soft-swap 700ms var(--ease-calm, cubic-bezier(.2,.7,.3,1)) both; }
+@keyframes soft-swap {
+  0%   { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ask-fade, .voice-fade { animation: none; }
+}
 
 /* ---- what Niro does: remote work + visits ---- */
 .does-grid {
@@ -1121,7 +1117,13 @@
   border-top-right-radius: 5px;
   padding: 12px 15px;
   box-shadow: var(--shadow-1);
+  /* Equal height across one-line and translated two-line asks, so a swap in
+     one slot never nudges the others. */
+  min-height: 86px;
+  display: flex;
+  align-items: center;
 }
+.voice-inner { width: 100%; }
 .voice-said { font-size: var(--text-base); color: var(--ink-900); line-height: 1.45; }
 .voice-means {
   font-size: var(--text-xs);
@@ -1129,14 +1131,17 @@
   font-style: italic;
   margin-top: 5px;
 }
-.voice-foot {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 10px;
+
+/* Product mark above the Niro Assured page title. */
+.prose .assured-mark {
   font-size: var(--text-xs);
-  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-strong);
+  margin: 0 0 6px;
 }
-.voice-foot b { color: var(--text-strong); font-weight: 600; }
+
+/* Why families trust Niro: a clean 2x2 rather than 3 + an orphan. */
+.trust-grid { display: grid; grid-template-columns: 1fr; gap: 24px 32px; }
+@media (min-width: 720px) { .trust-grid { grid-template-columns: 1fr 1fr; } }

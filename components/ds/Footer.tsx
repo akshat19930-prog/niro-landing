@@ -8,7 +8,7 @@ import { WhatsAppLink } from "./WhatsAppLink";
  */
 const links: { label: string; href: string }[] = [
   { label: "About", href: "/about/" },
-  { label: "Emergency response", href: "/emergency/" },
+  { label: "Niro Assured", href: "/niro-assured/" },
   { label: "We're hiring", href: "/careers/" },
   { label: "Privacy", href: "/privacy/" },
   { label: "Terms", href: "/terms/" },
