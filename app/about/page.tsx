@@ -79,7 +79,7 @@ export default function AboutPage() {
 
         <div style={{ marginTop: 32 }}>
           <a href="/#join" className="btn btn-primary btn-lg">
-            Join the waitlist
+            Join the beta
           </a>
         </div>
       </article>

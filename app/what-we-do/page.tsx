@@ -68,7 +68,7 @@ export default function WhatWeDoPage() {
         </p>
 
         <div className="scope-cta">
-          <JoinCta className="btn btn-primary btn-lg">Get your first task free</JoinCta>
+          <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
         </div>
       </article>
     </PageShell>

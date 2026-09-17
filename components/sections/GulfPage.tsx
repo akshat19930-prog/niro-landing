@@ -100,7 +100,7 @@ function GulfHero() {
             Less to chase. More time to live.
           </p>
           <JoinCta className="btn btn-primary btn-lg" position="hero">
-            Get Early Access
+            Join the beta
           </JoinCta>
           <div
             style={{
@@ -989,7 +989,7 @@ function GulfPricing() {
             ))}
           </ul>
           <JoinCta className="btn btn-accent btn-lg btn-full" position="pricing">
-            Get Early Access
+            Join the beta
           </JoinCta>
           <div style={{ marginTop: 14, textAlign: "center", fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.72)" }}>
             First task free · No card required to join
@@ -1043,7 +1043,7 @@ function GulfClosing() {
           Let Niro take it from here.
         </h2>
         <JoinCta className="btn btn-accent btn-lg" position="closing">
-          Get Early Access
+          Join the beta
         </JoinCta>
         <div style={{ marginTop: 14, fontSize: "var(--text-sm)", color: "rgba(255,255,255,0.7)" }}>
           First task free · No card required
@@ -1060,7 +1060,7 @@ function GulfClosing() {
 export function GulfPage() {
   return (
     <>
-      <Nav cta="Get Early Access" homeHref="/gulf" ctaPosition="nav" />
+      <Nav cta="Join the beta" homeHref="/gulf" ctaPosition="nav" />
       <main>
         <GulfHero />
         <GulfHowItWorks />
@@ -1073,7 +1073,7 @@ export function GulfPage() {
         <Faq items={GULF_FAQ} heading="Questions" />
         <GulfClosing />
       </main>
-      <StickyCta label="Get Early Access" />
+      <StickyCta label="Join the beta" />
     </>
   );
 }

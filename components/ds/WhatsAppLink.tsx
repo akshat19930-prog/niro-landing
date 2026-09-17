@@ -122,7 +122,7 @@ export const ASK_MESSAGE =
  * The prompt line is what does the work - it names the hesitation ("something
  * specific", "not sure if Niro can handle something") so the link reads as an
  * answer to a question the visitor is already holding, rather than as a second
- * offer competing with Get Early Access. Hence the size and colour step down
+ * offer competing with Join the beta. Hence the size and colour step down
  * from the button above it, and no button treatment of its own.
  */
 export function AskNiroCta({

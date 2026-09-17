@@ -9,7 +9,7 @@ import { useJoin } from "@/components/JoinProvider";
  * once the visitor has joined.
  */
 export function StickyCta({
-  label = "Join the waitlist — first task free",
+  label = "Join the beta",
 }: {
   label?: string;
 }) {

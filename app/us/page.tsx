@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Niro - your parents in India, and your household here",
     description:
-      "For Indian families in the US. One person for both sides of your family's life. Join the waitlist.",
+      "For Indian families in the US. One person for both sides of your family's life. Join the beta.",
     type: "website",
     url: "https://tellniro.com/us",
   },

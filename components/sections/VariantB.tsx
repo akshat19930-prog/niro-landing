@@ -119,7 +119,7 @@ function HeroB() {
             them and for you. Peace of mind for you, unmatched convenience for
             them - all delivered over WhatsApp.
           </p>
-          <JoinCta className="btn btn-primary btn-lg">Get Early Access</JoinCta>
+          <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
           {/* Matches /us placement-for-placement. The two pages are being
               compared on signup rate, so an escape hatch on one and not the
               other biases that comparison. */}
@@ -773,7 +773,7 @@ const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
 export function VariantB() {
   return (
     <>
-      <Nav cta="Get Early Access" />
+      <Nav cta="Join the beta" />
       <main>
         <HeroB />
         <HowItWorksB />
@@ -784,7 +784,7 @@ export function VariantB() {
         <PricingB />
         <Faq items={MAIN_FAQ_ITEMS} showAsk={false} />
       </main>
-      <StickyCta label="Get Early Access" />
+      <StickyCta label="Join the beta" />
     </>
   );
 }
