@@ -370,7 +370,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "How fast is the emergency response, really?",
-    a: "We answer the emergency line in 45 seconds - a person, not a menu. Our partner Medulance dispatches the nearest equipped ambulance within 3 minutes, and median arrival across our launch cities is 20 minutes. A Niro Assistant meets your parents at the hospital, carries their medical history and insurance details, and handles admission. Most of that speed comes from work done before anything happens: on your onboarding call we record their history, medication, blood group, insurance and preferred hospital, and write down your family's protocol. In an emergency we execute that document - we don't improvise. If we miss our own numbers, we tell you in writing the same day.",
+    a: "We answer the emergency line in 45 seconds - a person, not a menu. Our ambulance partner dispatches the nearest equipped ambulance within 3 minutes, and median arrival across our launch cities is 20 minutes. A Niro Assistant meets your parents at the hospital, carries their medical history and insurance details, and handles admission. Most of that speed comes from work done before anything happens: on your onboarding call we record their history, medication, blood group, insurance and preferred hospital, and write down your family's protocol. In an emergency we execute that document - we don't improvise. If we miss our own numbers, we tell you in writing the same day.",
   },
   {
     q: "Who actually does the work - humans or AI?",
@@ -554,7 +554,7 @@ export const EMERGENCY_SLA: { value: string; label: string; detail: string }[] =
   {
     value: "3 min",
     label: "Ambulance dispatched",
-    detail: "Our partner Medulance dispatches the nearest equipped ambulance to your parents' address.",
+    detail: "Our ambulance partner dispatches the nearest equipped ambulance to your parents' address.",
   },
   {
     value: "20 min",
@@ -1033,7 +1033,7 @@ export const ROLES: Role[] = [
   {
     title: "Niro Assistant - Operations",
     location: "Bengaluru",
-    type: "Full-time · 2 roles",
+    type: "Full-time",
     blurb:
       "You are the person our members' parents actually meet. You run their tasks to completion - the hospital visit, the stuck EPFO claim, the plumber who said he would come on Tuesday - and you close each one with proof.",
     looking: [

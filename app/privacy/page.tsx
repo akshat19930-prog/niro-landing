@@ -128,9 +128,9 @@ export default function PrivacyPage() {
         <h2>Contact</h2>
         <p>
           For any privacy question or request, email us at{" "}
-          <a href="mailto:privacy@tellniro.com">privacy@tellniro.com</a>. Registered
-          office: Indique Orion, 4th Main Rd, Agara Village, 1st Sector, HSR
-          Layout, Bengaluru, Karnataka 560102.
+          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Registered
+          office: Old No. 223 New No. 2210, 2nd Main Road, 6th Block Jayanagar,
+          Bangalore 560070.
         </p>
       </article>
     </PageShell>
