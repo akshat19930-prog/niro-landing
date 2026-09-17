@@ -300,7 +300,7 @@ function ParentsB() {
             language they actually speak.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-            {["WhatsApp", "Voice note", "A phone call", "English \u00b7 Hindi \u00b7 Tamil"].map((t) => (
+            {["WhatsApp", "Voice note", "A phone call", "Any language"].map((t) => (
               <Badge key={t} tone="neutral">{t}</Badge>
             ))}
           </div>

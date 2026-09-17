@@ -45,7 +45,7 @@ export default function CareersPage() {
               </ul>
               <a
                 className="btn btn-secondary btn-md"
-                href={`mailto:akshat@tellniro.com?subject=${encodeURIComponent(
+                href={`mailto:hello@tellniro.com?subject=${encodeURIComponent(
                   r.title + " - application"
                 )}`}
               >
@@ -60,7 +60,7 @@ export default function CareersPage() {
           If you have spent years doing the kind of work our members&rsquo;
           parents need done, and you would do it well for someone else&rsquo;s
           family, write to{" "}
-          <a href="mailto:akshat@tellniro.com">akshat@tellniro.com</a> or{" "}
+          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a> or{" "}
           <a
             href={`https://wa.me/${SUPPORT_WHATSAPP}`}
             target="_blank"
