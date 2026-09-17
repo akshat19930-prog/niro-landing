@@ -138,7 +138,7 @@ Code access alone is not enough to run this. All of these are separate:
 | **Meta Pixel / CAPI** | Pixel access for event debugging | Business Manager → Data sources |
 | **PostHog** (project 415260) | Member | PostHog → Settings → Members |
 | **The WhatsApp support line** | It is a founder's number today — decide whether it transfers or the page points somewhere new | — |
-| **`akshat@tellniro.com`** | The only address published on the live site - it is the refund route in Terms and the apply route on `/careers`. Either forward it to Paarth or swap the address on the page. | Email admin |
+| **`hello@tellniro.com`** | The only address published on the live site (replaced akshat@ and privacy@, Sept 2026) - it is the refund and cancellation route in Terms, the privacy contact, and the apply route on `/careers`. Make sure it is monitored. | Email admin |
 
 **On Apps Script specifically.** Both `.gs` files live in **one** project, bound
 to the "Niro Sign ups" Sheet. There is no separate report project and no Share
@@ -207,7 +207,7 @@ not just the change. `git log --oneline` then `git show <sha>` beats asking.
    rewritten at handover to match reality — keep it that way, or the next agent
    will confidently build the wrong thing.
 6. **The parents' voices are Hindi-transliterated only**, while the page offers
-   Tamil. Add a Tamil and a Bengali one once a native speaker can check them.
+   any language. Add a Tamil and a Bengali one once a native speaker can check them.
 
 ---
 

@@ -126,7 +126,7 @@ export const STEPS: { n: string; title: string; text: string }[] = [
   {
     n: "02",
     title: "Ask anything, any way",
-    text: "Text, send a voice note in English, Hindi, or Tamil, or even call - whatever's natural. Easy for your parents.",
+    text: "Text, send a voice note in any language, or even call - whatever's natural. Easy for your parents.",
   },
   {
     n: "03",
@@ -366,7 +366,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "Is my family's data safe with Niro?",
-    a: "Yes, and here is how we are building it rather than how we are describing it. You keep control: we periodically tell you exactly what data we hold on your family, you can delete all of it in one click, and leaving Niro erases your records permanently within 30 days. Documents live in a secure vault, encrypted in transit and at rest, inaccessible to our staff without an open task that requires them - access is scoped to the task and logged. We never ask for your passwords, PINs or net-banking logins; where a task genuinely needs a one-time code we tell you what we are about to do, ask you at that moment, and use it only for that task. We operate under India's DPDP Act and are building to GDPR-aligned practices for members abroad. Your data is never sold. Questions? akshat@tellniro.com reaches the founders.",
+    a: "Yes, and here is how we are building it rather than how we are describing it. You keep control: we periodically tell you exactly what data we hold on your family, you can delete all of it in one click, and leaving Niro erases your records permanently within 30 days. Documents live in a secure vault, encrypted in transit and at rest, inaccessible to our staff without an open task that requires them - access is scoped to the task and logged. We never ask for your passwords, PINs or net-banking logins; where a task genuinely needs a one-time code we tell you what we are about to do, ask you at that moment, and use it only for that task. We operate under India's DPDP Act and are building to GDPR-aligned practices for members abroad. Your data is never sold. Questions? hello@tellniro.com reaches the founders.",
   },
   {
     q: "How fast is the emergency response, really?",
@@ -645,7 +645,7 @@ export const GULF_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Do my parents need an app?",
-    a: "No. They message Niro or send a voice note in English, Hindi or Tamil.",
+    a: "No. They message Niro or send a voice note in any language.",
   },
   {
     q: "How do you keep my family's information safe?",

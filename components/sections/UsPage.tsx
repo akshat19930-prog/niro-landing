@@ -862,7 +862,7 @@ function UsIndiaDepth() {
               Your parents don&rsquo;t need another app to figure out.
             </div>
             <div style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.5 }}>
-              They can simply message Niro or send a voice note - in English, Hindi or Tamil.
+              They can simply message Niro or send a voice note - in any language.
             </div>
           </div>
         </div>
