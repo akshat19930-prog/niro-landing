@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Niro - one house manager, both the places you call home",
     description:
-      "For Indian families in the Gulf. A named person for your household here and your parents in India. Join the waitlist.",
+      "For Indian families in the Gulf. A named person for your household here and your parents in India. Join the beta.",
     type: "website",
     url: "https://tellniro.com/gulf",
     images: ["/media/gulf-hero-poster.jpg"],

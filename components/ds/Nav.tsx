@@ -7,7 +7,7 @@ import { JoinCta } from "./JoinCta";
  * on a standalone page pass `ctaHref` to render a plain link back home instead.
  */
 export function Nav({
-  cta = "Join the waitlist",
+  cta = "Join the beta",
   ctaHref,
   homeHref = "/",
   ctaPosition,

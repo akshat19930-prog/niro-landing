@@ -433,7 +433,7 @@ function UsHero({ indiaFirst = false }: { indiaFirst?: boolean }) {
           </p>
           <div style={{ height: 24 }} />
           <JoinCta className="btn btn-primary btn-lg" position="hero">
-            Get Early Access
+            Join the beta
           </JoinCta>
           {/* Close enough to the button to read as attached to it, far enough
               that the hierarchy is unambiguous. For the visitor who is
@@ -1093,7 +1093,7 @@ function UsPricing({ indiaFirst = false }: { indiaFirst?: boolean }) {
         </div>
         <div style={{ marginTop: 22, textAlign: "center" }}>
           <JoinCta className="btn btn-primary btn-lg" position="pricing">
-            Get Early Access
+            Join the beta
           </JoinCta>
           <div style={{ marginTop: 12, fontSize: "var(--text-sm)", color: "var(--text-muted)" }}>
             Cancel anytime · No payment to join the list
@@ -1158,7 +1158,7 @@ function UsClosing() {
           Your family back home. Your life here. One less thing to manage.
         </p>
         <JoinCta className="btn btn-accent btn-lg" position="closing">
-          Get Early Access
+          Join the beta
         </JoinCta>
       </div>
     </section>
@@ -1284,7 +1284,7 @@ const US_FAQ_ITEMS_INDIA_FIRST = US_FAQ_ITEMS.filter(
 export function UsPage({ indiaFirst = false }: { indiaFirst?: boolean } = {}) {
   return (
     <>
-      <Nav cta="Get Early Access" homeHref={indiaFirst ? "/us-v2" : "/us"} ctaPosition="nav" />
+      <Nav cta="Join the beta" homeHref={indiaFirst ? "/us-v2" : "/us"} ctaPosition="nav" />
       <main>
         <UsHero indiaFirst={indiaFirst} />
         <UsHowItWorks />
@@ -1314,7 +1314,7 @@ export function UsPage({ indiaFirst = false }: { indiaFirst?: boolean } = {}) {
         />
         <UsClosing />
       </main>
-      <StickyCta label="Get Early Access" />
+      <StickyCta label="Join the beta" />
     </>
   );
 }

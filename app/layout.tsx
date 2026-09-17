@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Niro - Your family's own person in India",
     description:
-      "A named associate for errands, bills, appointments, and emergencies. Join the waitlist.",
+      "A named associate for errands, bills, appointments, and emergencies. Join the beta.",
     type: "website",
   },
 };
