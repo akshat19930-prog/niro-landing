@@ -4,7 +4,7 @@ import { PageShell } from "@/components/PageShell";
 export const metadata: Metadata = {
   title: "Terms of Use - Niro",
   description:
-    "The terms that govern your use of the Niro website and waitlist.",
+    "The terms that govern your use of the Niro website and beta.",
 };
 
 export default function TermsPage() {
@@ -12,10 +12,10 @@ export default function TermsPage() {
     <PageShell>
       <article className="prose">
         <h1>Terms of Use</h1>
-        <p className="updated">Last updated: 15 September 2026</p>
+        <p className="updated">Last updated: 17 September 2026</p>
 
         <p className="note">
-          These terms cover both paid memberships and the waitlist. They have not
+          These terms cover both paid memberships and the beta. They have not
           yet been reviewed by legal counsel - that review is outstanding.
         </p>
 
@@ -24,7 +24,7 @@ export default function TermsPage() {
           (the &ldquo;Site&rdquo;), operated by{" "}
           <strong>Niro</strong> (&ldquo;we&rdquo;, &ldquo;us&rdquo;). By using
           the Site or joining the
-          waitlist, you agree to these Terms. If you do not agree, please do not use
+          beta, you agree to these Terms. If you do not agree, please do not use
           the Site.
         </p>
 
@@ -39,9 +39,9 @@ export default function TermsPage() {
           surprise.
         </p>
         <p>
-          Joining the waitlist without paying is{" "}
+          Joining the beta without paying is{" "}
           <strong>not</strong> an order, a contract for services, or a payment. Any
-          prices, plans, or features shown to a waitlist member are indicative and
+          prices, plans, or features shown to a beta member are indicative and
           may change before they join.
         </p>
 
@@ -97,7 +97,7 @@ export default function TermsPage() {
 
         <h2>Eligibility</h2>
         <p>
-          You must be at least 18 years old to use the Site and join the waitlist.
+          You must be at least 18 years old to use the Site and join the beta.
           By doing so, you confirm that the information you provide is accurate and
           that you are entitled to share it.
         </p>
@@ -141,7 +141,7 @@ export default function TermsPage() {
         <p>
           To the fullest extent permitted by law, Niro and its founders, employees,
           and partners will not be liable for any indirect, incidental, or
-          consequential loss arising from your use of the Site or the waitlist.
+          consequential loss arising from your use of the Site or the beta.
         </p>
 
         <h2>Governing law</h2>
