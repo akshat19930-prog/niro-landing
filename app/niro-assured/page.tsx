@@ -68,8 +68,9 @@ export default function EmergencyPage() {
 
         <h2>Who actually turns up</h2>
         <p>
-          The ambulance is from our ambulance partner - a fleet of equipped
-          ambulances with paramedics on board. The person who meets your parents at the hospital is a{" "}
+          The ambulance comes from our partner - a fleet of equipped ambulances
+          with paramedics on board. The person who meets your parents at the
+          hospital is a{" "}
           <strong>Niro Assistant on our own payroll</strong>, background-checked
           and introduced to your family by name and photo before anything ever
           happens. You are not being handed to a marketplace at the worst moment
