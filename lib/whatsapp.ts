@@ -1,8 +1,10 @@
 /**
- * Click-to-chat links to the support line.
+ * Click-to-chat links to the sales and support lines.
  *
- * The support number is shared with Voya's, and until now every page linked to
- * it with one identical prefill ("Hi Niro, I have a question."), so an inbound
+ * Sales and support are two different numbers: everything prospect-facing goes
+ * to the sales line, and the footer "Contact us" link to support. Until Sept
+ * 2026 there was one number, and every page linked to it with one identical
+ * prefill ("Hi Niro, I have a question."), so an inbound
  * chat carried nothing about where it came from - not the page, not the
  * campaign, not the creative. Three leads arrived that way and could not be
  * assigned to a cell.
@@ -12,7 +14,7 @@
  * and it is the only thing that makes a WhatsApp inbound reconcilable against
  * the `whatsapp_click` beacon.
  */
-import { SUPPORT_WHATSAPP } from "./config";
+import { SALES_WHATSAPP } from "./config";
 import { getStoredAttribution, getStoredGulfPriceArm, getStoredUtm } from "./analytics";
 
 /** Which landing page the visitor is on, as a short market code. */
@@ -54,9 +56,13 @@ export function whatsappRef(): string {
   return parts.join(" · ");
 }
 
-/** The full wa.me URL, with the opening message and its ref. */
-export function whatsappUrl(message = "Hi Niro, I have a question."): string {
+/** The full wa.me URL, with the opening message and its ref. Defaults to the
+ *  sales line; the footer passes the support number instead. */
+export function whatsappUrl(
+  message = "Hi Niro, I have a question.",
+  phone: string = SALES_WHATSAPP
+): string {
   const ref = whatsappRef();
   const text = ref ? `${message}\n\nRef: ${ref}` : message;
-  return `https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent(text)}`;
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }

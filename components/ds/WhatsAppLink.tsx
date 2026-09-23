@@ -5,7 +5,7 @@ import { Icon } from "./Icon";
 import { logEvent } from "@/lib/track";
 import { track } from "@/lib/analytics";
 import { whatsappUrl } from "@/lib/whatsapp";
-import { SUPPORT_WHATSAPP } from "@/lib/config";
+import { SALES_WHATSAPP } from "@/lib/config";
 
 /**
  * Instrumented click-to-chat link.
@@ -26,6 +26,7 @@ export function WhatsAppLink({
   className,
   style,
   showIcon = true,
+  phone = SALES_WHATSAPP,
 }: {
   /** Where on the page this link sits - the whole point of the beacon. */
   placement: string;
@@ -34,6 +35,8 @@ export function WhatsAppLink({
   className?: string;
   style?: React.CSSProperties;
   showIcon?: boolean;
+  /** Which line answers. Defaults to sales; the footer passes support. */
+  phone?: string;
 }) {
   // The href depends on sessionStorage - UTM, pitch cell, price arm - none of
   // which exists during the static export, and none of which is necessarily
@@ -45,9 +48,9 @@ export function WhatsAppLink({
   //   3. synchronously in onClick, which is the only one that cannot lose a
   //      race with React's render scheduling.
   // Without (3) a Gulf visitor in the $99 arm sent a link tagged $149.
-  const [href, setHref] = useState("https://wa.me/" + SUPPORT_WHATSAPP);
-  const refresh = () => setHref(whatsappUrl(message));
-  useEffect(refresh, [message]);
+  const [href, setHref] = useState("https://wa.me/" + phone);
+  const refresh = () => setHref(whatsappUrl(message, phone));
+  useEffect(refresh, [message, phone]);
 
   return (
     <a
@@ -59,7 +62,7 @@ export function WhatsAppLink({
       onPointerDown={refresh}
       onFocus={refresh}
       onClick={(e) => {
-        e.currentTarget.href = whatsappUrl(message);
+        e.currentTarget.href = whatsappUrl(message, phone);
         logEvent("whatsapp_click", { placement });
         track("Contact", { placement });
       }}

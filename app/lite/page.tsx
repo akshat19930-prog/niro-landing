@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
 import { NIRO_LITE, COVERAGE_NOTE } from "@/lib/content";
 import { Icon } from "@/components/ds/Icon";
-import { SUPPORT_WHATSAPP } from "@/lib/config";
+import { SALES_WHATSAPP } from "@/lib/config";
 
 /**
  * /lite - UNLISTED. The 15-task annual pack, for sales to share on a call.
@@ -56,7 +56,7 @@ export default function TasksPackPage() {
           </ul>
           <a
             className="btn btn-primary btn-md"
-            href={`https://wa.me/${SUPPORT_WHATSAPP}?text=${encodeURIComponent(
+            href={`https://wa.me/${SALES_WHATSAPP}?text=${encodeURIComponent(
               "Hi Niro - I'd like the Niro Lite pack at $270 a year. Can you send me the payment link?"
             )}`}
             target="_blank"

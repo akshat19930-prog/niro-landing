@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
 import { ROLES, CAREERS_INTRO } from "@/lib/content";
-import { SUPPORT_WHATSAPP } from "@/lib/config";
+import { SALES_WHATSAPP } from "@/lib/config";
 
 /**
  * /careers - open roles.
@@ -62,7 +62,7 @@ export default function CareersPage() {
           family, write to{" "}
           <a href="mailto:hello@tellniro.com">hello@tellniro.com</a> or{" "}
           <a
-            href={`https://wa.me/${SUPPORT_WHATSAPP}`}
+            href={`https://wa.me/${SALES_WHATSAPP}`}
             target="_blank"
             rel="noopener noreferrer"
           >

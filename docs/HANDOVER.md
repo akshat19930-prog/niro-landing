@@ -137,7 +137,7 @@ Code access alone is not enough to run this. All of these are separate:
 | **Meta Ads** (`act_2246578592783321`) | Advertiser or Admin | Business Manager → People |
 | **Meta Pixel / CAPI** | Pixel access for event debugging | Business Manager → Data sources |
 | **PostHog** (project 415260) | Member | PostHog → Settings → Members |
-| **The WhatsApp support line** | It is a founder's number today — decide whether it transfers or the page points somewhere new | — |
+| **The WhatsApp lines** | Two numbers since Sept 2026: sales (+91 91805 81481) on every prospect-facing link, support (+91 88677 38283) on the footer only. Both are set in `lib/config.ts`. | — |
 | **`hello@tellniro.com`** | The only address published on the live site (replaced akshat@ and privacy@, Sept 2026) - it is the refund and cancellation route in Terms, the privacy contact, and the apply route on `/careers`. Make sure it is monitored. | Email admin |
 
 **On Apps Script specifically.** Both `.gs` files live in **one** project, bound
