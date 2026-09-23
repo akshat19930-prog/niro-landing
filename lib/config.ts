@@ -36,10 +36,17 @@ export const WAITLIST_ENDPOINT =
 export const SITE_ORIGIN =
   process.env.NEXT_PUBLIC_SITE_ORIGIN ?? "https://tellniro.com";
 
-/** WhatsApp support line (wa.me format: country code + number, no + or spaces).
- *  Powers the footer "Contact us" link. Same number as Voya's support. */
+/** WhatsApp sales line (wa.me format: country code + number, no + or spaces).
+ *  Every prospect-facing link goes here: the Ask Niro CTAs, the FAQ, the
+ *  pricing asks, the /lite payment-link request, the post-signup handoff, and
+ *  the careers applications. */
+export const SALES_WHATSAPP =
+  process.env.NEXT_PUBLIC_SALES_WHATSAPP || "919180581481";
+
+/** WhatsApp support line, for members rather than prospects. Powers the footer
+ *  "Contact us" link only. */
 export const SUPPORT_WHATSAPP =
-  process.env.NEXT_PUBLIC_SUPPORT_WHATSAPP || "916360230670";
+  process.env.NEXT_PUBLIC_SUPPORT_WHATSAPP || "918867738283";
 
 /** Waitlist position shown on the confirmation (a realistic early-stage number;
  *  the confirmation renders this instantly rather than waiting on the backend). */
