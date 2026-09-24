@@ -1316,7 +1316,7 @@ export const GUIDE_VISIT_DETAILS: { title: string; icon: IconName; points: strin
     points: [
       "Book on-request visits with three working days\u2019 notice.",
       "A day before, you and your parents get the assistant\u2019s name, photo and phone number.",
-      "In the home: shoes off, sit where invited, ask before taking photos, and photograph only what the visit is about.",
+      "We ask before taking photos, and photograph only what the visit is about.",
       "Your parents can say no to any part of a visit, and their say is final.",
       "You can ask for the same assistant each time. We\u2019ll do our best to arrange it.",
     ],
