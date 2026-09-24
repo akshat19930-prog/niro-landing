@@ -1094,3 +1094,243 @@ export const INDIA_CITIES: string[] = [
   "Davanagere", "Shivamogga", "Tirupati", "Guntur", "Nellore", "Warangal",
   "Karimnagar", "Kollam", "Kottayam", "Kannur", "Alappuzha", "Palakkad",
 ];
+
+/* =====================================================================
+   FAMILY GUIDE (/family-guide) - unlisted. The page sales sends after the
+   first call, replacing the "What we do" PDF. House style here: no long
+   dashes anywhere, "AI" spent once (the FAQ question), and the emergency
+   times match EMERGENCY_SLA above.
+   ===================================================================== */
+
+export type GuideItem = { t: string; tag?: string };
+
+export const GUIDE_SCOPE: {
+  title: string;
+  icon: IconName;
+  intro: string;
+  items: GuideItem[];
+}[] = [
+  {
+    title: "Family’s health admin & emergency response",
+    icon: "heart-pulse",
+    intro:
+      "From quarterly check-ups that run themselves to a calm, planned response when something goes wrong.",
+    items: [
+      { t: "A health file for each parent: conditions, current medicines and strengths, allergies, treating doctors" },
+      { t: "Two or three hospitals chosen in advance on drive time, insurer network and specialty" },
+      { t: "A 24x7 first-response line for your parents, a neighbour or the society guard" },
+      { t: "Ambulance dispatch and tracking" },
+      {
+        t: "A Niro Assistant at the hospital in an emergency, if you opt in. Live in Bengaluru, other cities coming soon",
+        tag: "Bengaluru",
+      },
+      { t: "Admission handled at the insurance desk, not the billing counter" },
+      { t: "Cashless pre-authorisation put together, chased, and enhanced mid-stay" },
+      { t: "Reimbursement claims filed, and appealed when cashless fails" },
+      { t: "A policy audit: what your parents’ cover actually pays, in plain language" },
+      { t: "Appointments with their own doctor, in their city or another, with someone to go along if needed" },
+      { t: "Prescription refills with two-person verification, plus refill-due reminders" },
+      { t: "Regular health tests on a schedule, with home sample collection and reports collected" },
+      { t: "Readings shared on chat (HbA1c, BP, weight and the rest), stored and sent to the doctor before each visit" },
+      { t: "Physiotherapists, attendants, yoga trainers and dieticians found, vetted, negotiated and supervised" },
+      { t: "Health forwards fact-checked on chat, before anyone at home acts on them" },
+      { t: "Phone and watch emergency settings configured, with an optional SOS pendant and ambient sensing" },
+      { t: "A written monthly health report, sent to you" },
+    ],
+  },
+  {
+    title: "Household chores, upkeep & staff",
+    icon: "wrench",
+    intro:
+      "The leaking tap, the AC, the help who didn’t turn up, the cab Mum can’t book herself. Your parents shouldn’t have to struggle with it, and you shouldn’t have to drop your day for it.",
+    items: [
+      { t: "An asset register for each home: appliances, models, purchase dates, warranties, AMCs" },
+      { t: "A maintenance calendar that follows the Indian seasons: AC before summer, geyser before winter, roof before the monsoon" },
+      { t: "Water tank and sump cleaning, pest control, and chimney, RO and inverter servicing" },
+      { t: "Drains cleared and waterproofing done before the rain, not after" },
+      { t: "Same-day help for a burst pipe, a power cut, a stuck lift or a lock-out" },
+      { t: "Appliance repairs booked, then the repeat visit and the warranty claim chased" },
+      { t: "A vetted panel, three deep per trade in each city, with rate benchmarks" },
+      { t: "Every field job closed with dated photos and an itemised invoice at actuals" },
+      { t: "Cook, maid, driver and attendant verified and sourced, with cover when they don’t turn up" },
+      { t: "Vehicle watch: insurance, PUC, challans and servicing, and a verified driver when one is needed" },
+      { t: "Remote tech help: the wifi, the TV, the printer, the smart lock, the apps" },
+      { t: "A cab booked or the groceries ordered, over chat" },
+      { t: "Birthdays, festivals, pujas, flowers, cakes, and food sent abroad" },
+    ],
+  },
+  {
+    title: "Bills, banking & customer support issues",
+    icon: "wallet",
+    intro:
+      "The wrong utility bill, the blocked account, the customer care number nobody answers. We do the chasing.",
+    items: [
+      { t: "Every recurring payment listed with its due date, then tracked, flagged and reconciled" },
+      { t: "Electricity, water, gas, broadband, DTH, society dues and insurance premiums tracked" },
+      { t: "Blocked, frozen and dormant accounts reactivated" },
+      { t: "Bank KYC re-verification and mandate updates coordinated" },
+      { t: "Banking complaints escalated step by step, up to the RBI Ombudsman where needed" },
+      { t: "Telecom and electricity complaints taken up each company’s escalation ladder" },
+      { t: "Wrong bills, refused warranties, mis-sold subscriptions and stuck refunds, fought" },
+    ],
+  },
+  {
+    title: "EPFO, tax, govt paperwork & documents",
+    icon: "file-text",
+    intro:
+      "Government portals, forms and follow-ups wear everyone down. For us it’s a normal day at work.",
+    items: [
+      { t: "EPFO claims filed, and rejected ones unstuck, including the name, date of birth and UAN fixes behind most refusals" },
+      { t: "Dormant accounts, unclaimed dividends, IEPF holdings, NPS and PPF traced and recovered" },
+      { t: "Form 26AS and AIS checked for TDS mismatches and missing credits" },
+      { t: "Tax residency certificates, Form 10F and DTAA coordination" },
+      { t: "NRO repatriation paperwork, within the annual limit" },
+      { t: "Tenant-side TDS on your rented-out property, followed through" },
+      { t: "Pension life certificates submitted before the deadline" },
+      { t: "Aadhaar and PAN corrections, linking and updates" },
+      { t: "A yearly check of everything in India that quietly lapses when a family lives abroad" },
+      { t: "One renewal calendar: passport, OCI, visas, policies, AMCs, licences" },
+      { t: "An encrypted vault, hosted in India, for policies, prescriptions, property papers and IDs" },
+      { t: "A signed, scope-limited authorisation, so we can represent your parents where needed" },
+    ],
+  },
+  {
+    title: "Travel concierge & admin",
+    icon: "plane",
+    intro:
+      "A train ticket for Mum, a reliable cab to visit a relative, or the full visa run so they can come and see you.",
+    items: [
+      { t: "Flights and hotels researched, watched for price, and booked" },
+      { t: "Regular train bookings, handled end to end" },
+      {
+        t: "Tatkal bookings, tried the moment the window opens. Seats go in minutes, so we can’t promise one, but we’ll give it our best shot every time",
+        tag: "Best effort",
+      },
+      { t: "Reliable city cabs arranged and tracked, with the driver’s details sent to you" },
+      { t: "Visa applications, appointments and document packs for their trip to you" },
+      { t: "Passport and OCI renewals, and someone to sit through the appointment" },
+      { t: "Airport assistance, wheelchair requests and meet-and-greet" },
+      { t: "Itineraries, check-ins, and re-bookings when a flight moves" },
+    ],
+  },
+  {
+    title: "Property management & more",
+    icon: "home",
+    intro:
+      "Periodic visits, tenants, agreements, repairs. Everything you’d hire a property manager for, from the same team.",
+    items: [
+      { t: "Periodic inspections of the house or the let-out flat, with dated photographs" },
+      { t: "Tenant sourcing, screening and replacement" },
+      { t: "Rent agreements, renewals, registration and police verification coordinated" },
+      { t: "Property tax, water and electricity transfers, and khata or mutation follow-ups" },
+      { t: "Maintenance, repairs and painting supervised, with an invoice at actuals" },
+      { t: "Locking up, key handovers, and access for agents or contractors" },
+      { t: "Gifting, couriering, and the long tail of small things that are easy from Bengaluru and hard from New Jersey" },
+    ],
+  },
+];
+
+export const GUIDE_ASSURE: { title: string; body: string; tag?: string }[] = [
+  {
+    title: "You set the protocol in advance.",
+    body: "Hospital, doctor, medical history, insurance details, the relative nearby to call. Agreed with us beforehand, so nothing needs deciding in the moment.",
+  },
+  {
+    title: "A person answers within 45 seconds.",
+    body: "One emergency number, saved in your phone and your family’s. No menu, no queue.",
+  },
+  {
+    title: "An ambulance is dispatched within 5 minutes,",
+    body: "with advanced or basic life support as needed. Our response partner already has the pickup and drop addresses, so there is nothing to explain.",
+  },
+  {
+    title: "A Niro Assistant goes to the hospital",
+    body: "to handle the logistics and keep you updated, acting only on your instructions. Live in Bengaluru, other cities coming soon.",
+    tag: "Bengaluru",
+  },
+  {
+    title: "The health file arrives before your parent does:",
+    body: "conditions, medicines, allergies, treating doctor and policy details, so nobody is piecing together a medical history in a corridor.",
+  },
+  {
+    title: "The insurance desk is worked,",
+    body: "not the billing counter: pre-authorisation submitted, room category defended, enhancement filed mid-stay.",
+  },
+  {
+    title: "Hardware alerts, coming soon.",
+    body: "We’re adding hardware partners so an Apple Watch fall, a pendant button or ambient sensing can raise the alarm before anyone has to.",
+    tag: "In build",
+  },
+];
+
+export const GUIDE_VISITS: { title: string; body: string; icon: IconName }[] = [
+  {
+    title: "Medical accompaniment",
+    icon: "heart-pulse",
+    body: "Picked up from home, through registration and into the consult, with a written note of what the doctor said, including the parts they might not mention to you.",
+  },
+  {
+    title: "Government offices",
+    icon: "file-text",
+    body: "Passport and visa appointments, pension life certificates, municipal counters, registrar visits. We sit in the queue.",
+  },
+  {
+    title: "Home & property inspection",
+    icon: "home",
+    body: "A documented walkthrough of the house or the let-out flat, with photos, condition notes, and what needs doing before it gets expensive.",
+  },
+  {
+    title: "Supervised work",
+    icon: "user-check",
+    body: "Someone in the room while the plumber, the painter or the packers do the job, and when they get paid.",
+  },
+];
+
+export const GUIDE_STEPS: { title: string; body: string }[] = [
+  {
+    title: "Onboarding, about an hour.",
+    body: "One call with you, one with your parents. We set up the health file, the home asset register, the bill and renewal calendar, and the signed authorisation that lets us represent them.",
+  },
+  {
+    title: "The group opens.",
+    body: "You, your parents and your Niro Assistants in one WhatsApp group. Plus a private chat with you, and an optional one with a parent who’d rather ask separately.",
+  },
+  {
+    title: "You ask, it gets done, with proof.",
+    body: "Every request becomes a tracked task with an owner and a due date. Field work closes with photos and an invoice at actuals. We take no commission from any vendor, so we pick the right one, not the one that pays.",
+  },
+  {
+    title: "It gets proactive.",
+    body: "As we get to know your family, we stop waiting to be asked: the appointment that’s due, the document about to expire, the filing deadline, the unpaid bill, the yearly maintenance.",
+  },
+];
+
+export const GUIDE_FAQ: { q: string; a: string }[] = [
+  {
+    q: "What does the membership include, and what doesn’t it?",
+    a: "Niro’s time: the calls, the portals, the chasing and the coordination, with no cap on how many tasks you send us. It also includes one booked Niro visit of up to four hours a month. It doesn’t cover third-party costs, like the plumber, the ambulance, the lab, government fees or the appliance itself. You see those before they’re incurred, and they’re billed at actuals with the invoice attached. We add no margin and take no vendor commission. Extra visits in the same month are $15 per four hours.",
+  },
+  {
+    q: "Who actually does the work: people or AI?",
+    a: "Both, and the split matters. Software drafts, researches, tracks deadlines and keeps things from slipping. Named people make the judgement calls, speak to vendors and hospitals, and show up in person. Clinical decisions are made by registered doctors on a retained panel, never by software or a script. You always know which person is looking after your family.",
+  },
+  {
+    q: "Is my family’s data safe with Niro?",
+    a: "We never ask for passwords, PINs, net-banking or UPI logins, or access to your parents’ email and messages. Anyone asking for those in our name isn’t us. What we hold instead is a signed, dated, scope-limited authorisation your parents can revoke in a sentence, and an encrypted document vault hosted in India.",
+  },
+];
+
+export const GUIDE_FOUNDERS: { name: string; photo: string; phone: string; bio: string }[] = [
+  {
+    name: "Akshat Pandey",
+    photo: "/people/akshat.jpg",
+    phone: "+91 99809 14802",
+    bio: "11 years building consumer startups across healthcare (core team at Curefit), fintech (business head, payments at Navi) and ecommerce. Second-time founder.",
+  },
+  {
+    name: "Paarth Dhar",
+    photo: "/people/paarth.jpg",
+    phone: "+91 99002 56796",
+    bio: "12 years building consumer startups across fintech (VP Growth at AngelOne) and ecommerce. Second-time founder, whose first company was acquired by AngelOne.",
+  },
+];
