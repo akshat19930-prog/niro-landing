@@ -1,3 +1,4 @@
+import { SHARE_CARD } from "@/lib/content";
 import type { Metadata } from "next";
 import { Footer } from "@/components/ds/Footer";
 import { JoinProvider } from "@/components/JoinProvider";
@@ -14,22 +15,20 @@ import { GulfPage } from "@/components/sections/GulfPage";
 export const metadata: Metadata = {
   title: "Niro - one house manager, both the places you call home",
   description:
-    "A named person for your home in the Gulf and your parents in India. Domestic help, school runs, Emirates ID, appointments back home. Less chasing - more time for your family.",
+    "One assistant for your home in the Gulf and your parents in India. Domestic help, school runs, Emirates ID, appointments back home. Less chasing - more time for your family.",
   robots: { index: false, follow: false },
   alternates: { canonical: "https://tellniro.com/gulf" },
   openGraph: {
-    title: "Niro - one house manager, both the places you call home",
-    description:
-      "For Indian families in the Gulf. A named person for your household here and your parents in India. Join the beta.",
+    title: SHARE_CARD.title,
+    description: SHARE_CARD.description,
     type: "website",
     url: "https://tellniro.com/gulf",
     images: ["/media/gulf-hero-poster.jpg"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Niro - one house manager, both the places you call home",
-    description:
-      "For Indian families in the Gulf. A named person for your household here and your parents in India.",
+    title: SHARE_CARD.title,
+    description: SHARE_CARD.description,
     images: ["/media/gulf-hero-poster.jpg"],
   },
 };

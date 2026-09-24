@@ -9,6 +9,15 @@ import type { TaskDef } from "@/components/ds/TaskPicker";
  * confirmed content before launch (see design/design-system.md).
  */
 
+/* ---- Share card: the WhatsApp / social link preview for EVERY page. One
+   line for the whole site, by Paarth's call (Sept 2026). Pages keep their own
+   preview images but take this title and description. ---- */
+export const SHARE_CARD = {
+  title: "Niro - Your family's India assistant",
+  description:
+    "Errands, bills, appointments and emergencies for your parents, and your own India paperwork too. All over WhatsApp.",
+};
+
 /* ---- Hero: 5 ad-matched variants, selected by ?v=1..5 (default 3) ---- */
 export type HeroVariant = { tag: string; h: string; s: string };
 
@@ -17,7 +26,7 @@ export const HERO_VARIANTS: Record<"1" | "2" | "3" | "4" | "5", HeroVariant> = {
   "1": {
     tag: "Peace of mind",
     h: "Their health, watched over - even from here",
-    s: "A named person handles the doctor visits, the hospital runs, and the emergencies you can't fly home for - so from anywhere, you know someone's in the room.",
+    s: "Someone from Niro handles the doctor visits, the hospital runs, and the emergencies you can't fly home for - so from anywhere, you know someone's in the room.",
   },
   // v2 - Remote Administrator / off-your-plate (parents' errands & bills).
   "2": {
@@ -85,7 +94,7 @@ export const ASK_TASKS: string[] = [
 export const TRUST_ITEMS: TrustItem[] = [
   {
     icon: "shield-check",
-    text: "Named & verified Niro Assistants",
+    text: "Verified Niro Assistants",
     sub: "Introduced by photo before day one",
   },
   { icon: "lock", text: "We never ask for passwords", sub: "Not your net-banking login, not your PINs" },
@@ -130,7 +139,7 @@ export const STEPS: { n: string; title: string; text: string }[] = [
   },
   {
     n: "03",
-    title: "A named person owns it",
+    title: "One person owns it",
     text: "Your family manager runs the task to completion - chasing the vendor, standing in the queue, showing up in person when that is what it takes - and closes it with proof.",
   },
 ];
@@ -326,7 +335,7 @@ export const TESTIMONIALS_SHORT: {
     name: "Vaibhav, 32",
     location: "San Francisco, US ↔ Patiala, India",
     quote:
-      "On an H1B, I can't just fly home. After Papa's heart scare, knowing there's a named person who'll be at the hospital - with full context, acting on our behalf - is what lets me sleep.",
+      "On an H1B, I can't just fly home. After Papa's heart scare, knowing there's someone who'll be at the hospital - with full context, acting on our behalf - is what lets me sleep.",
     photo: "/people/vaibhav.jpg",
   },
   {
@@ -374,7 +383,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "Who actually does the work - humans or AI?",
-    a: "Both, in a specific order. Every remote task is run by a human Niro Assistant, with AI doing the parts software is genuinely better at: drafting, tracking, remembering, never letting a follow-up slip between time zones. Nothing reaches your family without a person having checked it, and one named person is accountable for the task from start to finish. And for Niro Visits there is no software involved at all - a Niro Assistant physically goes to the hospital, the government office, or your parents' front door.",
+    a: "Both, in a specific order. Every remote task is run by a human Niro Assistant, with AI doing the parts software is genuinely better at: drafting, tracking, remembering, never letting a follow-up slip between time zones. Nothing reaches your family without a person having checked it, and one person is accountable for the task from start to finish. And for Niro Visits there is no software involved at all - a Niro Assistant physically goes to the hospital, the government office, or your parents' front door.",
   },
   {
     q: "Can I try Niro before I pay?",
@@ -571,7 +580,7 @@ export const EMERGENCY_STEPS: { title: string; body: string }[] = [
   },
   {
     title: "A Niro Assistant goes to the hospital",
-    body: "A named person from our team meets your parents there, carries their medical history and insurance details, and handles admission paperwork so nobody is filling forms during a crisis. In Bengaluru today; launching in our other cities soon.",
+    body: "Someone from our team meets your parents there, carries their medical history and insurance details, and handles admission paperwork so nobody is filling forms during a crisis. In Bengaluru today; launching in our other cities soon.",
   },
   {
     title: "You are told immediately, and kept updated",
@@ -782,8 +791,8 @@ export const US_TESTIMONIALS: {
     name: "Vaibhav, 32",
     location: "San Francisco, US ↔ Patiala, India",
     quote:
-      "On an H1B, I can't just fly home. After Papa's heart scare, knowing there's a named person who'll be at the hospital - with full context, acting on our behalf - is what lets me sleep.",
-    highlight: "a named person who'll be at the hospital",
+      "On an H1B, I can't just fly home. After Papa's heart scare, knowing there's someone who'll be at the hospital - with full context, acting on our behalf - is what lets me sleep.",
+    highlight: "someone who'll be at the hospital",
     photo: "/people/vaibhav.jpg",
   },
   {
@@ -946,7 +955,7 @@ export const VETTING: { lead: string; points: { title: string; body: string }[] 
   points: [
     {
       title: "Hired for the job your parents actually need",
-      body: "We test three things before anyone joins: compassion and patience with older parents, communication skill in the language your family actually speaks, and the operational judgement to chase something until it is finished. Everyone is background-checked and named - you're introduced to your Niro Assistant by photo before day one.",
+      body: "We test three things before anyone joins: compassion and patience with older parents, communication skill in the language your family actually speaks, and the operational judgement to chase something until it is finished. Everyone is background-checked, and you're introduced to your Niro Assistant by photo before day one.",
     },
     {
       title: "They work to central SOPs",
@@ -988,7 +997,7 @@ export const US_FAQ: { q: string; a: string }[] = [
     // vetting answers read as though we were dodging one of them. Rendered from
     // VETTING below; this string is the plain-text fallback.
     q: "What is the process for vetting the Niro Assistants who will be interacting with my parents?",
-    a: "They are on our payroll, hired for compassion, communication and operational judgement, background-checked and named. They work to central SOPs and to the protocols you set for your own family, and every task is monitored individually and closed with proof.",
+    a: "They are on our payroll, hired for compassion, communication and operational judgement, and background-checked. They work to central SOPs and to the protocols you set for your own family, and every task is monitored individually and closed with proof.",
   },
   {
     q: "What will you ask my family for, and what will you never ask for?",
@@ -1381,7 +1390,7 @@ export const GUIDE_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Who actually does the work: people or AI?",
-    a: "Both, and the split matters. Software drafts, researches, tracks deadlines and keeps things from slipping. Named people make the judgement calls, speak to vendors and hospitals, and show up in person. Nobody at Niro gives medical advice. In an emergency we follow the protocol you set. You always know which person is looking after your family.",
+    a: "Both, and the split matters. Software drafts, researches, tracks deadlines and keeps things from slipping. People make the judgement calls, speak to vendors and hospitals, and show up in person. Nobody at Niro gives medical advice. In an emergency we follow the protocol you set. You always know which person is looking after your family.",
   },
   {
     q: "Is my family’s data safe with Niro?",

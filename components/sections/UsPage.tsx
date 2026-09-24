@@ -455,7 +455,7 @@ function UsHero({ indiaFirst = false }: { indiaFirst?: boolean }) {
               color: "var(--text-muted)",
             }}
           >
-            <span>Named Niro Assistant</span>
+            <span>Your own Niro Assistant</span>
             <span aria-hidden="true">·</span>
             <span>WhatsApp-first</span>
             <span aria-hidden="true">·</span>
@@ -956,7 +956,7 @@ function UsFamilies() {
 
 function UsTrustStrip() {
   const items: { icon: IconName; text: string }[] = [
-    { icon: "shield-check", text: "Named & background-checked people" },
+    { icon: "shield-check", text: "Background-checked people" },
     { icon: "lock", text: "We never ask for passwords" },
     { icon: "camera", text: "Every task closed with proof" },
     { icon: "user-check", text: "Built by NRIs who lived this" },

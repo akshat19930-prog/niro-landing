@@ -273,12 +273,12 @@ export function GulfJoinModal() {
                   fontWeight: 500,
                 }}
               >
-                <Icon name="check-circle" size={16} /> Got it - a named contact will WhatsApp you shortly.
+                <Icon name="check-circle" size={16} /> Got it - your Niro contact will WhatsApp you shortly.
               </div>
             ) : (
               <>
                 <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 14px" }}>
-                  Want your first task started this week? Add your WhatsApp number and a named
+                  Want your first task started this week? Add your WhatsApp number and your Niro
                   contact will message you to get going - on us.
                 </p>
                 <Input

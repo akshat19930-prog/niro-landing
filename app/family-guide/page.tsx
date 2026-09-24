@@ -16,6 +16,7 @@ import {
   GUIDE_FAQ,
   GUIDE_FOUNDERS,
   SERVICE_CITIES,
+  SHARE_CARD,
 } from "@/lib/content";
 
 /**
@@ -39,6 +40,12 @@ export const metadata: Metadata = {
     "What Niro does for your family in India, how it runs, and who is behind it.",
   robots: { index: false, follow: false },
   alternates: { canonical: "https://tellniro.com/family-guide/" },
+  openGraph: {
+    title: SHARE_CARD.title,
+    description: SHARE_CARD.description,
+    type: "website",
+    url: "https://tellniro.com/family-guide/",
+  },
 };
 
 export default function FamilyGuidePage() {
@@ -93,7 +100,7 @@ export default function FamilyGuidePage() {
             </h2>
             <p className="fg-p">
               Ask the way you&rsquo;d ask a capable younger cousin who lives around
-              the corner. Behind the chat is a named assistant, a task tracker,
+              the corner. Behind the chat is your Niro Assistant, a task tracker,
               vetted vendors, an encrypted document vault hosted in India, and
               people who visit when it needs someone there.
             </p>
