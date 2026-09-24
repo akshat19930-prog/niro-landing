@@ -78,8 +78,12 @@ export function Footer({
             borderTop: "1px solid rgba(255,255,255,0.10)",
           }}
         >
-          <span style={{ fontSize: "var(--text-xs)", color: "#7C8A80" }}>
-            © {year} Niro
+          {/* The registered entity, not the brand. This line is the only place
+              on the page a visitor can check that Niro is a real, incorporated
+              company - so it is set at body size and a legible grey rather than
+              the usual near-invisible copyright treatment. */}
+          <span style={{ fontSize: "var(--text-sm)", color: "#9AA79E" }}>
+            © {year} Domiro Private Limited
           </span>
         </div>
       </div>
