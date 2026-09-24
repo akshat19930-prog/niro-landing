@@ -32,9 +32,9 @@ export default function EmergencyPage() {
         <p className="assured-mark">Niro Assure</p>
         <h1>When something goes wrong at 3 a.m.</h1>
         <p>
-          This is the part of Niro people ask about first and believe last. So
-          here is exactly what happens, with the numbers we hold ourselves to -
-          and the honest limits of each one.
+          Emergency response is the thing families ask us for most. So here is
+          exactly what happens, with the numbers we hold ourselves to - and the
+          honest limits of each one.
         </p>
 
         <div className="sla-grid">

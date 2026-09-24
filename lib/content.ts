@@ -554,7 +554,7 @@ export const EMERGENCY_SLA: { value: string; label: string; detail: string }[] =
   {
     value: "5 min",
     label: "Ambulance dispatched",
-    detail: "Our ambulance partner dispatches the nearest equipped ambulance to your parents' address. The clock starts once we have the need, the location and consent.",
+    detail: "Our ambulance partner dispatches the nearest equipped ambulance to your parents' address.",
   },
   {
     value: "20 min",
