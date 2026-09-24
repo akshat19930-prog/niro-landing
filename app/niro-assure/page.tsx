@@ -21,7 +21,7 @@ import { EMERGENCY_SLA, EMERGENCY_STEPS, SERVICE_CITIES } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Niro Assure - our emergency response protocol",
   description:
-    "What happens when your parents have a medical emergency: a person in 45 seconds, an ambulance dispatched in 3 minutes, and a Niro Assistant at the hospital.",
+    "What happens when your parents have a medical emergency: a person in 45 seconds, an ambulance dispatched in 5 minutes, and a Niro Assistant at the hospital.",
   alternates: { canonical: "https://tellniro.com/niro-assure" },
 };
 
@@ -86,6 +86,11 @@ export default function EmergencyPage() {
           first, which hospital you want, what needs your approval, and what we
           should never do without asking you. In an emergency we execute that
           document. We do not improvise.
+        </p>
+        <p>
+          The same file is what our insurance desk works from: we hold the
+          policy details in advance and prepare the pre-authorisation, so that
+          paperwork is already moving while your parents are being seen.
         </p>
 
         <h2>What this is not</h2>
