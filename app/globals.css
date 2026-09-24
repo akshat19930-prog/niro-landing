@@ -337,6 +337,22 @@
   }
 }
 
+/* The sticky CTA is position:fixed over the bottom of the viewport on mobile,
+   so the footer has to reserve room for it - otherwise its last lines sit
+   underneath the bar. Measured at 73px tall; the extra is breathing room plus
+   the home-indicator inset on notched phones.
+
+   The footer sets its padding inline, and an inline shorthand outranks any
+   rule here - so this overrides the custom property the inline style reads
+   rather than the padding itself. */
+@media (max-width: 640px) {
+  footer {
+    --footer-pad-bottom: calc(
+      73px + var(--space-6) + env(safe-area-inset-bottom, 0px)
+    );
+  }
+}
+
 /* ---- Join modal (interstitial) ---- */
 .join-overlay {
   position: fixed;

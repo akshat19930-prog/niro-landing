@@ -12,7 +12,7 @@ export default function PrivacyPage() {
     <PageShell>
       <article className="prose">
         <h1>Privacy Policy</h1>
-        <p className="updated">Last updated: 6 July 2026</p>
+        <p className="updated">Last updated: 24 September 2026</p>
 
         <p className="note">
           This policy covers our pre-launch waitlist. We recommend a review by
@@ -20,11 +20,14 @@ export default function PrivacyPage() {
         </p>
 
         <p>
-          This Privacy Policy explains how <strong>Niro</strong>{" "}
-          (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects, uses,
-          and protects information when you visit tellniro.com and join our
-          waitlist. We are the data fiduciary responsible for your personal data.
-          By joining the waitlist you agree to this policy.
+          This Privacy Policy explains how{" "}
+          <strong>Domiro Private Limited</strong> (CIN{" "}
+          <span style={{ whiteSpace: "nowrap" }}>U62099KA2026PTC228168</span>),
+          which operates <strong>Niro</strong> (&ldquo;we&rdquo;,
+          &ldquo;us&rdquo;), collects, uses, and protects information when you
+          visit tellniro.com and join our waitlist. Domiro Private Limited is the
+          data fiduciary responsible for your personal data. By joining the
+          waitlist you agree to this policy.
         </p>
 
         <h2>What we collect</h2>
@@ -128,9 +131,16 @@ export default function PrivacyPage() {
         <h2>Contact</h2>
         <p>
           For any privacy question or request, email us at{" "}
-          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Registered
-          office: Old No. 223 New No. 2210, 2nd Main Road, 6th Block Jayanagar,
-          Bangalore 560070.
+          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>.
+        </p>
+        <p>
+          <strong>Domiro Private Limited</strong>
+          <br />
+          CIN:{" "}
+          <span style={{ whiteSpace: "nowrap" }}>U62099KA2026PTC228168</span>
+          <br />
+          Registered office: Old No. 223, New No. 2210, 2nd Main Road, 6th Block,
+          Jayanagar West, Bangalore South, Bangalore 560070, Karnataka, India.
         </p>
       </article>
     </PageShell>

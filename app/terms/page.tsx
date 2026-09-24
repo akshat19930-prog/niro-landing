@@ -12,7 +12,7 @@ export default function TermsPage() {
     <PageShell>
       <article className="prose">
         <h1>Terms of Use</h1>
-        <p className="updated">Last updated: 17 September 2026</p>
+        <p className="updated">Last updated: 24 September 2026</p>
 
         <p className="note">
           These terms cover both paid memberships and the beta. They have not
@@ -21,11 +21,13 @@ export default function TermsPage() {
 
         <p>
           These Terms of Use (&ldquo;Terms&rdquo;) govern your use of tellniro.com
-          (the &ldquo;Site&rdquo;), operated by{" "}
-          <strong>Niro</strong> (&ldquo;we&rdquo;, &ldquo;us&rdquo;). By using
-          the Site or joining the
-          beta, you agree to these Terms. If you do not agree, please do not use
-          the Site.
+          (the &ldquo;Site&rdquo;) and the Niro service, both operated by{" "}
+          <strong>Domiro Private Limited</strong>, a company incorporated in
+          India (CIN{" "}
+          <span style={{ whiteSpace: "nowrap" }}>U62099KA2026PTC228168</span>)
+          and trading as <strong>Niro</strong> (&ldquo;we&rdquo;,
+          &ldquo;us&rdquo;). By using the Site or joining the beta, you agree
+          to these Terms. If you do not agree, please do not use the Site.
         </p>
 
         <h2>Membership, billing and renewal</h2>
@@ -122,10 +124,10 @@ export default function TermsPage() {
 
         <h2>Intellectual property</h2>
         <p>
-          The Niro name, logo, text, design, and other content on the Site are owned
-          by Niro and protected by applicable laws. You may
-          not copy, reproduce, or use them without our written permission. Names of
-          third parties are the property of their respective owners.
+          The Niro name, logo, text, design, and other content on the Site are
+          owned by Domiro Private Limited and protected by applicable laws. You
+          may not copy, reproduce, or use them without our written permission.
+          Names of third parties are the property of their respective owners.
         </p>
 
         <h2>Disclaimers</h2>
@@ -139,9 +141,10 @@ export default function TermsPage() {
 
         <h2>Limitation of liability</h2>
         <p>
-          To the fullest extent permitted by law, Niro and its founders, employees,
-          and partners will not be liable for any indirect, incidental, or
-          consequential loss arising from your use of the Site or the beta.
+          To the fullest extent permitted by law, Domiro Private Limited and its
+          directors, employees, and partners will not be liable for any indirect,
+          incidental, or consequential loss arising from your use of the Site or
+          the beta.
         </p>
 
         <h2>Governing law</h2>
@@ -159,9 +162,16 @@ export default function TermsPage() {
         <h2>Contact</h2>
         <p>
           Questions about these Terms? Email us at{" "}
-          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Registered
-          office: Old No. 223 New No. 2210, 2nd Main Road, 6th Block Jayanagar,
-          Bangalore 560070.
+          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>.
+        </p>
+        <p>
+          <strong>Domiro Private Limited</strong>
+          <br />
+          CIN:{" "}
+          <span style={{ whiteSpace: "nowrap" }}>U62099KA2026PTC228168</span>
+          <br />
+          Registered office: Old No. 223, New No. 2210, 2nd Main Road, 6th Block,
+          Jayanagar West, Bangalore South, Bangalore 560070, Karnataka, India.
         </p>
       </article>
     </PageShell>
