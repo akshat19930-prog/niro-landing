@@ -23,13 +23,13 @@ export const metadata: Metadata = {
     url: "https://tellniro.com/",
     siteName: "Niro",
     // Absolute URL: WhatsApp and Meta fetch the card without our page context.
-    images: [{ url: "https://tellniro.com/og/home.png", width: 1200, height: 630 }],
+    images: [{ url: "https://tellniro.com/og/home.png?v=2", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: SHARE_CARD.title,
     description: SHARE_CARD.description,
-    images: ["https://tellniro.com/og/home.png"],
+    images: ["https://tellniro.com/og/home.png?v=2"],
   },
 };
 
