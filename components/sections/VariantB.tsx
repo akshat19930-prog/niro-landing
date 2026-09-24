@@ -531,8 +531,8 @@ function TrustB() {
       icon: "heart-pulse",
       text: "Emergency protocol",
       sub: "The assurance of a rapid, contextual response to a medical emergency back home. You define it, we execute it.",
-      href: "/niro-assured/",
-      hrefLabel: "Read more on Niro Assured",
+      href: "/niro-assure/",
+      hrefLabel: "Read more on Niro Assure",
     },
     {
       icon: "map-pin",
@@ -695,7 +695,7 @@ function PricingB() {
 /**
  * The page FAQ. Answers come from lib/content FAQ, except the three that carry
  * structure a plain string cannot: the data answer needs its four commitments
- * as separate lines, the emergency answer links through to Niro Assured, and
+ * as separate lines, the emergency answer links through to Niro Assure, and
  * the trial answer needs a live WhatsApp link to claim the free task.
  */
 const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
@@ -744,8 +744,8 @@ const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
       a: (
         <>
           <p style={{ margin: "0 0 10px" }}>{f.a}</p>
-          <a href="/niro-assured/" style={{ fontWeight: 600 }}>
-            Read the full protocol on Niro Assured &rarr;
+          <a href="/niro-assure/" style={{ fontWeight: 600 }}>
+            Read the full protocol on Niro Assure &rarr;
           </a>
         </>
       ),

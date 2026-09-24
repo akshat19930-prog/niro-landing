@@ -9,7 +9,7 @@ import { SUPPORT_WHATSAPP } from "@/lib/config";
  */
 const links: { label: string; href: string }[] = [
   { label: "About", href: "/about/" },
-  { label: "Niro Assured", href: "/niro-assured/" },
+  { label: "Niro Assure", href: "/niro-assure/" },
   { label: "We're hiring", href: "/careers/" },
   { label: "Privacy", href: "/privacy/" },
   { label: "Terms", href: "/terms/" },

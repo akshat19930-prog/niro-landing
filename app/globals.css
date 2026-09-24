@@ -222,7 +222,7 @@
   /* ---- Footer links ----
      These were set in --text-muted, which is a LIGHT-theme muted grey sitting
      on the near-black footer - barely visible. They are real navigation (About,
-     Niro Assured, careers, legal, Contact us), so they now take a light ink,
+     Niro Assure, careers, legal, Contact us), so they now take a light ink,
      a heavier weight and a hit area, and separate from one another. */
   .footer-nav {
     display: flex;
@@ -1152,7 +1152,7 @@
   margin-top: 5px;
 }
 
-/* Product mark above the Niro Assured page title. */
+/* Product mark above the Niro Assure page title. */
 .prose .assured-mark {
   font-size: var(--text-xs);
   font-weight: 700;
