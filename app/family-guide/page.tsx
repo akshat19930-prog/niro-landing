@@ -9,6 +9,9 @@ import {
   GUIDE_SCOPE,
   GUIDE_ASSURE,
   GUIDE_VISITS,
+  GUIDE_VISIT_PRICE,
+  GUIDE_VISIT_MONTHLY,
+  GUIDE_VISIT_DETAILS,
   GUIDE_STEPS,
   GUIDE_FAQ,
   GUIDE_FOUNDERS,
@@ -179,10 +182,29 @@ export default function FamilyGuidePage() {
             <Eyebrow>Niro Visits</Eyebrow>
             <h2 className="fg-h2">For the things that need someone standing there.</h2>
             <p className="fg-p">
-              A lot of India still runs on being there in person. A named, vetted
-              Niro person goes, and every visit closes the same way: dated photos,
-              and an itemised invoice showing what the vendor actually charged.
+              A lot of India still runs on being there in person. A vetted Niro
+              Assistant goes, and every visit closes with photos and a written
+              report in the family group.
             </p>
+
+            <div className="fg-card fg-included">
+              <div className="fg-card-label">In your membership</div>
+              <div className="fg-included-t">{GUIDE_VISIT_PRICE.included}</div>
+              <ul className="fg-list">
+                {GUIDE_VISIT_MONTHLY.map((t) => (
+                  <li key={t}>
+                    <Icon name="check" size={15} />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="fg-included-extra">
+                <Icon name="clock" size={16} />
+                <span>{GUIDE_VISIT_PRICE.extra}</span>
+              </p>
+            </div>
+
+            <h3 className="fg-h3">Or book one when you need it</h3>
             <div className="fg-visits">
               {GUIDE_VISITS.map((v) => (
                 <div key={v.title} className="fg-card fg-visit">
@@ -194,6 +216,35 @@ export default function FamilyGuidePage() {
                   </div>
                   <p>{v.body}</p>
                 </div>
+              ))}
+            </div>
+            <p className="fg-small">
+              Anything else that needs a person there, in a city we cover, just ask.
+            </p>
+
+            <div className="fg-cats fg-visit-more">
+              {GUIDE_VISIT_DETAILS.map((d) => (
+                <details key={d.title} className="fg-cat">
+                  <summary>
+                    <span className="fg-ico">
+                      <Icon name={d.icon} size={20} />
+                    </span>
+                    <span className="fg-cat-t">{d.title}</span>
+                    <span className="fg-chev" aria-hidden="true">
+                      <Icon name="chevron-right" size={18} />
+                    </span>
+                  </summary>
+                  <div className="fg-cat-body">
+                    <ul className="fg-list fg-list-pad">
+                      {d.points.map((t) => (
+                        <li key={t}>
+                          <Icon name="check" size={15} />
+                          <span>{t}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </details>
               ))}
             </div>
           </div>
@@ -279,7 +330,7 @@ export default function FamilyGuidePage() {
           </div>
         </section>
       </main>
-      <Footer />
+      <Footer showEntity={false} />
     </>
   );
 }
