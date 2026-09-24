@@ -370,7 +370,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "How fast is the emergency response, really?",
-    a: "We answer the emergency line in 45 seconds - a person, not a menu. Our ambulance partner dispatches the nearest equipped ambulance within 3 minutes, and median arrival across our launch cities is 20 minutes. A Niro Assistant meets your parents at the hospital, carries their medical history and insurance details, and handles admission. Most of that speed comes from work done before anything happens: on your onboarding call we record their history, medication, blood group, insurance and preferred hospital, and write down your family's protocol. In an emergency we execute that document - we don't improvise. If we miss our own numbers, we tell you in writing the same day.",
+    a: "We answer the emergency line in 45 seconds - a person, not a menu. Our ambulance partner dispatches the nearest equipped ambulance within 5 minutes, and median arrival across our launch cities is 20 minutes. A Niro Assistant meets your parents at the hospital, carries their medical history and insurance details, and handles admission. Most of that speed comes from work done before anything happens: on your onboarding call we record their history, medication, blood group, insurance and preferred hospital, and write down your family's protocol. In an emergency we execute that document - we don't improvise. If we miss our own numbers, we tell you in writing the same day.",
   },
   {
     q: "Who actually does the work - humans or AI?",
@@ -552,9 +552,9 @@ export const EMERGENCY_SLA: { value: string; label: string; detail: string }[] =
     detail: "A person answers the emergency line - not a menu, not a queue.",
   },
   {
-    value: "3 min",
+    value: "5 min",
     label: "Ambulance dispatched",
-    detail: "Our ambulance partner dispatches the nearest equipped ambulance to your parents' address.",
+    detail: "Our ambulance partner dispatches the nearest equipped ambulance to your parents' address. The clock starts once we have the need, the location and consent.",
   },
   {
     value: "20 min",
@@ -574,7 +574,7 @@ export const EMERGENCY_STEPS: { title: string; body: string }[] = [
   },
   {
     title: "A Niro Assistant goes to the hospital",
-    body: "A named person from our team meets your parents there, carries their medical history and insurance details, and handles admission paperwork so nobody is filling forms during a crisis.",
+    body: "A named person from our team meets your parents there, carries their medical history and insurance details, and handles admission paperwork so nobody is filling forms during a crisis. In Bengaluru today; launching in our other cities soon.",
   },
   {
     title: "You are told immediately, and kept updated",
