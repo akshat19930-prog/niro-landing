@@ -28,7 +28,7 @@ import {
  * the only action is a message to the sales line.
  *
  * Like /lite this is a static export: noindex, but anyone with the URL can
- * open it. Obscure, not secret. It carries the founders' numbers on purpose.
+ * open it. Obscure, not secret.
  */
 export const metadata: Metadata = {
   title: "Your Niro family guide",
@@ -59,12 +59,11 @@ export default function FamilyGuidePage() {
                 height={2037}
               />
               <Eyebrow>For Indians abroad, with family back home</Eyebrow>
-              <h1 className="fg-h1">You can&rsquo;t always be in India. Niro can.</h1>
               <p className="fg-lead">
                 Niro is your family&rsquo;s personal assistant in India, getting
                 things done for your parents and for you. It all runs on
                 WhatsApp: a group with you and your parents (you can set up two),
-                a private chat for your own errands, and a named person who picks
+                a private chat for your own errands, and an assistant who picks
                 up whatever is asked and sees it through. In person too, when
                 that&rsquo;s what it takes.
               </p>
@@ -169,8 +168,7 @@ export default function FamilyGuidePage() {
             <p className="fg-fine">
               The response times apply in{" "}
               {SERVICE_CITIES.map((c) => c.name).join(", ").replace(/, ([^,]*)$/, " and $1")}
-              . You get the full commitment in writing before you pay, including
-              the situations where we can&rsquo;t meet these times.
+              .
             </p>
           </div>
         </section>
@@ -250,24 +248,11 @@ export default function FamilyGuidePage() {
                     <div>
                       <div className="fg-founder-n">{p.name}</div>
                       <div className="fg-founder-r">Co-founder</div>
-                      <a className="fg-founder-ph" href={`tel:${p.phone.replace(/\s/g, "")}`}>
-                        {p.phone}
-                      </a>
                     </div>
                   </div>
                   <p>{p.bio}</p>
                 </div>
               ))}
-            </div>
-            <div className="fg-entity">
-              <div>
-                <span>Registered entity</span>
-                Domiro Private Limited
-              </div>
-              <div>
-                <span>Headquarters</span>
-                Indiqube Orion, HSR Layout, Bengaluru
-              </div>
             </div>
           </div>
         </section>
@@ -276,10 +261,7 @@ export default function FamilyGuidePage() {
         <section className="fg-sec fg-close">
           <div className="fg-wrap">
             <img src="/brand/niro-mark.svg" alt="" className="fg-mark" width={22} height={24} />
-            <h2 className="fg-h2">Anything else on your mind?</h2>
-            <p className="fg-p">
-              Send us a message and the person you spoke to will pick it up.
-            </p>
+            <h2 className="fg-h2 fg-close-h">Anything else on your mind?</h2>
             <WhatsAppLink
               placement="family-guide"
               message="Hi Niro, I've read the family guide and have a question."

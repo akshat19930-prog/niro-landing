@@ -82,10 +82,8 @@ export default function TasksPackPage() {
           group. Those are part of the monthly membership.
         </p>
 
-        <h2>If you change your mind</h2>
         <p>
-          The same 30-day money-back guarantee applies. Unused tasks do not carry
-          into a second year.
+          Unused tasks do not carry into a second year.
         </p>
       </article>
     </PageShell>

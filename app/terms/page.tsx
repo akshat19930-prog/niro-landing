@@ -59,33 +59,6 @@ export default function TermsPage() {
           behalf.
         </p>
 
-        <h2>30-day money-back guarantee</h2>
-        <p>
-          If Niro is not right for your family, tell your family manager or write
-          to <a href="mailto:hello@tellniro.com">hello@tellniro.com</a> within{" "}
-          <strong>30 days</strong> of your first payment and we will refund you in
-          full. No forms, and no exit interview. Three boundaries apply:
-        </p>
-        <ul>
-          <li>
-            <strong>Third-party costs already paid out are not refundable.</strong>{" "}
-            We can refund our own fee; we cannot recall money already spent with a
-            hospital, vendor or government office on your behalf.
-          </li>
-          <li>
-            <strong>The three-month membership is refunded in full within the
-            first 30 days</strong>, less any such third-party costs. After day 30
-            it runs to the end of its term.
-          </li>
-          <li>
-            <strong>One guarantee per household.</strong>
-          </li>
-        </ul>
-        <p>
-          Refunds are returned to the original payment method within five working
-          days of us confirming them.
-        </p>
-
         <h2>Cancelling</h2>
         <p>
           You can cancel at any time, with no notice period, by telling your
@@ -93,8 +66,7 @@ export default function TermsPage() {
           <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Cancellation
           stops future charges and takes effect at the end of the period you have
           already paid for - you keep the service until then.{" "}
-          <strong>Cancelling is not the same as claiming a refund</strong>: outside
-          the 30-day guarantee, cancelling does not refund the current period.
+          Cancelling does not refund the current period.
         </p>
 
         <h2>Eligibility</h2>

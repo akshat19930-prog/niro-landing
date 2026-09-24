@@ -378,7 +378,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "Can I try Niro before I pay?",
-    a: "Yes, twice over. Your first task is free - tell us what you need, we do it, and you decide afterwards whether to join. And once you join, you have a 30-day money-back guarantee: if Niro isn't right for your family in the first 30 days, tell us and we refund you in full. No forms, no exit interview. Between the two, you can see the service work before any money is at risk.",
+    a: "Yes. Your first task is free - tell us what you need, we do it, and you decide afterwards whether to join. And once you join, you can cancel any time.",
   },
   {
     q: "Does Niro take decisions on its own?",
@@ -518,9 +518,6 @@ export const COVERAGE_NOTE = {
   promise: "We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
 };
 
-/** The money-back guarantee, in the words that go on the page. */
-export const GUARANTEE =
-  "30-day money-back guarantee. If Niro isn't right for your family in the first 30 days, tell us and we refund you in full.";
 
 /* ---- Serviceable cities ----------------------------------------------------
    Five metros at launch. Chosen as the intersection of observed demand (the
@@ -1312,7 +1309,7 @@ export const GUIDE_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Who actually does the work: people or AI?",
-    a: "Both, and the split matters. Software drafts, researches, tracks deadlines and keeps things from slipping. Named people make the judgement calls, speak to vendors and hospitals, and show up in person. Clinical decisions are made by registered doctors on a retained panel, never by software or a script. You always know which person is looking after your family.",
+    a: "Both, and the split matters. Software drafts, researches, tracks deadlines and keeps things from slipping. Named people make the judgement calls, speak to vendors and hospitals, and show up in person. Nobody at Niro gives medical advice. In an emergency we follow the protocol you set. You always know which person is looking after your family.",
   },
   {
     q: "Is my family’s data safe with Niro?",
@@ -1320,17 +1317,15 @@ export const GUIDE_FAQ: { q: string; a: string }[] = [
   },
 ];
 
-export const GUIDE_FOUNDERS: { name: string; photo: string; phone: string; bio: string }[] = [
+export const GUIDE_FOUNDERS: { name: string; photo: string; bio: string }[] = [
   {
     name: "Akshat Pandey",
     photo: "/people/akshat.jpg",
-    phone: "+91 99809 14802",
     bio: "11 years building consumer startups across healthcare (core team at Curefit), fintech (business head, payments at Navi) and ecommerce. Second-time founder.",
   },
   {
     name: "Paarth Dhar",
     photo: "/people/paarth.jpg",
-    phone: "+91 99002 56796",
-    bio: "12 years building consumer startups across fintech (VP Growth at AngelOne) and ecommerce. Second-time founder, whose first company was acquired by AngelOne.",
+    bio: "12 years building consumer startups across fintech (VP Growth at AngelOne) and ecommerce. Second-time founder who exited his first company to AngelOne.",
   },
 ];
