@@ -17,8 +17,11 @@ const links: { label: string; href: string }[] = [
 
 export function Footer({
   tagline = "Niro: your presence in India, and your family\u2019s 24\u00d77 personal assistant.",
+  showEntity = true,
 }: {
   tagline?: string;
+  /** The registered-entity block. Off only on /family-guide, by request. */
+  showEntity?: boolean;
 } = {}) {
   const year = new Date().getFullYear();
   return (
@@ -77,6 +80,7 @@ export function Footer({
             </WhatsAppLink>
           </nav>
         </div>
+        {showEntity && (
         <div
           style={{
             marginTop: "var(--space-7)",
@@ -108,6 +112,7 @@ export function Footer({
             </div>
           </div>
         </div>
+        )}
       </div>
     </footer>
   );

@@ -1260,26 +1260,98 @@ export const GUIDE_ASSURE: { title: string; body: string; tag?: string }[] = [
   },
 ];
 
+/* Niro Visits, as the guide tells it. One visit a month is in the membership;
+   extra visits are a flat $15 per four hours. The per-purpose rate card from
+   the Visits ops doc is deliberately NOT here, and neither are its service
+   targets: the site makes no written guarantees. */
+export const GUIDE_VISIT_PRICE = {
+  included: "One visit a month, up to four hours, is part of your membership.",
+  extra: "Extra visits are $15 for up to four hours.",
+};
+
+export const GUIDE_VISIT_MONTHLY: string[] = [
+  "Time with your parents",
+  "A walk round the home: taps, AC, geyser, meters, anything leaking or loose",
+  "Anything they mention while we\u2019re there",
+  "Anything you\u2019ve asked us to look at",
+];
+
 export const GUIDE_VISITS: { title: string; body: string; icon: IconName }[] = [
   {
-    title: "Medical accompaniment",
+    title: "Home maintenance & vendors",
+    icon: "wrench",
+    body: "Painting, plumbing, electrical, AC service, cleaning, pest control, appliances. We inspect, get quotes, compare them, and stay in the room while the work is done and paid for.",
+  },
+  {
+    title: "Doctor\u2019s appointments",
     icon: "heart-pulse",
-    body: "Picked up from home, through registration and into the consult, with a written note of what the doctor said, including the parts they might not mention to you.",
+    body: "Picked up from home, through registration and into the consult. We take notes, sort the prescription, and book the follow-up.",
   },
   {
-    title: "Government offices",
+    title: "Visa appointments",
+    icon: "plane",
+    body: "Documents checked before leaving home, and someone with them at the centre until it\u2019s done.",
+  },
+  {
+    title: "Government offices & banks",
     icon: "file-text",
-    body: "Passport and visa appointments, pension life certificates, municipal counters, registrar visits. We sit in the queue.",
+    body: "Bank branches, the registrar, pension offices, passport and Aadhaar counters. We sit in the queue with them, or for them.",
   },
   {
-    title: "Home & property inspection",
+    title: "Property audit",
     icon: "home",
-    body: "A documented walkthrough of the house or the let-out flat, with photos, condition notes, and what needs doing before it gets expensive.",
+    body: "The house or the let-out flat, documented: condition, meter readings, dues status and documents, with photos.",
   },
   {
-    title: "Supervised work",
+    title: "Tenant handover",
+    icon: "users",
+    body: "Keys, an inventory and photos of the flat\u2019s condition when a tenant moves in or out.",
+  },
+];
+
+export const GUIDE_VISIT_DETAILS: { title: string; icon: IconName; points: string[] }[] = [
+  {
+    title: "Before, during and after a visit",
+    icon: "calendar",
+    points: [
+      "Book on-request visits with three working days\u2019 notice.",
+      "A day before, you and your parents get the assistant\u2019s name, photo and phone number.",
+      "In the home: shoes off, sit where invited, ask before taking photos, and photograph only what the visit is about.",
+      "Your parents can say no to any part of a visit, and their say is final.",
+      "You can ask for the same assistant each time. We\u2019ll do our best to arrange it.",
+    ],
+  },
+  {
+    title: "The visit report",
+    icon: "camera",
+    points: [
+      "Usually in the family group the same day.",
+      "Why we went, what we checked (with photos), and what got done.",
+      "Costs, with the bills attached.",
+      "Any decision you need to make, with the quotes side by side.",
+      "Anything we noticed, written as what we saw, not a diagnosis.",
+      "A short version for your parents, in their language.",
+    ],
+  },
+  {
+    title: "Who comes to the door",
     icon: "user-check",
-    body: "Someone in the room while the plumber, the painter or the packers do the job, and when they get paid.",
+    points: [
+      "Niro employees on contract and salary. Not gig workers, not agency staff.",
+      "Checked before hiring: government photo ID, current and permanent address, past employment, education certificates, and a court-record check through a licensed agency.",
+      "Two references called by us, and an in-person interview.",
+      "Trained on home checklists, noting down medical instructions, reading contractor quotes, consent, and when to escalate.",
+    ],
+  },
+  {
+    title: "What a visit isn\u2019t",
+    icon: "shield-check",
+    points: [
+      "We don\u2019t do repairs ourselves. We find the right person and watch the job.",
+      "No medical, legal, tax or property-valuation advice.",
+      "No personal care: bathing, feeding, lifting, giving medicines or nursing.",
+      "Assistants never take cash from your parents for their time, never take anything from vendors, and never hold cards or passwords.",
+    ],
   },
 ];
 
