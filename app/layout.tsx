@@ -1,3 +1,4 @@
+import { SHARE_CARD } from "@/lib/content";
 import type { Metadata, Viewport } from "next";
 import { Newsreader, Hanken_Grotesk } from "next/font/google";
 import { MetaPixel } from "@/components/MetaPixel";
@@ -26,13 +27,11 @@ const hanken = Hanken_Grotesk({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tellniro.com"),
-  title: "Niro - Your family's own person in India",
-  description:
-    "One membership. A named associate for your parents' errands, bills, appointments, and emergencies - so you can be there, from anywhere.",
+  title: SHARE_CARD.title,
+  description: SHARE_CARD.description,
   openGraph: {
-    title: "Niro - Your family's own person in India",
-    description:
-      "A named associate for errands, bills, appointments, and emergencies. Join the beta.",
+    title: SHARE_CARD.title,
+    description: SHARE_CARD.description,
     type: "website",
   },
 };

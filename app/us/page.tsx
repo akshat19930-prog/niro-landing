@@ -1,3 +1,4 @@
+import { SHARE_CARD } from "@/lib/content";
 import type { Metadata } from "next";
 import { Footer } from "@/components/ds/Footer";
 import { JoinProvider } from "@/components/JoinProvider";
@@ -19,21 +20,19 @@ import { UsPage } from "@/components/sections/UsPage";
 export const metadata: Metadata = {
   title: "Niro - your parents in India, and your household here",
   description:
-    "For Indian families in the US. A named person for your parents back home and the household admin here. Health, paperwork, repairs, school runs - handled on WhatsApp.",
+    "For Indian families in the US. One assistant for your parents back home and the household admin here. Health, paperwork, repairs, school runs - handled on WhatsApp.",
   robots: { index: false, follow: false },
   alternates: { canonical: "https://tellniro.com/us" },
   openGraph: {
-    title: "Niro - your parents in India, and your household here",
-    description:
-      "For Indian families in the US. One person for both sides of your family's life. Join the beta.",
+    title: SHARE_CARD.title,
+    description: SHARE_CARD.description,
     type: "website",
     url: "https://tellniro.com/us",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Niro - your parents in India, and your household here",
-    description:
-      "For Indian families in the US. One person for both sides of your family's life.",
+    title: SHARE_CARD.title,
+    description: SHARE_CARD.description,
   },
 };
 

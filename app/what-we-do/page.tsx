@@ -1,3 +1,4 @@
+import { SHARE_CARD } from "@/lib/content";
 import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
 import { INDIA_SCOPE, SERVICE_CITIES } from "@/lib/content";
@@ -18,13 +19,14 @@ export const metadata: Metadata = {
     "Health admin and emergencies, home and chores, travel, paperwork, banking and EPFO - the complete list of what Niro handles for your family in India.",
   alternates: { canonical: "https://tellniro.com/what-we-do" },
   openGraph: {
-    title: "What Niro can do for your family in India",
-    description:
-      "Health and emergencies, home admin, travel, paperwork, banking and EPFO - the full list.",
+    title: SHARE_CARD.title,
+    description: SHARE_CARD.description,
     url: "https://tellniro.com/what-we-do",
     images: [{ url: "https://tellniro.com/og/what-we-do.png", width: 1200, height: 630 }],
   },
   twitter: {
+    title: SHARE_CARD.title,
+    description: SHARE_CARD.description,
     card: "summary_large_image",
     images: ["https://tellniro.com/og/what-we-do.png"],
   },

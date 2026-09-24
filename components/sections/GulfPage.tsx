@@ -113,7 +113,7 @@ function GulfHero() {
               color: "var(--text-muted)",
             }}
           >
-            <span>Named Niro Assistant</span>
+            <span>Your own Niro Assistant</span>
             <span aria-hidden="true">·</span>
             <span>WhatsApp-first</span>
             <span aria-hidden="true">·</span>
@@ -895,7 +895,7 @@ function GulfFamilies() {
 
 function GulfTrustStrip() {
   const items = [
-    "A named person, accountable end to end",
+    "One person, accountable end to end",
     "Dedicated contact",
     "WhatsApp-first",
     "We never ask for your passwords",
@@ -946,7 +946,7 @@ function GulfPricing() {
     "Two WhatsApp groups - one for India, one for home here",
     "Your parents just WhatsApp. Nothing to install, nothing to learn.",
     "Emergency response for your parents in India - ambulance partner plus our own person at the hospital",
-    "A named contact who knows your family",
+    "One contact who knows your family",
   ];
   return (
     <section id="pricing-fold" data-screen-label="Gulf pricing" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>

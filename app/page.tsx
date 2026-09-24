@@ -1,3 +1,4 @@
+import { SHARE_CARD } from "@/lib/content";
 import type { Metadata } from "next";
 import { Footer } from "@/components/ds/Footer";
 import { JoinProvider } from "@/components/JoinProvider";
@@ -16,9 +17,8 @@ import { VariantB } from "@/components/sections/VariantB";
  */
 export const metadata: Metadata = {
   openGraph: {
-    title: "Niro - Your family's own person in India",
-    description:
-      "Your family's personal assistant in India, getting things done for them and for you.",
+    title: SHARE_CARD.title,
+    description: SHARE_CARD.description,
     type: "website",
     url: "https://tellniro.com/",
     siteName: "Niro",
@@ -27,9 +27,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Niro - Your family's own person in India",
-    description:
-      "Your family's personal assistant in India, getting things done for them and for you.",
+    title: SHARE_CARD.title,
+    description: SHARE_CARD.description,
     images: ["https://tellniro.com/og/home.png"],
   },
 };
