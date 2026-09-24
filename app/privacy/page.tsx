@@ -12,7 +12,7 @@ export default function PrivacyPage() {
     <PageShell>
       <article className="prose">
         <h1>Privacy Policy</h1>
-        <p className="updated">Last updated: 6 July 2026</p>
+        <p className="updated">Last updated: 24 September 2026</p>
 
         <p className="note">
           This policy covers our pre-launch waitlist. We recommend a review by

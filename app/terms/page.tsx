@@ -12,7 +12,7 @@ export default function TermsPage() {
     <PageShell>
       <article className="prose">
         <h1>Terms of Use</h1>
-        <p className="updated">Last updated: 15 September 2026</p>
+        <p className="updated">Last updated: 24 September 2026</p>
 
         <p className="note">
           These terms cover both paid memberships and the waitlist. They have not
