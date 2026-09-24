@@ -613,10 +613,7 @@ function TrustB() {
  * on the page should push someone toward a term length; we would rather they
  * pick the one they actually want and stay.
  *
- * The guarantee is promoted out of a footnote into its own band. It is the
- * single strongest answer to the objection the research kept finding - a
- * stranger asking $99 from someone who has never met them - and it was
- * previously smaller than the price.
+ * No guarantee band: the site makes no written guarantees (Paarth, Sept 2026).
  */
 function PricingB() {
   return (
@@ -655,17 +652,6 @@ function PricingB() {
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="guarantee">
-          <Icon name="shield-check" size={26} />
-          <div>
-            <div className="guarantee-title">30-day money-back guarantee</div>
-            <div className="guarantee-body">
-              If Niro isn&rsquo;t right for your family in the first 30 days, tell
-              us and we refund you in full. No forms, and no exit interview.
-            </div>
-          </div>
         </div>
 
         <dl className="coverage">
