@@ -22,12 +22,12 @@ happens on a hosted checkout link that sales sends in the thread after a call.
 | Route | What it is |
 |---|---|
 | `/` | The live product page. Everything below refers to this unless stated. |
-| `/niro-assured/` | Emergency response protocol, with the published SLA. |
+| `/niro-assure/` | Emergency response protocol, with the published SLA. Renamed from `/niro-assured/` (Sept 2026); that old path is a redirect stub, like `/emergency/`. |
 | `/what-we-do/` | The full India scope as a grid. Has an OG image, so it previews as a card when pasted into WhatsApp. |
 | `/careers/` | Open roles. A trust asset as much as a hiring one — see §6. |
 | `/lite/` | **Unlisted.** The $270/yr 15-task pack, for sales to share on a call. Obscure, not secret. |
 | `/terms/`, `/privacy/`, `/about/` | Legal and team. |
-| `/emergency/` | A noindex redirect stub to `/niro-assured/`. The old URL shipped to production, so it cannot just 404. |
+| `/emergency/` | A noindex redirect stub to `/niro-assure/`. The old URL shipped to production, so it cannot just 404. |
 | `/gulf/`, `/us/`, `/us-v2/` | **Stale split-test pages.** See §7 — they are materially behind `/`. |
 
 ---
@@ -192,7 +192,7 @@ not just the change. `git log --oneline` then `git show <sha>` beats asking.
 ## 7. Known gaps, as of handover
 
 1. **`/us/` and `/gulf/` are materially behind `/`.** They still run the old
-   email-first flow, old plan names, no city checker, no Niro Assured link. If
+   email-first flow, old plan names, no city checker, no Niro Assure link. If
    ads resume to `/us`, those leads see a different product. Either bring them
    into line or retire them and point all traffic at `/`.
 2. **No email is captured at sign-up any more.** Sales must collect one on

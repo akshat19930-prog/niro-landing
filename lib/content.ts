@@ -353,12 +353,12 @@ export const TESTIMONIALS_SHORT: {
 
    These strings are the plain-text source of truth. The main page renders a
    richer version of three of them - bullets in the data answer, a link to Niro
-   Assured, a WhatsApp link on the trial - from MAIN_FAQ_ITEMS in VariantB. Keep
+   Assure, a WhatsApp link on the trial - from MAIN_FAQ_ITEMS in VariantB. Keep
    the two in sync. ------------------------------------------------------- */
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
     q: "What does the membership include, and what does it not?",
-    a: "The membership covers Niro's time - the calls, the portals, the chasing, the coordination - with no cap on how many tasks you send us. It includes one booked on-demand Niro visit of four hours or less each month, your family WhatsApp group, and Niro Assured emergency response. What it doesn't cover is anyone else's costs. Vendor charges and anything ordered through us are billed at exactly what they cost, with no commission added. So are government and legal fees. Additional Niro visits in the same month are $15 per four hours. We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
+    a: "The membership covers Niro's time - the calls, the portals, the chasing, the coordination - with no cap on how many tasks you send us. It includes one booked on-demand Niro visit of four hours or less each month, your family WhatsApp group, and Niro Assure emergency response. What it doesn't cover is anyone else's costs. Vendor charges and anything ordered through us are billed at exactly what they cost, with no commission added. So are government and legal fees. Additional Niro visits in the same month are $15 per four hours. We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
   },
   {
     q: "How are Niro Assistants vetted and verified?",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 /**
- * /emergency -> /niro-assured
+ * /emergency -> /niro-assure
  *
  * The page was renamed to its product name. This stub stays because the old
  * URL already shipped to production - it was in the live footer, in the trust
@@ -10,16 +10,16 @@ import type { Metadata } from "next";
  * browser that ignores it. noindex, so it never competes with the real page.
  */
 export const metadata: Metadata = {
-  title: "Niro Assured",
+  title: "Niro Assure",
   robots: { index: false, follow: false },
-  other: { refresh: "0; url=/niro-assured/" },
+  other: { refresh: "0; url=/niro-assure/" },
 };
 
 export default function EmergencyRedirect() {
   return (
     <main style={{ padding: "72px 20px", textAlign: "center" }}>
       <p style={{ fontSize: "var(--text-md)" }}>
-        This page is now <a href="/niro-assured/">Niro Assured</a>.
+        This page is now <a href="/niro-assure/">Niro Assure</a>.
       </p>
     </main>
   );
