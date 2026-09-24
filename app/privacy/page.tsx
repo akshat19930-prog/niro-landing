@@ -20,11 +20,14 @@ export default function PrivacyPage() {
         </p>
 
         <p>
-          This Privacy Policy explains how <strong>Niro</strong>{" "}
-          (&ldquo;we&rdquo;, &ldquo;us&rdquo;) collects, uses,
-          and protects information when you visit tellniro.com and join our
-          waitlist. We are the data fiduciary responsible for your personal data.
-          By joining the waitlist you agree to this policy.
+          This Privacy Policy explains how{" "}
+          <strong>Domiro Private Limited</strong> (CIN{" "}
+          <span style={{ whiteSpace: "nowrap" }}>U62099KA2026PTC228168</span>),
+          which operates <strong>Niro</strong> (&ldquo;we&rdquo;,
+          &ldquo;us&rdquo;), collects, uses, and protects information when you
+          visit tellniro.com and join our waitlist. Domiro Private Limited is the
+          data fiduciary responsible for your personal data. By joining the
+          waitlist you agree to this policy.
         </p>
 
         <h2>What we collect</h2>
@@ -128,9 +131,16 @@ export default function PrivacyPage() {
         <h2>Contact</h2>
         <p>
           For any privacy question or request, email us at{" "}
-          <a href="mailto:privacy@tellniro.com">privacy@tellniro.com</a>. Registered
-          office: Indique Orion, 4th Main Rd, Agara Village, 1st Sector, HSR
-          Layout, Bengaluru, Karnataka 560102.
+          <a href="mailto:privacy@tellniro.com">privacy@tellniro.com</a>.
+        </p>
+        <p>
+          <strong>Domiro Private Limited</strong>
+          <br />
+          CIN:{" "}
+          <span style={{ whiteSpace: "nowrap" }}>U62099KA2026PTC228168</span>
+          <br />
+          Registered office: Old No. 223, New No. 2210, 2nd Main Road, 6th Block,
+          Jayanagar West, Bangalore South, Bangalore 560070, Karnataka, India.
         </p>
       </article>
     </PageShell>

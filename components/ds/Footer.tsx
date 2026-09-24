@@ -25,7 +25,11 @@ export function Footer({
       style={{
         background: "var(--forest-950)",
         color: "#CBD4CB",
-        padding: "var(--space-8) var(--gutter) var(--space-6)",
+        // Bottom padding is a variable so globals.css can grow it on mobile to
+        // clear the fixed sticky CTA. An inline shorthand would outrank a
+        // stylesheet rule, so the override has to come through the var.
+        padding:
+          "var(--space-8) var(--gutter) var(--footer-pad-bottom, var(--space-6))",
       }}
     >
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
@@ -78,13 +82,29 @@ export function Footer({
             borderTop: "1px solid rgba(255,255,255,0.10)",
           }}
         >
-          {/* The registered entity, not the brand. This line is the only place
-              on the page a visitor can check that Niro is a real, incorporated
-              company - so it is set at body size and a legible grey rather than
-              the usual near-invisible copyright treatment. */}
-          <span style={{ fontSize: "var(--text-sm)", color: "#9AA79E" }}>
-            © {year} Domiro Private Limited
-          </span>
+          {/* The registered entity, not the brand. The CIN is the part that
+              actually earns trust: it is checkable against the MCA register in
+              seconds, which the company name alone is not. Set at body size in a
+              legible grey rather than the usual near-invisible copyright
+              treatment, because the point of the block is to be read. */}
+          <div
+            style={{
+              fontSize: "var(--text-sm)",
+              lineHeight: 1.7,
+              color: "#9AA79E",
+            }}
+          >
+            <div>© {year} Domiro Private Limited</div>
+            <div>
+              CIN:{" "}
+              <span style={{ whiteSpace: "nowrap" }}>U62099KA2026PTC228168</span>
+            </div>
+            <div style={{ maxWidth: 520 }}>
+              Registered office: Old No. 223, New No. 2210, 2nd Main Road, 6th
+              Block, Jayanagar West, Bangalore South, Bangalore 560070,
+              Karnataka, India.
+            </div>
+          </div>
         </div>
       </div>
     </footer>
