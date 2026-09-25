@@ -207,6 +207,33 @@
   .cta:hover { filter: brightness(1.06); transform: translateY(-1px); }
   .cta svg { width: 16px; height: 16px; flex: none; }
 
+  /* Progressive disclosure: the kicker, heading and hook stay visible; what
+     you get, the turnaround and the CTA sit behind a toggle. Native <details>,
+     so it needs no JS and stays keyboard-operable. Opening one is the interest
+     signal the page is instrumented for. */
+  .more { margin-top: auto; border-top: 1px solid var(--line); padding-top: 12px; }
+  .more > summary {
+    list-style: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); padding: 6px 0;
+  }
+  .more > summary::-webkit-details-marker { display: none; }
+  .more > summary:hover { color: var(--ink); }
+  .more > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .more > summary::after {
+    content: ""; width: 7px; height: 7px; flex: none; margin-right: 2px;
+    border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform .15s ease;
+  }
+  .more[open] > summary::after { transform: translateY(1px) rotate(-135deg); }
+  .more > *:not(summary) { margin-top: 12px; }
+  /* The divider and bottom-push now live on .more, not on .meta. */
+  .more .meta { border-top: 0; padding-top: 0; margin-top: 12px; }
+  .more .cta { display: flex; }
+
   @media (max-width: 760px) {
     .grid { grid-template-columns: 1fr; }
     .steps { grid-template-columns: 1fr; }
@@ -264,6 +291,8 @@
       </div>
       <h3>Insurance policy audit and gap report</h3>
       <p class="ask">If your father were admitted tomorrow, what would you actually pay out of pocket? <strong>Most families find out on the day.</strong> We'll tell you now.</p>
+      <details class="more" data-task="the insurance policy audit and gap report">
+        <summary>See what you get</summary>
       <div class="deliver">
         <b>What you get</b>
         A two-page gap report with the rupee figure at the top and the reasoning under it: room-rent sub-limit, co-pay, disease waiting periods, day-care exclusions, network hospitals near your parents' home, and the cheapest way to close the biggest gap.
@@ -275,6 +304,7 @@
       <a class="cta" data-task="the insurance policy audit and gap report" href="#">Start this task
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
       </a>
+      </details>
     </article>
 
     <article class="card">
@@ -283,6 +313,8 @@
       </div>
       <h3>Find a professional you can actually trust</h3>
       <p class="ask">A painter, physio, carpenter, attendant, cook, maid or driver. <strong>Not a list of numbers — three people, checked, priced and available.</strong></p>
+      <details class="more" data-task="finding a trusted professional">
+        <summary>See what you get</summary>
       <div class="deliver">
         <b>What you get</b>
         Three named vendors with quoted rates, a negotiated package price, availability windows, our vetting note, and a warranty floor — 30 days on plumbing and electrical, 180 days on appliance work. Say the word and we'll have him there Thursday.
@@ -294,6 +326,7 @@
       <a class="cta" data-task="finding a trusted professional" href="#">Start this task
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
       </a>
+      </details>
     </article>
 
     <article class="card">
@@ -302,6 +335,8 @@
       </div>
       <h3>Two weeks of reminders that actually land</h3>
       <p class="ask">Medicines skipped, supplements forgotten, BP never logged. <strong>We'll run the nudges for a fortnight so you don't have to.</strong></p>
+      <details class="more" data-task="two weeks of daily reminders">
+        <summary>See what you get</summary>
       <div class="deliver">
         <b>What you get</b>
         A reminder schedule set up with your parent — medicine, supplements or vital readings — delivered on WhatsApp at the times that suit them, for fourteen days, with a short note back to you on what stuck and what didn't.
@@ -313,6 +348,7 @@
       <a class="cta" data-task="two weeks of daily reminders" href="#">Start this task
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
       </a>
+      </details>
     </article>
 
     <article class="card">
@@ -321,6 +357,8 @@
       </div>
       <h3>Your parent's phone, made safe</h3>
       <p class="ask">One call with your mother or father, and the phone in their hand stops being the weak point. <strong>Emergency setup plus the scam briefing.</strong></p>
+      <details class="more" data-task="making my parent's phone safe">
+        <summary>See what you get</summary>
       <div class="deliver">
         <b>What you get</b>
         Medical ID filled in, your number set as emergency contact, SOS configured, text size fixed — plus the five-minute callback rule taught and left on a fridge card: nobody from Niro, your bank or the government will ever ask for an OTP; hang up and call us back on this number. Before-and-after screenshots to you.
@@ -332,6 +370,7 @@
       <a class="cta" data-task="making my parent's phone safe" href="#">Start this task
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
       </a>
+      </details>
     </article>
 
     <article class="card">
@@ -340,6 +379,8 @@
       </div>
       <h3>EPF withdrawal — find out what's blocking it</h3>
       <p class="ask">A claim that keeps getting rejected, with no reason you can read. <strong>We'll name the exact rejection reason.</strong> Yours or your parents'.</p>
+      <details class="more" data-task="the EPF unblock audit">
+        <summary>See what you get</summary>
       <div class="deliver">
         <b>What you get</b>
         A short report: what is blocked, why it is blocked, how long it will take to clear and what it will cost. The specific rejection reason named — that's the part nobody else gives you — with the sequence of steps to fix it.
@@ -351,6 +392,7 @@
       <a class="cta" data-task="the EPF unblock audit" href="#">Start this task
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
       </a>
+      </details>
     </article>
 
     <article class="card">
@@ -360,6 +402,8 @@
       </div>
       <h3>Life certificate, done at their door</h3>
       <p class="ask">Miss the window and the pension stops. <strong>Pensioners aged 80 and over can submit from 1 October</strong> — everyone else from November.</p>
+      <details class="more" data-task="the life certificate (Jeevan Pramaan) run">
+        <summary>See what you get</summary>
       <div class="deliver">
         <b>What you get</b>
         A doorstep Jeevan Pramaan appointment booked, the digital life certificate generated and confirmed back to you — plus the note EPS-95 families keep getting wrong: your clock runs 12 months from your last submission, not from the November window.
@@ -371,6 +415,7 @@
       <a class="cta" data-task="the life certificate (Jeevan Pramaan) run" href="#">Start this task
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
       </a>
+      </details>
     </article>
 
     <article class="card">
@@ -379,6 +424,8 @@
       </div>
       <h3>Vehicle compliance sweep</h3>
       <p class="ask">Unpaid challans nobody at home knows about, a PUC that lapsed months ago, insurance due in three weeks. <strong>We'll find all of it.</strong></p>
+      <details class="more" data-task="the vehicle compliance sweep">
+        <summary>See what you get</summary>
       <div class="deliver">
         <b>What you get</b>
         One page per vehicle: outstanding challans with amounts, PUC expiry, insurance expiry, service due — and the two things we cleared for free while we were in there. Runs entirely on public VAHAN records, so we need no login of yours.
@@ -390,6 +437,7 @@
       <a class="cta" data-task="the vehicle compliance sweep" href="#">Start this task
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
       </a>
+      </details>
     </article>
 
     <article class="card">
@@ -398,6 +446,8 @@
       </div>
       <h3>A yoga teacher who comes to them — two sessions on us</h3>
       <p class="ask">The hardest part of any of this is your parent agreeing to it. <strong>So let them try it, decide for themselves, and pick the teacher.</strong></p>
+      <details class="more" data-task="the 1:1 yoga trial">
+        <summary>See what you get</summary>
       <div class="deliver">
         <b>What you get</b>
         Three vetted 1:1 instructors with negotiated package rates, two trial sessions arranged and paid for by us, and the continuity promise — the same teacher for at least eight sessions in ten. Your parent chooses which one stays.
@@ -409,6 +459,7 @@
       <a class="cta" data-task="the 1:1 yoga trial" href="#">Start this task
         <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
       </a>
+      </details>
     </article>
 
   </div>
@@ -416,13 +467,124 @@
 </div>
 
 <script>
-  // Replace with Niro's WhatsApp Business number, country code first, digits only.
+  // Niro's WhatsApp sales line, country code first, digits only.
   var WA_NUMBER = "919180581481";
+
+  /* --------------------------------------------------------------- attribution
+     This page is a static asset and cannot import lib/whatsapp.ts or
+     lib/track.ts, so the few fields they read are re-read by hand here, using
+     the SAME sessionStorage keys and the SAME payload shape. An inbound chat
+     from this page then reconciles against the events sheet exactly like one
+     from the React site. If those files change their keys, change them here. */
+  var UTM_KEY  = "niro_utm";
+  var SID_KEY  = "niro_sid";
+  var ATTR_KEY = "niro_attr";
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbwFnBAz3ZFXKr3D13KtKqOyATFW2TVb5gIFOJfch6GJwLbABYzWoMntnvPFl8m2Qunl_A/exec";
+
+  function ss() { try { return window.sessionStorage; } catch (e) { return null; } }
+
+  // This link is sent by hand, so the query string on THIS page is usually the
+  // only attribution there is. Merge it over anything stored first-touch and
+  // write it back, so it survives if the visitor carries on into the site.
+  function utm() {
+    var keys = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","fbclid","gclid"];
+    var st = ss(), stored = {};
+    try { stored = JSON.parse((st && st.getItem(UTM_KEY)) || "{}"); } catch (e) { stored = {}; }
+    var q, found = false;
+    try { q = new URLSearchParams(window.location.search); } catch (e) { return stored; }
+    keys.forEach(function (k) { var v = q.get(k); if (v) { stored[k] = v; found = true; } });
+    if (found && st) { try { st.setItem(UTM_KEY, JSON.stringify(stored)); } catch (e) {} }
+    return stored;
+  }
+
+  function sid() {
+    var st = ss(); if (!st) return "s0";
+    var id = st.getItem(SID_KEY);
+    if (!id) {
+      id = "s_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      try { st.setItem(SID_KEY, id); } catch (e) {}
+    }
+    return id;
+  }
+
+  function pitch() {
+    try { return (JSON.parse((ss() && ss().getItem(ATTR_KEY)) || "{}").pitch) || ""; }
+    catch (e) { return ""; }
+  }
+
+  // Coarse region from the time zone, same buckets as lib/track.ts coarseGeo().
+  var _geo = null;
+  function geo() {
+    if (_geo) return _geo;
+    var g = "other";
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      if (/Dubai|Abu_Dhabi|Qatar|Bahrain|Riyadh|Kuwait|Muscat|Aden/i.test(tz)) g = "gulf";
+      else if (/^America\//.test(tz)) g = "na";
+    } catch (e) {}
+    _geo = g; return g;
+  }
+
+  // Same shape as whatsappRef(): market, then the creative (or the campaign if
+  // the ad carried no utm_content), then the pitch cell. /freetask is neither
+  // /gulf nor /us, so the market code is "na".
+  function ref() {
+    var u = utm(), parts = ["na"];
+    var creative = u.utm_content || u.utm_campaign || "";
+    if (creative) parts.push(creative);
+    var p = pitch(); if (p) parts.push("v" + p);
+    return parts.join(" \u00b7 ");
+  }
+
+  function beacon(event, extra) {
+    if (!ENDPOINT) return;
+    var u = utm(), body;
+    var payload = {
+      type: "event", event: event, sid: sid(), ts: Date.now(),
+      page: window.location.pathname || "/freetask/",
+      geo: geo(), campaign: u.utm_campaign || "", placement: "freetask"
+    };
+    if (extra) { for (var k in extra) { if (Object.prototype.hasOwnProperty.call(extra, k)) payload[k] = extra[k]; } }
+    body = JSON.stringify(payload);
+    try {
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(ENDPOINT, new Blob([body], { type: "text/plain;charset=UTF-8" }));
+      } else {
+        fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: body, keepalive: true });
+      }
+    } catch (e) { /* never block the chat */ }
+  }
+
+  // A view beacon, so the numbers below have a denominator. Without it you can
+  // count opens and chats but not the share of readers who did either.
+  beacon("freetask_view");
+
+  /* Which of the eight got opened. First open per task per session only -
+     re-opening the same card is the same person still deciding, not a second
+     signal, and counting it twice would flatter whichever card sits first. */
+  var seen = {};
+  document.querySelectorAll("details.more[data-task]").forEach(function (d) {
+    d.addEventListener("toggle", function () {
+      var task = d.getAttribute("data-task");
+      if (!d.open || seen[task]) return;
+      seen[task] = 1;
+      beacon("freetask_expand", { task: task });
+    });
+  });
 
   document.querySelectorAll("a.cta[data-task]").forEach(function (a) {
     var task = a.getAttribute("data-task");
-    var msg = "Hi Niro — I'd like to start with " + task + ".";
-    a.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
+    var msg = "Hi Niro \u2014 I'd like to start with " + task + ".";
+    // Rebuilt on pointerdown as well as at load: a UTM can land in storage
+    // after this script runs, and the click must not send a stale ref.
+    function build() {
+      var r = ref();
+      a.href = "https://wa.me/" + WA_NUMBER + "?text=" +
+        encodeURIComponent(r ? msg + "\n\nRef: " + r : msg);
+    }
+    build();
+    a.addEventListener("pointerdown", build);
+    a.addEventListener("click", function () { build(); beacon("whatsapp_click", { task: task }); });
     a.target = "_blank";
     a.rel = "noopener";
   });
