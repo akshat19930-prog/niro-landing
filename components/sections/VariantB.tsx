@@ -379,7 +379,11 @@ function UseCasesB() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(240px, 100%), 1fr))",
+            // Six cards, so the track minimum is picked to land on 3 or 2 per
+            // row and never 4 - four would leave a ragged 4+2. In a 1120px
+            // container with a 16px gap, four tracks need 1328px and cannot
+            // fit, three need 992px and do. Below ~696px it drops to one.
+            gridTemplateColumns: "repeat(auto-fit, minmax(min(320px, 100%), 1fr))",
             gap: 16,
           }}
         >
