@@ -211,24 +211,41 @@
      you get, the turnaround and the CTA sit behind a toggle. Native <details>,
      so it needs no JS and stays keyboard-operable. Opening one is the interest
      signal the page is instrumented for. */
-  .more { margin-top: auto; border-top: 1px solid var(--line); padding-top: 12px; }
+  .more { margin-top: auto; padding-top: 4px; }
+  /* Collapsed, this is the only control on the card, so it is styled as a real
+     button - the outline counterpart to the solid .cta, same size and padding.
+     Once open it steps back to a quiet row, because "Start this task" is then
+     on screen and the card should have one obvious action, not two. */
   .more > summary {
-    list-style: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: space-between; gap: 10px;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
-    color: var(--muted); padding: 6px 0;
+    list-style: none; cursor: pointer; user-select: none;
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    font-weight: 600; font-size: 15px; line-height: 1.2;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 3px;
+    padding: 12px 16px;
+    transition: filter .12s ease, transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease;
   }
   .more > summary::-webkit-details-marker { display: none; }
-  .more > summary:hover { color: var(--ink); }
+  .more > summary:hover { filter: brightness(.97); transform: translateY(-1px); }
   .more > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .more > summary::after {
-    content: ""; width: 7px; height: 7px; flex: none; margin-right: 2px;
-    border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+    content: ""; width: 7px; height: 7px; flex: none;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
     transform: translateY(-2px) rotate(45deg);
     transition: transform .15s ease;
   }
-  .more[open] > summary::after { transform: translateY(1px) rotate(-135deg); }
+  .more[open] > summary {
+    background: transparent; border-color: var(--line);
+    color: var(--muted); font-weight: 500;
+  }
+  .more[open] > summary:hover { transform: none; color: var(--ink); }
+  .more[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+  /* Swap the label rather than leave "Know more" on an open card. */
+  .more > summary .lbl-hide,
+  .more[open] > summary .lbl-show { display: none; }
+  .more[open] > summary .lbl-hide { display: inline; }
   .more > *:not(summary) { margin-top: 12px; }
   /* The divider and bottom-push now live on .more, not on .meta. */
   .more .meta { border-top: 0; padding-top: 0; margin-top: 12px; }
@@ -292,7 +309,7 @@
       <h3>Insurance policy audit and gap report</h3>
       <p class="ask">If your father were admitted tomorrow, what would you actually pay out of pocket? <strong>Most families find out on the day.</strong> We'll tell you now.</p>
       <details class="more" data-task="the insurance policy audit and gap report">
-        <summary>See what you get</summary>
+        <summary><span class="lbl-show">Know more</span><span class="lbl-hide">Hide details</span></summary>
       <div class="deliver">
         <b>What you get</b>
         A two-page gap report with the rupee figure at the top and the reasoning under it: room-rent sub-limit, co-pay, disease waiting periods, day-care exclusions, network hospitals near your parents' home, and the cheapest way to close the biggest gap.
@@ -314,7 +331,7 @@
       <h3>Find a professional you can actually trust</h3>
       <p class="ask">A painter, physio, carpenter, attendant, cook, maid or driver. <strong>Not a list of numbers — three people, checked, priced and available.</strong></p>
       <details class="more" data-task="finding a trusted professional">
-        <summary>See what you get</summary>
+        <summary><span class="lbl-show">Know more</span><span class="lbl-hide">Hide details</span></summary>
       <div class="deliver">
         <b>What you get</b>
         Three named vendors with quoted rates, a negotiated package price, availability windows, our vetting note, and a warranty floor — 30 days on plumbing and electrical, 180 days on appliance work. Say the word and we'll have him there Thursday.
@@ -336,7 +353,7 @@
       <h3>Two weeks of reminders that actually land</h3>
       <p class="ask">Medicines skipped, supplements forgotten, BP never logged. <strong>We'll run the nudges for a fortnight so you don't have to.</strong></p>
       <details class="more" data-task="two weeks of daily reminders">
-        <summary>See what you get</summary>
+        <summary><span class="lbl-show">Know more</span><span class="lbl-hide">Hide details</span></summary>
       <div class="deliver">
         <b>What you get</b>
         A reminder schedule set up with your parent — medicine, supplements or vital readings — delivered on WhatsApp at the times that suit them, for fourteen days, with a short note back to you on what stuck and what didn't.
@@ -358,7 +375,7 @@
       <h3>Your parent's phone, made safe</h3>
       <p class="ask">One call with your mother or father, and the phone in their hand stops being the weak point. <strong>Emergency setup plus the scam briefing.</strong></p>
       <details class="more" data-task="making my parent's phone safe">
-        <summary>See what you get</summary>
+        <summary><span class="lbl-show">Know more</span><span class="lbl-hide">Hide details</span></summary>
       <div class="deliver">
         <b>What you get</b>
         Medical ID filled in, your number set as emergency contact, SOS configured, text size fixed — plus the five-minute callback rule taught and left on a fridge card: nobody from Niro, your bank or the government will ever ask for an OTP; hang up and call us back on this number. Before-and-after screenshots to you.
@@ -380,7 +397,7 @@
       <h3>EPF withdrawal — find out what's blocking it</h3>
       <p class="ask">A claim that keeps getting rejected, with no reason you can read. <strong>We'll name the exact rejection reason.</strong> Yours or your parents'.</p>
       <details class="more" data-task="the EPF unblock audit">
-        <summary>See what you get</summary>
+        <summary><span class="lbl-show">Know more</span><span class="lbl-hide">Hide details</span></summary>
       <div class="deliver">
         <b>What you get</b>
         A short report: what is blocked, why it is blocked, how long it will take to clear and what it will cost. The specific rejection reason named — that's the part nobody else gives you — with the sequence of steps to fix it.
@@ -403,7 +420,7 @@
       <h3>Life certificate, done at their door</h3>
       <p class="ask">Miss the window and the pension stops. <strong>Pensioners aged 80 and over can submit from 1 October</strong> — everyone else from November.</p>
       <details class="more" data-task="the life certificate (Jeevan Pramaan) run">
-        <summary>See what you get</summary>
+        <summary><span class="lbl-show">Know more</span><span class="lbl-hide">Hide details</span></summary>
       <div class="deliver">
         <b>What you get</b>
         A doorstep Jeevan Pramaan appointment booked, the digital life certificate generated and confirmed back to you — plus the note EPS-95 families keep getting wrong: your clock runs 12 months from your last submission, not from the November window.
@@ -425,7 +442,7 @@
       <h3>Vehicle compliance sweep</h3>
       <p class="ask">Unpaid challans nobody at home knows about, a PUC that lapsed months ago, insurance due in three weeks. <strong>We'll find all of it.</strong></p>
       <details class="more" data-task="the vehicle compliance sweep">
-        <summary>See what you get</summary>
+        <summary><span class="lbl-show">Know more</span><span class="lbl-hide">Hide details</span></summary>
       <div class="deliver">
         <b>What you get</b>
         One page per vehicle: outstanding challans with amounts, PUC expiry, insurance expiry, service due — and the two things we cleared for free while we were in there. Runs entirely on public VAHAN records, so we need no login of yours.
@@ -447,7 +464,7 @@
       <h3>A yoga teacher who comes to them — two sessions on us</h3>
       <p class="ask">The hardest part of any of this is your parent agreeing to it. <strong>So let them try it, decide for themselves, and pick the teacher.</strong></p>
       <details class="more" data-task="the 1:1 yoga trial">
-        <summary>See what you get</summary>
+        <summary><span class="lbl-show">Know more</span><span class="lbl-hide">Hide details</span></summary>
       <div class="deliver">
         <b>What you get</b>
         Three vetted 1:1 instructors with negotiated package rates, two trial sessions arranged and paid for by us, and the continuity promise — the same teacher for at least eight sessions in ten. Your parent chooses which one stays.
