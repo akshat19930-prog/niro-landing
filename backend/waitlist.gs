@@ -72,9 +72,15 @@ function doPost(e) {
       }
     }
 
-    // Never create a blank row: a genuine signup always carries an email. This
-    // also protects against stray/bot POSTs and any beacon reaching this path.
-    if (rowIndex === -1 && !email) {
+    // Never create a blank row: a genuine lead carries an email OR a phone.
+    // This also protects against stray/bot POSTs and any beacon reaching this
+    // path.
+    //
+    // The phone half matters: since the phone-first funnel shipped (Sept 2026)
+    // the form no longer asks for an email at all, so an email-only guard threw
+    // every lead away - the sheet took its last row on 3 Sept while the events
+    // tab kept filling. Keep both arms of this condition.
+    if (rowIndex === -1 && !email && !String(data.phone || "").trim()) {
       return json_({ ignored: true });
     }
 
@@ -104,7 +110,7 @@ function doPost(e) {
 
     if (rowIndex === -1) {
       // New signup. Order must match HEADER.
-      referralCode = slugFromEmail_(email);
+      referralCode = slugFromLead_(email, data.name, data.phone);
       position = BASE_POSITION + Math.max(0, sheet.getLastRow()); // header = 1
       sheet.appendRow([
         new Date(), eventId, email, data.arm || "",
@@ -119,7 +125,7 @@ function doPost(e) {
     } else {
       // Existing signup - enrich the row, keep its position/referralCode.
       var row = values[rowIndex - 1];
-      referralCode = row[C_REFCODE - 1] || slugFromEmail_(email);
+      referralCode = row[C_REFCODE - 1] || slugFromLead_(email, data.name, data.phone);
       position = row[C_POSITION - 1] || (BASE_POSITION + rowIndex);
       if (email) sheet.getRange(rowIndex, 3).setValue(email);
       if (data.arm) sheet.getRange(rowIndex, 4).setValue(data.arm);
@@ -444,6 +450,16 @@ function logEventRow_(data) {
 function slugFromEmail_(email) {
   var s = String(email).split("@")[0].replace(/[^a-z0-9]/gi, "").toLowerCase();
   return s || "friend";
+}
+
+/** Referral slug for a lead that may have no email: fall back to the name, then
+ *  to the last digits of the phone, then to "friend". */
+function slugFromLead_(email, name, phone) {
+  if (String(email || "").trim()) return slugFromEmail_(email);
+  var n = String(name || "").replace(/[^a-z0-9]/gi, "").toLowerCase();
+  if (n) return n;
+  var p = String(phone || "").replace(/[^0-9]/g, "");
+  return p ? "lead" + p.slice(-4) : "friend";
 }
 
 function json_(obj) {
