@@ -197,6 +197,12 @@ not just the change. `git log --oneline` then `git show <sha>` beats asking.
    into line or retire them and point all traffic at `/`.
 2. **No email is captured at sign-up any more.** Sales must collect one on
    WhatsApp before anyone is invoiced; the checkout needs it for receipts.
+   This silently broke the sheet between 16 and 25 Sept 2026: `doPost` only
+   created a row when an email was present, so every phone-only lead was
+   answered `{"ignored":true}` and dropped. Three leads were lost that way.
+   Fixed in `backend/waitlist.gs` (email OR phone). **The lesson: the events
+   tab filling is not evidence that leads are landing — check the `waitlist`
+   tab's last timestamp.**
 3. **Payment rails are not live.** Recurring cross-border card billing from an
    India entity is the open question — verify a foreign-issued card can be
    stored for auto-debit before promising monthly billing.
