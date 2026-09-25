@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="One real task for your family in India, start to finish, at no cost.">
+<meta property="og:title" content="Your first Niro task is on us">
+<meta property="og:description" content="Pick one thing we'll take off your plate. No charge, no card, nothing to install.">
+<title>Niro First Task</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Karla:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #F2F3F0;
+    --surface: #FFFFFF;
+    --surface-2: #E9ECE7;
+    --ink: #14201B;
+    --ink-2: #405048;
+    --muted: #6B7A72;
+    --line: #D9DED8;
+    --accent: #0D5B44;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #E0EDE7;
+    --flag: #9C4715;
+    --flag-soft: #F6E7DC;
+    --shadow: 0 1px 2px rgba(20,32,27,.05), 0 8px 24px -16px rgba(20,32,27,.25);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0E1512;
+      --surface: #151D19;
+      --surface-2: #1D2622;
+      --ink: #E9EFEA;
+      --ink-2: #B4C2BA;
+      --muted: #849A8F;
+      --line: #27322D;
+      --accent: #54BE99;
+      --accent-ink: #08110D;
+      --accent-soft: #172A23;
+      --flag: #E2A177;
+      --flag-soft: #2B1F16;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0E1512;
+    --surface: #151D19;
+    --surface-2: #1D2622;
+    --ink: #E9EFEA;
+    --ink-2: #B4C2BA;
+    --muted: #849A8F;
+    --line: #27322D;
+    --accent: #54BE99;
+    --accent-ink: #08110D;
+    --accent-soft: #172A23;
+    --flag: #E2A177;
+    --flag-soft: #2B1F16;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Karla", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 0 64px;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  /* ---------- masthead ---------- */
+  .top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+    padding-block: 22px 0;
+  }
+  .mark {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 22px; letter-spacing: .01em;
+  }
+  .mark span { color: var(--accent); }
+  .stamp {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+    color: var(--muted);
+  }
+
+  header.hero { padding-block: 40px 30px; max-width: 720px; }
+  h1 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(32px, 5.2vw, 50px);
+    line-height: 1.1;
+    letter-spacing: -.015em;
+    margin: 0 0 18px;
+    text-wrap: balance;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede { font-size: clamp(16px, 2.2vw, 18.5px); color: var(--ink-2); margin: 0; max-width: 62ch; }
+  .lede + .lede { margin-top: 12px; }
+
+  /* ---------- how it works ---------- */
+  .steps {
+    display: grid; gap: 1px;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 44px;
+  }
+  .step { background: var(--surface); padding: 16px 18px; }
+  .step b {
+    display: block;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; font-weight: 500; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .step p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+
+  /* ---------- section head ---------- */
+  .sec-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px; margin-bottom: 26px;
+  }
+  .sec-head h2 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 400; font-size: 26px; margin: 0; letter-spacing: -.01em;
+  }
+  .sec-head .note { font-size: 13.5px; color: var(--muted); margin: 0; }
+
+  /* ---------- cards ---------- */
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    padding: 22px 22px 20px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .kicker {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .pill {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    background: var(--flag-soft); color: var(--flag);
+    border-radius: 999px; padding: 4px 9px; white-space: nowrap;
+  }
+  .card h3 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 500; font-size: 22px; line-height: 1.22;
+    margin: 0; letter-spacing: -.01em; text-wrap: balance;
+  }
+  .card .ask { margin: 0; font-size: 15px; color: var(--ink-2); }
+  .card .ask strong { font-weight: 600; color: var(--ink); }
+  .deliver {
+    background: var(--surface-2);
+    border-radius: 3px;
+    padding: 13px 15px;
+    font-size: 14.5px; color: var(--ink-2);
+  }
+  .deliver b {
+    display: block;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); font-weight: 500; margin-bottom: 5px;
+  }
+  .meta {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    margin-top: auto;
+  }
+  .meta div { min-width: 0; }
+  .meta dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 3px;
+  }
+  .meta dd { margin: 0; font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .cta {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    background: var(--accent); color: var(--accent-ink);
+    text-decoration: none; font-weight: 600; font-size: 15px;
+    padding: 11px 16px; border-radius: 3px;
+    transition: transform .12s ease, filter .12s ease;
+  }
+  .cta:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .cta svg { width: 16px; height: 16px; flex: none; }
+
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<style>
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0}
+  img{max-width:100%}
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="mark">niro<span>.</span></div>
+    <div class="stamp">First task &middot; no charge &middot; private link</div>
+  </div>
+
+  <header class="hero">
+    <h1>Pick one thing we'll take off your plate. <em>On us.</em></h1>
+    <p class="lede">One real task for your family in India, start to finish, at no cost — picked up by your assistant on WhatsApp today.</p>
+  </header>
+
+  <div class="steps">
+    <div class="step">
+      <b>Step one</b>
+      <p>Pick a task below. It opens a WhatsApp chat with your Niro assistant, with the task already filled in.</p>
+    </div>
+    <div class="step">
+      <b>Step two</b>
+      <p>Your assistant confirms the details — and, where it's needed, speaks to your parents directly.</p>
+    </div>
+    <div class="step">
+      <b>Step three</b>
+      <p>You get the finished thing, not a status update. Most tasks close inside 48 hours.</p>
+    </div>
+  </div>
+
+  <div class="sec-head">
+    <h2>Pick 1 &amp; get it done now!</h2>
+    <p class="note">One per family. Something else on your mind? Ask — we'll tell you honestly if we can do it.</p>
+  </div>
+
+  <div class="grid">
+
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Money &amp; cover</div>
+      </div>
+      <h3>Insurance policy audit and gap report</h3>
+      <p class="ask">If your father were admitted tomorrow, what would you actually pay out of pocket? <strong>Most families find out on the day.</strong> We'll tell you now.</p>
+      <div class="deliver">
+        <b>What you get</b>
+        A two-page gap report with the rupee figure at the top and the reasoning under it: room-rent sub-limit, co-pay, disease waiting periods, day-care exclusions, network hospitals near your parents' home, and the cheapest way to close the biggest gap.
+      </div>
+      <dl class="meta">
+        <div><dt>Turnaround</dt><dd>48 hours</dd></div>
+        <div><dt>We need</dt><dd>The policy PDF</dd></div>
+      </dl>
+      <a class="cta" data-task="the insurance policy audit and gap report" href="#">Start this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Home &amp; help</div>
+      </div>
+      <h3>Find a professional you can actually trust</h3>
+      <p class="ask">A painter, physio, carpenter, attendant, cook, maid or driver. <strong>Not a list of numbers — three people, checked, priced and available.</strong></p>
+      <div class="deliver">
+        <b>What you get</b>
+        Three named vendors with quoted rates, a negotiated package price, availability windows, our vetting note, and a warranty floor — 30 days on plumbing and electrical, 180 days on appliance work. Say the word and we'll have him there Thursday.
+      </div>
+      <dl class="meta">
+        <div><dt>Turnaround</dt><dd>24 hours</dd></div>
+        <div><dt>We need</dt><dd>The job and the area</dd></div>
+      </dl>
+      <a class="cta" data-task="finding a trusted professional" href="#">Start this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Daily care</div>
+      </div>
+      <h3>Two weeks of reminders that actually land</h3>
+      <p class="ask">Medicines skipped, supplements forgotten, BP never logged. <strong>We'll run the nudges for a fortnight so you don't have to.</strong></p>
+      <div class="deliver">
+        <b>What you get</b>
+        A reminder schedule set up with your parent — medicine, supplements or vital readings — delivered on WhatsApp at the times that suit them, for fourteen days, with a short note back to you on what stuck and what didn't.
+      </div>
+      <dl class="meta">
+        <div><dt>Turnaround</dt><dd>Starts today</dd></div>
+        <div><dt>We need</dt><dd>The list and the timings</dd></div>
+      </dl>
+      <a class="cta" data-task="two weeks of daily reminders" href="#">Start this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Safety</div>
+      </div>
+      <h3>Your parent's phone, made safe</h3>
+      <p class="ask">One call with your mother or father, and the phone in their hand stops being the weak point. <strong>Emergency setup plus the scam briefing.</strong></p>
+      <div class="deliver">
+        <b>What you get</b>
+        Medical ID filled in, your number set as emergency contact, SOS configured, text size fixed — plus the five-minute callback rule taught and left on a fridge card: nobody from Niro, your bank or the government will ever ask for an OTP; hang up and call us back on this number. Before-and-after screenshots to you.
+      </div>
+      <dl class="meta">
+        <div><dt>Turnaround</dt><dd>48 hours</dd></div>
+        <div><dt>We need</dt><dd>15 min with your parent</dd></div>
+      </dl>
+      <a class="cta" data-task="making my parent's phone safe" href="#">Start this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Money &amp; cover</div>
+      </div>
+      <h3>EPF withdrawal — find out what's blocking it</h3>
+      <p class="ask">A claim that keeps getting rejected, with no reason you can read. <strong>We'll name the exact rejection reason.</strong> Yours or your parents'.</p>
+      <div class="deliver">
+        <b>What you get</b>
+        A short report: what is blocked, why it is blocked, how long it will take to clear and what it will cost. The specific rejection reason named — that's the part nobody else gives you — with the sequence of steps to fix it.
+      </div>
+      <dl class="meta">
+        <div><dt>Turnaround</dt><dd>48 hours</dd></div>
+        <div><dt>We need</dt><dd>UAN and claim history</dd></div>
+      </dl>
+      <a class="cta" data-task="the EPF unblock audit" href="#">Start this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Pension</div>
+        <div class="pill">Time-sensitive</div>
+      </div>
+      <h3>Life certificate, done at their door</h3>
+      <p class="ask">Miss the window and the pension stops. <strong>Pensioners aged 80 and over can submit from 1 October</strong> — everyone else from November.</p>
+      <div class="deliver">
+        <b>What you get</b>
+        A doorstep Jeevan Pramaan appointment booked, the digital life certificate generated and confirmed back to you — plus the note EPS-95 families keep getting wrong: your clock runs 12 months from your last submission, not from the November window.
+      </div>
+      <dl class="meta">
+        <div><dt>Turnaround</dt><dd>Booked in 48 hours</dd></div>
+        <div><dt>We need</dt><dd>PPO number and address</dd></div>
+      </dl>
+      <a class="cta" data-task="the life certificate (Jeevan Pramaan) run" href="#">Start this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Home &amp; help</div>
+      </div>
+      <h3>Vehicle compliance sweep</h3>
+      <p class="ask">Unpaid challans nobody at home knows about, a PUC that lapsed months ago, insurance due in three weeks. <strong>We'll find all of it.</strong></p>
+      <div class="deliver">
+        <b>What you get</b>
+        One page per vehicle: outstanding challans with amounts, PUC expiry, insurance expiry, service due — and the two things we cleared for free while we were in there. Runs entirely on public VAHAN records, so we need no login of yours.
+      </div>
+      <dl class="meta">
+        <div><dt>Turnaround</dt><dd>48 hours</dd></div>
+        <div><dt>We need</dt><dd>Registration numbers</dd></div>
+      </dl>
+      <a class="cta" data-task="the vehicle compliance sweep" href="#">Start this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Daily care</div>
+      </div>
+      <h3>A yoga teacher who comes to them — two sessions on us</h3>
+      <p class="ask">The hardest part of any of this is your parent agreeing to it. <strong>So let them try it, decide for themselves, and pick the teacher.</strong></p>
+      <div class="deliver">
+        <b>What you get</b>
+        Three vetted 1:1 instructors with negotiated package rates, two trial sessions arranged and paid for by us, and the continuity promise — the same teacher for at least eight sessions in ten. Your parent chooses which one stays.
+      </div>
+      <dl class="meta">
+        <div><dt>Turnaround</dt><dd>First class in 7 days</dd></div>
+        <div><dt>We need</dt><dd>Their area and timings</dd></div>
+      </dl>
+      <a class="cta" data-task="the 1:1 yoga trial" href="#">Start this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+    </article>
+
+  </div>
+
+</div>
+
+<script>
+  // Replace with Niro's WhatsApp Business number, country code first, digits only.
+  var WA_NUMBER = "919180581481";
+
+  document.querySelectorAll("a.cta[data-task]").forEach(function (a) {
+    var task = a.getAttribute("data-task");
+    var msg = "Hi Niro — I'd like to start with " + task + ".";
+    a.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
+    a.target = "_blank";
+    a.rel = "noopener";
+  });
+</script>
+</body>
+</html>
