@@ -117,7 +117,7 @@ function doPost(e) {
         data.pitch || "", data.ref || "", data.planId || "",
         utm.utm_source || "", utm.utm_medium || "", utm.utm_campaign || "",
         utm.utm_content || "", utm.fbclid || "", referralCode, position,
-        tasksStr, data.whoFor || "", data.urgency || "", data.phone || "",
+        tasksStr, data.whoFor || "", data.urgency || "", asText_(data.phone),
         market, pagePath, geo, priceArm,
         "", "", "",                       // leadStatus, detailsShared, leadNotes
         leadName, leadCity, cityServed, leadOwnCity
@@ -135,7 +135,7 @@ function doPost(e) {
       if (tasksStr) sheet.getRange(rowIndex, C_TASKS).setValue(tasksStr);
       if (data.whoFor) sheet.getRange(rowIndex, C_WHOFOR).setValue(data.whoFor);
       if (data.urgency) sheet.getRange(rowIndex, C_URGENCY).setValue(data.urgency);
-      if (data.phone) sheet.getRange(rowIndex, C_PHONE).setValue(data.phone);
+      if (data.phone) sheet.getRange(rowIndex, C_PHONE).setValue(asText_(data.phone));
       // Attribution is first-touch: only fill these if still blank, so a later
       // enrich POST can't overwrite the geography captured at email entry.
       if (market && !row[C_MARKET - 1]) sheet.getRange(rowIndex, C_MARKET).setValue(market);
@@ -450,6 +450,15 @@ function logEventRow_(data) {
 function slugFromEmail_(email) {
   var s = String(email).split("@")[0].replace(/[^a-z0-9]/gi, "").toLowerCase();
   return s || "friend";
+}
+
+/** Sheets parses a leading "+" as a formula: "+1 555 0100" lands as #ERROR!
+ *  and "+919876543210" silently becomes the number 919876543210, losing the
+ *  country code. A leading apostrophe forces the cell to plain text, and the
+ *  apostrophe itself is not part of the value. */
+function asText_(v) {
+  var s = String(v == null ? "" : v);
+  return s ? "'" + s : "";
 }
 
 /** Referral slug for a lead that may have no email: fall back to the name, then
