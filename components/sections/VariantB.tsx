@@ -351,24 +351,24 @@ function UseCasesB() {
       items: "Repairs · maintenance · verified domestic help and replacements",
     },
     {
-      icon: "wallet",
-      title: "Bills, banking & customer support issues",
-      items: "Bills and property tax · dormant accounts · the wrong bill, argued down",
-    },
-    {
       icon: "file-text",
       title: "EPFO, tax, govt paperwork & documents",
       items: "Stuck EPFO claims · attestation · CGHS and pension · India ITR",
     },
     {
-      icon: "home",
-      title: "Property management & misc",
-      items: "Tenants · rent follow-ups · the small things nobody else will chase",
-    },
-    {
       icon: "plane",
       title: "Travel concierge & admin",
       items: "Visa and passport appointments, accompanied · travel booked end to end",
+    },
+    {
+      icon: "wallet",
+      title: "Bills, banking, customer support issues & refund claims",
+      items: "Bills and property tax · dormant accounts · the wrong bill, argued down",
+    },
+    {
+      icon: "home",
+      title: "Property management & misc",
+      items: "Tenants · rent follow-ups · the small things nobody else will chase",
     },
   ];
   return (
