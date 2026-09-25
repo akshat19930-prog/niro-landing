@@ -10,63 +10,37 @@
 <title>Niro First Task</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Karla:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<meta name="theme-color" content="#F6F1E7">
 <style>
+  /* Niro tokens, copied from app/tokens.css - the site has no global dark
+     mode (its dark aliases are scoped to the emergency story), so this page is
+     ivory in both schemes rather than inventing a dark palette of its own. */
   :root {
     color-scheme: light;
-    --bg: #F2F3F0;
+    --bg: #F6F1E7;            /* ivory */
     --surface: #FFFFFF;
-    --surface-2: #E9ECE7;
-    --ink: #14201B;
-    --ink-2: #405048;
-    --muted: #6B7A72;
-    --line: #D9DED8;
-    --accent: #0D5B44;
-    --accent-ink: #FFFFFF;
-    --accent-soft: #E0EDE7;
-    --flag: #9C4715;
-    --flag-soft: #F6E7DC;
-    --shadow: 0 1px 2px rgba(20,32,27,.05), 0 8px 24px -16px rgba(20,32,27,.25);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --bg: #0E1512;
-      --surface: #151D19;
-      --surface-2: #1D2622;
-      --ink: #E9EFEA;
-      --ink-2: #B4C2BA;
-      --muted: #849A8F;
-      --line: #27322D;
-      --accent: #54BE99;
-      --accent-ink: #08110D;
-      --accent-soft: #172A23;
-      --flag: #E2A177;
-      --flag-soft: #2B1F16;
-      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --bg: #0E1512;
-    --surface: #151D19;
-    --surface-2: #1D2622;
-    --ink: #E9EFEA;
-    --ink-2: #B4C2BA;
-    --muted: #849A8F;
-    --line: #27322D;
-    --accent: #54BE99;
-    --accent-ink: #08110D;
-    --accent-soft: #172A23;
-    --flag: #E2A177;
-    --flag-soft: #2B1F16;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 28px -18px rgba(0,0,0,.8);
+    --surface-2: #FCFAF4;     /* sand-50 */
+    --sand: #EFE7D6;          /* sand-100 */
+    --ink: #191A16;
+    --ink-2: #33352D;
+    --muted: #767869;
+    --line: rgba(25, 26, 22, .12);
+    --accent: #1E4536;        /* forest-700, the brand green */
+    --accent-hover: #16362A;  /* forest-800 */
+    --accent-ink: #F6F1E7;
+    --accent-soft: #E2EEE8;   /* forest-100 */
+    --gold: #B8863B;          /* wordmark bubble only - under 10% of the page */
+    --brick: #A6432E;
+    --shadow: 0 2px 6px rgba(25, 26, 22, .06), 0 8px 20px rgba(25, 26, 22, .07);
+    --radius: 20px;
+    --radius-sm: 14px;
   }
 
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: "Karla", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-family: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
     font-size: 16px;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
@@ -86,14 +60,23 @@
     gap: 16px; flex-wrap: wrap;
     padding-block: 22px 0;
   }
+  /* The wordmark, matching components/ds/Wordmark.tsx: lowercase Newsreader in
+     forest, the dot on the "i" replaced by the gold speech bubble. Never set in
+     the sans, never given a second graphic element. */
   .mark {
     font-family: "Newsreader", Georgia, serif;
-    font-size: 22px; letter-spacing: .01em;
+    font-size: 26px; font-weight: 500; letter-spacing: -.01em; line-height: 1;
+    color: var(--accent-hover);
+    display: inline-flex; align-items: baseline;
   }
-  .mark span { color: var(--accent); }
+  .mark .i { position: relative; display: inline-block; }
+  .mark .i svg {
+    position: absolute; left: 50%; top: -.34em;
+    width: .5em; height: .5em; transform: translateX(-50%); display: block;
+  }
   .stamp {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+    font-family: inherit;
+    font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .09em;
     color: var(--muted);
   }
 
@@ -107,7 +90,7 @@
     margin: 0 0 18px;
     text-wrap: balance;
   }
-  h1 em { font-style: italic; color: var(--accent); }
+  h1 em { font-style: italic; font-weight: 500; color: var(--accent); }
   .lede { font-size: clamp(16px, 2.2vw, 18.5px); color: var(--ink-2); margin: 0; max-width: 62ch; }
   .lede + .lede { margin-top: 12px; }
 
@@ -117,15 +100,16 @@
     grid-template-columns: repeat(3, 1fr);
     background: var(--line);
     border: 1px solid var(--line);
-    border-radius: 3px;
+    border-radius: var(--radius);
     overflow: hidden;
+    box-shadow: var(--shadow);
     margin-bottom: 44px;
   }
-  .step { background: var(--surface); padding: 16px 18px; }
+  .step { background: var(--surface); padding: 20px 22px; }
   .step b {
     display: block;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 11px; font-weight: 500; letter-spacing: .14em;
+    font-family: inherit;
+    font-size: 11.5px; font-weight: 600; letter-spacing: .09em;
     text-transform: uppercase; color: var(--accent);
     margin-bottom: 6px;
   }
@@ -149,21 +133,21 @@
   .card {
     background: var(--surface);
     border: 1px solid var(--line);
-    border-radius: 4px;
+    border-radius: var(--radius);
     box-shadow: var(--shadow);
-    padding: 22px 22px 20px;
+    padding: 24px 24px 22px;
     display: flex; flex-direction: column; gap: 14px;
   }
   .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
   .kicker {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+    font-family: inherit;
+    font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
     color: var(--muted);
   }
   .pill {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
-    background: var(--flag-soft); color: var(--flag);
+    font-family: inherit;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+    background: var(--sand); color: var(--brick);
     border-radius: 999px; padding: 4px 9px; white-space: nowrap;
   }
   .card h3 {
@@ -175,14 +159,15 @@
   .card .ask strong { font-weight: 600; color: var(--ink); }
   .deliver {
     background: var(--surface-2);
-    border-radius: 3px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
     padding: 13px 15px;
     font-size: 14.5px; color: var(--ink-2);
   }
   .deliver b {
     display: block;
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase;
+    font-family: inherit;
+    font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
     color: var(--muted); font-weight: 500; margin-bottom: 5px;
   }
   .meta {
@@ -192,8 +177,8 @@
   }
   .meta div { min-width: 0; }
   .meta dt {
-    font-family: "IBM Plex Mono", ui-monospace, monospace;
-    font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+    font-family: inherit;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
     color: var(--muted); margin-bottom: 3px;
   }
   .meta dd { margin: 0; font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
@@ -201,10 +186,11 @@
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     background: var(--accent); color: var(--accent-ink);
     text-decoration: none; font-weight: 600; font-size: 15px;
-    padding: 11px 16px; border-radius: 3px;
-    transition: transform .12s ease, filter .12s ease;
+    padding: 13px 18px; border-radius: var(--radius-sm);
+    min-height: 44px;
+    transition: background .16s ease, transform .16s ease;
   }
-  .cta:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .cta:hover { background: var(--accent-hover); transform: translateY(-1px); }
   .cta svg { width: 16px; height: 16px; flex: none; }
 
   /* Progressive disclosure: the kicker, heading and hook stay visible; what
@@ -223,8 +209,8 @@
     color: var(--accent);
     background: var(--accent-soft);
     border: 1px solid var(--accent);
-    border-radius: 3px;
-    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    padding: 13px 18px; min-height: 44px;
     transition: filter .12s ease, transform .12s ease, background .12s ease, border-color .12s ease, color .12s ease;
   }
   .more > summary::-webkit-details-marker { display: none; }
@@ -251,6 +237,15 @@
   .more .meta { border-top: 0; padding-top: 0; margin-top: 12px; }
   .more .cta { display: flex; }
 
+  /* Close, not a second offer: the mark and the tagline, no competing CTA. */
+  .foot {
+    margin-top: 56px; padding-top: 22px;
+    border-top: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  }
+  .foot .mark { font-size: 22px; }
+  .foot p { margin: 0; font-size: 14px; color: var(--muted); }
+
   @media (max-width: 760px) {
     .grid { grid-template-columns: 1fr; }
     .steps { grid-template-columns: 1fr; }
@@ -271,7 +266,7 @@
 <body>
 <div class="wrap">
   <div class="top">
-    <div class="mark">niro<span>.</span></div>
+    <div class="mark" role="img" aria-label="niro"><span aria-hidden="true">n</span><span class="i" aria-hidden="true">&#x131;<svg viewBox="0 0 24 24"><path d="M12 2 C 12 2 5.5 9.5 5.5 15 A 6.5 6.5 0 0 0 18.5 15 C 18.5 9.5 12 2 12 2 Z" transform="rotate(214 12 13.5)" fill="var(--gold)"/></svg></span><span aria-hidden="true">ro</span></div>
     <div class="stamp">First task &middot; no charge &middot; private link</div>
   </div>
 
@@ -480,6 +475,11 @@
     </article>
 
   </div>
+
+  <footer class="foot">
+    <div class="mark" role="img" aria-label="niro"><span aria-hidden="true">n</span><span class="i" aria-hidden="true">&#x131;<svg viewBox="0 0 24 24"><path d="M12 2 C 12 2 5.5 9.5 5.5 15 A 6.5 6.5 0 0 0 18.5 15 C 18.5 9.5 12 2 12 2 Z" transform="rotate(214 12 13.5)" fill="var(--gold)"/></svg></span><span aria-hidden="true">ro</span></div>
+    <p>Your family&rsquo;s India Home Manager.</p>
+  </footer>
 
 </div>
 

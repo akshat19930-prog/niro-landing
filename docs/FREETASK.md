@@ -38,11 +38,18 @@ markup, and one `<script>` at the bottom. No build step, no components.
 |---|---|
 | A task's heading or hook | the `<h3>` and `<p class="ask">` in that `<article class="card">` |
 | What's behind "Know more" | the `.deliver`, `<dl class="meta">` in the same card |
-| Colours, light and dark | the `:root` custom properties at the top of `<style>` |
+| Colours | the `:root` custom properties at the top of `<style>` - they mirror `app/tokens.css`, so keep them in step with the site |
 | The WhatsApp number | `var WA_NUMBER` in the script at the bottom |
 
 Deploy is the same as the rest of the site: **merge to `main`**, which triggers
 `.github/workflows/deploy.yml`. Live in about 90 seconds.
+
+**On the design.** Since 25 Sept 2026 the page is in Niro's own visual
+language: ivory `#F6F1E7`, forest `#1E4536`, Newsreader headlines, Hanken
+Grotesk body, soft radii and the real wordmark with its gold speech-bubble
+tittle. It is light-only, like the rest of the site - the previous dark palette
+was a second brand nobody had signed off. The values are copied rather than
+imported, because nothing from the design system reaches `public/`.
 
 > **Do not reformat or "tidy" this file.** It was authored as a finished asset
 > and is deliberately not held to the repo's component conventions.
