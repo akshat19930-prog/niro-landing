@@ -91,6 +91,7 @@ function doPost(e) {
     var C_TASKS = 15, C_WHOFOR = 16, C_URGENCY = 17, C_PHONE = 18;
     var C_MARKET = 19, C_PAGE = 20, C_GEO = 21, C_PRICEARM = 22;
     var C_NAME = 26, C_CITY = 27, C_CITYSERVED = 28, C_OWNCITY = 29;
+    var C_PAGEARM = 30;
     var tasksStr = (data.tasks && data.tasks.length) ? data.tasks.join(" | ") : "";
     // Geography: prefer the market the page declared ("gulf" on /gulf), else the
     // coarse region the client inferred from its time zone ("gulf"/"na"/"other").
@@ -120,7 +121,8 @@ function doPost(e) {
         tasksStr, data.whoFor || "", data.urgency || "", asText_(data.phone),
         market, pagePath, geo, priceArm,
         "", "", "",                       // leadStatus, detailsShared, leadNotes
-        leadName, leadCity, cityServed, leadOwnCity
+        leadName, leadCity, cityServed, leadOwnCity,
+        String(data.pageArm || "")
       ]);
     } else {
       // Existing signup - enrich the row, keep its position/referralCode.
@@ -146,6 +148,8 @@ function doPost(e) {
       if (leadCity) sheet.getRange(rowIndex, C_CITY).setValue(leadCity);
       if (cityServed) sheet.getRange(rowIndex, C_CITYSERVED).setValue(cityServed);
       if (leadOwnCity) sheet.getRange(rowIndex, C_OWNCITY).setValue(leadOwnCity);
+      // First-touch, like the other attribution columns.
+      if (data.pageArm && !row[C_PAGEARM - 1]) sheet.getRange(rowIndex, C_PAGEARM).setValue(String(data.pageArm));
     }
 
     return json_({ position: position, referralCode: referralCode });
@@ -179,7 +183,11 @@ var HEADER = [
   // India; `ownCity` is where the MEMBER lives. cityServed carries the
   // CANONICAL launch city when we serve them and is blank when we do not - so
   // the waitlist-by-city view that decides city six is a single filter on it.
-  "name", "city", "cityServed", "ownCity"
+  "name", "city", "cityServed", "ownCity",
+  // Which page arm (A/B) served this visitor. Appended last (AD) so no
+  // existing column index shifts. The site has always sent it; until Sept 2026
+  // there was nowhere for it to land.
+  "pageArm"
 ];
 
 /* =====================================================================
