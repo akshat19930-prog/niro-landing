@@ -119,6 +119,21 @@ To check which version is actually deployed, POST anything without an email:
 the script answers `{"ignored":true}` without writing a row, but still re-syncs
 row 1 — so the header tells you what is live.
 
+**Column sanity, after the phone-first funnel (25 Sept 2026).** The sheet's
+columns still carry the old funnel's shape, so read them with this in mind:
+
+- `email` is blank on every new row and was filled on 197 of the first 198.
+  **The lead key is now `phone`**, not email - anything matching leads to the
+  customer sheet has to join on phone.
+- `planId` and `urgency` are frozen: the current form has neither a plan step
+  nor an urgency question.
+- `tasks` changed vocabulary in place. Old rows read "Parents' health &
+  appointments"; new rows read "Family's health admin & emergency response".
+  Counting across the whole column mixes two taxonomies - split on the 25 Sept
+  2026 timestamp.
+- `name`, `city`, `cityServed`, `ownCity` were empty for every historic row and
+  fill from now on. `pageArm` (AD) was added at the same time.
+
 **Secrets never go in this repo.** The Meta access token lives in Apps Script
 Properties only. `META_ACCESS_TOKEN` in `backend/report.gs` must stay `""`.
 
