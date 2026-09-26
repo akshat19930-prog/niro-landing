@@ -1,44 +1,32 @@
-import { SHARE_CARD } from "@/lib/content";
 import type { Metadata } from "next";
-import { Footer } from "@/components/ds/Footer";
-import { JoinProvider } from "@/components/JoinProvider";
-import { GulfJoinModal } from "@/components/sections/GulfJoinModal";
-import { GulfPage } from "@/components/sections/GulfPage";
 
 /**
- * /gulf - the dual-sided, single-SKU ($149) landing page for the Gulf Meta
- * split test (Cell A). Cell B is the existing India-only "/" page; Meta keeps
- * the audiences mutually exclusive, so this page is a deliberate dead end:
- * noindex/nofollow, self-referencing canonical, and no link back to the main
- * site (see GulfPage - the nav wordmark points to /gulf).
+ * /gulf -> / (retired 26 Sept 2026)
+ *
+ * The Gulf dual-sided test is over: one session in September, a $149 SKU
+ * that no longer matches the live pricing, and a price A/B nobody is reading.
+ *
+ * The route stays as a noindex meta-refresh stub because the URL shipped: it
+ * is in old ad destinations, in anything pasted into WhatsApp, and in the
+ * sheets. A static export has no server redirects, so this is a meta refresh
+ * plus a visible link for any browser that ignores it. Same pattern as
+ * /emergency and /niro-assured.
+ *
+ * The page itself lives in git history, and components/sections/GulfPage.tsx is still in the repo
+ * unmounted, so the test can be revived without rewriting it.
  */
 export const metadata: Metadata = {
-  title: "Niro - one house manager, both the places you call home",
-  description:
-    "One assistant for your home in the Gulf and your parents in India. Domestic help, school runs, Emirates ID, appointments back home. Less chasing - more time for your family.",
+  title: "Niro",
   robots: { index: false, follow: false },
-  alternates: { canonical: "https://tellniro.com/gulf" },
-  openGraph: {
-    title: SHARE_CARD.title,
-    description: SHARE_CARD.description,
-    type: "website",
-    url: "https://tellniro.com/gulf",
-    images: ["/media/gulf-hero-poster.jpg"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SHARE_CARD.title,
-    description: SHARE_CARD.description,
-    images: ["/media/gulf-hero-poster.jpg"],
-  },
+  other: { refresh: "0; url=/" },
 };
 
-export default function Page() {
+export default function GulfRetired() {
   return (
-    <JoinProvider market="gulf">
-      <GulfPage />
-      <Footer tagline="Niro - less household admin. More time for your family." />
-      <GulfJoinModal />
-    </JoinProvider>
+    <main style={{ padding: "72px 20px", textAlign: "center" }}>
+      <p style={{ fontSize: "var(--text-md)" }}>
+        This page has moved to <a href="/">tellniro.com</a>.
+      </p>
+    </main>
   );
 }
