@@ -39,8 +39,22 @@
 
 // ===================== CONFIG =====================
 var CONFIG = {
-  RECIPIENTS: "akshat.19930@gmail.com, paarthdhar@gmail.com",
+  RECIPIENTS: "akshat@tellniro.com, paarth@tellniro.com",
   TIMEZONE: "Asia/Kolkata",
+  REPORT_TITLE: "Niro POC",
+
+  // Launch. The running window starts here, so the report never mixes POC
+  // numbers with smoke-test numbers in one column.
+  LAUNCH_DATE: "2026-09-25",
+  RUNNING_DAYS: 30,                 // L30D once 30 days have passed; shorter until then
+
+  // The smoke-test benchmark column. 15-26 Aug is the ANALYSABLE window: it is
+  // what the smoke-test readout reports on, it matches TEST_DAYS below, and the
+  // readout's own source line says "act_2246578592783321, 15-26 Aug 2026".
+  // TEST_START is earlier on purpose - that is the Meta FETCH window, set wide
+  // so no spend is missed, and it is not the window to benchmark against.
+  SMOKE_START: "2026-08-15",
+  SMOKE_END:   "2026-08-26",
 
   META_ACCESS_TOKEN: "",            // PASTE your System User token (ads_read). Secret - never commit it.
   META_AD_ACCOUNT_ID: "act_2246578592783321",
@@ -71,39 +85,23 @@ var CONFIG = {
   // them. (Funnel rows are split separately, by page + geo, from our beacons.)
   MARKETS: [
     {
-      key: "na", label: "North America",
+      key: "na", label: "US",
       campaigns: [
-        "Niro Test P1-5 US CA",   // current consolidated US-CA campaign
-        "Niro Test P1", "Niro Test P2", "Niro Test P3", "Niro Test P4", "Niro Test P5" // original per-pitch NA tests
+        "Niro Test P1-5 US CA",
+        "Niro Test P1", "Niro Test P2", "Niro Test P3", "Niro Test P4", "Niro Test P5"
       ],
       adset: /(^|[^a-z])(us|usa|united\s*states|canada|na)([^a-z]|$)/i
     },
     {
       key: "gulf", label: "Gulf",
       campaigns: ["Niro Test P3-P4 Gulf"],
-      adset: /gulf(?!\s*dual)/i
+      adset: /gulf/i
     },
-    // Gulf (Dual) is deliberately absent. Dual-vs-single is settled - 9.30%
-    // (24/258) single vs 1.85% (5/271) dual on the same audience, p=0.00017 -
-    // so the market no longer earns a table. Its ad sets still appear in the
-    // Meta console below, so spend stays visible while the campaign winds down.
-    // marketForEvent_ still resolves /gulf to "gulf_dual"; those events are
-    // simply not rendered. Restore this entry to bring the table back.
-    {
-      key: "us_dual", label: "US (Dual)",
-      // "Niro Test North America H1-H2" does not read like a dual campaign, but
-      // every ad in it points at tellniro.com/us/ - checked against the creative
-      // destinations, not the name. Without it here the campaign matched no
-      // market at all (the NA regex wants a standalone "us"/"na"/"canada", and
-      // "North America H1-H2" has none), so US (Dual) reported zero spend while
-      // the campaign was live.
-      campaigns: ["Niro Test US Dual", "Niro Test North America H1-H2"],
-      // The H<n>-H<n> hero-pair suffix is how this test names its campaigns, so
-      // a follow-up like "... H3-H4" maps without another edit. Safe against the
-      // real NA campaigns: those match by exact name in step 1 of
-      // marketForAdset_, which short-circuits before any regex runs.
-      adset: /(us\s*dual|\bUS\s*D[1-9]\b|\bH[1-9]\s*-\s*H[1-9]\b)/i
-    }
+    // Rest of world is the CATCH-ALL and must stay last. Anything matching no
+    // campaign name and no ad-set regex lands here instead of vanishing - which
+    // is what used to happen: a new campaign matched nothing, its spend went to
+    // `unmappedSpend`, and the market tables read zero.
+    { key: "row", label: "Rest of world", campaigns: [], adset: null, catchAll: true }
   ],
 
   TEST_EMAILS: [
@@ -205,7 +203,7 @@ function fetchMeta_() {
       CONFIG.META_AD_ACCOUNT_ID + "/insights";
     var until = Utilities.formatDate(new Date(), CONFIG.TIMEZONE, "yyyy-MM-dd");
     var range = encodeURIComponent(JSON.stringify({ since: CONFIG.TEST_START, until: until }));
-    var fields = "adset_id,adset_name,campaign_name,spend,impressions,clicks,actions";
+    var fields = "adset_id,adset_name,campaign_name,spend,impressions,clicks,inline_link_clicks,actions";
 
     // Ad-set level, one row per (ad set, day). Everything else is derived from this.
     var rows = metaGetAll_(base + "?level=adset&time_increment=1&time_range=" + range +
@@ -224,20 +222,25 @@ function fetchMeta_() {
 
       var date = r.date_start;
       var spend = num_(r.spend), impr = num_(r.impressions), clicks = num_(r.clicks);
+      // Link clicks only. All-clicks counts reactions, comments, shares and post
+      // expands, and overstated CTR by roughly 1.5x through the smoke test
+      // (3.76% all-clicks against 2.53% link). The link figure is the one that
+      // corresponds to people actually arriving.
+      var linkClicks = num_(r.inline_link_clicks);
       var leads = metaAction_(r.actions, "lead");
       var lpv = metaAction_(r.actions, "landing_page_view");
       totalSpend += spend;
 
       // Match the market on the ad-set name OR its campaign name.
       var mk = marketForAdset_(name, campaign);
-      if (!adsets[id]) adsets[id] = { name: name, market: mk, spend: 0, impr: 0, clicks: 0, leads: 0, lpv: 0 };
+      if (!adsets[id]) adsets[id] = { name: name, market: mk, spend: 0, impr: 0, clicks: 0, linkClicks: 0, leads: 0, lpv: 0 };
       var a = adsets[id];
-      a.spend += spend; a.impr += impr; a.clicks += clicks; a.leads += leads; a.lpv += lpv;
+      a.spend += spend; a.impr += impr; a.clicks += clicks; a.linkClicks += linkClicks; a.leads += leads; a.lpv += lpv;
 
       if (mk) {
         var md = marketDate[mk] = marketDate[mk] || {};
-        var cell = md[date] = md[date] || { spend: 0, impr: 0, clicks: 0 };
-        cell.spend += spend; cell.impr += impr; cell.clicks += clicks;
+        var cell = md[date] = md[date] || { spend: 0, impr: 0, clicks: 0, linkClicks: 0 };
+        cell.spend += spend; cell.impr += impr; cell.clicks += clicks; cell.linkClicks += linkClicks;
       } else {
         unmappedSpend += spend;
       }
@@ -275,30 +278,29 @@ function metaAction_(actions, type) {
 }
 function marketForAdset_(name, campaign) {
   // 1) Primary: exact campaign-name match (unambiguous - ad-set names collide).
+  var n = String(name || "");
   var camp = String(campaign || "").trim().toLowerCase();
   if (camp) {
     for (var i = 0; i < CONFIG.MARKETS.length; i++) {
       var list = CONFIG.MARKETS[i].campaigns || [];
-      for (var j = 0; j < list.length; j++) {
-        if (String(list[j]).trim().toLowerCase() === camp) return CONFIG.MARKETS[i].key;
+      for (var j0 = 0; j0 < list.length; j0++) {
+        if (String(list[j0]).trim().toLowerCase() === camp) return CONFIG.MARKETS[i].key;
       }
     }
   }
-  // 2) Fallback: fuzzy name regex, for any campaign not in the static map.
-  //    Gulf (Dual) is no longer a market, and the Gulf regex excludes "dual",
-  //    so a dual ad set falls through unmapped - which is what we want: its
-  //    spend still lists in the console without claiming a market table.
-  //    us_dual is tried first: its patterns are the most specific, and it was
-  //    missing from this list entirely, so its regex never ran and a US-dual
-  //    campaign outside the static map could only ever come back unmapped.
-  var hay = String(name || "") + " " + String(campaign || "");
-  var order = ["us_dual", "gulf", "na"];
-  for (var k = 0; k < order.length; k++) {
-    var def = defForKey_(order[k]);
-    if (def && def.adset && def.adset.test(hay)) return def.key;
+  // 2. fuzzy ad-set / campaign regex, for campaigns not yet listed.
+  for (var j = 0; j < CONFIG.MARKETS.length; j++) {
+    var d2 = CONFIG.MARKETS[j];
+    if (d2.adset && (d2.adset.test(n) || d2.adset.test(camp))) return d2.key;
   }
-  return "";  // unmapped
+  // 3. catch-all. Never return null: unattributed spend belongs in a visible
+  //    row, not in a footnote nobody reads.
+  for (var k = 0; k < CONFIG.MARKETS.length; k++) {
+    if (CONFIG.MARKETS[k].catchAll) return CONFIG.MARKETS[k].key;
+  }
+  return null;
 }
+
 function defForKey_(key) {
   var list = CONFIG.MARKETS;
   for (var i = 0; i < list.length; i++) if (list[i].key === key) return list[i];
@@ -310,9 +312,14 @@ function num_(x) { return Number(x) || 0; }
 function buildModel_(data, meta) {
   var now = new Date(), tz = CONFIG.TIMEZONE;
 
+  // A lead is now identified by PHONE. The funnel stopped collecting email in
+  // Sept 2026, so the old "must have an email" filter silently dropped every
+  // POC signup and the report read zero. Keep anything with a phone or an
+  // email; drop only obvious test addresses.
   data.signups = data.signups.filter(function (s) {
     var email = String(s.email || "").trim().toLowerCase();
-    return email !== "" && !isTestEmail_(email);
+    if (email && isTestEmail_(email)) return false;
+    return leadKey_(s) !== "";
   });
 
   // Date columns: last DATE_COLS days (oldest..today).
@@ -427,23 +434,22 @@ function nextDay_(yyyymmdd) {
 function marketForEvent_(page, geo, market, campaign) {
   var p = String(page || ""), g = String(geo || "").toLowerCase();
   var mk = String(market || "").toLowerCase(), c = String(campaign || "").toLowerCase();
-  // 1. The page itself / an explicit market tag.
-  if (p.indexOf("/gulf") === 0 || mk === "gulf") return "gulf_dual";
-  if (p.indexOf("/us") === 0 || mk === "us_dual") return "us_dual";
+  // 1. The page itself / an explicit market tag. Dual is settled and gone, so
+  //    /gulf and /us are simply Gulf and US traffic.
+  if (p.indexOf("/gulf") === 0 || mk === "gulf") return "gulf";
+  if (p.indexOf("/us") === 0) return "na";
   // 2. The ad campaign that brought them (reliable; beats time zone).
   if (c) {
-    if (c.indexOf("us_dual") !== -1 || c.indexOf("us dual") !== -1) return "us_dual";
-    if (c.indexOf("gulf_dual") !== -1 || c.indexOf("gulf dual") !== -1) return "gulf_dual";
     if (c.indexOf("gulf") !== -1) return "gulf";
     if (c.indexOf("smoketest") !== -1) return "na";
   }
   // 3. Coarse time-zone geography.
   if (g === "gulf") return "gulf";
   if (g === "na") return "na";
-  // 4. Everything else - legacy/untagged sessions AND tagged rest-of-world
-  //    traffic (India, UK, Europe, SE Asia, …). Both fall back to the default
-  //    market rather than being split out or dropped.
-  return CONFIG.UNTAGGED_MARKET || "na";
+  // 4. Everything else is genuinely rest-of-world (India, UK, Europe, SE Asia)
+  //    or an untagged legacy session. It gets its own market rather than being
+  //    folded into US, which used to flatter the US numbers.
+  return "row";
 }
 
 /** Which market a SIGNUP row belongs to. Mirrors marketForEvent_ but reads the
@@ -454,16 +460,14 @@ function resolveLeadMarket_(s) {
   var c = String(s.utm_campaign || "").toLowerCase();
   var g = String(s.geo || "").toLowerCase();
   var ph = String(s.phone || "").replace(/[^\d]/g, "");
-  if (p.indexOf("/gulf") === 0) return "gulf_dual";
-  if (p.indexOf("/us") === 0) return "us_dual";
-  if (c.indexOf("us_dual") !== -1 || c.indexOf("us dual") !== -1) return "us_dual";
-  if (c.indexOf("gulf_dual") !== -1 || c.indexOf("gulf dual") !== -1) return "gulf_dual";
+  if (p.indexOf("/gulf") === 0) return "gulf";
+  if (p.indexOf("/us") === 0) return "na";
   if (c.indexOf("gulf") !== -1) return "gulf";
   if (c.indexOf("smoketest") !== -1) return "na";
   if (g === "gulf") return "gulf";
   if (g === "na") return "na";
   if (/^(971|974|973|966|965|968)/.test(ph)) return "gulf";
-  return CONFIG.UNTAGGED_MARKET || "na";
+  return "row";
 }
 
 /** Real signups per market, from the waitlist sheet, de-duplicated by email and
@@ -478,11 +482,69 @@ function realLeadsByMarket_(signups, dates) {
     var raw = (s.date !== "" && s.date != null) ? s.date : s.timestamp;
     var d = dateStr_(raw);
     if (!inWindow[d]) return;
-    var em = String(s.email || "").trim().toLowerCase();
-    if (!em || seen[em]) return;
-    seen[em] = 1;
+    var k = leadKey_(s);
+    if (!k || seen[k]) return;
+    seen[k] = 1;
     var mk = resolveLeadMarket_(s);
     out[mk] = (out[mk] || 0) + 1;
+  });
+  return out;
+}
+
+/** The identity of a lead. Phone first - it is what the funnel collects now -
+ *  falling back to email for the smoke-test rows that predate the switch.
+ *  Digits only, so "+91 98…" and "919 8…" are one person, not two. */
+function leadKey_(s) {
+  var ph = String(s.phone || "").replace(/[^\d]/g, "");
+  if (ph.length >= 8) return "p:" + ph;
+  var em = String(s.email || "").trim().toLowerCase();
+  return em ? "e:" + em : "";
+}
+
+/** Lead lifecycle, read from the waitlist sheet's leadStatus column (W).
+ *  Matching is deliberately loose: the column is typed by hand by sales, so it
+ *  is matched on a normalised substring rather than an exact string. */
+var LEAD_STAGES = [
+  { key: "engaged",   label: "Engaged",            match: /engaged|details\s*shared/ },
+  { key: "interested", label: "Interested",        match: /interested/ },
+  { key: "dropped",   label: "Dropped off",        match: /dropped|drop\s*off|lost/ },
+  { key: "freeSigned", label: "Free task signed up", match: /free\s*task\s*(signed|sign|taken|started)/ },
+  { key: "freeDone",  label: "Free task completed", match: /free\s*task\s*(complete|done|delivered)/ },
+  { key: "paid",      label: "Converted & paid",   match: /converted|paid|subscrib/ }
+];
+
+function stageOf_(status) {
+  var v = String(status || "").toLowerCase().trim();
+  if (!v) return "";
+  // Most specific first: "free task completed" also contains "free task".
+  for (var i = LEAD_STAGES.length - 1; i >= 0; i--) {
+    if (LEAD_STAGES[i].match.test(v)) return LEAD_STAGES[i].key;
+  }
+  return "";
+}
+
+/** The conversion table. Counts unique leads, not sheet rows. */
+function conversionStats_(signups, launchDate, todayStr) {
+  var seen = {}, out = {
+    today: 0, sincelaunch: 0, overall: 0,
+    engaged: 0, interested: 0, dropped: 0,
+    freeSigned: 0, freeDone: 0, paid: 0
+  };
+  signups.forEach(function (s) {
+    var k = leadKey_(s);
+    if (!k || seen[k]) return;
+    seen[k] = 1;
+    var raw = (s.date !== "" && s.date != null) ? s.date : s.timestamp;
+    var d = dateStr_(raw);
+    // "Overall" counts every lead we can actually reach, smoke test included -
+    // which is why it is keyed on phone: the email-only smoke-test rows we
+    // never got a number for are not leads we can call.
+    var hasPhone = String(s.phone || "").replace(/[^\d]/g, "").length >= 8;
+    if (hasPhone) out.overall++;
+    if (d >= launchDate) out.sincelaunch++;
+    if (d === todayStr) out.today++;
+    var st = stageOf_(s.leadStatus);
+    if (st && out[st] !== undefined) out[st]++;
   });
   return out;
 }
