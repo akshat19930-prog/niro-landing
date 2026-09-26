@@ -11,19 +11,21 @@
  *                         landing-page views)
  *
  * The email has FOUR blocks:
- *   1-3. One metric×date table per market - North America, Gulf, Gulf (Dual) -
- *        each with the same columns (last N days + MTD) and these rows, in order:
- *          Sessions (unique visitors), Bounce rate, Avg session duration,
- *          Get Early Access clicked, Email entered, Email entered / visitors %,
- *          Phone number submitted, Cost per lead, Spend, Meta CPM, CTR.
- *   4.   Meta ads console - two tables across ALL ad sets:
- *          (a) cost per lead by ad set, (b) cost per visitor by ad set.
+ *   1. One rolled-up metric x date table across ALL geographies, with the
+ *      trailing day columns, then the running window, then a smoke-test
+ *      benchmark column. Rows, in order: Sessions (unique visitors), Bounce
+ *      rate, Avg session duration, Get beta access clicked, Phone number
+ *      entered, Phone entered / visitors %, All details submitted, Cost per
+ *      lead, Spend, Meta CPM, Link CTR.
+ *   2. A conversion table, read from the leadStatus column of the sign-ups
+ *      sheet: leads today, since launch, overall, then the lifecycle stages.
+ *   3. Meta ads console: cost per lead by market (US, Gulf, rest of world)
+ *      and cost per visitor by ad set.
  *
  * SEGMENTATION
  *   Funnel/session rows come from our own beacons. Every session lands in
  *   exactly one of three clusters - resolved by page, then ad campaign, then
  *   time zone (see marketForEvent_):
- *     - Gulf (Dual) = page starts with "/gulf", or a *_gulf_dual campaign
  *     - Gulf        = a *_gulf campaign, or geo "gulf"
  *     - North America = a Smoketest campaign, geo "na", or anything unplaced
  *   There is no rest-of-world bucket: untagged and tagged-"other" traffic both
@@ -322,79 +324,110 @@ function buildModel_(data, meta) {
     return leadKey_(s) !== "";
   });
 
-  // Date columns: last DATE_COLS days (oldest..today).
+  var todayStr = Utilities.formatDate(now, tz, "yyyy-MM-dd");
+
+  // Trailing day columns (oldest..today).
   var cols = [];
   for (var i = CONFIG.DATE_COLS - 1; i >= 0; i--) {
     cols.push(Utilities.formatDate(new Date(now.getTime() - i * 86400000), tz, "yyyy-MM-dd"));
   }
-  // MTD dates = TEST_START..today
-  var mtdDates = [], cur = CONFIG.TEST_START, todayStr = Utilities.formatDate(now, tz, "yyyy-MM-dd"), guard = 0;
-  while (cur <= todayStr && guard < 400) { mtdDates.push(cur); cur = nextDay_(cur); guard++; }
 
-  // Bucket events by (market, date).
-  var evByMarketDate = {};   // marketKey -> date -> [events]
+  // The running window: launch..today, capped at RUNNING_DAYS so it becomes a
+  // true rolling L30D once 30 days have passed. It never reaches back before
+  // launch, so POC numbers are never mixed with smoke-test numbers.
+  var runStart = CONFIG.LAUNCH_DATE;
+  var floorStr = Utilities.formatDate(
+    new Date(now.getTime() - (CONFIG.RUNNING_DAYS - 1) * 86400000), tz, "yyyy-MM-dd");
+  if (floorStr > runStart) runStart = floorStr;
+  var runDates = datesBetween_(runStart, todayStr);
+  var smokeDates = datesBetween_(CONFIG.SMOKE_START, CONFIG.SMOKE_END);
+
+  // Bucket events by date, and separately by (market, date). The headline table
+  // is rolled up across all geographies, so it reads the first of these.
+  var evByDate = {}, evByMarketDate = {};
   data.events.forEach(function (e) {
-    var mk = marketForEvent_(e.page, e.geo, e.market, e.campaign);
-    if (!mk) return;
     var raw = (e.date !== "" && e.date != null) ? e.date : e.timestamp;
     var d = dateStr_(raw);
+    (evByDate[d] = evByDate[d] || []).push(e);
+    var mk = marketForEvent_(e.page, e.geo, e.market, e.campaign);
+    if (!mk) return;
     (evByMarketDate[mk] = evByMarketDate[mk] || {});
     (evByMarketDate[mk][d] = evByMarketDate[mk][d] || []).push(e);
   });
 
-  function windowFor(mk, dates) {
-    var evs = [];
-    dates.forEach(function (d) {
-      if (evByMarketDate[mk] && evByMarketDate[mk][d]) evs = evs.concat(evByMarketDate[mk][d]);
-    });
-    var metaAgg = { spend: 0, impr: 0, clicks: 0 };
-    if (meta && meta.marketDate && meta.marketDate[mk]) {
+  /** Meta totals for a set of dates, across every ad set (no market filter). */
+  function metaForDates(dates) {
+    var agg = { spend: 0, impr: 0, clicks: 0, linkClicks: 0 };
+    if (!meta || !meta.marketDate) return agg;
+    Object.keys(meta.marketDate).forEach(function (mk) {
       dates.forEach(function (d) {
         var c = meta.marketDate[mk][d];
-        if (c) { metaAgg.spend += c.spend; metaAgg.impr += c.impr; metaAgg.clicks += c.clicks; }
+        if (c) {
+          agg.spend += c.spend; agg.impr += c.impr;
+          agg.clicks += c.clicks; agg.linkClicks += (c.linkClicks || 0);
+        }
       });
-    }
-    return computeMarketWindow_(evs, metaAgg);
+    });
+    return agg;
   }
 
-  var markets = CONFIG.MARKETS.map(function (def) {
-    return {
-      key: def.key, label: def.label,
-      cols: cols.map(function (d) {
-        return { label: Utilities.formatDate(new Date(d + "T00:00:00"), tz, "MMM d"), stat: windowFor(def.key, [d]) };
-      }),
-      mtd: windowFor(def.key, mtdDates)
-    };
-  });
+  /** The rolled-up funnel for a set of dates. */
+  function rollupFor(dates) {
+    var evs = [];
+    dates.forEach(function (d) { if (evByDate[d]) evs = evs.concat(evByDate[d]); });
+    return computeMarketWindow_(evs, metaForDates(dates));
+  }
 
-  // Ad-set console (MTD totals), sorted by spend desc.
+  var rollup = {
+    cols: cols.map(function (d) {
+      return { label: Utilities.formatDate(new Date(d + "T00:00:00"), tz, "MMM d"), stat: rollupFor([d]) };
+    }),
+    running: rollupFor(runDates),
+    smoke: rollupFor(smokeDates)
+  };
+
+  // Ad-set console, sorted by spend desc.
   var adsets = [];
   if (meta && meta.adsets) {
     Object.keys(meta.adsets).forEach(function (id) { adsets.push(meta.adsets[id]); });
     adsets.sort(function (a, b) { return b.spend - a.spend; });
   }
 
-  var start = new Date(CONFIG.TEST_START + "T00:00:00");
-  var dayNum = Math.max(1, Math.ceil((now - start) / 86400000));
   var prev = loadSnapshot_();
+  var uniqueLeads = (function () {
+    var seen = {}, n = 0;
+    data.signups.forEach(function (x) {
+      var k = leadKey_(x);
+      if (k && !seen[k]) { seen[k] = 1; n++; }
+    });
+    return n;
+  })();
+  var dayNum = Math.max(1, Math.ceil(
+    (new Date(todayStr + "T00:00:00") - new Date(CONFIG.LAUNCH_DATE + "T00:00:00")) / 86400000) + 1);
 
   return {
     now: now,
     meta_ok: !!(meta && !meta.error && meta.adsets),
     meta_err: meta && meta.error,
-    markets: markets, adsets: adsets,
-    realLeads: realLeadsByMarket_(data.signups, mtdDates),
+    rollup: rollup,
+    runLabel: runDates.length >= CONFIG.RUNNING_DAYS
+      ? ("L" + CONFIG.RUNNING_DAYS + "D")
+      : ("Since launch (" + runDates.length + "d)"),
+    smokeLabel: "Smoke test",
+    conv: conversionStats_(data.signups, CONFIG.LAUNCH_DATE, todayStr),
+    adsets: adsets,
+    realLeads: realLeadsByMarket_(data.signups, runDates),
     metaSpendByMarket: (function () {
       var out = {};
       CONFIG.MARKETS.forEach(function (def) {
-        var s = 0;
+        var sum = 0;
         if (meta && meta.marketDate && meta.marketDate[def.key]) {
-          mtdDates.forEach(function (d) {
+          runDates.forEach(function (d) {
             var c = meta.marketDate[def.key][d];
-            if (c) s += c.spend;
+            if (c) sum += c.spend;
           });
         }
-        out[def.key] = s;
+        out[def.key] = sum;
       });
       return out;
     })(),
@@ -408,14 +441,24 @@ function buildModel_(data, meta) {
       }
       return out;
     })(),
-    totalSignups: data.signups.length,
-    newSignups: prev ? Math.max(0, data.signups.length - prev.totalSignups) : data.signups.length,
-    dayNum: dayNum, daysLeft: Math.max(0, CONFIG.TEST_DAYS - dayNum),
+    // Unique leads, not sheet rows, so this agrees with the conversion table
+    // instead of double counting anyone who submitted twice.
+    totalSignups: uniqueLeads,
+    newSignups: prev ? Math.max(0, uniqueLeads - prev.totalSignups) : uniqueLeads,
+    dayNum: dayNum,
     spendMTD: meta && meta.totalSpend ? meta.totalSpend : 0,
     unmappedSpend: meta && meta.unmappedSpend ? meta.unmappedSpend : 0,
     budget: CONFIG.BUDGET_INR
   };
 }
+
+/** Inclusive list of yyyy-mm-dd between two dates. */
+function datesBetween_(from, to) {
+  var out = [], cur = from, guard = 0;
+  while (cur <= to && guard < 400) { out.push(cur); cur = nextDay_(cur); guard++; }
+  return out;
+}
+
 function nextDay_(yyyymmdd) {
   var d = new Date(yyyymmdd + "T00:00:00");
   d = new Date(d.getTime() + 86400000);
@@ -560,7 +603,10 @@ function computeMarketWindow_(evts, metaAgg) {
     if (ev === "exposure") expo[sid] = 1;
     else if (ev === "join_initiated") { getAcc[sid] = 1; engaged[sid] = 1; }
     else if (ev === "email_entered") em[sid] = 1;
-    else if (ev === "phone_added") ph[sid] = 1;
+    // Phone entered. phone_captured is the phone-first screen (Sept 2026 on);
+    // phone_added and lead_captured are the older paths, still live on /us and
+    // /gulf. Any of the three means we hold a number.
+    else if (ev === "phone_captured" || ev === "phone_added" || ev === "lead_captured") ph[sid] = 1;
     else if (ev === "signup_completed") done[sid] = 1;
     else if (ev === "scroll_50") { sc50[sid] = 1; engaged[sid] = 1; }
     else if (ev === "reached_pricing") { scPrice[sid] = 1; engaged[sid] = 1; }
@@ -603,11 +649,16 @@ function computeMarketWindow_(evts, metaAgg) {
     email: email,
     e2v: sessions ? (email / sessions * 100) : 0,
     phone: Object.keys(ph).length,
+    p2v: sessions ? (Object.keys(ph).length / sessions * 100) : 0,
     completed: completed,
     spend: spend, impr: impr, clicks: clicks,
-    cpl: email ? spend / email : 0,
+    // Cost per lead is per PHONE captured, not per email: the phone is the
+    // lead now, and email is no longer collected at all.
+    cpl: Object.keys(ph).length ? spend / Object.keys(ph).length : 0,
     cpm: impr ? spend / impr * 1000 : 0,
-    ctr: impr ? clicks / impr * 100 : 0
+    // Link CTR. All-clicks CTR (reactions, comments, shares, post expands)
+    // overstated this by roughly 1.5x through the smoke test.
+    ctr: impr ? (metaAgg.linkClicks || 0) / impr * 100 : 0
   };
 }
 
@@ -725,7 +776,7 @@ function pricingFoldFunnel() {
     });
   }
 
-  report("BY MARKET", byMarket, ["na", "gulf", "us_dual"]);
+  report("BY MARKET", byMarket, ["na", "gulf", "row"]);
   Logger.log("\nreached $ = unique sessions that scrolled the pricing section into view.");
   Logger.log("If 'reached $' is 0 everywhere, the scroll beacons have not reached this sheet yet.");
 }
@@ -741,52 +792,100 @@ function renderSubject_(m) {
   // re-run looked like "no new report arrived".
   var stamp = Utilities.formatDate(m.now, CONFIG.TIMEZONE, "MMM d, HH:mm");
   var spend = m.meta_ok ? (" · " + money_(m.spendMTD) + " spend") : "";
-  return "Niro smoke test · " + stamp +
-    " · " + m.totalSignups + " signups (+" + m.newSignups + ")" + spend;
+  return CONFIG.REPORT_TITLE + " · " + stamp +
+    " · " + m.conv.overall + " leads (+" + m.newSignups + ")" + spend;
 }
 
-/** One metric×date table for a market. Rows in the exact requested order. */
-function renderMarketTable_(m, market) {
-  var h = [];
-  h.push('<h3 style="font-size:15px;margin:22px 0 6px">' + market.label + '</h3>');
+/** The headline table: the funnel rolled up across every geography, with the
+ *  running window and the smoke-test benchmark as the two right-hand columns. */
+function renderRollupTable_(m) {
+  var h = [], R = m.rollup;
   h.push('<table style="border-collapse:collapse;width:100%"><tr>');
   h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Metric</th>');
-  market.cols.forEach(function (c) { h.push(th_(c.label)); });
-  h.push(th_("MTD", "background:#f6f4ee;color:#1a2b22"));
+  R.cols.forEach(function (c) { h.push(th_(c.label)); });
+  h.push(th_(m.runLabel, "background:#f6f4ee;color:#1a2b22"));
+  h.push(th_(m.smokeLabel, "background:#eef2ef;color:#5b6b60"));
   h.push('</tr>');
 
-  var C = market.cols.map(function (c) { return c.stat; });
-  var M = market.mtd, ok = m.meta_ok;
+  var C = R.cols.map(function (c) { return c.stat; });
+  var W = R.running, S = R.smoke, ok = m.meta_ok;
 
-  function row(label, vals, mtdVal, statusForMtd) {
+  function row(label, vals, runVal, smokeVal, statusForRun) {
     var cells = labelTd_(label);
     vals.forEach(function (v) { cells += td_(v, "text-align:right;color:#3a4a40"); });
-    cells += td_(statusForMtd ? chip_(mtdVal, statusForMtd) : mtdVal, "text-align:right;font-weight:600;background:#f6f4ee");
+    cells += td_(statusForRun ? chip_(runVal, statusForRun) : runVal,
+      "text-align:right;font-weight:600;background:#f6f4ee");
+    cells += td_(smokeVal, "text-align:right;color:#5b6b60;background:#eef2ef");
     return "<tr>" + cells + "</tr>";
   }
 
-  h.push(row("Sessions (unique visitors)", C.map(function (s) { return s.sessions; }), M.sessions));
-  h.push(row("Bounce rate", C.map(function (s) { return pct_(s.bounce); }), pct_(M.bounce), statusOf_(M.bounce, CONFIG.GATES.bounce)));
-  h.push(row("Avg session duration", C.map(function (s) { return dur_(s.avgDurSec); }), dur_(M.avgDurSec)));
-  h.push(row("Scrolled 50%", C.map(function (s) { return scrollCell_(s.scroll50, s.sessions); }), scrollCell_(M.scroll50, M.sessions)));
-  h.push(row("Reached pricing", C.map(function (s) { return scrollCell_(s.reachedPricing, s.sessions); }), scrollCell_(M.reachedPricing, M.sessions)));
-  h.push(row("Reached page end", C.map(function (s) { return scrollCell_(s.scroll100, s.sessions); }), scrollCell_(M.scroll100, M.sessions)));
-  h.push(row("Get Early Access clicked", C.map(function (s) { return s.getAccess; }), M.getAccess));
-  h.push(row("Email entered", C.map(function (s) { return s.email; }), M.email));
-  h.push(row("Email entered / visitors %", C.map(function (s) { return pct_(s.e2v); }), pct_(M.e2v), statusOf_(M.e2v, CONFIG.GATES.e2v)));
-  // Demand that never reaches the signup sheet: these visitors went to WhatsApp
-  // instead of joining, so every rate above under-counts them by definition.
-  h.push(row("WhatsApp clicked (off-funnel)", C.map(function (s) { return s.whatsapp; }), M.whatsapp));
-  if (M.whatsappBy && Object.keys(M.whatsappBy).length) {
-    h.push(row("↳ by placement", C.map(function () { return ""; }), waPlacements_(M.whatsappBy)));
-  }
-  h.push(row("Phone number submitted", C.map(function (s) { return s.phone; }), M.phone));
-  h.push(row("Reached confirmation", C.map(function (s) { return s.completed; }), M.completed));
-  h.push(row("Cost per lead", C.map(function (s) { return ok ? money_(s.cpl) : na_(); }), ok ? money_(M.cpl) : na_(), ok ? statusOf_(M.cpl, CONFIG.GATES.cpl) : ""));
-  h.push(row("Spend", C.map(function (s) { return ok ? money_(s.spend) : na_(); }), ok ? money_(M.spend) : na_()));
-  h.push(row("Meta CPM", C.map(function (s) { return ok ? money_(s.cpm) : na_(); }), ok ? money_(M.cpm) : na_()));
-  h.push(row("CTR", C.map(function (s) { return ok ? pct_(s.ctr) : na_(); }), ok ? pct_(M.ctr) : na_()));
+  h.push(row("Sessions (unique visitors)",
+    C.map(function (x) { return x.sessions; }), W.sessions, S.sessions));
+  h.push(row("Bounce rate",
+    C.map(function (x) { return pct_(x.bounce); }), pct_(W.bounce), pct_(S.bounce),
+    statusOf_(W.bounce, CONFIG.GATES.bounce)));
+  h.push(row("Avg session duration",
+    C.map(function (x) { return dur_(x.avgDurSec); }), dur_(W.avgDurSec), dur_(S.avgDurSec)));
+  h.push(row("Get beta access clicked",
+    C.map(function (x) { return x.getAccess; }), W.getAccess, S.getAccess));
+  h.push(row("Phone number entered",
+    C.map(function (x) { return x.phone; }), W.phone, S.phone));
+  h.push(row("Phone entered / visitors %",
+    C.map(function (x) { return pct_(x.p2v); }), pct_(W.p2v), pct_(S.p2v),
+    statusOf_(W.p2v, CONFIG.GATES.e2v)));
+  h.push(row("All details submitted",
+    C.map(function (x) { return x.completed; }), W.completed, S.completed));
+  h.push(row("Cost per lead",
+    C.map(function (x) { return ok ? money_(x.cpl) : na_(); }),
+    ok ? money_(W.cpl) : na_(), ok ? money_(S.cpl) : na_(),
+    ok ? statusOf_(W.cpl, CONFIG.GATES.cpl) : ""));
+  h.push(row("Spend",
+    C.map(function (x) { return ok ? money_(x.spend) : na_(); }),
+    ok ? money_(W.spend) : na_(), ok ? money_(S.spend) : na_()));
+  h.push(row("Meta CPM",
+    C.map(function (x) { return ok ? money_(x.cpm) : na_(); }),
+    ok ? money_(W.cpm) : na_(), ok ? money_(S.cpm) : na_()));
+  h.push(row("Link CTR",
+    C.map(function (x) { return ok ? pct_(x.ctr) : na_(); }),
+    ok ? pct_(W.ctr) : na_(), ok ? pct_(S.ctr) : na_()));
   h.push('</table>');
+  h.push('<p style="color:#5b6b60;margin:6px 0 0;font-size:12px">' +
+    'Rolled up across every geography. <b>' + m.smokeLabel + '</b> is ' +
+    CONFIG.SMOKE_START + " to " + CONFIG.SMOKE_END + ', the analysable smoke-test window. ' +
+    'Link CTR counts link clicks only, not reactions, comments, shares or post expands.</p>');
+  return h.join("");
+}
+
+/** Where the leads actually got to. Read from leadStatus (column W) in the
+ *  sign-ups sheet, which sales types by hand. */
+function renderConversionTable_(m) {
+  var c = m.conv, h = [];
+  var denom = c.overall;
+  h.push('<h3 style="font-size:14px;margin:22px 0 6px">Conversion ' +
+    '<span style="font-weight:400;color:#5b6b60">(from the sign-ups sheet)</span></h3>');
+  h.push('<table style="border-collapse:collapse;width:100%"><tr>');
+  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60">Stage</th>');
+  h.push(th_("Leads")); h.push(th_("% of reachable"));
+  h.push('</tr>');
+
+  function line(label, n, showPct, emphasis) {
+    return "<tr>" + labelTd_(label) +
+      td_(n, "text-align:right;font-weight:" + (emphasis ? "600" : "400")) +
+      td_(showPct && denom ? pct_(n / denom * 100) : na_(), "text-align:right;color:#5b6b60") +
+      "</tr>";
+  }
+
+  h.push(line("New leads today", c.today, false, true));
+  h.push(line("Leads so far (POC, excl smoke test)", c.sincelaunch, false, true));
+  h.push(line("Leads overall (reachable, incl smoke test)", c.overall, false, true));
+  LEAD_STAGES.forEach(function (st) {
+    h.push(line(st.label, c[st.key], true, st.key === "paid"));
+  });
+  h.push('</table>');
+  h.push('<p style="color:#5b6b60;margin:6px 0 0;font-size:12px">' +
+    '<b>Reachable</b> means we hold a phone number, which is what makes a lead workable; ' +
+    'smoke-test rows we only ever had an email for are excluded from that denominator. ' +
+    'Stages come from the leadStatus column and are only as current as sales keeps it.</p>');
   return h.join("");
 }
 
@@ -798,11 +897,11 @@ function marketLabelFor_(key) {
 function renderHtml_(m) {
   var h = [];
   h.push('<div style="max-width:760px;margin:0 auto;font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a2b22">');
-  h.push('<h2 style="font-size:18px;margin:0 0 4px">Niro smoke test - ' +
+  h.push('<h2 style="font-size:18px;margin:0 0 4px">' + CONFIG.REPORT_TITLE + ' · ' +
     Utilities.formatDate(m.now, CONFIG.TIMEZONE, "EEE MMM d, HH:mm z") + '</h2>');
-  h.push('<p style="color:#5b6b60;margin:0 0 16px">Day ' + m.dayNum + ' of ' + CONFIG.TEST_DAYS +
-    ' · ' + m.daysLeft + ' left · ' + m.totalSignups + ' signups (+' + m.newSignups + ') · spend ' +
-    (m.meta_ok ? money_(m.spendMTD) : na_()) + ' / ' + money_(m.budget) + '</p>');
+  h.push('<p style="color:#5b6b60;margin:0 0 16px">Day ' + m.dayNum + ' since launch ' +
+    '· ' + m.conv.overall + ' leads (+' + m.newSignups + ' new) ' +
+    '· spend ' + (m.meta_ok ? money_(m.spendMTD) : na_()) + '</p>');
   if (!m.meta_ok) {
     h.push('<p style="background:#FBEEC8;border:1px solid #E4C97A;border-radius:6px;padding:8px 12px;color:#7a5b12">' +
       'Meta not connected' + (m.meta_err ? ' (' + m.meta_err + ')' : '') + ' - Cost per lead / Spend / CPM / CTR show n/a. Set META_ACCESS_TOKEN (Project Settings → Script Properties, or CONFIG).</p>');
@@ -812,8 +911,9 @@ function renderHtml_(m) {
       'Edit CONFIG.MARKETS[].adset to match your ad-set / campaign names.</p>');
   }
 
-  // ---- Blocks 1-3: one table per market ----
-  m.markets.forEach(function (market) { h.push(renderMarketTable_(m, market)); });
+  // ---- Block 1: the rolled-up funnel, then where those leads got to ----
+  h.push(renderRollupTable_(m));
+  h.push(renderConversionTable_(m));
 
   // ---- Block 4: Meta ads console (2 tables across all ad sets) ----
   h.push('<h2 style="font-size:16px;margin:30px 0 4px;padding-top:16px;border-top:2px solid #e6e2d6">Meta ads - all ad sets</h2>');
@@ -854,7 +954,7 @@ function renderHtml_(m) {
     h.push("<tr>" + td_(na_(), "text-align:left") + "</tr>");
   }
   h.push('</table>');
-  h.push('<p style="color:#5b6b60;margin:6px 0 0;font-size:12px">Real leads = unique emails in the waitlist sheet for the window (test addresses excluded). ' +
+  h.push('<p style="color:#5b6b60;margin:6px 0 0;font-size:12px">Real leads = unique phone numbers in the sign-ups sheet for the window (test rows excluded). ' +
     '"Meta claims" is Meta\'s own lead count, shown only to expose how far it over-reports - never use it for cost per lead.</p>');
 
   // Table B: cost per visitor (Meta landing-page views)
@@ -883,7 +983,7 @@ function renderHtml_(m) {
   h.push('</table>');
 
   h.push('<p style="margin:22px 0 0;padding-top:12px;border-top:1px solid #eee;color:#5b6b60;font-size:12px">' +
-    'Funnel rows are from our own beacons, split by page + geography: Gulf (Dual) = /gulf; Gulf = "/" from a Gulf time zone; North America = "/" from a US/Canada time zone. ' +
+    'Funnel rows are from our own beacons. The headline table is rolled up across every geography; this table splits spend and real leads into US, Gulf and rest of world. ' +
     'Legacy/untagged sessions (logged before geo tracking, or from cached pre-update JS) are counted under ' + (marketLabelFor_(CONFIG.UNTAGGED_MARKET) || 'no market') + ' to retain history. Every session is placed in one of the three sections - by page, then ad campaign, then time zone - and anything still unplaced (India, UK, Europe, …) falls back to ' + (marketLabelFor_(CONFIG.UNTAGGED_MARKET) || 'North America') + ', so the three sections always add up to the sheet. ' +
     'Spend / CPM / CTR / Cost-per-lead are from Meta, mapped to a market by ad-set name (CONFIG.MARKETS) - the console tables show that mapping. ' +
     '"Visitors" in the second console table = Meta landing-page views. Section Cost per lead = Meta spend ÷ emails entered (from our beacons); console Cost per lead = Meta spend ÷ real signups in the sheet. Meta\'s own lead count over-reports by roughly 3x and is shown greyed, for contrast only. ' +
