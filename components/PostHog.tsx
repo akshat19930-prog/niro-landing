@@ -4,7 +4,7 @@ import Script from "next/script";
 import { POSTHOG_KEY, POSTHOG_HOST } from "@/lib/config";
 
 /**
- * PostHog loader — heatmaps, scrollmaps, session replay, and autocapture.
+ * PostHog loader - heatmaps, scrollmaps, session replay, and autocapture.
  * Renders nothing unless NEXT_PUBLIC_POSTHOG_KEY is set. Inputs are masked in
  * replay so the email field is never recorded; anonymous events don't create
  * person profiles (cost + privacy). The pricing arm + pitch are registered as

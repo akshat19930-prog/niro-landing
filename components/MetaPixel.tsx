@@ -1,19 +1,19 @@
 import { META_PIXEL_ID } from "@/lib/config";
 
 /**
- * Meta Pixel loader. Rendered as a plain inline <script> in the document — NOT
- * next/script "afterInteractive" — so `fbq('init')` + `PageView` execute at
+ * Meta Pixel loader. Rendered as a plain inline <script> in the document - NOT
+ * next/script "afterInteractive" - so `fbq('init')` + `PageView` execute at
  * HTML-parse time, BEFORE React hydration.
  *
  * Why this matters: `landing_page_view` is only counted when this PageView
  * fires. Gating it behind ~400KB of hydrating JS (afterInteractive) meant the
  * pixel didn't fire until ~3-5s into the page on a mid-tier mobile, so every
- * visitor who bounced first was a paid click with no landing_page_view — the
+ * visitor who bounced first was a paid click with no landing_page_view - the
  * click→LPV gap that inflates CPL. Firing at parse time closes that window.
  *
  * The Lead event is still fired from the join flow with an eventID for CAPI
  * de-duplication. The Conversion API itself is server-side and belongs on the
- * waitlist backend that receives the signup POST — see lib/config.ts.
+ * waitlist backend that receives the signup POST - see lib/config.ts.
  */
 export function MetaPixel() {
   if (!META_PIXEL_ID) return null;

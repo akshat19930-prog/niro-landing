@@ -1,6 +1,6 @@
 /**
  * A/B assignment, fired at HTML-parse time (inline <script>, rendered first in
- * <body>) so the chosen page variant paints from the first frame — no A→B
+ * <body>) so the chosen page variant paints from the first frame - no A→B
  * flash. Reads the `niro_pg` cookie or rolls a fresh 50/50, persists it for a
  * year, and stamps `data-pg` on <html> for the CSS variant gate (globals.css).
  */

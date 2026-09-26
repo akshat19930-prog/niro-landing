@@ -1,5 +1,5 @@
 /* =====================================================================
-   Niro / Leo design tokens — canonical source of truth.
+   Niro / Leo design tokens - canonical source of truth.
    Ported verbatim from design/_ds/…/tokens/*.css. Do not invent values
    outside this file; add a token instead. Font families resolve to the
    self-hosted next/font variables (--font-newsreader / --font-hanken).
@@ -20,7 +20,7 @@
 
   --gold-700: #7e561c;
   --gold-600: #9a6e28;
-  --gold-500: #b8863b; /* burnished gold — accent, use < 10% */
+  --gold-500: #b8863b; /* burnished gold - accent, use < 10% */
   --gold-400: #cc9e52;
   --gold-300: #e0be84;
   --gold-100: #f1e3c6;
@@ -141,7 +141,7 @@
 }
 
 /* =====================================================================
-   Dark surfaces — the "2:47 AM" register. Scoped, NOT a global dark mode.
+   Dark surfaces - the "2:47 AM" register. Scoped, NOT a global dark mode.
    Applied only where data-theme="dark" is set (the emergency story).
    ===================================================================== */
 [data-theme="dark"] {
@@ -182,7 +182,7 @@
   color-scheme: dark;
 }
 
-/* Explicit light reset — lets a subtree force the light palette even inside a
+/* Explicit light reset - lets a subtree force the light palette even inside a
    dark section (e.g. the emergency WhatsApp card within the 2:47 AM story). */
 [data-theme="light"] {
   --bg-page: var(--ivory);

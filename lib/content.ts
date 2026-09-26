@@ -593,20 +593,20 @@ export const EMERGENCY_STEPS: { title: string; body: string }[] = [
 ];
 
 /* =====================================================================
-   GULF PAGE (/gulf) — dual-sided, single-SKU ($149) split-test page.
+   GULF PAGE (/gulf) - dual-sided, single-SKU ($149) split-test page.
    Copy is verbatim from the Gulf build brief. Kept separate from the
    India-page constants above so neither test contaminates the other.
    ===================================================================== */
 
 /** Reworded Dubai testimonials, dual-sided framing (permission obtained).
- *  Real families only — we ship the two confirmed Dubai stories rather than
+ *  Real families only - we ship the two confirmed Dubai stories rather than
  *  invent a third. */
 export const GULF_TESTIMONIALS: {
   name: string;
   location: string;
   quote: string;
   /** A verbatim substring of `quote` to emphasise (the outcome sentence).
-   *  Never new words — only visual weight on the real quote. */
+   *  Never new words - only visual weight on the real quote. */
   highlight?: string;
   photo?: string;
 }[] = [
@@ -635,7 +635,7 @@ export const GULF_TESTIMONIALS: {
   },
 ];
 
-/** Short Gulf FAQ — 5 questions, concise answers, no new features introduced. */
+/** Short Gulf FAQ - 5 questions, concise answers, no new features introduced. */
 export const GULF_FAQ: { q: string; a: string }[] = [
   {
     q: "What can Niro handle in the Gulf?",
@@ -659,7 +659,7 @@ export const GULF_FAQ: { q: string; a: string }[] = [
   },
 ];
 
-/* Gulf post-signup qualifiers — dual (household here + parents in India). No
+/* Gulf post-signup qualifiers - dual (household here + parents in India). No
    plan question: the page has a single $149 SKU, and a plan chip would repeat
    the price (acceptance: "$149 appears exactly once"). */
 export const GULF_QUALIFY_TASKS: string[] = [
@@ -709,7 +709,7 @@ export const TASK_DEFS: TaskDef[] = [
 ];
 
 /* =====================================================================
-   /us — NORTH AMERICA DUAL-SIDED SPLIT TEST
+   /us - NORTH AMERICA DUAL-SIDED SPLIT TEST
    ---------------------------------------------------------------------
    India-primary, US-household as the add-on (deliberately the inverse of
    the Gulf dual page, which led with the local side and lost). Two SKUs so

@@ -5,7 +5,7 @@
  * endpoint as signups; the script routes `type:"event"` rows to an `events`
  * tab. From those the report builds traffic-by-arm, the funnel (exposure →
  * join_initiated → email_entered → reserve_clicked), bounce rate and average
- * session duration — by date and by pricing arm.
+ * session duration - by date and by pricing arm.
  *
  * No third-party analytics: bounce / duration are approximations computed from
  * these beacons (a session is "engaged" if it lasts >=10s, scrolls/clicks, or
@@ -153,11 +153,11 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
     sid: getSessionId(),
     ts: Date.now(),
     // page + geo on EVERY beacon so the report can segment the funnel by market
-    // (North America / Gulf / Gulf-Dual) — exposure/session_end included.
+    // (North America / Gulf / Gulf-Dual) - exposure/session_end included.
     page: pagePath(),
     geo: coarseGeo(),
     // The ad campaign that brought this session. Far more reliable than the
-    // browser time zone for splitting the funnel by market — a Gulf visitor
+    // browser time zone for splitting the funnel by market - a Gulf visitor
     // whose phone is set to IST reads as geo "other", but their campaign is
     // still Smoketest_gulf. The report prefers this over geo.
     campaign: (getStoredUtm() || {}).utm_campaign || "",
@@ -222,7 +222,7 @@ function fireOnce(key: string): boolean {
 }
 
 /** Scroll-depth + pricing-fold beacons, so the report can see WHERE visitors
- *  drop — e.g. how many reach the $ pricing fold before leaving — split by
+ *  drop - e.g. how many reach the $ pricing fold before leaving - split by
  *  page/market like the rest of the funnel. Each milestone fires at most once
  *  per session. `#pricing-fold` is marked on both the main and /gulf pricing
  *  sections. */
@@ -271,7 +271,7 @@ function startScrollTracking(): void {
       io.observe(el);
     }
   } catch {
-    /* IO not supported — depth milestones still cover the funnel */
+    /* IO not supported - depth milestones still cover the funnel */
   }
 }
 

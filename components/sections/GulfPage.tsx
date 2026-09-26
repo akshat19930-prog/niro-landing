@@ -191,7 +191,7 @@ function AskBubble({ children, sender }: { children: React.ReactNode; sender?: s
   );
 }
 
-/** A reply from Niro — left-aligned received-message bubble with a sender tag,
+/** A reply from Niro - left-aligned received-message bubble with a sender tag,
  *  so the exchange reads as a real WhatsApp thread, not a list of requests. */
 function NiroBubble({ children }: { children: React.ReactNode }) {
   return (
@@ -232,7 +232,7 @@ function NiroBubble({ children }: { children: React.ReactNode }) {
 type ChatSide = "gulf" | "india";
 type HeroChatTask = { side: ChatSide; sender: string; ask: React.ReactNode; reply: React.ReactNode };
 
-// The two WhatsApp groups Niro runs for one family — same shape as the earlier
+// The two WhatsApp groups Niro runs for one family - same shape as the earlier
 // hero video: a group name plus who's in it.
 const GROUPS: Record<ChatSide, { title: string; members: string }> = {
   gulf: { title: "Niro ↔ Ankush ↔ Gulf", members: "Ankush, Rhea, Niro" },
@@ -288,7 +288,7 @@ function usePrefersReducedMotion(): boolean {
 }
 
 /** One row of the WhatsApp chats list (avatar, group name, last-message
- *  preview, time, unread badge) — used on the closing summary frame. */
+ *  preview, time, unread badge) - used on the closing summary frame. */
 function ChatListRow({ title, preview, time, unread }: { title: string; preview: string; time: string; unread?: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 11, padding: "10px 12px" }}>
@@ -314,7 +314,7 @@ function ChatListRow({ title, preview, time, unread }: { title: string; preview:
 }
 
 /** Closing frame: the two group chats as a WhatsApp chats list, then the
- *  two-homes-one-manager mark — carried over from the earlier hero video. */
+ *  two-homes-one-manager mark - carried over from the earlier hero video. */
 function HeroSummary() {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -766,7 +766,7 @@ function GulfCrossBorder() {
           ))}
         </div>
 
-        {/* Parents callout — the accessibility hook that makes cross-border work. */}
+        {/* Parents callout - the accessibility hook that makes cross-border work. */}
         <div
           style={{
             display: "flex",
@@ -810,7 +810,7 @@ function GulfCrossBorder() {
 /* ---------------------------------------------------------------- families */
 
 /** Render a real quote with its outcome phrase emphasised. The highlight must
- *  be a verbatim substring of the quote — we only add visual weight, never
+ *  be a verbatim substring of the quote - we only add visual weight, never
  *  words. Falls back to the plain quote if it isn't found. */
 function renderQuote(quote: string, highlight?: string): React.ReactNode {
   if (!highlight) return quote;
@@ -826,8 +826,8 @@ function renderQuote(quote: string, highlight?: string): React.ReactNode {
 }
 
 function GulfFamilies() {
-  // Two real, permission-cleared Dubai testimonials: one Gulf-led (Nikita —
-  // cleaner + Emirates IDs), one India/cross-border-led (Abhishek — EPF + visit).
+  // Two real, permission-cleared Dubai testimonials: one Gulf-led (Nikita -
+  // cleaner + Emirates IDs), one India/cross-border-led (Abhishek - EPF + visit).
   const picks = ["Nikita, 38", "Abhishek, 43"];
   const stories = picks
     .map((n) => GULF_TESTIMONIALS.find((t) => t.name === n))
@@ -1055,7 +1055,7 @@ function GulfClosing() {
 
 /* ------------------------------------------------------------------ export */
 
-/** The /gulf dual-sided page. Dead end by design — the nav wordmark points to
+/** The /gulf dual-sided page. Dead end by design - the nav wordmark points to
  *  /gulf, and there is no cross-sell back to the India page. */
 export function GulfPage() {
   return (

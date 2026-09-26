@@ -63,12 +63,12 @@
 }
 
 /* =====================================================================
-   Component styles — ported from the design-system bundle. Hover/focus are
+   Component styles - ported from the design-system bundle. Hover/focus are
    authored as CSS (not inline handlers) so DS components stay static server
    components. Base values for hover-affected properties live here too, so
    nothing inline shadows the :hover rules.
 
-   NOTE: authored as plain CSS (not inside @layer components) on purpose —
+   NOTE: authored as plain CSS (not inside @layer components) on purpose -
    class names like `btn-primary` are built dynamically (`btn-${variant}`) and
    never appear literally in source, so Tailwind would tree-shake them out of a
    component layer. Plain CSS is always emitted.
@@ -327,7 +327,7 @@
     transform: var(--lift);
   }
 
-/* ---- Sticky mobile CTA — narrow viewports only ---- */
+/* ---- Sticky mobile CTA - narrow viewports only ---- */
 .sticky-cta {
   display: block;
 }
@@ -481,7 +481,7 @@
   color: var(--text-strong);
 }
 /* A button rendered inside prose (e.g. the About CTA) must keep its own
-   colours — override the generic .prose a link styling. */
+   colours - override the generic .prose a link styling. */
 .prose a.btn-primary {
   color: var(--text-on-brand);
   text-decoration: none;

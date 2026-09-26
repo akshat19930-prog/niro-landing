@@ -18,7 +18,7 @@ import { PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, FAQ } fr
 
 type GeoRegion = "gulf" | "us" | "canada" | null;
 
-/** Geo personalisation, inferred from the browser time zone — client-only,
+/** Geo personalisation, inferred from the browser time zone - client-only,
  *  zero-latency, no external call. Drives the hero eyebrow and the testimonial
  *  order (Gulf visitors lead with Dubai stories). Falls back to "abroad". */
 function useGeo(): { region: GeoRegion; label: string } {
@@ -759,7 +759,7 @@ const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
 
 /* ---------------------------------------------------------------- variant */
 
-/** Variant B — the "You can't always be in India. Niro can." reposition. */
+/** Variant B - the "You can't always be in India. Niro can." reposition. */
 export function VariantB() {
   return (
     <>

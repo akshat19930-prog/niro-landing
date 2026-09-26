@@ -4,7 +4,7 @@ Live product page for Niro (NRI family concierge) at **tellniro.com**.
 Meta-ads traffic, ~80% mobile.
 
 **The goal of the page is to start a WhatsApp conversation with a qualified
-lead** — not to take a payment. Payment happens on a hosted checkout link that
+lead** - not to take a payment. Payment happens on a hosted checkout link that
 sales sends in the thread after a call. This changed in Sept 2026; the page was
 previously a smoke test optimising for email sign-ups.
 
@@ -13,11 +13,11 @@ backend, deploys, and the decisions that look arbitrary but are not.
 
 ## Source of truth
 
-- `/lib/content.ts` — all page copy, plans, FAQ, scope lists, service cities.
+- `/lib/content.ts` - all page copy, plans, FAQ, scope lists, service cities.
   Change copy here, not in components.
-- `/app/tokens.css` — colours, type, spacing. **Do not invent values outside
+- `/app/tokens.css` - colours, type, spacing. **Do not invent values outside
   this file.** Add a token instead.
-- `/design/design-system.md` — the component and type system behind the tokens.
+- `/design/design-system.md` - the component and type system behind the tokens.
 
 ## Hard requirements
 
@@ -30,7 +30,7 @@ backend, deploys, and the decisions that look arbitrary but are not.
   waiting on an observer, and motion respects `prefers-reduced-motion`.
 - **The lead is written to the sheet before any WhatsApp handoff**, never
   after. A handoff-only capture loses everyone who does not send the message.
-- **UTM passthrough into the sign-up payload** — attribution depends on it.
+- **UTM passthrough into the sign-up payload** - attribution depends on it.
 - Meta Pixel + CAPI share one `eventId` for dedup.
 
 ## Copy rules
@@ -43,18 +43,23 @@ backend, deploys, and the decisions that look arbitrary but are not.
 - **Never state a price below ~$50/month anywhere prominent.** Six research
   respondents said a sub-$50 price made them distrust the service. This is why
   `/lite` is unlisted.
-- **Neither SKU is styled as preferred** — same service, two prices.
+- **Neither SKU is styled as preferred** - same service, two prices.
 - **Do not name the household limit as a restriction.** "Create up to 2 groups"
   reads as an allowance; "only 2 groups" creates the objection.
 - Emergency SLA numbers stay scoped to the five launch cities, on the page.
 
 ## Don'ts
 
+- **No long dashes anywhere.** No em dash and no en dash, in page copy, code,
+  comments, commit messages or docs. Use a comma, a colon, brackets, or split
+  the sentence. A plain hyphen is the only dash. Paarth reads long dashes as
+  machine-written copy.
+
 - No purple/blue gradients, glassmorphism, or generic AI imagery.
-- No competing CTAs — one primary action per section.
+- No competing CTAs - one primary action per section.
 - No secrets in the repo. `META_ACCESS_TOKEN` stays `""`; the real token lives
   in Apps Script Properties only.
-- Never commit straight to `main` — `main` is the deploy trigger.
+- Never commit straight to `main` - `main` is the deploy trigger.
 
 ## Stack
 
