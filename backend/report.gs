@@ -1,5 +1,5 @@
 /**
- * Niro POC - thrice-daily email report (12:00, 18:00, 00:00 IST).
+ * Niro POC - email report, every 3 hours (see CONFIG.REPORT_EVERY_HOURS).
  * Google Apps Script.
  *
  * Lives in the SAME spreadsheet as waitlist.gs. Reads:
@@ -50,6 +50,7 @@ var CONFIG = {
   // Launch. The running window starts here, so the report never mixes POC
   // numbers with smoke-test numbers in one column.
   LAUNCH_DATE: "2026-09-25",
+  REPORT_EVERY_HOURS: 3,            // 8 reports a day, round the clock
   RUNNING_DAYS: 30,                 // L30D once 30 days have passed; shorter until then
 
   // The smoke-test benchmark column. 15-26 Aug is the ANALYSABLE window: it is
@@ -124,12 +125,16 @@ var CONFIG = {
 
 function setupTriggers() {
   removeTriggers();
-  // Three times a day (IST): 12:00 noon, 18:00 evening, and 00:00 midnight
-  // (the day-end report, delivered just after midnight).
-  [12, 18, 0].forEach(function (hr) {
-    ScriptApp.newTrigger("sendReport").timeBased().atHour(hr).everyDays(1)
-      .inTimezone(CONFIG.TIMEZONE).create();
-  });
+  // Every REPORT_EVERY_HOURS hours, round the clock. Apps Script anchors an
+  // everyHours trigger to the moment it is created, so the slots land at
+  // whatever time you run this, not on the clock hour. Re-run setupTriggers()
+  // at a sensible hour if you want the schedule to sit somewhere specific.
+  //
+  // Note this changes what "new" means in the header and subject: newSignups
+  // is the delta since the LAST report, so at a 3 hour cadence it reads as
+  // leads in the last 3 hours, not leads today.
+  ScriptApp.newTrigger("sendReport").timeBased()
+    .everyHours(CONFIG.REPORT_EVERY_HOURS).create();
 }
 function removeTriggers() {
   ScriptApp.getProjectTriggers().forEach(function (t) {
