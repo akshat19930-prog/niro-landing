@@ -378,11 +378,25 @@ function buildModel_(data, meta) {
     return agg;
   }
 
-  /** The rolled-up funnel for a set of dates. */
+  /**
+   * The rolled-up funnel for a set of dates.
+   *
+   * Sessions, bounce and the modal-open step come from the beacons, because
+   * only the beacons see people who never submitted. Everything from the phone
+   * onwards comes from the SHEET, so the funnel's lead count, the conversion
+   * table and cost per lead are all the same number.
+   */
   function rollupFor(dates) {
     var evs = [];
     dates.forEach(function (d) { if (evByDate[d]) evs = evs.concat(evByDate[d]); });
-    return computeMarketWindow_(evs, metaForDates(dates));
+    var st = computeMarketWindow_(evs, metaForDates(dates));
+    var sheet = sheetCounts_(data.signups, dates);
+    st.phoneSessions = st.phone;          // kept for the diagnostic row
+    st.phone = sheet.leads;
+    st.completed = sheet.complete;
+    st.p2v = st.sessions ? (sheet.leads / st.sessions * 100) : 0;
+    st.cpl = sheet.leads ? st.spend / sheet.leads : 0;
+    return st;
   }
 
   var rollup = {
@@ -457,6 +471,33 @@ function buildModel_(data, meta) {
     unmappedSpend: meta && meta.unmappedSpend ? meta.unmappedSpend : 0,
     budget: CONFIG.BUDGET_INR
   };
+}
+
+/**
+ * Unique leads in a window, straight from the sign-ups sheet.
+ *
+ * This is what "a lead" means everywhere else in the business: one row per
+ * person, keyed on phone. The event beacons cannot answer this, because a
+ * beacon is keyed on `sid`, `sid` lives in sessionStorage, and sessionStorage
+ * is PER TAB. One person in two tabs is two sessions and one lead. Counting
+ * the funnel step from events made "Phone number entered" read 4 against 1
+ * real lead.
+ */
+function sheetCounts_(signups, dates) {
+  var inWindow = {};
+  dates.forEach(function (d) { inWindow[d] = 1; });
+  var seen = {}, leads = 0, complete = 0;
+  signups.forEach(function (s) {
+    var raw = (s.date !== "" && s.date != null) ? s.date : s.timestamp;
+    if (!inWindow[dateStr_(raw)]) return;
+    var k = leadKey_(s);
+    if (!k || seen[k]) return;
+    seen[k] = 1;
+    leads++;
+    // "All details submitted" = we got past the phone screen to name + city.
+    if (String(s.name || "").trim() && String(s.city || "").trim()) complete++;
+  });
+  return { leads: leads, complete: complete };
 }
 
 /** Inclusive list of yyyy-mm-dd between two dates. */
@@ -842,6 +883,8 @@ function renderRollupTable_(m) {
     statusOf_(W.p2v, CONFIG.GATES.e2v)));
   h.push(row("All details submitted",
     C.map(function (x) { return x.completed; }), W.completed, S.completed));
+  h.push(row("&#8627; sessions that submitted a phone",
+    C.map(function (x) { return x.phoneSessions; }), W.phoneSessions, S.phoneSessions));
   h.push(row("Cost per lead",
     C.map(function (x) { return ok ? money_(x.cpl) : na_(); }),
     ok ? money_(W.cpl) : na_(), ok ? money_(S.cpl) : na_(),
@@ -859,7 +902,11 @@ function renderRollupTable_(m) {
   h.push('<p style="color:#5b6b60;margin:6px 0 0;font-size:12px">' +
     'Rolled up across every geography. <b>' + m.smokeLabel + '</b> is ' +
     CONFIG.SMOKE_START + " to " + CONFIG.SMOKE_END + ', the analysable smoke-test window. ' +
-    'Link CTR counts link clicks only, not reactions, comments, shares or post expands.</p>');
+    'Link CTR counts link clicks only, not reactions, comments, shares or post expands.<br>' +
+    '<b>Phone number entered</b> counts unique leads in the sign-ups sheet, so it reconciles ' +
+    'with the conversion table and with cost per lead. The indented row below it counts ' +
+    'browser sessions that submitted a phone, which is always higher: a session is one tab, ' +
+    'so the same person in two tabs, or testing the form twice, is two sessions and one lead.</p>');
   return h.join("");
 }
 
