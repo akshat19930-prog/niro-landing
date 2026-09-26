@@ -28,7 +28,7 @@ happens on a hosted checkout link that sales sends in the thread after a call.
 | `/lite/` | **Unlisted.** The $270/yr 15-task pack, for sales to share on a call. Obscure, not secret. |
 | `/terms/`, `/privacy/`, `/about/` | Legal and team. |
 | `/emergency/` | A noindex redirect stub to `/niro-assure/`. The old URL shipped to production, so it cannot just 404. |
-| `/gulf/`, `/us/`, `/us-v2/` | **Stale split-test pages.** See §7 - they are materially behind `/`. |
+| `/gulf/`, `/us/`, `/us-v2/` | **Retired 26 Sept 2026.** noindex redirect stubs to `/`, like `/emergency/`. The pages live in git history and `UsPage.tsx` / `GulfPage.tsx` are still in the repo, unmounted. |
 
 ---
 

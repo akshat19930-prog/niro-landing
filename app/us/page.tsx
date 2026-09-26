@@ -1,47 +1,33 @@
-import { SHARE_CARD } from "@/lib/content";
 import type { Metadata } from "next";
-import { Footer } from "@/components/ds/Footer";
-import { JoinProvider } from "@/components/JoinProvider";
-import { UsJoinModal } from "@/components/sections/UsJoinModal";
-import { UsPage } from "@/components/sections/UsPage";
 
 /**
- * /us - the North America dual-sided split test.
+ * /us -> / (retired 26 Sept 2026)
  *
- * India-primary, US household admin as the add-on - deliberately the inverse of
- * /gulf, which led with the local side and converted 5x worse than the single
- * India page for the same audience. Two SKUs (Niro India $99, Niro Prime Global
- * $169) so the test reads dual willingness-to-pay directly.
+ * The North America dual-sided split test is over. It ran two SKUs (Niro
+ * India $99, Niro Prime Global $169) that no longer match the live pricing,
+ * and it took 31 sessions in September against 795 on /.
  *
- * Like /gulf this is a deliberate dead end: noindex/nofollow, self-referencing
- * canonical, and no link back to the main site (the nav wordmark points to /us),
- * so the split test stays clean.
+ * The route stays as a noindex meta-refresh stub because the URL shipped: it
+ * is in old ad destinations, in anything pasted into WhatsApp, and in the
+ * sheets. A static export has no server redirects, so this is a meta refresh
+ * plus a visible link for any browser that ignores it. Same pattern as
+ * /emergency and /niro-assured.
+ *
+ * The page itself lives in git history, and components/sections/UsPage.tsx is still in the repo
+ * unmounted, so the test can be revived without rewriting it.
  */
 export const metadata: Metadata = {
-  title: "Niro - your parents in India, and your household here",
-  description:
-    "For Indian families in the US. One assistant for your parents back home and the household admin here. Health, paperwork, repairs, school runs - handled on WhatsApp.",
+  title: "Niro",
   robots: { index: false, follow: false },
-  alternates: { canonical: "https://tellniro.com/us" },
-  openGraph: {
-    title: SHARE_CARD.title,
-    description: SHARE_CARD.description,
-    type: "website",
-    url: "https://tellniro.com/us",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SHARE_CARD.title,
-    description: SHARE_CARD.description,
-  },
+  other: { refresh: "0; url=/" },
 };
 
-export default function Page() {
+export default function UsRetired() {
   return (
-    <JoinProvider market="us_dual">
-      <UsPage />
-      <Footer tagline="Niro - less household admin. More time for your family." />
-      <UsJoinModal />
-    </JoinProvider>
+    <main style={{ padding: "72px 20px", textAlign: "center" }}>
+      <p style={{ fontSize: "var(--text-md)" }}>
+        This page has moved to <a href="/">tellniro.com</a>.
+      </p>
+    </main>
   );
 }

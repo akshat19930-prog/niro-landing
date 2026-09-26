@@ -1,34 +1,32 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/ds/Footer";
-import { JoinProvider } from "@/components/JoinProvider";
-import { UsJoinModal } from "@/components/sections/UsJoinModal";
-import { UsPage } from "@/components/sections/UsPage";
 
 /**
- * /us-v2 - STAGING ONLY. The India-first rework of /us, for review before it
- * replaces the live page.
+ * /us-v2 -> / (retired 26 Sept 2026)
  *
- * No ad points here and it is noindex, so it takes no traffic and cannot
- * contaminate the running dual-vs-single test. /us is untouched while this
- * exists. Once approved, /us switches to `indiaFirst` and this route is deleted.
+ * The India-first staging copy of /us. The test it was staged for is
+ * retired, so there is nothing left to review.
  *
- * It shares JoinProvider market "us_dual" deliberately: if anyone does sign up
- * from a review pass, the lead still lands in the right bucket rather than
- * creating a market the report has never heard of.
+ * The route stays as a noindex meta-refresh stub because the URL shipped: it
+ * is in old ad destinations, in anything pasted into WhatsApp, and in the
+ * sheets. A static export has no server redirects, so this is a meta refresh
+ * plus a visible link for any browser that ignores it. Same pattern as
+ * /emergency and /niro-assured.
+ *
+ * The page itself lives in git history, and components/sections/UsPage.tsx is still in the repo
+ * unmounted, so the test can be revived without rewriting it.
  */
 export const metadata: Metadata = {
-  title: "Niro - staging - India-first",
-  description: "Staging preview. Not for distribution.",
+  title: "Niro",
   robots: { index: false, follow: false },
-  alternates: { canonical: "https://tellniro.com/us-v2" },
+  other: { refresh: "0; url=/" },
 };
 
-export default function Page() {
+export default function UsV2Retired() {
   return (
-    <JoinProvider market="us_dual">
-      <UsPage indiaFirst />
-      <Footer tagline="Niro - less household admin. More time for your family." />
-      <UsJoinModal />
-    </JoinProvider>
+    <main style={{ padding: "72px 20px", textAlign: "center" }}>
+      <p style={{ fontSize: "var(--text-md)" }}>
+        This page has moved to <a href="/">tellniro.com</a>.
+      </p>
+    </main>
   );
 }
