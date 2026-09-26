@@ -212,10 +212,13 @@ not just the change. `git log --oneline` then `git show <sha>` beats asking.
 
 ## 7. Known gaps, as of handover
 
-1. **`/us/` and `/gulf/` are materially behind `/`.** They still run the old
-   email-first flow, old plan names, no city checker, no Niro Assure link. If
-   ads resume to `/us`, those leads see a different product. Either bring them
-   into line or retire them and point all traffic at `/`.
+1. ~~`/us/` and `/gulf/` are materially behind `/`.~~ **Closed 26 Sept 2026:**
+   retired rather than brought into line. Both were noindex dead ends running
+   the old email-first flow and SKUs the live pricing no longer has ($99 +
+   $169 on `/us`, $149 on `/gulf`), and in September they took 31 and 1
+   sessions against 795 on `/`. All three routes, `/us`, `/us-v2` and `/gulf`,
+   are now meta-refresh stubs to `/`. Reviving either test means remounting
+   `UsPage.tsx` / `GulfPage.tsx` and repricing it first.
 2. **No email is captured at sign-up any more.** Sales must collect one on
    WhatsApp before anyone is invoiced; the checkout needs it for receipts.
    This silently broke the sheet between 16 and 25 Sept 2026: `doPost` only
