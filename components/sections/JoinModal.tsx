@@ -118,7 +118,7 @@ function Chip({
 }
 
 export function JoinModal() {
-  const { open, setOpen, step, lead, submitLead, submitNeeds } = useJoin();
+  const { open, setOpen, step, lead, capturePhone, submitLead, submitNeeds } = useJoin();
 
   const [error, setError] = useState<string | undefined>();
   const [dial, setDial] = useState("+1");
@@ -152,6 +152,13 @@ export function JoinModal() {
 
   function toggleTask(t: string) {
     setTasks((cur) => (cur.includes(t) ? cur.filter((x) => x !== t) : [...cur, t]));
+  }
+
+  /** The number, on its own. Banked before we ask for anything else. */
+  function onPhoneSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const err = capturePhone(isId ? phone.trim() : `${dial} ${phone}`.trim());
+    setError(err || undefined);
   }
 
   function onDetailsSubmit(e: React.FormEvent) {
@@ -226,8 +233,8 @@ export function JoinModal() {
         </button>
 
         {/* -------------------------------------------- 1. contact + cities */}
-        {step === "form" && (
-          <form onSubmit={onDetailsSubmit}>
+        {step === "phone" && (
+          <form onSubmit={onPhoneSubmit}>
             <Eyebrow>Get started</Eyebrow>
             <h2 style={{ ...h2Style, margin: "10px 0 6px" }}>
               Your first task is on us.
@@ -239,7 +246,7 @@ export function JoinModal() {
                 margin: "0 0 18px",
               }}
             >
-              Your basic details to sign you up. We <strong>never</strong> call
+              Start with your WhatsApp number. We <strong>never</strong> call
               you without you asking us to.
             </p>
 
@@ -285,6 +292,42 @@ export function JoinModal() {
                 </p>
               )}
             </div>
+
+            {error && (
+              <p
+                role="alert"
+                style={{
+                  color: "var(--danger)",
+                  fontSize: "var(--text-sm)",
+                  margin: "0 0 12px",
+                }}
+              >
+                {error}
+              </p>
+            )}
+
+            <Button full type="submit">
+              Continue
+            </Button>
+          </form>
+        )}
+
+        {step === "form" && (
+          <form onSubmit={onDetailsSubmit}>
+            <Eyebrow>Get started</Eyebrow>
+            <h2 style={{ ...h2Style, margin: "10px 0 6px" }}>
+              Your first task is on us.
+            </h2>
+            <p
+              style={{
+                fontSize: "var(--text-sm)",
+                color: "var(--text-body)",
+                margin: "0 0 18px",
+              }}
+            >
+              A few details so your assistant knows who they are helping, and
+              where.
+            </p>
 
             <div style={{ marginBottom: 14 }}>
               <label style={labelStyle} htmlFor="join-name">

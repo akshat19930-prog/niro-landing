@@ -29,7 +29,9 @@ import {
 } from "@/lib/config";
 
 /** Waitlist flow: email → qualifiers (needs + lead quality) → confirmation. */
-export type Step = "form" | "qualify" | "done";
+/** "phone" captures the number on its own and banks it before anything else
+ *  is asked. Everything after it is enrichment of a lead we already hold. */
+export type Step = "phone" | "form" | "qualify" | "done";
 export type SignupResult = { position: number; referralCode: string };
 /** Post-signup qualifier answers — all optional, tap-captured. */
 export type Qualifiers = {
@@ -177,6 +179,10 @@ type JoinCtx = {
   cityMatch: CityMatch | null;
   /** Capture phone + name + city, fire the funnel events, start the
    *  (non-blocking) signup, and advance. Returns an error to show, or null. */
+  /** Step 1 of the phone-first flow: the number alone, written to the sheet on
+   *  its own POST. Distinct from submitPhone, which is the legacy /us + /gulf
+   *  "attach a number after the email" path. */
+  capturePhone: (rawPhone: string) => string | null;
   submitLead: (raw: LeadDetails) => string | null;
   /** Record what they want sorted out and who it is for, then finish. */
   submitNeeds: (tasks: string[], whoFor: string | null) => void;
@@ -208,7 +214,7 @@ export function JoinProvider({
    *  market, keeping the Meta split test cleanly separable. */
   market?: string;
 }) {
-  const [step, setStep] = useState<Step>("form");
+  const [step, setStep] = useState<Step>("phone");
   const [open, setOpen] = useState(false);
   // "A" until the client effect assigns the real arm; the modal (where the arm
   // matters) opens only on user interaction, well after this runs.
@@ -247,7 +253,7 @@ export function JoinProvider({
   function openForm() {
     logEvent("join_initiated");
     // Reopen at the confirmation if they already joined; otherwise start fresh.
-    if (step !== "done") setStep("form");
+    if (step !== "done") setStep("phone");
     setOpen(true);
   }
 
@@ -317,7 +323,46 @@ export function JoinProvider({
    * hands off to WhatsApp, because if the handoff were the only capture we
    * would lose every visitor who doesn't send the message.
    */
+  /**
+   * Step 1 - the number, on its own.
+   *
+   * Written to the sheet the moment it is submitted, before we ask for
+   * anything else. Everything after this point enriches the SAME row (the
+   * Apps Script upserts on eventId), so a visitor who abandons at the name
+   * field is still a lead we can call rather than one we never saw.
+   *
+   * Deliberately NOT captured on blur: a number typed into a field is not a
+   * number someone gave us. This fires on an explicit button press, which is
+   * the consent the row rests on.
+   */
+  function capturePhone(rawPhone: string): string | null {
+    const { value: phone, error } = validateContact(rawPhone);
+    if (!phone) return error || "Please enter a valid WhatsApp number or ID.";
+
+    const { pitch, ref } = getStoredAttribution();
+    const pageArm = readPageArm();
+    const page = typeof window !== "undefined" ? window.location.pathname : "";
+
+    setLead({ phone, name: "", ownCity: "", city: "", email: "" });
+    logEvent("phone_captured", market ? { market } : undefined);
+    void submitSignup({
+      email: "",
+      eventId,
+      arm,
+      pageArm,
+      pitch,
+      ref,
+      phone,
+      market,
+      page,
+    });
+    setStep("form");
+    return null;
+  }
+
   function submitLead(raw: LeadDetails): string | null {
+    // The phone is already banked by submitPhone; re-validate so a direct call
+    // (or a restored session) cannot write a row without one.
     const { value: phone, error } = validateContact(raw.phone);
     if (!phone) return error || "Please enter a valid WhatsApp number or ID.";
     const name = raw.name.trim();
@@ -348,6 +393,8 @@ export function JoinProvider({
       referralCode: slugFromName(name),
     });
 
+    // Still lead_captured: this is the point the lead becomes actionable
+    // (name + city), which is what the funnel has always meant by it.
     logEvent("lead_captured", {
       // `served` decides which half of the funnel this lead belongs to; keeping
       // it on the beacon means we can read serviceable-lead CPL without waiting
@@ -440,6 +487,7 @@ export function JoinProvider({
         submitPhone,
         lead,
         cityMatch,
+        capturePhone,
         submitLead,
         submitNeeds,
       }}
