@@ -456,24 +456,23 @@ export const MEMBERSHIP_SINGLE: Plan = {
 };
 
 /**
- * The three-month term, billed once. Deliberately a TERM, not a prepay
- * discount: the research is explicit that this service cannot be judged in
- * thirty days ("these whole maid cycles are too short a thing to test in two
- * weeks"), so three months is how long it takes to know. The card stays on
- * file and rolls to monthly at month four - that is what keeps it a
- * subscription rather than a 90-day trial we have to re-close by hand.
+ * The quarterly membership: $83/month, charged $250 every three months, for as
+ * long as the family stays. It is a standing rate, NOT a first-term discount
+ * that reverts to $99 (Paarth, 26 Sept 2026) - so no copy anywhere may say
+ * "then $99/month" or imply the quarter is a trial.
+ *
+ * Still displayed as a MONTHLY rate, which puts both SKUs on the same unit and
+ * makes the saving legible without arithmetic. The $250 charge is now stated
+ * too, because it recurs and the member should know what leaves their card.
+ * Watch the collision on calls: $250 is also the off-menu Niro Lite year.
  */
 export const MEMBERSHIP_QUARTER: Plan = {
   id: "quarter",
-  name: "Three months",
-  // Shown as a MONTHLY rate, not as "$250 for 3 months". Two reasons: it puts
-  // the two SKUs on the same unit so the saving is legible without arithmetic,
-  // and it keeps $250 off the page - the same number is the off-menu 15-task
-  // pack, and a salesperson quoting "250" on a call must not be ambiguous.
+  name: "Quarterly",
   price: "$83",
   per: "/month",
-  sub: "Save $47 - billed $250 once, today",
-  lead: "Exactly the same membership, at a lower monthly rate, for the three months it actually takes to judge us. Continues at $99/month from month four - we remind you seven days before.",
+  sub: "Save $16 a month, billed $250 every three months",
+  lead: "Exactly the same membership at a lower monthly rate, billed every three months for as long as you stay. Cancel any time and the next quarter is not charged.",
   features: MEMBERSHIP_FEATURES,
   highlight: false,
 };
