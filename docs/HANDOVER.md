@@ -132,7 +132,13 @@ columns still carry the old funnel's shape, so read them with this in mind:
   Counting across the whole column mixes two taxonomies - split on the 25 Sept
   2026 timestamp.
 - `name`, `city`, `cityServed`, `ownCity` were empty for every historic row and
-  fill from now on. `pageArm` (AD) was added at the same time.
+  fill from now on.
+- `pageArm` was added and then removed again on 26 Sept 2026: the page A/B is
+  over, so it read "reposition" on every row. `readPageArm()` still returns it
+  and the site still posts it - add the column back when a page test starts.
+- **The leads tab is matched case-insensitively.** It was renamed `waitlist` ->
+  `Waitlist`, and `getSheetByName()` is case-sensitive, so the script would have
+  created a second empty `waitlist` tab and split the leads in two.
 
 **Secrets never go in this repo.** The Meta access token lives in Apps Script
 Properties only. `META_ACCESS_TOKEN` in `backend/report.gs` must stay `""`.
