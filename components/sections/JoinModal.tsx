@@ -246,8 +246,7 @@ export function JoinModal() {
                 margin: "0 0 18px",
               }}
             >
-              Start with your WhatsApp number. We <strong>never</strong> call
-              you without you asking us to.
+              We <strong>never</strong> call you without you asking us to.
             </p>
 
             <div style={{ marginBottom: 14 }}>
@@ -307,7 +306,7 @@ export function JoinModal() {
             )}
 
             <Button full type="submit">
-              Continue
+              Next: a few details
             </Button>
           </form>
         )}
