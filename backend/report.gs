@@ -1,11 +1,13 @@
 /**
- * Niro smoke-test - thrice-daily email report (12:00, 18:00, 00:00 IST).
+ * Niro POC - thrice-daily email report (12:00, 18:00, 00:00 IST).
  * Google Apps Script.
  *
  * Lives in the SAME spreadsheet as waitlist.gs. Reads:
- *   - `waitlist` tab  (signups: now carry market / page / geo)
+ *   - `waitlist` tab  (signups: phone-first since Sept 2026; a lead is keyed
+ *                      on its phone number, with email only as a fallback for
+ *                      smoke-test rows that predate the switch)
  *   - `events` tab    (funnel + session beacons: exposure, join_initiated,
- *                      email_entered, phone_added, session_end - each now
+ *                      phone_captured, signup_completed, session_end - each now
  *                      carries `page` + `geo`)
  *   - Meta Marketing API (ad-set level: spend / impressions / clicks / leads /
  *                         landing-page views)
