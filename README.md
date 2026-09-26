@@ -13,7 +13,7 @@ source-of-truth design system.
   server runtime required. Deploy the `out/` folder to any static host / CDN.
 - **Tailwind CSS**, mapped to the design tokens (`app/tokens.css` is the single
   source of truth; `tailwind.config.ts` resolves every utility to a `var(--…)`).
-- **Fonts self-hosted** via `next/font/google` (Newsreader + Hanken Grotesk) —
+- **Fonts self-hosted** via `next/font/google` (Newsreader + Hanken Grotesk) -
   binaries are emitted into the build, so there is no runtime Google Fonts
   request (best LCP on mobile).
 - No animation libraries. Interactions are CSS-driven; only the join flow, FAQ,
@@ -58,15 +58,15 @@ app/            layout (fonts, pixel), page (section assembly), tokens.css, glob
 components/ds/  the design-system components (Button, Card, WhatsAppShowcase, …)
 components/sections/  page sections (Hero, JoinFlow, Faq, StickyCta, …)
 lib/            content.ts (all copy/data), analytics.ts (UTM + pixel), config.ts
-design/         vendored design-system handoff — source of truth (do not edit to invent tokens)
+design/         vendored design-system handoff - source of truth (do not edit to invent tokens)
 ```
 
 ## Before launch (placeholders to replace)
 
-- Hero photo (currently a warm-graded placeholder) — art direction: unstaged
+- Hero photo (currently a warm-graded placeholder) - art direction: unstaged
   domestic warmth, no stock-photo gloss.
 - All testimonial quotes and the parent-voice quote (labeled placeholder).
-- User-story figures (₹6,400 bill, ₹4.1L EPF, 9-day passport) — confirm vs real
+- User-story figures (₹6,400 bill, ₹4.1L EPF, 9-day passport) - confirm vs real
   case data.
 - Wire `NEXT_PUBLIC_WAITLIST_ENDPOINT` so the waitlist position/referral come
   from the backend rather than the local fallback.

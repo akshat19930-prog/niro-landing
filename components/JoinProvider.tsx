@@ -31,7 +31,7 @@ import {
 /** Waitlist flow: email → qualifiers (needs + lead quality) → confirmation. */
 export type Step = "form" | "qualify" | "done";
 export type SignupResult = { position: number; referralCode: string };
-/** Post-signup qualifier answers — all optional, tap-captured. */
+/** Post-signup qualifier answers - all optional, tap-captured. */
 export type Qualifiers = {
   tasks: string[];
   whoFor: string | null;

@@ -10,7 +10,7 @@ import { logEvent } from "@/lib/track";
  *
  * `position` tags the click with the CTA's location on the page
  * (e.g. "hero", "nav", "closing") so the split test can read which framing
- * pulls signups — fires `waitlist_click_<position>`, carrying the page's market.
+ * pulls signups - fires `waitlist_click_<position>`, carrying the page's market.
  */
 export function JoinCta({
   className,

@@ -1,4 +1,4 @@
-# Handover — tellniro.com
+# Handover - tellniro.com
 
 Written for Paarth taking ownership of the landing page, Sept 2026. The point
 of this file is that the context lives **in the repo**, not in a chat log or
@@ -24,11 +24,11 @@ happens on a hosted checkout link that sales sends in the thread after a call.
 | `/` | The live product page. Everything below refers to this unless stated. |
 | `/niro-assure/` | Emergency response protocol, with the published SLA. Renamed from `/niro-assured/` (Sept 2026); that old path is a redirect stub, like `/emergency/`. |
 | `/what-we-do/` | The full India scope as a grid. Has an OG image, so it previews as a card when pasted into WhatsApp. |
-| `/careers/` | Open roles. A trust asset as much as a hiring one — see §6. |
+| `/careers/` | Open roles. A trust asset as much as a hiring one - see §6. |
 | `/lite/` | **Unlisted.** The $270/yr 15-task pack, for sales to share on a call. Obscure, not secret. |
 | `/terms/`, `/privacy/`, `/about/` | Legal and team. |
 | `/emergency/` | A noindex redirect stub to `/niro-assure/`. The old URL shipped to production, so it cannot just 404. |
-| `/gulf/`, `/us/`, `/us-v2/` | **Stale split-test pages.** See §7 — they are materially behind `/`. |
+| `/gulf/`, `/us/`, `/us-v2/` | **Stale split-test pages.** See §7 - they are materially behind `/`. |
 
 ---
 
@@ -43,13 +43,13 @@ Most changes are content, and content is centralised on purpose.
 | The sign-up modal (fields, validation, confirmation) | `components/sections/JoinModal.tsx` |
 | Sign-up state, what gets sent to the sheet | `components/JoinProvider.tsx` |
 | City serviceability matching, phone/ID validation | `lib/cities.ts` |
-| Colours, type, spacing | `app/tokens.css` — **do not invent values outside this file** |
+| Colours, type, spacing | `app/tokens.css` - **do not invent values outside this file** |
 | Component CSS | `app/globals.css` |
 | The sheet backend | `backend/waitlist.gs` (see §4) |
 
 `lib/content.ts` is the plain-text source of truth. Three FAQ answers are
 rendered richer on the page (bullets, a link, a WhatsApp link) from
-`MAIN_FAQ_ITEMS` in `VariantB.tsx` — **if you edit those three answers, edit
+`MAIN_FAQ_ITEMS` in `VariantB.tsx` - **if you edit those three answers, edit
 both.**
 
 ---
@@ -74,7 +74,7 @@ git push origin main
 ```
 
 There is no staging environment. To preview something without shipping it, add
-a route with `robots: { index: false, follow: false }` — `/us-v2/` is the
+a route with `robots: { index: false, follow: false }` - `/us-v2/` is the
 existing example of that pattern.
 
 **Verify after deploying**, because a green build is not proof the content is
@@ -91,8 +91,8 @@ curl -s https://tellniro.com/ | grep -o "<some new copy>"
 Sign-ups POST to a **Google Apps Script web app**, which appends a row to the
 "Niro Sign ups" Google Sheet. That is the entire backend.
 
-- `backend/waitlist.gs` — the web app. Receives sign-ups and funnel beacons.
-- `backend/report.gs` — the daily email report. Pulls Meta spend and joins it
+- `backend/waitlist.gs` - the web app. Receives sign-ups and funnel beacons.
+- `backend/report.gs` - the daily email report. Pulls Meta spend and joins it
   to real sign-ups.
 
 Both files are **copies for version control**. Editing them here changes
@@ -117,7 +117,7 @@ existing column index shifts and `applyLeadNotes()` keeps working.
 
 To check which version is actually deployed, POST anything without an email:
 the script answers `{"ignored":true}` without writing a row, but still re-syncs
-row 1 — so the header tells you what is live.
+row 1 - so the header tells you what is live.
 
 **Column sanity, after the phone-first funnel (25 Sept 2026).** The sheet's
 columns still carry the old funnel's shape, so read them with this in mind:
@@ -153,12 +153,12 @@ Code access alone is not enough to run this. All of these are separate:
 |---|---|---|
 | **GitHub repo** | Write access to `akshat19930-prog/niro-landing` | Repo Settings → Collaborators |
 | **GitHub Pages / DNS** | Admin on the repo; check where the `tellniro.com` DNS is registered | Repo admin + domain registrar |
-| **Google Sheet** ("Niro Sign ups") | **Editor** — it holds every lead | Sheet share menu |
+| **Google Sheet** ("Niro Sign ups") | **Editor** - it holds every lead | Sheet share menu |
 | **Apps Script** (waitlist + report) | Editor, and the right to deploy the web app | Comes with the Sheet - see the note below |
 | **Meta Ads** (`act_2246578592783321`) | Advertiser or Admin | Business Manager → People |
 | **Meta Pixel / CAPI** | Pixel access for event debugging | Business Manager → Data sources |
 | **PostHog** (project 415260) | Member | PostHog → Settings → Members |
-| **The WhatsApp lines** | Two numbers since Sept 2026: sales (+91 91805 81481) on every prospect-facing link, support (+91 88677 38283) on the footer only. Both are set in `lib/config.ts`. | — |
+| **The WhatsApp lines** | Two numbers since Sept 2026: sales (+91 91805 81481) on every prospect-facing link, support (+91 88677 38283) on the footer only. Both are set in `lib/config.ts`. | - |
 | **`hello@tellniro.com`** | The only address published on the live site (replaced akshat@ and privacy@, Sept 2026) - it is the refund and cancellation route in Terms, the privacy contact, and the apply route on `/careers`. Make sure it is monitored. | Email admin |
 
 **On Apps Script specifically.** Both `.gs` files live in **one** project, bound
@@ -181,16 +181,16 @@ set it in Apps Script Properties himself.
 
 ## 6. Decisions that look arbitrary but are not
 
-Change these only deliberately — each one cost a test or an interview to learn.
+Change these only deliberately - each one cost a test or an interview to learn.
 
 - **Trust is the constraint, not price.** Across a $149-vs-$99 test, a plan
   question, and eleven WhatsApp conversations, price never showed up as the
-  blocker. Below ~$50/month actively *destroys* credibility — six research
+  blocker. Below ~$50/month actively *destroys* credibility - six research
   respondents said so unprompted. That is why `/lite` is off-menu.
 - **Neither SKU is styled as preferred.** They are the same service at two
   prices; nudging someone onto a term they did not want is a churn problem.
 - **The city field is a checker, not a gate.** Out-of-area leads are captured
-  and waitlisted by city — that list decides which city opens next. Hiding the
+  and waitlisted by city - that list decides which city opens next. Hiding the
   city list behind the form would be a dark pattern on a trust-led product.
 - **The lead is written to the sheet *before* any WhatsApp handoff.** If the
   click were the only capture we would lose everyone who never sends the
@@ -202,7 +202,7 @@ Change these only deliberately — each one cost a test or an interview to learn
   Nobody in the research bought *because* of AI and several discounted for it.
 - **Emergency SLA numbers are published and scoped to the five launch cities.**
   Do not widen the scope without widening the ops that hold it.
-- **We no longer claim "we never ask for OTPs"** — we do, for some tasks. The
+- **We no longer claim "we never ask for OTPs"** - we do, for some tasks. The
   claim narrowed to passwords/PINs/net-banking, which is keepable.
 
 **The fuller record is `git log`.** Commit messages here carry the *reasoning*,
@@ -222,16 +222,16 @@ not just the change. `git log --oneline` then `git show <sha>` beats asking.
    created a row when an email was present, so every phone-only lead was
    answered `{"ignored":true}` and dropped. Three leads were lost that way.
    Fixed in `backend/waitlist.gs` (email OR phone). **The lesson: the events
-   tab filling is not evidence that leads are landing — check the `waitlist`
+   tab filling is not evidence that leads are landing - check the `waitlist`
    tab's last timestamp.**
 3. **Payment rails are not live.** Recurring cross-border card billing from an
-   India entity is the open question — verify a foreign-issued card can be
+   India entity is the open question - verify a foreign-issued card can be
    stored for auto-debit before promising monthly billing.
 4. **Three live claims need an owner**: the monthly free Niro visit, the data
    commitments in the FAQ (one-click deletion, periodic disclosure,
    task-scoped logged access), and the 20-minute ambulance median.
 5. **`CLAUDE.md` describes the page's rules for AI coding agents.** It was
-   rewritten at handover to match reality — keep it that way, or the next agent
+   rewritten at handover to match reality - keep it that way, or the next agent
    will confidently build the wrong thing.
 6. **The parents' voices are Hindi-transliterated only**, while the page offers
    any language. Add a Tamil and a Bengali one once a native speaker can check them.
@@ -242,8 +242,8 @@ not just the change. `git log --oneline` then `git show <sha>` beats asking.
 
 Written during the build, outside the repo:
 
-- **Launch spec and open decisions** — the twelve calls, and which are still open
-- **Multi-tenancy decision record** — why $99 covers two households
-- **FAQ drafts** — the nine answers with what needed confirming
+- **Launch spec and open decisions** - the twelve calls, and which are still open
+- **Multi-tenancy decision record** - why $99 covers two households
+- **FAQ drafts** - the nine answers with what needed confirming
 
 Ask Akshat for the links; they are private artifacts on his account.

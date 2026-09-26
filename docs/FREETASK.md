@@ -1,7 +1,7 @@
-# /freetask — the first-task sales page
+# /freetask - the first-task sales page
 
 **Live:** https://tellniro.com/freetask/
-**Status:** shipped 25 Sept 2026. Unlisted — `noindex, nofollow`. Obscure, not
+**Status:** shipped 25 Sept 2026. Unlisted - `noindex, nofollow`. Obscure, not
 secret: anyone with the link can open it.
 
 For Paarth. This page exists to be **sent by hand** to a lead after a call. It
@@ -13,7 +13,7 @@ instrumented so we learn which of the eight people actually want.
 ## 1. What it is, and what it is not
 
 It is a **static HTML file**, not a React page. It lives at
-`public/freetask/index.html` and Next copies it into the build **verbatim** —
+`public/freetask/index.html` and Next copies it into the build **verbatim** -
 nothing in the site's design system, layout, nav, footer, fonts or analytics
 touches it.
 
@@ -58,7 +58,7 @@ imported, because nothing from the design system reaches `public/`.
 
 ## 3. The eight tasks
 
-Drawn from the **TaskZero** framework — see
+Drawn from the **TaskZero** framework - see
 `Niro_TaskZero_final_23` in Drive, which scored 23 candidates out of 30 on
 Blast, Wow, Reach, Speed, Cost and Objection, and concluded with a two-track
 menu (the NRI's own India setup vs the parent-side tasks).
@@ -82,7 +82,7 @@ a **"Know more"** button. Three beacons go to the same Apps Script endpoint and
 | `freetask_expand` | a card is first opened | **which tasks people want** |
 | `whatsapp_click` | "Start this task" is clicked | which converted |
 
-`freetask_expand` **dedupes per task per session** — re-opening a card is the
+`freetask_expand` **dedupes per task per session** - re-opening a card is the
 same person still deciding, and counting it twice would flatter whichever card
 sits first.
 
@@ -116,7 +116,7 @@ Those land in the beacons, and they also go into the WhatsApp message as a `Ref`
 line, so an inbound chat is reconcilable:
 
 ```
-Hi Niro — I'd like to start with the insurance policy audit and gap report.
+Hi Niro - I'd like to start with the insurance policy audit and gap report.
 
 Ref: na · paarth_oct
 ```
@@ -130,7 +130,7 @@ attribution survives the hop.
 ## 6. Two things that will bite, and one open item
 
 1. **The WhatsApp number is a placeholder decision, not a confirmed one.**
-   `WA_NUMBER` is currently `919180581481` — `SALES_WHATSAPP` from
+   `WA_NUMBER` is currently `919180581481` - `SALES_WHATSAPP` from
    `lib/config.ts`. Akshat is confirming. **Check this before sending the link
    to anyone.**
 
@@ -139,7 +139,7 @@ attribution survives the hop.
    cannot. They match today. If that URL ever changes, **this page will silently
    stop reporting while the rest of the site keeps working.** Same silent-failure
    class as redeploying the Apps Script web app with "New deployment" instead of
-   editing the existing one — see `docs/HANDOVER.md` §4.
+   editing the existing one - see `docs/HANDOVER.md` §4.
 
 3. **`data-task` is the measurement key.** It is the phrase that completes "I'd
    like to start with …" in the prefill *and* the label the beacons are tagged
@@ -152,7 +152,7 @@ attribution survives the hop.
 ## 7. Next step, when you get to it
 
 The plan is to stitch this into the straight-through journey rather than leave
-it as a hand-sent link. When that happens the attribution already works — the
+it as a hand-sent link. When that happens the attribution already works - the
 UTM merge and the shared `niro_sid` were written for exactly that, so the page
 does not need rewriting, only linking to.
 

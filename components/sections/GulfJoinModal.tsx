@@ -78,12 +78,12 @@ function Question({ label, children }: { label: string; children: React.ReactNod
 }
 
 /**
- * Gulf join modal — email → dual-sided qualifiers → confirmation.
+ * Gulf join modal - email → dual-sided qualifiers → confirmation.
  *
  * Reuses the main site's qualifier flow (adapted for the Gulf/dual context:
  * household here + parents in India, no plan question since /gulf is a single
  * $149 SKU). The confirmation is a plain thank-you: per the build brief, /gulf
- * is a dead end for this split test — no referral link, no waitlist-position
+ * is a dead end for this split test - no referral link, no waitlist-position
  * number, no share loop. We keep the optional WhatsApp number, the qualifier
  * flow's highest-intent signal.
  */
@@ -163,7 +163,7 @@ export function GulfJoinModal() {
                 CTA that opens this modal, and repeating it at the commit step
                 reads as a no-op ("did my tap register?") instead of a next
                 step. The main page, which converts ~45% here vs /gulf's ~26%,
-                changes the label — so we match it. */}
+                changes the label - so we match it. */}
             <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>Join the waitlist</h2>
             <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", lineHeight: 1.6, margin: "0 0 24px" }}>
               First task free - no card to join. Just your email to hold your family&apos;s place.

@@ -23,7 +23,7 @@ export function HeroCopy() {
 
   return (
     <>
-      {/* Offer badge — the "first task free" hook, surfaced in the fold (it
+      {/* Offer badge - the "first task free" hook, surfaced in the fold (it
           otherwise only appears inside the modal). Same for every ad variant. */}
       <div style={{ marginBottom: 12 }}>
         <Badge tone="brand" icon={<Icon name="check-circle" size={14} />}>

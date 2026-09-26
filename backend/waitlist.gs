@@ -1,5 +1,5 @@
 /**
- * Niro waitlist backend — Google Apps Script Web App writing to a Google Sheet.
+ * Niro waitlist backend - Google Apps Script Web App writing to a Google Sheet.
  *
  * Receives the signup payload POSTed by the landing page's join flow and:
  *   - upserts one row per signup, keyed by eventId (the flow POSTs up to 3 times
@@ -32,7 +32,7 @@
 var SHEET_NAME = "waitlist";
 // Starting position for the Sheet's internal "position" column; grows with each
 // signup. (The site's confirmation shows its own number, so this is cosmetic for
-// the Sheet — no need to redeploy the script just to change it.)
+// the Sheet - no need to redeploy the script just to change it.)
 var BASE_POSITION = 320;
 
 var EVENTS_SHEET = "events";
@@ -47,7 +47,7 @@ function doPost(e) {
     data = {};
   }
 
-  // Funnel/session beacons go to the events tab (no lock — high volume, append
+  // Funnel/session beacons go to the events tab (no lock - high volume, append
   // is fine, and we never read them back in the same request).
   if (data.type === "event") {
     return logEventRow_(data);
@@ -186,7 +186,7 @@ var HEADER = [
    RETRO-BACKFILL: resolve the `market` column for every existing lead.
    -----------------------------------------------------------------------
    Older rows were only tagged with a coarse time-zone `geo`, so anyone
-   outside the Gulf / North America zones landed as "other" — including real
+   outside the Gulf / North America zones landed as "other" - including real
    Gulf leads whose phone is set to IST. This rewrites `market` for every row
    using the strongest signal available, in order:
 
@@ -197,7 +197,7 @@ var HEADER = [
 
    RUN IT:  select backfillMarketDryRun (preview, writes nothing) and press
    Run, read the Execution log, then run backfillMarket to apply.
-   Safe to re-run — it only writes cells whose value actually changes.
+   Safe to re-run - it only writes cells whose value actually changes.
    ===================================================================== */
 function backfillMarketDryRun() { return backfillMarket_(true); }
 function backfillMarket() { return backfillMarket_(false); }
@@ -242,7 +242,7 @@ function backfillMarket_(dryRun) {
   head.forEach(function (h, i) { idx[String(h)] = i; });
   var cMarket = idx["market"], cPage = idx["page"], cGeo = idx["geo"];
   var cCamp = idx["utm_campaign"], cPhone = idx["phone"], cEmail = idx["email"];
-  if (cMarket == null) { Logger.log("No 'market' column — paste the latest HEADER first."); return; }
+  if (cMarket == null) { Logger.log("No 'market' column - paste the latest HEADER first."); return; }
 
   var changes = [], tally = {}, moved = 0;
   for (var r = 1; r < values.length; r++) {
@@ -258,7 +258,7 @@ function backfillMarket_(dryRun) {
     }
   }
 
-  Logger.log((dryRun ? "DRY RUN — nothing written.\n" : "APPLIED.\n") +
+  Logger.log((dryRun ? "DRY RUN - nothing written.\n" : "APPLIED.\n") +
     "Rows scanned: " + (values.length - 1) + " | rows changed: " + moved);
   Logger.log("Resulting market split: " + JSON.stringify(tally));
   changes.slice(0, 60).forEach(function (c) {

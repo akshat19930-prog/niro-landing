@@ -1,27 +1,27 @@
 /**
- * Niro smoke-test — thrice-daily email report (12:00, 18:00, 00:00 IST).
+ * Niro smoke-test - thrice-daily email report (12:00, 18:00, 00:00 IST).
  * Google Apps Script.
  *
  * Lives in the SAME spreadsheet as waitlist.gs. Reads:
  *   - `waitlist` tab  (signups: now carry market / page / geo)
  *   - `events` tab    (funnel + session beacons: exposure, join_initiated,
- *                      email_entered, phone_added, session_end — each now
+ *                      email_entered, phone_added, session_end - each now
  *                      carries `page` + `geo`)
  *   - Meta Marketing API (ad-set level: spend / impressions / clicks / leads /
  *                         landing-page views)
  *
  * The email has FOUR blocks:
- *   1-3. One metric×date table per market — North America, Gulf, Gulf (Dual) —
+ *   1-3. One metric×date table per market - North America, Gulf, Gulf (Dual) -
  *        each with the same columns (last N days + MTD) and these rows, in order:
  *          Sessions (unique visitors), Bounce rate, Avg session duration,
  *          Get Early Access clicked, Email entered, Email entered / visitors %,
  *          Phone number submitted, Cost per lead, Spend, Meta CPM, CTR.
- *   4.   Meta ads console — two tables across ALL ad sets:
+ *   4.   Meta ads console - two tables across ALL ad sets:
  *          (a) cost per lead by ad set, (b) cost per visitor by ad set.
  *
  * SEGMENTATION
  *   Funnel/session rows come from our own beacons. Every session lands in
- *   exactly one of three clusters — resolved by page, then ad campaign, then
+ *   exactly one of three clusters - resolved by page, then ad campaign, then
  *   time zone (see marketForEvent_):
  *     - Gulf (Dual) = page starts with "/gulf", or a *_gulf_dual campaign
  *     - Gulf        = a *_gulf campaign, or geo "gulf"
@@ -29,7 +29,7 @@
  *   There is no rest-of-world bucket: untagged and tagged-"other" traffic both
  *   fall back to CONFIG.UNTAGGED_MARKET, so the sections reconcile to the sheet.
  *   Spend / CPM / CTR / Cost-per-lead come from Meta, split by AD-SET NAME via
- *   CONFIG.MARKETS[].adset regexes — ADJUST THOSE to your real ad-set names.
+ *   CONFIG.MARKETS[].adset regexes - ADJUST THOSE to your real ad-set names.
  *   The console tables show every ad set with the market each mapped to, so you
  *   can confirm the mapping at a glance.
  *
@@ -47,7 +47,7 @@ var CONFIG = {
   META_API_VERSION: "v19.0",
 
   BUDGET_INR: 207500,
-  TEST_START: "2026-08-07",         // yyyy-mm-dd — start of the window (captures all spend)
+  TEST_START: "2026-08-07",         // yyyy-mm-dd - start of the window (captures all spend)
   TEST_DAYS: 12,
   DATE_COLS: 5,                     // trailing day columns before MTD
 
@@ -59,12 +59,12 @@ var CONFIG = {
   UNTAGGED_MARKET: "na",
 
   // Ad sets (or campaigns) whose name matches this are dropped from the report
-  // entirely — no spend, no leads, no attribution. Used to exclude the Hindi
+  // entirely - no spend, no leads, no attribution. Used to exclude the Hindi
   // ad-set variants. Set to null to keep everything.
   EXCLUDE_ADSET: /hindi/i,
 
   // The three report markets, in display order. Meta spend/CPM/CTR/leads are
-  // attributed by EXACT campaign name (`campaigns`) — ad-set names collide
+  // attributed by EXACT campaign name (`campaigns`) - ad-set names collide
   // across markets (a "P3 English" ad set exists in both the US-CA and the Gulf
   // campaigns), so only the campaign disambiguates. `adset` is a fuzzy fallback
   // for any NEW campaign not yet listed here. Add new campaign names as you make
@@ -219,7 +219,7 @@ function fetchMeta_() {
       var id = String(r.adset_id || r.adset_name || "?");
       var name = String(r.adset_name || id);
       var campaign = String(r.campaign_name || "");
-      // Drop excluded ad sets (e.g. Hindi) entirely — before any accumulation.
+      // Drop excluded ad sets (e.g. Hindi) entirely - before any accumulation.
       if (CONFIG.EXCLUDE_ADSET && (CONFIG.EXCLUDE_ADSET.test(name) || CONFIG.EXCLUDE_ADSET.test(campaign))) return;
 
       var date = r.date_start;
@@ -265,7 +265,7 @@ function metaGetAll_(url) {
   return out;
 }
 /** Value for one action_type from an insights actions[] array (0 if absent).
- *  Use canonical single types (e.g. "lead", "landing_page_view") — never sum
+ *  Use canonical single types (e.g. "lead", "landing_page_view") - never sum
  *  Meta's duplicate lead variants, which would multiply the count. */
 function metaAction_(actions, type) {
   if (!actions || !actions.length) return 0;
@@ -274,7 +274,7 @@ function metaAction_(actions, type) {
   return v;
 }
 function marketForAdset_(name, campaign) {
-  // 1) Primary: exact campaign-name match (unambiguous — ad-set names collide).
+  // 1) Primary: exact campaign-name match (unambiguous - ad-set names collide).
   var camp = String(campaign || "").trim().toLowerCase();
   if (camp) {
     for (var i = 0; i < CONFIG.MARKETS.length; i++) {
@@ -415,12 +415,12 @@ function nextDay_(yyyymmdd) {
   return Utilities.formatDate(d, CONFIG.TIMEZONE, "yyyy-MM-dd");
 }
 
-/** Which report market an event belongs to — always one of the three clusters
+/** Which report market an event belongs to - always one of the three clusters
  *  (na | gulf | gulf_dual). There is no rest-of-world bucket.
  *
  *  Order matters: the /gulf page and the ad CAMPAIGN are hard facts, the
  *  browser time zone is only a guess. A Gulf visitor whose phone is set to IST
- *  reports geo "other" — before campaign tagging those leads were dropped from
+ *  reports geo "other" - before campaign tagging those leads were dropped from
  *  every section (the "sheet says 11, report says 7" gap). Anything still
  *  unplaced falls back to CONFIG.UNTAGGED_MARKET, so every session lands in a
  *  section and the three sections always reconcile to the sheet. */
@@ -440,7 +440,7 @@ function marketForEvent_(page, geo, market, campaign) {
   // 3. Coarse time-zone geography.
   if (g === "gulf") return "gulf";
   if (g === "na") return "na";
-  // 4. Everything else — legacy/untagged sessions AND tagged rest-of-world
+  // 4. Everything else - legacy/untagged sessions AND tagged rest-of-world
   //    traffic (India, UK, Europe, SE Asia, …). Both fall back to the default
   //    market rather than being split out or dropped.
   return CONFIG.UNTAGGED_MARKET || "na";
@@ -571,7 +571,7 @@ function dur_(sec) {
   return m ? (m + "m " + s + "s") : (s + "s");
 }
 function na_() { return '<span style="color:#9AA79E">n/a</span>'; }
-/** Price-arm conversion cell: "9.1% (1/11)" — the e2v % with email/visitors
+/** Price-arm conversion cell: "9.1% (1/11)" - the e2v % with email/visitors
  *  behind it. Dash when the arm had no visitors in the window. */
 /** Scroll-funnel cell: absolute count with % of sessions in muted parens, e.g.
  *  "43 (27%)". Dash when there were no sessions. */
@@ -736,14 +736,14 @@ function marketLabelFor_(key) {
 function renderHtml_(m) {
   var h = [];
   h.push('<div style="max-width:760px;margin:0 auto;font:14px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:#1a2b22">');
-  h.push('<h2 style="font-size:18px;margin:0 0 4px">Niro smoke test — ' +
+  h.push('<h2 style="font-size:18px;margin:0 0 4px">Niro smoke test - ' +
     Utilities.formatDate(m.now, CONFIG.TIMEZONE, "EEE MMM d, HH:mm z") + '</h2>');
   h.push('<p style="color:#5b6b60;margin:0 0 16px">Day ' + m.dayNum + ' of ' + CONFIG.TEST_DAYS +
     ' · ' + m.daysLeft + ' left · ' + m.totalSignups + ' signups (+' + m.newSignups + ') · spend ' +
     (m.meta_ok ? money_(m.spendMTD) : na_()) + ' / ' + money_(m.budget) + '</p>');
   if (!m.meta_ok) {
     h.push('<p style="background:#FBEEC8;border:1px solid #E4C97A;border-radius:6px;padding:8px 12px;color:#7a5b12">' +
-      'Meta not connected' + (m.meta_err ? ' (' + m.meta_err + ')' : '') + ' — Cost per lead / Spend / CPM / CTR show n/a. Set META_ACCESS_TOKEN (Project Settings → Script Properties, or CONFIG).</p>');
+      'Meta not connected' + (m.meta_err ? ' (' + m.meta_err + ')' : '') + ' - Cost per lead / Spend / CPM / CTR show n/a. Set META_ACCESS_TOKEN (Project Settings → Script Properties, or CONFIG).</p>');
   } else if (m.unmappedSpend > 0) {
     h.push('<p style="background:#FBEEC8;border:1px solid #E4C97A;border-radius:6px;padding:8px 12px;color:#7a5b12">' +
       money_(m.unmappedSpend) + ' of spend is in ad sets that matched no market, so it is missing from the three sections above (see rows marked <b>Unmapped</b> in the console below). ' +
@@ -754,7 +754,7 @@ function renderHtml_(m) {
   m.markets.forEach(function (market) { h.push(renderMarketTable_(m, market)); });
 
   // ---- Block 4: Meta ads console (2 tables across all ad sets) ----
-  h.push('<h2 style="font-size:16px;margin:30px 0 4px;padding-top:16px;border-top:2px solid #e6e2d6">Meta ads — all ad sets</h2>');
+  h.push('<h2 style="font-size:16px;margin:30px 0 4px;padding-top:16px;border-top:2px solid #e6e2d6">Meta ads - all ad sets</h2>');
 
   // Table A: cost per lead
   // Cost per lead is computed from REAL signups in the sheet, not from Meta's
@@ -823,7 +823,7 @@ function renderHtml_(m) {
   h.push('<p style="margin:22px 0 0;padding-top:12px;border-top:1px solid #eee;color:#5b6b60;font-size:12px">' +
     'Funnel rows are from our own beacons, split by page + geography: Gulf (Dual) = /gulf; Gulf = "/" from a Gulf time zone; North America = "/" from a US/Canada time zone. ' +
     'Legacy/untagged sessions (logged before geo tracking, or from cached pre-update JS) are counted under ' + (marketLabelFor_(CONFIG.UNTAGGED_MARKET) || 'no market') + ' to retain history. Every session is placed in one of the three sections - by page, then ad campaign, then time zone - and anything still unplaced (India, UK, Europe, …) falls back to ' + (marketLabelFor_(CONFIG.UNTAGGED_MARKET) || 'North America') + ', so the three sections always add up to the sheet. ' +
-    'Spend / CPM / CTR / Cost-per-lead are from Meta, mapped to a market by ad-set name (CONFIG.MARKETS) — the console tables show that mapping. ' +
+    'Spend / CPM / CTR / Cost-per-lead are from Meta, mapped to a market by ad-set name (CONFIG.MARKETS) - the console tables show that mapping. ' +
     '"Visitors" in the second console table = Meta landing-page views. Section Cost per lead = Meta spend ÷ emails entered (from our beacons); console Cost per lead = Meta spend ÷ real signups in the sheet. Meta\'s own lead count over-reports by roughly 3x and is shown greyed, for contrast only. ' +
     'Bounce / duration are approximations (engaged = ≥10s, a scroll/click, or starting the waitlist).</p>');
   h.push('</div>');
