@@ -640,7 +640,7 @@ function PricingB() {
                 <span className="price-opt-per">{p.per}</span>
               </div>
               <div className="price-opt-note">
-                {p.id === "quarter" ? "Billed $250 once, today. Then $99/month." : "Billed monthly. No lock-in."}
+                {p.id === "quarter" ? "Billed $250 every three months. Cancel any time." : "Billed monthly. No lock-in."}
               </div>
             </div>
           ))}

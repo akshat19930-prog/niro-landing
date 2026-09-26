@@ -32,11 +32,13 @@ export default function TermsPage() {
 
         <h2>Membership, billing and renewal</h2>
         <p>
-          Niro is sold as a membership. There are two ways to start:{" "}
-          <strong>US $99 per month</strong>, or <strong>US $250 for three
-          months</strong>, billed once at the start of the term. Both continue at
-          US $99 per month afterwards, charged to the card you have on file, until
-          you cancel. We send you a reminder{" "}
+          Niro is sold as a membership, at one of two prices:{" "}
+          <strong>US $99 per month</strong>, billed monthly, or{" "}
+          <strong>US $83 per month billed quarterly</strong>, charged as US $250
+          every three months. Both renew at the same rate, charged to the card
+          you have on file, until you cancel. The quarterly rate is not an
+          introductory price and does not change after the first quarter. We
+          send you a reminder{" "}
           <strong>seven days before every renewal</strong> so no charge is a
           surprise.
         </p>
