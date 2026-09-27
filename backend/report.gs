@@ -46,6 +46,9 @@ var CONFIG = {
   RECIPIENTS: "akshat@tellniro.com, paarth@tellniro.com",
   TIMEZONE: "Asia/Kolkata",
   REPORT_TITLE: "Niro POC",
+  // Bump on every paste. The report prints this, so "which version is actually
+  // deployed" is answerable from the email instead of by guesswork.
+  BUILD: "2026-09-27a",
 
   // Launch. The running window starts here, so the report never mixes POC
   // numbers with smoke-test numbers in one column.
@@ -321,6 +324,15 @@ function num_(x) { return Number(x) || 0; }
 function buildModel_(data, meta) {
   var now = new Date(), tz = CONFIG.TIMEZONE;
 
+  // Row counts as READ, before any filter. When a number in this report looks
+  // wrong, the first question is always whether the data arrived at all, and
+  // this is the cheapest way to answer it.
+  var rawSignupRows = data.signups.length, rawEventRows = data.events.length;
+  var rowsWithPhone = 0;
+  data.signups.forEach(function (s) {
+    if (String(s.phone || "").replace(/[^\d]/g, "").length >= 8) rowsWithPhone++;
+  });
+
   // A lead is now identified by PHONE. The funnel stopped collecting email in
   // Sept 2026, so the old "must have an email" filter silently dropped every
   // POC signup and the report read zero. Keep anything with a phone or an
@@ -464,6 +476,13 @@ function buildModel_(data, meta) {
     })(),
     // Unique leads, not sheet rows, so this agrees with the conversion table
     // instead of double counting anyone who submitted twice.
+    diag: {
+      signupRows: rawSignupRows,
+      eventRows: rawEventRows,
+      rowsWithPhone: rowsWithPhone,
+      afterFilter: data.signups.length,
+      uniqueLeads: uniqueLeads
+    },
     totalSignups: uniqueLeads,
     newSignups: prev ? Math.max(0, uniqueLeads - prev.totalSignups) : uniqueLeads,
     dayNum: dayNum,
@@ -1042,6 +1061,16 @@ function renderHtml_(m) {
     'Spend / CPM / CTR / Cost-per-lead are from Meta, mapped to a market by ad-set name (CONFIG.MARKETS) - the console tables show that mapping. ' +
     '"Visitors" in the second console table = Meta landing-page views. Section Cost per lead = Meta spend ÷ emails entered (from our beacons); console Cost per lead = Meta spend ÷ real signups in the sheet. Meta\'s own lead count over-reports by roughly 3x and is shown greyed, for contrast only. ' +
     'Bounce / duration are approximations (engaged = ≥10s, a scroll/click, or starting the waitlist).</p>');
+  // ---- data provenance, so a wrong number can be diagnosed from the email ----
+  var d = m.diag;
+  h.push('<p style="margin:26px 0 0;padding-top:12px;border-top:1px solid #e6e2d6;' +
+    'color:#8b978f;font-size:11.5px">Build <b>' + CONFIG.BUILD + '</b> ' + '\u00b7' + ' read ' +
+    d.signupRows + ' waitlist rows and ' + d.eventRows + ' event rows ' + '\u00b7' + ' ' +
+    d.rowsWithPhone + ' rows carry a phone ' + '\u00b7' + ' ' + d.afterFilter +
+    ' kept after filtering ' + '\u00b7' + ' ' + d.uniqueLeads + ' unique leads ' + '\u00b7' + ' window ' +
+    CONFIG.LAUNCH_DATE + ' onwards.' +
+    (d.signupRows === 0 ? ' <b style="color:#C0392B">The waitlist tab read as EMPTY, which is a wiring fault, not a lead drought.</b>' : '') +
+    '</p>');
   h.push('</div>');
   return h.join("");
 }
