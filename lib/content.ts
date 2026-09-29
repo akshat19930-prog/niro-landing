@@ -223,7 +223,7 @@ export const HANDLE_GROUPS: {
       },
       {
         icon: "home",
-        t: "Property management & misc",
+        t: "Property management & others",
         d: "Tenants, rent follow-ups and the small things nobody else will chase - including tech support for your parents\u2019 how-to questions.",
       },
     ],
@@ -866,7 +866,7 @@ export const INDIA_SCOPE: { title: string; items: string[] }[] = [
     ],
   },
   {
-    title: "Property management & Others",
+    title: "Property management & others",
     items: [
       "Reminders your parents can set themselves, for birthdays and events",
       "Property and tenant management",
@@ -1107,7 +1107,13 @@ export const INDIA_CITIES: string[] = [
    times match EMERGENCY_SLA above.
    ===================================================================== */
 
-export type GuideItem = { t: string; tag?: string };
+export type GuideItem = {
+  t: string;
+  tag?: string;
+  /** Optional "learn more" target, rendered as a link after the text. */
+  href?: string;
+  hrefLabel?: string;
+};
 
 export const GUIDE_SCOPE: {
   title: string;
@@ -1122,25 +1128,21 @@ export const GUIDE_SCOPE: {
       "From quarterly check-ups that run themselves to a calm, planned response when something goes wrong.",
     items: [
       { t: "A health file for each parent: conditions, current medicines and strengths, allergies, treating doctors" },
-      { t: "Two or three hospitals chosen in advance on drive time, insurer network and specialty" },
-      { t: "A 24x7 first-response line for your parents, a neighbour or the society guard" },
-      { t: "Ambulance dispatch and tracking" },
       {
-        t: "A Niro Assistant at the hospital in an emergency, if you opt in. Live in Bengaluru, other cities coming soon",
+        // Was four separate lines: hospitals chosen in advance, the 24x7
+        // first-response line, ambulance dispatch, and an Assistant at the
+        // hospital. They are one promise, and the detail lives on its own page.
+        t: "Reliable emergency response with Niro Assure: hospitals chosen in advance, a 24x7 first-response line, ambulance dispatch and tracking, and a Niro Assistant at the hospital",
         tag: "Bengaluru",
+        href: "/niro-assure/",
+        hrefLabel: "Learn more",
       },
-      { t: "Admission handled at the insurance desk, not the billing counter" },
-      { t: "Cashless pre-authorisation put together, chased, and enhanced mid-stay" },
-      { t: "Reimbursement claims filed, and appealed when cashless fails" },
       { t: "A policy audit: what your parents’ cover actually pays, in plain language" },
       { t: "Appointments with their own doctor, in their city or another, with someone to go along if needed" },
-      { t: "Prescription refills with two-person verification, plus refill-due reminders" },
+      { t: "Prescription refills with two-person verification, plus medication and supplement reminders kept running" },
       { t: "Regular health tests on a schedule, with home sample collection and reports collected" },
-      { t: "Readings shared on chat (HbA1c, BP, weight and the rest), stored and sent to the doctor before each visit" },
-      { t: "BP and diabetes management: reading trends recorded, with an alert and a nudge to see the doctor when a reading looks off or their protocol calls for it" },
+      { t: "BP, sugar and weight readings recorded on chat, trends tracked, sent to the doctor before each visit, and flagged when one looks off" },
       { t: "Physiotherapists, attendants, yoga trainers and dieticians found, vetted, negotiated and supervised" },
-      { t: "Health forwards fact-checked on chat, before anyone at home acts on them" },
-      { t: "Medication, supplement and readings reminders, set up and kept running" },
     ],
   },
   {
@@ -1215,7 +1217,7 @@ export const GUIDE_SCOPE: {
     ],
   },
   {
-    title: "Property management & more",
+    title: "Property management & others",
     icon: "home",
     intro:
       "Periodic visits, tenants, agreements, repairs. Everything you’d hire a property manager for, from the same team.",
@@ -1360,10 +1362,6 @@ export const GUIDE_VISIT_DETAILS: { title: string; icon: IconName; points: strin
 ];
 
 export const GUIDE_STEPS: { title: string; body: string }[] = [
-  {
-    title: "Onboarding, about an hour.",
-    body: "One call with you, one with your parents. We set up the health file, the home asset register, the bill and renewal calendar, and the signed authorisation that lets us represent them.",
-  },
   {
     title: "The group opens.",
     body: "You, your parents and your Niro Assistants in one WhatsApp group. Plus a private chat with you, and an optional one with a parent who’d rather ask separately.",

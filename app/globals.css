@@ -1504,3 +1504,14 @@
   .uc-card:hover .uc-list { display: block; }
   .uc-card:hover .uc-chev { transform: rotate(90deg); }
 }
+
+/* "Learn more" inside a scope bullet. Inline so it reads as part of the line,
+   not as a second action competing with the card. */
+.uc-more {
+  margin-left: 6px;
+  color: var(--brand);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}

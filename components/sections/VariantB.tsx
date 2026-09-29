@@ -351,7 +351,7 @@ function UseCasesB() {
     { icon: "file-text", title: "EPFO, tax, govt paperwork & documents" },
     { icon: "plane", title: "Travel concierge & admin" },
     { icon: "wallet", title: "Bills, banking, customer support issues & refund claims" },
-    { icon: "home", title: "Property management & Others" },
+    { icon: "home", title: "Property management & others" },
   ];
   return (
     <section data-screen-label="Use cases (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
@@ -405,7 +405,21 @@ function UseCasesB() {
                       {scope.items.map((it) => (
                         <li key={it.t}>
                           <Icon name="check" size={14} />
-                          <span>{it.t}</span>
+                          <span>
+                            {it.t}
+                            {it.href && (
+                              // stopPropagation: the whole card is a toggle, so
+                              // without this the click opens the link AND
+                              // collapses the list under the cursor.
+                              <a
+                                href={it.href}
+                                className="uc-more"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                {it.hrefLabel || "Learn more"}
+                              </a>
+                            )}
+                          </span>
                         </li>
                       ))}
                     </ul>
