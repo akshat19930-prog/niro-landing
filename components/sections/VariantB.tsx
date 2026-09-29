@@ -252,9 +252,6 @@ function HowItWorksB() {
           </div>
         </div>
 
-        <div style={{ marginTop: 26 }}>
-          <AskNiroCta placement="how-it-works" prompt="Got something specific in mind?" label="Ask Niro on WhatsApp" />
-        </div>
       </div>
     </section>
   );
@@ -749,17 +746,6 @@ const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
     };
   }
   if (i === 5) {
-    return {
-      q: f.q,
-      a: (
-        <>
-          <p style={{ margin: "0 0 10px" }}>{f.a}</p>
-          <WhatsAppLink placement="faq-trial" message={ASK_MESSAGE}>
-            Chat with Niro to claim your free task
-          </WhatsAppLink>
-        </>
-      ),
-    };
   }
   return { q: f.q, a: f.a };
 });
