@@ -139,6 +139,11 @@ export default function FamilyGuidePage() {
                           <span>
                             {it.t}
                             {it.tag && <span className="fg-tag">{it.tag}</span>}
+                            {it.href && (
+                              <a href={it.href} className="uc-more">
+                                {it.hrefLabel || "Learn more"}
+                              </a>
+                            )}
                           </span>
                         </li>
                       ))}
