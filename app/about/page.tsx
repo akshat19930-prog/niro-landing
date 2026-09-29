@@ -27,7 +27,7 @@ const FOUNDERS: Founder[] = [
     name: "Paarth Dhar",
     photo: "/people/paarth.jpg",
     role: "Co-founder",
-    bio: "12 years building consumer startups across fintech (VP, Growth at AngelOne) and ecommerce. Second-time founder - exited his first company to AngelOne.",
+    bio: "12 years building consumer startups across fintech (VP, Growth at AngelOne) and ecommerce. Second-time founder - exited his last company.",
     linkedin: "https://www.linkedin.com/in/paarthdhar/",
   },
 ];
