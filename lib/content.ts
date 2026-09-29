@@ -332,17 +332,17 @@ export const TESTIMONIALS_SHORT: {
     photo: "/people/mayank.jpg",
   },
   {
-    name: "Vaibhav, 32",
+    name: "Ankit, 37",
     location: "San Francisco, US ↔ Patiala, India",
     quote:
-      "On an H1B, I can't just fly home. After Papa's heart scare, knowing there's someone who'll be at the hospital - with full context, acting on our behalf - is what lets me sleep.",
+      "Niro runs my parents' health the way I always wanted to - medication reminders and refills, Dad's BP readings recorded and sent to our family doctor before each appointment, Mom enrolled for yoga and a fortnightly massage. Love it.",
     photo: "/people/vaibhav.jpg",
   },
   {
     name: "Abhishek, 43",
     location: "Dubai, UAE ↔ Gwalior, India",
     quote:
-      "They recovered ₹4L of my EPFO that had been stuck for eight years - I'd completely given up on it. And Mom now gets at-home massages on a fortnightly rhythm I set up once.",
+      "Niro handles everything for my mom living alone - the three visiting staff including her attendant, the groceries, and her regular doctor appointments.",
     photo: "/people/abhishek.jpg",
   },
   {
@@ -866,7 +866,7 @@ export const INDIA_SCOPE: { title: string; items: string[] }[] = [
     ],
   },
   {
-    title: "Property management & misc",
+    title: "Property management & Others",
     items: [
       "Reminders your parents can set themselves, for birthdays and events",
       "Property and tenant management",

@@ -12,7 +12,7 @@ import { VoiceStream } from "@/components/ds/VoiceStream";
 import { ChatVideo } from "@/components/ds/ChatVideo";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
-import { PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, FAQ } from "@/lib/content";
+import { PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, FAQ, GUIDE_SCOPE } from "@/lib/content";
 
 /* ---------------------------------------------------------------- helpers */
 
@@ -339,37 +339,19 @@ function UseCasesB() {
   // qualifier, the scope page and the ops taxonomy - so a lead who ticks a box
   // here recognises the same words on the next screen and in their first
   // WhatsApp reply.
-  const cases: { icon: IconName; title: string; items: string }[] = [
-    {
-      icon: "heart-pulse",
-      title: "Family's health admin & emergency response",
-      items: "Check-ups · appointments · ambulance in minutes, with our Niro Assistant at the hospital",
-    },
-    {
-      icon: "wrench",
-      title: "Household chores, upkeep & staff",
-      items: "Repairs · maintenance · verified domestic help and replacements",
-    },
-    {
-      icon: "file-text",
-      title: "EPFO, tax, govt paperwork & documents",
-      items: "Stuck EPFO claims · attestation · CGHS and pension · India ITR",
-    },
-    {
-      icon: "plane",
-      title: "Travel concierge & admin",
-      items: "Visa and passport appointments, accompanied · travel booked end to end",
-    },
-    {
-      icon: "wallet",
-      title: "Bills, banking, customer support issues & refund claims",
-      items: "Bills and property tax · dormant accounts · the wrong bill, argued down",
-    },
-    {
-      icon: "home",
-      title: "Property management & misc",
-      items: "Tenants · rent follow-ups · the small things nobody else will chase",
-    },
+  //
+  // The task list under each one is NOT duplicated here: it is read from
+  // GUIDE_SCOPE, the same source /family-guide renders, matched on the icon
+  // rather than the title so a wording tweak on either side cannot silently
+  // break the pairing.
+  const [openCard, setOpenCard] = useState<string | null>(null);
+  const cases: { icon: IconName; title: string }[] = [
+    { icon: "heart-pulse", title: "Family's health admin & emergency response" },
+    { icon: "wrench", title: "Household chores, upkeep & staff" },
+    { icon: "file-text", title: "EPFO, tax, govt paperwork & documents" },
+    { icon: "plane", title: "Travel concierge & admin" },
+    { icon: "wallet", title: "Bills, banking, customer support issues & refund claims" },
+    { icon: "home", title: "Property management & Others" },
   ];
   return (
     <section data-screen-label="Use cases (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
@@ -385,42 +367,53 @@ function UseCasesB() {
             // fit, three need 992px and do. Below ~696px it drops to one.
             gridTemplateColumns: "repeat(auto-fit, minmax(min(320px, 100%), 1fr))",
             gap: 16,
+            // Cards grow when opened; without this the whole row grows with them.
+            alignItems: "start",
           }}
         >
-          {cases.map((c) => (
-            <div
-              key={c.title}
-              style={{
-                background: "var(--surface-card)",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius-xl)",
-                padding: "var(--space-5)",
-                boxShadow: "var(--shadow-1)",
-              }}
-            >
-              <span
-                style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: 12,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "var(--brand-soft)",
-                  color: "var(--brand)",
-                  marginBottom: 14,
+          {cases.map((c) => {
+            const scope = GUIDE_SCOPE.find((g) => g.icon === c.icon);
+            const isOpen = openCard === c.title;
+            return (
+              <div
+                key={c.title}
+                className={"uc-card" + (isOpen ? " uc-open" : "")}
+                role="button"
+                tabIndex={0}
+                aria-expanded={isOpen}
+                onClick={() => setOpenCard(isOpen ? null : c.title)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setOpenCard(isOpen ? null : c.title);
+                  }
                 }}
               >
-                <Icon name={c.icon} size={22} />
-              </span>
-              <div style={{ fontSize: "var(--text-lg)", fontWeight: 600, color: "var(--text-strong)", marginBottom: 4 }}>
-                {c.title}
+                <span className="uc-ico">
+                  <Icon name={c.icon} size={22} />
+                </span>
+                <div className="uc-title">{c.title}</div>
+                {scope && (
+                  <>
+                    <span className="uc-hint">
+                      {scope.items.length} things we handle
+                      <span aria-hidden="true" className="uc-chev">
+                        <Icon name="chevron-right" size={15} />
+                      </span>
+                    </span>
+                    <ul className="uc-list">
+                      {scope.items.map((it) => (
+                        <li key={it.t}>
+                          <Icon name="check" size={14} />
+                          <span>{it.t}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </div>
-              <div style={{ fontSize: "var(--text-sm)", color: "var(--text-muted)", lineHeight: 1.5 }}>
-                {c.items}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         <p
           style={{
@@ -454,7 +447,7 @@ function StoriesB() {
   const picks =
     region === "gulf"
       ? ["Abhishek, 43", "Nikita, 38", "Kartik, 34"]
-      : ["Kartik, 34", "Abhishek, 43", "Vaibhav, 32"];
+      : ["Kartik, 34", "Abhishek, 43", "Ankit, 37"];
   const stories = picks
     .map((n) => TESTIMONIALS_SHORT.find((t) => t.name === n))
     .filter(Boolean) as typeof TESTIMONIALS_SHORT;
@@ -541,7 +534,7 @@ function TrustB() {
     {
       icon: "map-pin",
       text: "Niro Visits",
-      sub: "Booked on demand, for whatever your family needs: a doctor or visa appointment, home maintenance, or a government office visit.",
+      sub: "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a visa appointment, a government office task or a home repair vendor chore. Booked, on demand.",
     },
     {
       icon: "shield-check",
@@ -550,7 +543,7 @@ function TrustB() {
     },
     {
       icon: "user-check",
-      text: "Verified Niro managers",
+      text: "Verified Niro Assistants",
       sub: "Vetted extensively, on our own payroll, and appraised on one thing: whether your family is satisfied.",
     },
   ];
