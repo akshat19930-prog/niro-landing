@@ -1400,6 +1400,6 @@ export const GUIDE_FOUNDERS: { name: string; photo: string; bio: string }[] = [
   {
     name: "Paarth Dhar",
     photo: "/people/paarth.jpg",
-    bio: "12 years building consumer startups across fintech (VP Growth at AngelOne) and ecommerce. Second-time founder who exited his first company to AngelOne.",
+    bio: "12 years building consumer startups across fintech (VP Growth at AngelOne) and ecommerce. Second-time founder who exited his last company to Angel One.",
   },
 ];
