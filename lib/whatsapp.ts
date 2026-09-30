@@ -63,11 +63,22 @@ export function whatsappRef(): string {
   return parts.join(" · ");
 }
 
+/**
+ * The opening line every cold entry point starts from.
+ *
+ * It names where the visitor came from in plain English rather than in a code,
+ * which is the Emoha pattern: their prefill reads "Got to know about Emoha via
+ * your website", so the inbox still shows the channel and the visitor can read
+ * what they are about to send. Same sentence for everyone, deliberately. A
+ * line that varies per visitor is still tracking, just wearing a disguise.
+ */
+export const FROM_SITE = "Hi Niro, I got to know about you through your website.";
+
 /** The full wa.me URL. Nothing but the opening message goes in the prefill:
  *  whatever we put here, the visitor sends under their own name. Defaults to
  *  the sales line; the footer passes the support number instead. */
 export function whatsappUrl(
-  message = "Hi Niro, I have a question.",
+  message = `${FROM_SITE} I had a question.`,
   phone: string = SALES_WHATSAPP
 ): string {
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
