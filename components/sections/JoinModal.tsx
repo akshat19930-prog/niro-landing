@@ -10,6 +10,7 @@ import { useJoin } from "@/components/JoinProvider";
 import { SORT_OUT_OPTIONS, SORT_OUT_WHO, INDIA_CITIES } from "@/lib/content";
 import { dialCode, logEvent } from "@/lib/track";
 import { whatsappUrl, whatsappRef } from "@/lib/whatsapp";
+import { SALES_WHATSAPP } from "@/lib/config";
 import { looksLikeWhatsAppId } from "@/lib/cities";
 
 /**
@@ -246,7 +247,8 @@ export function JoinModal() {
                 margin: "0 0 18px",
               }}
             >
-              We <strong>never</strong> call you without you asking us to.
+              We reply on WhatsApp. We <strong>never</strong> call you without
+              you asking us to.
             </p>
 
             <div style={{ marginBottom: 14 }}>
@@ -308,6 +310,23 @@ export function JoinModal() {
             <Button full type="submit">
               Next: a few details
             </Button>
+            {/* The opt-in. Notice plus an affirmative action (this button), not
+                a checkbox: Meta accepts it, and a tick box on the one screen we
+                stripped to a single field costs more than it buys. It sits
+                under the button because the button IS the affirmative action,
+                and the wording has to name us and the channel to count. */}
+            <p
+              style={{
+                fontSize: "var(--text-xs)",
+                color: "var(--text-muted)",
+                lineHeight: 1.45,
+                margin: "10px 0 0",
+                textAlign: "center",
+              }}
+            >
+              By continuing you&rsquo;re asking Niro to message you on WhatsApp.
+              Tell us to stop and we stop.
+            </p>
           </form>
         )}
 
@@ -465,26 +484,81 @@ export function JoinModal() {
                 margin: "0 0 18px",
               }}
             >
-              We&rsquo;ll reach out shortly to answer your questions and get you
-              started.
+              We&rsquo;ll message you on WhatsApp shortly.
             </p>
+
+            {/* Saving the number is primary, and chatting now is not, because
+                of a timing asymmetry. Paarth messages them within the hour,
+                and an unsaved Indian number arrives behind WhatsApp's "Do you
+                trust this person?" scam warning, pointed at someone who just
+                handed over their parents' details. Saving only works in the
+                gap before that message lands. Chatting works forever, and
+                anyone impatient enough to want it will take the text link. */}
             <a
               className="btn btn-primary btn-md btn-full"
-              href={whatsappUrl(founderMessage())}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={(e) => {
-                // Rebuilt at click time so the message carries the current
-                // name rather than whatever was set at mount.
-                e.currentTarget.href = whatsappUrl(founderMessage());
-                logEvent("whatsapp_click", {
-                  placement: "join_confirm_founder",
-                  ref: whatsappRef(),
-                });
+              href="/niro.vcf"
+              download="Niro.vcf"
+              onClick={() => logEvent("save_number_click", { placement: "join_confirm" })}
+            >
+              Save our number
+            </a>
+            <p
+              style={{
+                fontSize: "var(--text-xs)",
+                color: "var(--text-muted)",
+                lineHeight: 1.5,
+                margin: "10px 0 0",
               }}
             >
-              Chat with a co-founder
-            </a>
+              So you know it&rsquo;s us when we message. Or save{" "}
+              <a href={`tel:+${SALES_WHATSAPP}`} style={{ color: "var(--text-body)" }}>
+                +91 91805 81481
+              </a>{" "}
+              by hand.
+            </p>
+
+            <div style={{ marginTop: 18, textAlign: "center" }}>
+              <div
+                style={{
+                  fontSize: "var(--text-sm)",
+                  color: "var(--text-muted)",
+                  marginBottom: 3,
+                }}
+              >
+                Rather not wait?
+              </div>
+              <a
+                href={whatsappUrl(founderMessage())}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 7,
+                  padding: "11px 0",
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "var(--text-sm)",
+                  fontWeight: 500,
+                  color: "var(--brand)",
+                  textDecoration: "underline",
+                  textUnderlineOffset: 3,
+                  textDecorationThickness: 1,
+                }}
+                onClick={(e) => {
+                  // Rebuilt at click time so the message carries the current
+                  // name rather than whatever was set at mount.
+                  e.currentTarget.href = whatsappUrl(founderMessage());
+                  logEvent("whatsapp_click", {
+                    placement: "join_confirm_founder",
+                    ref: whatsappRef(),
+                  });
+                }}
+              >
+                <span>
+                  Message a co-founder now <span aria-hidden="true">→</span>
+                </span>
+              </a>
+            </div>
           </div>
         )}
       </Card>
