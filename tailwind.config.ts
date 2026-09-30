@@ -3,7 +3,7 @@ import type { Config } from "tailwindcss";
 /**
  * Tailwind is mapped onto the Leo/Niro design tokens (CSS custom properties
  * defined in app/tokens.css). Utilities resolve to `var(--…)` so the token
- * files remain the single source of truth — no hard-coded hex/px here.
+ * files remain the single source of truth, with no hard-coded hex/px here.
  * Dark surfaces are driven by the scoped `[data-theme="dark"]` block in
  * tokens.css (used only for the emergency story), so no `dark:` variants needed.
  */

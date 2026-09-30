@@ -42,7 +42,7 @@ export default function WhatWeDoPage() {
         <p>
           {total} things your family might need doing in India, grouped the way
           our ops team actually groups them. If what you need isn&rsquo;t on the
-          list, ask anyway &mdash; this is a list of what comes up most, not a
+          list, ask anyway: this is a list of what comes up most, not a
           limit.
         </p>
 
@@ -65,8 +65,8 @@ export default function WhatWeDoPage() {
           <strong>
             {SERVICE_CITIES.map((c) => c.name).join(", ").replace(/, ([^,]*)$/, " and $1")}
           </strong>
-          . If your family is somewhere else, join anyway and tell us the city
-          &mdash; we open where our members&rsquo; families already are.
+          . If your family is somewhere else, join anyway and tell us the city.
+          We open where our members&rsquo; families already are.
         </p>
 
         <div className="scope-cta">

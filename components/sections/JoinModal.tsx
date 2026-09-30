@@ -285,7 +285,7 @@ export function JoinModal() {
                     margin: "7px 0 0",
                   }}
                 >
-                  Looks like a WhatsApp ID &mdash; we&rsquo;ll use it exactly as
+                  Looks like a WhatsApp ID, so we&rsquo;ll use it exactly as
                   you typed it, no country code.
                 </p>
               )}

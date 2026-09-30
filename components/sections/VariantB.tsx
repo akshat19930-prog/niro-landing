@@ -711,7 +711,7 @@ const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
             <li>
               <b>Documents live in a secure vault.</b> Encrypted in transit and at
               rest, and inaccessible to our staff without an open task that requires
-              them &mdash; access is scoped to the task and logged.
+              them. Access is scoped to the task and logged.
             </li>
             <li>
               <b>We never ask for passwords, PINs or net-banking logins.</b> Some
