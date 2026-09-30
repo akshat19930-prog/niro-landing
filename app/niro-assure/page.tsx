@@ -48,7 +48,7 @@ export default function EmergencyPage() {
         </div>
 
         <p className="sla-scope">
-          These times apply in our five launch cities:{" "}
+          These times apply in our six launch cities:{" "}
           <strong>
             {SERVICE_CITIES.map((c) => c.name).join(", ").replace(/, ([^,]*)$/, " and $1")}
           </strong>

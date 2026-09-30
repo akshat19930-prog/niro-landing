@@ -28,6 +28,10 @@ const ALIASES: Record<string, string[]> = {
   Mumbai: ["mumbai", "bombay", "navi mumbai", "thane", "borivali", "andheri", "powai"],
   Hyderabad: ["hyderabad", "hyd", "secunderabad", "cyberabad", "gachibowli"],
   Chennai: ["chennai", "madras", "chennai tamil nadu"],
+  Kolkata: [
+    "kolkata", "calcutta", "howrah", "salt lake", "saltlake", "bidhannagar",
+    "new town", "newtown", "rajarhat", "behala", "ballygunge", "kolkata west bengal",
+  ],
 };
 
 export type CityMatch =
