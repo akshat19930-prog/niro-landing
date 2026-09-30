@@ -22,6 +22,46 @@ const UTM_KEYS = [
 const UTM_STORAGE_KEY = "niro_utm";
 
 /**
+ * In-memory copy of the UTM map for this page load. Instagram's in-app browser
+ * on iOS can wipe sessionStorage mid-visit without reloading the page (seen
+ * Sept 2026: the session id changed 7s into a visit that landed from a Meta
+ * ad, and the lead reached the sheet with no UTM, so it read as organic). The
+ * page and its URL survive that wipe, so this copy and the URL are the
+ * fallbacks when sessionStorage comes back empty.
+ */
+let memUtm: Utm = {};
+
+function hasUtm(u: Utm): boolean {
+  return Object.keys(u).length > 0;
+}
+
+function readSessionUtm(): Utm {
+  try {
+    return JSON.parse(sessionStorage.getItem(UTM_STORAGE_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function readUrlUtm(): Utm {
+  const params = new URLSearchParams(window.location.search);
+  const fromUrl: Utm = {};
+  for (const key of UTM_KEYS) {
+    const val = params.get(key);
+    if (val) fromUrl[key] = val;
+  }
+  return fromUrl;
+}
+
+function writeSessionUtm(u: Utm): void {
+  try {
+    sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(u));
+  } catch {
+    /* storage may be unavailable (private mode) - non-fatal */
+  }
+}
+
+/**
  * Read attribution params from the current URL and persist them (first-touch
  * wins - the ad-matched landing param set that brought the visitor in). Call
  * once on mount. Returns the merged, persisted UTM map.
@@ -29,39 +69,31 @@ const UTM_STORAGE_KEY = "niro_utm";
 export function captureUtm(): Utm {
   if (typeof window === "undefined") return {};
 
-  let stored: Utm = {};
-  try {
-    stored = JSON.parse(sessionStorage.getItem(UTM_STORAGE_KEY) || "{}");
-  } catch {
-    stored = {};
-  }
-
-  const params = new URLSearchParams(window.location.search);
-  const fromUrl: Utm = {};
-  for (const key of UTM_KEYS) {
-    const val = params.get(key);
-    if (val) fromUrl[key] = val;
-  }
+  const session = readSessionUtm();
+  const stored = hasUtm(session) ? session : memUtm;
 
   // First-touch: keep already-stored values; only fill gaps from this URL.
-  const merged: Utm = { ...fromUrl, ...stored };
-  if (Object.keys(merged).length) {
-    try {
-      sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(merged));
-    } catch {
-      /* storage may be unavailable (private mode) - non-fatal */
-    }
+  const merged: Utm = { ...readUrlUtm(), ...stored };
+  if (hasUtm(merged)) {
+    memUtm = merged;
+    writeSessionUtm(merged);
   }
   return merged;
 }
 
 export function getStoredUtm(): Utm {
   if (typeof window === "undefined") return {};
-  try {
-    return JSON.parse(sessionStorage.getItem(UTM_STORAGE_KEY) || "{}");
-  } catch {
-    return {};
+  const session = readSessionUtm();
+  if (hasUtm(session)) return session;
+
+  // sessionStorage came back empty mid-visit (see memUtm). Recover from memory,
+  // else from the URL, and write it back so later reads find it again.
+  const recovered = hasUtm(memUtm) ? memUtm : readUrlUtm();
+  if (hasUtm(recovered)) {
+    memUtm = recovered;
+    writeSessionUtm(recovered);
   }
+  return recovered;
 }
 
 /* =====================================================================
