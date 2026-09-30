@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Icon } from "./Icon";
 import { logEvent } from "@/lib/track";
 import { track } from "@/lib/analytics";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { whatsappUrl, whatsappRef } from "@/lib/whatsapp";
 import { SALES_WHATSAPP } from "@/lib/config";
 
 /**
@@ -63,7 +63,9 @@ export function WhatsAppLink({
       onFocus={refresh}
       onClick={(e) => {
         e.currentTarget.href = whatsappUrl(message, phone);
-        logEvent("whatsapp_click", { placement });
+        // The source ref goes on the beacon, not into the message the visitor
+        // sends. An inbound chat is matched back to it on timestamp.
+        logEvent("whatsapp_click", { placement, ref: whatsappRef() });
         track("Contact", { placement });
       }}
     >

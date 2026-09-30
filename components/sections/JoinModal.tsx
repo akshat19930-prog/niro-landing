@@ -9,7 +9,7 @@ import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
 import { SORT_OUT_OPTIONS, SORT_OUT_WHO, INDIA_CITIES } from "@/lib/content";
 import { dialCode, logEvent } from "@/lib/track";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { whatsappUrl, whatsappRef } from "@/lib/whatsapp";
 import { looksLikeWhatsAppId } from "@/lib/cities";
 
 /**
@@ -474,10 +474,13 @@ export function JoinModal() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => {
-                // Rebuilt at click time so the ref carries current attribution
-                // rather than whatever was set at mount.
+                // Rebuilt at click time so the message carries the current
+                // name rather than whatever was set at mount.
                 e.currentTarget.href = whatsappUrl(founderMessage());
-                logEvent("whatsapp_click", { placement: "join_confirm_founder" });
+                logEvent("whatsapp_click", {
+                  placement: "join_confirm_founder",
+                  ref: whatsappRef(),
+                });
               }}
             >
               Chat with a co-founder
