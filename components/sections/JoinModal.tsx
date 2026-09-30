@@ -9,7 +9,6 @@ import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
 import { SORT_OUT_OPTIONS, SORT_OUT_WHO, INDIA_CITIES } from "@/lib/content";
 import { dialCode, logEvent } from "@/lib/track";
-import { whatsappUrl, whatsappRef } from "@/lib/whatsapp";
 import { SALES_WHATSAPP } from "@/lib/config";
 import { looksLikeWhatsAppId } from "@/lib/cities";
 
@@ -79,6 +78,16 @@ const labelStyle = {
   color: "var(--text-strong)",
   marginBottom: 6,
 } as const;
+
+/** "919180581481" -> "+91 91805 81481", so the number a lead copies off the
+ *  confirmation reads the way they would write it, and config stays the one
+ *  place it is defined. Falls back to a plain +digits string off-pattern. */
+function displayNumber(e164: string): string {
+  const d = e164.replace(/\D/g, "");
+  return d.length === 12 && d.startsWith("91")
+    ? `+91 ${d.slice(2, 7)} ${d.slice(7)}`
+    : `+${d}`;
+}
 
 function Chip({
   label,
@@ -173,18 +182,6 @@ export function JoinModal() {
     setError(err || undefined);
   }
 
-  /** The handoff carries who they are and what they want, so a lead never
-   *  lands on the founder's line as an unknown number. */
-  function founderMessage(): string {
-    return [
-      `Hi Niro, I'm ${lead?.name || ""}${lead?.ownCity ? ` in ${lead.ownCity}` : ""}.`,
-      lead?.city ? `My family is in ${lead.city}.` : "",
-      tasks.length ? `I'm looking to sort out: ${tasks.join(", ")}.` : "",
-    ]
-      .filter(Boolean)
-      .join(" ");
-  }
-
   return (
     <div
       role="dialog"
@@ -247,8 +244,8 @@ export function JoinModal() {
                 margin: "0 0 18px",
               }}
             >
-              We reply on WhatsApp. We <strong>never</strong> call you without
-              you asking us to.
+              We reply on WhatsApp. We <strong>never</strong> call you
+              unprompted.
             </p>
 
             <div style={{ marginBottom: 14 }}>
@@ -325,7 +322,6 @@ export function JoinModal() {
               }}
             >
               By continuing you&rsquo;re asking Niro to message you on WhatsApp.
-              Tell us to stop and we stop.
             </p>
           </form>
         )}
@@ -504,60 +500,34 @@ export function JoinModal() {
             </a>
             <p
               style={{
-                fontSize: "var(--text-xs)",
+                fontSize: "var(--text-sm)",
                 color: "var(--text-muted)",
                 lineHeight: 1.5,
-                margin: "10px 0 0",
+                margin: "12px 0 0",
+                textAlign: "center",
               }}
             >
-              So you know it&rsquo;s us when we message. Or save{" "}
-              <a href={`tel:+${SALES_WHATSAPP}`} style={{ color: "var(--text-body)" }}>
-                +91 91805 81481
-              </a>{" "}
-              by hand.
+              So you know it&rsquo;s us when we message.
             </p>
-
-            <div style={{ marginTop: 18, textAlign: "center" }}>
-              <div
-                style={{
-                  fontSize: "var(--text-sm)",
-                  color: "var(--text-muted)",
-                  marginBottom: 3,
-                }}
-              >
-                Rather not wait?
-              </div>
-              <a
-                href={whatsappUrl(founderMessage())}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 7,
-                  padding: "11px 0",
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "var(--text-sm)",
-                  fontWeight: 500,
-                  color: "var(--brand)",
-                  textDecoration: "underline",
-                  textUnderlineOffset: 3,
-                  textDecorationThickness: 1,
-                }}
-                onClick={(e) => {
-                  // Rebuilt at click time so the message carries the current
-                  // name rather than whatever was set at mount.
-                  e.currentTarget.href = whatsappUrl(founderMessage());
-                  logEvent("whatsapp_click", {
-                    placement: "join_confirm_founder",
-                    ref: whatsappRef(),
-                  });
-                }}
-              >
-                <span>
-                  Message a co-founder now <span aria-hidden="true">→</span>
-                </span>
-              </a>
+            {/* The number in full, for anyone whose download is blocked (the
+                Instagram and Facebook in-app browsers often are) or who would
+                rather type it. Not a tel: link: tapping that opens the dialer,
+                and the job here is to copy it into contacts. `user-select:all`
+                makes one tap select the whole number instead of a word of it. */}
+            <div
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "var(--text-md)",
+                fontWeight: 600,
+                color: "var(--text-strong)",
+                textAlign: "center",
+                margin: "4px 0 0",
+                userSelect: "all",
+                WebkitUserSelect: "all",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {displayNumber(SALES_WHATSAPP)}
             </div>
           </div>
         )}

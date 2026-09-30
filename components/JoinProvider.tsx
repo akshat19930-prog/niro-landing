@@ -86,6 +86,11 @@ export function validateEmail(raw: string): { email?: string; error?: string } {
   return { email: clean };
 }
 
+/** Bump this whenever the opt-in wording on the phone screen changes, so a row
+ *  says which sentence that lead actually agreed to rather than whichever one
+ *  is live today. */
+const WHATSAPP_CONSENT_VERSION = "whatsapp-2026-09-30";
+
 async function submitSignup(payload: {
   email: string;
   eventId: string;
@@ -108,6 +113,11 @@ async function submitSignup(payload: {
   market?: string;
   /** The path this signup came from (e.g. "/gulf"), for attribution. */
   page?: string;
+  /** Which WhatsApp opt-in wording they saw, and when they accepted it by
+   *  pressing the button. Meta wants business-initiated messaging backed by a
+   *  record of consent, and a notice nobody stores is not a record. */
+  consent?: string;
+  consentAt?: string;
 }): Promise<SignupResult> {
   const fallback: SignupResult = {
     position: FALLBACK_WAITLIST_POSITION,
@@ -355,6 +365,8 @@ export function JoinProvider({
       phone,
       market,
       page,
+      consent: WHATSAPP_CONSENT_VERSION,
+      consentAt: new Date().toISOString(),
     });
     setStep("form");
     return null;
