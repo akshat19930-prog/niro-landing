@@ -327,7 +327,7 @@ export default function FamilyGuidePage() {
             <h2 className="fg-h2 fg-close-h">Anything else on your mind?</h2>
             <WhatsAppLink
               placement="family-guide"
-              message="Hi Niro, I've read the family guide and have a question."
+              message="Hi Niro, I've been reading your family guide and have a question."
               className="btn btn-primary btn-lg"
             >
               Message us on WhatsApp

@@ -9,10 +9,16 @@
  * campaign, not the creative. Three leads arrived that way and could not be
  * assigned to a cell.
  *
- * So every link now appends a short readable ref built from what we already
- * store first-touch. It reads as a reference code rather than tracking spam,
- * and it is the only thing that makes a WhatsApp inbound reconcilable against
- * the `whatsapp_click` beacon.
+ * The ref that fixes this used to be appended to the prefilled message. It is
+ * not any more. A visitor is shown WhatsApp's "Do you trust this person?"
+ * warning about scammers before the thread opens, and was then asked to send
+ * "Ref: na · nri_parents_health_v2 · v4" under their own name. Some deleted
+ * the line, destroying the attribution it existed for; the rest read it as
+ * exactly the kind of thing the warning had just described.
+ *
+ * The ref now rides on the `whatsapp_click` beacon instead. An inbound chat is
+ * reconciled against that beacon on timestamp, which is comfortable at current
+ * volume (roughly seven clicks a day).
  */
 import { SALES_WHATSAPP } from "./config";
 import { getStoredAttribution, getStoredGulfPriceArm, getStoredUtm } from "./analytics";
@@ -26,8 +32,9 @@ function marketCode(path: string): string {
 
 /**
  * A compact source tag: market, ad creative, pitch cell, price arm. Only the
- * parts that exist are included, so an organic visitor gets `Ref: na` rather
- * than a string of empties.
+ * parts that exist are included, so an organic visitor gets `na` rather than a
+ * string of empties. Rides on the `whatsapp_click` beacon; never on the
+ * prefilled message.
  */
 export function whatsappRef(): string {
   if (typeof window === "undefined") return "";
@@ -56,13 +63,23 @@ export function whatsappRef(): string {
   return parts.join(" · ");
 }
 
-/** The full wa.me URL, with the opening message and its ref. Defaults to the
- *  sales line; the footer passes the support number instead. */
+/**
+ * The opening line every cold entry point starts from.
+ *
+ * It names where the visitor came from in plain English rather than in a code,
+ * which is the Emoha pattern: their prefill reads "Got to know about Emoha via
+ * your website", so the inbox still shows the channel and the visitor can read
+ * what they are about to send. Same sentence for everyone, deliberately. A
+ * line that varies per visitor is still tracking, just wearing a disguise.
+ */
+export const FROM_SITE = "Hi Niro, I got to know about you through your website.";
+
+/** The full wa.me URL. Nothing but the opening message goes in the prefill:
+ *  whatever we put here, the visitor sends under their own name. Defaults to
+ *  the sales line; the footer passes the support number instead. */
 export function whatsappUrl(
-  message = "Hi Niro, I have a question.",
+  message = `${FROM_SITE} I had a question.`,
   phone: string = SALES_WHATSAPP
 ): string {
-  const ref = whatsappRef();
-  const text = ref ? `${message}\n\nRef: ${ref}` : message;
-  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+  return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
 }

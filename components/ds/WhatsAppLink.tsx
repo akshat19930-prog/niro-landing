@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Icon } from "./Icon";
 import { logEvent } from "@/lib/track";
 import { track } from "@/lib/analytics";
-import { whatsappUrl } from "@/lib/whatsapp";
+import { whatsappUrl, whatsappRef, FROM_SITE } from "@/lib/whatsapp";
 import { SALES_WHATSAPP } from "@/lib/config";
 
 /**
@@ -63,7 +63,9 @@ export function WhatsAppLink({
       onFocus={refresh}
       onClick={(e) => {
         e.currentTarget.href = whatsappUrl(message, phone);
-        logEvent("whatsapp_click", { placement });
+        // The source ref goes on the beacon, not into the message the visitor
+        // sends. An inbound chat is matched back to it on timestamp.
+        logEvent("whatsapp_click", { placement, ref: whatsappRef() });
         track("Contact", { placement });
       }}
     >
@@ -95,7 +97,7 @@ export function AskOnWhatsApp({
     <div style={{ marginTop: 12, textAlign: "center" }}>
       <WhatsAppLink
         placement={placement}
-        message="Hi Niro, I have a question before joining."
+        message={`${FROM_SITE} I have a question before joining.`}
         style={{
           display: "inline-flex",
           alignItems: "center",
@@ -116,8 +118,7 @@ export function AskOnWhatsApp({
 
 /** The opening line for a pre-signup question. Kept in one place so all three
  *  /us placements arrive in the inbox reading the same way. */
-export const ASK_MESSAGE =
-  "Hi, I came across Niro and wanted to understand whether it could help with something specific.";
+export const ASK_MESSAGE = `${FROM_SITE} I wanted to understand whether you could help with something specific.`;
 
 /**
  * Two-line secondary CTA: a muted prompt, then the link.

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ds/Badge";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
 import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
+import { FROM_SITE } from "@/lib/whatsapp";
 import { FAQ } from "@/lib/content";
 
 /** `a` is a node so a page can swap in a richer answer - /us renders the full
@@ -138,7 +139,7 @@ export function Faq({
           </div>
           <WhatsAppLink
             placement="faq"
-            message="Hi Niro, I have a question before joining."
+            message={`${FROM_SITE} I was reading your FAQ and have a question before joining.`}
             style={{
               display: "inline-flex",
               alignItems: "center",

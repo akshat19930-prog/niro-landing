@@ -591,17 +591,15 @@
 
   document.querySelectorAll("a.cta[data-task]").forEach(function (a) {
     var task = a.getAttribute("data-task");
-    var msg = "Hi Niro \u2014 I'd like to start with " + task + ".";
-    // Rebuilt on pointerdown as well as at load: a UTM can land in storage
-    // after this script runs, and the click must not send a stale ref.
-    function build() {
-      var r = ref();
-      a.href = "https://wa.me/" + WA_NUMBER + "?text=" +
-        encodeURIComponent(r ? msg + "\n\nRef: " + r : msg);
-    }
-    build();
-    a.addEventListener("pointerdown", build);
-    a.addEventListener("click", function () { build(); beacon("whatsapp_click", { task: task }); });
+    var msg = "Hi Niro, I'd like to start with " + task + ".";
+    // Nothing but the message goes in the prefill: the visitor sends it under
+    // their own name, straight after WhatsApp warns them about scammers. The
+    // source ref goes on the beacon, read at click time so a UTM that landed
+    // in storage after this script ran is still picked up.
+    a.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
+    a.addEventListener("click", function () {
+      beacon("whatsapp_click", { task: task, ref: ref() });
+    });
     a.target = "_blank";
     a.rel = "noopener";
   });
