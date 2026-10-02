@@ -46,7 +46,7 @@ backend, deploys, and the decisions that look arbitrary but are not.
 - **Neither SKU is styled as preferred** - same service, two prices.
 - **Do not name the household limit as a restriction.** "Create up to 2 groups"
   reads as an allowance; "only 2 groups" creates the objection.
-- Emergency SLA numbers stay scoped to the five launch cities, on the page.
+- Emergency SLA numbers stay scoped to the six launch cities, on the page.
 
 ## Don'ts
 

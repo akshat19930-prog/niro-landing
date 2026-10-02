@@ -1,4 +1,4 @@
-import { META_PIXEL_ID } from "./config";
+import { META_PIXEL_IDS } from "./config";
 import { getLpVariant } from "./variant";
 
 declare global {
@@ -270,12 +270,25 @@ export function track(
   params?: Record<string, unknown>,
   eventId?: string
 ): void {
-  if (typeof window === "undefined" || !window.fbq || !META_PIXEL_ID) return;
+  if (typeof window === "undefined" || !window.fbq || !META_PIXEL_IDS.length) return;
   // Every Pixel event carries the landing-page arm, so the positioning test
-  // can be read in Ads Manager itself rather than only in our own sheet.
+  // can be read in Ads Manager itself rather than only in our own sheet. One
+  // fbq("track") fans out to both initialised pixels, so both accounts get it.
   const withArm = { lp_variant: getLpVariant(), ...(params ?? {}) };
   if (eventId) window.fbq("track", event, withArm, { eventID: eventId });
   else window.fbq("track", event, withArm);
+}
+
+/** Fire a CUSTOM Meta Pixel event. Used for StartedConversation, which covers
+ *  both ways into a conversation - opening the join form, and going straight to
+ *  WhatsApp - so one ad set can optimise for the pair. The standard events
+ *  (InitiateCheckout, Contact, Lead) still fire alongside it. */
+export function trackCustom(
+  event: string,
+  params?: Record<string, unknown>
+): void {
+  if (typeof window === "undefined" || !window.fbq || !META_PIXEL_IDS.length) return;
+  window.fbq("trackCustom", event, params ?? {});
 }
 
 /**

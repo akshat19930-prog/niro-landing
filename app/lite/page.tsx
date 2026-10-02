@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
 import { NIRO_LITE, COVERAGE_NOTE } from "@/lib/content";
 import { Icon } from "@/components/ds/Icon";
-import { SALES_WHATSAPP } from "@/lib/config";
+import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
 
 /**
  * /lite - UNLISTED. The 15-task annual pack, for sales to share on a call.
@@ -54,16 +54,14 @@ export default function TasksPackPage() {
               </li>
             ))}
           </ul>
-          <a
+          <WhatsAppLink
             className="btn btn-primary btn-md"
-            href={`https://wa.me/${SALES_WHATSAPP}?text=${encodeURIComponent(
-              "Hi Niro - I'd like the Niro Lite pack at $270 a year. Can you send me the payment link?"
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
+            placement="lite_payment_link"
+            message="Hi Niro - I'd like the Niro Lite pack at $270 a year. Can you send me the payment link?"
+            showIcon={false}
           >
             Ask for the payment link
-          </a>
+          </WhatsAppLink>
         </div>
 
         <h2>How the tasks work</h2>

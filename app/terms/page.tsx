@@ -14,11 +14,6 @@ export default function TermsPage() {
         <h1>Terms of Use</h1>
         <p className="updated">Last updated: 24 September 2026</p>
 
-        <p className="note">
-          These terms cover both paid memberships and the beta. They have not
-          yet been reviewed by legal counsel - that review is outstanding.
-        </p>
-
         <p>
           These Terms of Use (&ldquo;Terms&rdquo;) govern your use of tellniro.com
           (the &ldquo;Site&rdquo;) and the Niro service, both operated by{" "}

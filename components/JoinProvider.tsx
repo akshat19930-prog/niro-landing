@@ -16,6 +16,7 @@ import {
   getStoredUtm,
   getStoredAttribution,
   track,
+  trackCustom,
   newEventId,
   type PricingArm,
 } from "@/lib/analytics";
@@ -266,6 +267,20 @@ export function JoinProvider({
 
   function openForm() {
     logEvent("join_initiated");
+    // Clicking "Join the beta" is one of the two actions the Oct 2026 campaign
+    // optimises for. InitiateCheckout is the standard event for starting a
+    // flow; StartedConversation is the custom one that also covers a straight
+    // WhatsApp click, so a single ad set can optimise for both.
+    track("InitiateCheckout", {
+      content_name: "join_beta",
+      arm,
+      page_arm: readPageArm(),
+      ...(market ? { market } : {}),
+    });
+    trackCustom("StartedConversation", {
+      route: "join_form",
+      ...(market ? { market } : {}),
+    });
     // Reopen at the confirmation if they already joined; otherwise start fresh.
     if (step !== "done") setStep("phone");
     setOpen(true);

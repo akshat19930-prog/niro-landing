@@ -1,4 +1,4 @@
-import { META_PIXEL_ID } from "@/lib/config";
+import { META_PIXEL_IDS } from "@/lib/config";
 
 /**
  * Meta Pixel loader. Rendered as a plain inline <script> in the document - NOT
@@ -20,9 +20,12 @@ import { META_PIXEL_ID } from "@/lib/config";
  * window.__niroLp before the parser reaches this script.
  */
 export function MetaPixel() {
-  if (!META_PIXEL_ID) return null;
+  if (!META_PIXEL_IDS.length) return null;
 
-  const pixel = `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${META_PIXEL_ID}');fbq('track','PageView',{lp_variant:window.__niroLp||'A'});`;
+  // One loader, one init per pixel, then a single PageView: fbq("track") fans
+  // out to every initialised pixel, so both ad accounts see the same events.
+  const inits = META_PIXEL_IDS.map((id) => `fbq('init','${id}');`).join("");
+  const pixel = `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');${inits}fbq('track','PageView',{lp_variant:window.__niroLp||'A'});`;
 
   return (
     <>
@@ -30,13 +33,16 @@ export function MetaPixel() {
           deferred Next.js chunks, so PageView fires without waiting on hydration. */}
       <script dangerouslySetInnerHTML={{ __html: pixel }} />
       <noscript>
-        <img
-          height="1"
-          width="1"
-          style={{ display: "none" }}
-          alt=""
-          src={`https://www.facebook.com/tr?id=${META_PIXEL_ID}&ev=PageView&noscript=1`}
-        />
+        {META_PIXEL_IDS.map((id) => (
+          <img
+            key={id}
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            alt=""
+            src={`https://www.facebook.com/tr?id=${id}&ev=PageView&noscript=1`}
+          />
+        ))}
       </noscript>
     </>
   );

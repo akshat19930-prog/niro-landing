@@ -140,6 +140,26 @@ columns still carry the old funnel's shape, so read them with this in mind:
   `Waitlist`, and `getSheetByName()` is case-sensitive, so the script would have
   created a second empty `waitlist` tab and split the leads in two.
 
+**Two Meta pixels, since Oct 2026.** The old account's pixel
+(`1711474783446227`) and the new campaign account's (`1995521257777789`) are
+both initialised, in `lib/config.ts` as `META_PIXEL_IDS`. `fbq("track")` fans
+out to every initialised pixel, so each event reaches both accounts and the old
+one keeps its history. `/freetask` carries **no** pixel: it is private, sent by hand after a
+call, so its visitors are leads we already have.
+
+What fires where:
+
+| Action | Standard event | Custom event |
+|---|---|---|
+| "Join the beta" clicked (the form opens) | `InitiateCheckout` | `StartedConversation` route=join_form |
+| Any WhatsApp link, any page | `Contact` | `StartedConversation` route=whatsapp |
+| Phone or email submitted | `Lead` (with eventID, for CAPI dedup) | - |
+
+**Optimise on `StartedConversation`.** It is the only event that covers both
+ways in, which is what the campaign is buying. A Meta ad set optimises for one
+event, so optimising on `InitiateCheckout` alone would ignore everyone who goes
+straight to WhatsApp.
+
 **Secrets never go in this repo.** The Meta access token lives in Apps Script
 Properties only. `META_ACCESS_TOKEN` in `backend/report.gs` must stay `""`.
 
@@ -200,7 +220,8 @@ Change these only deliberately - each one cost a test or an interview to learn.
   roles you will actually fill; a stale board proves the opposite.
 - **"AI" appears exactly once on the page**, in the humans-or-AI FAQ answer.
   Nobody in the research bought *because* of AI and several discounted for it.
-- **Emergency SLA numbers are published and scoped to the five launch cities.**
+- **Emergency SLA numbers are published and scoped to the six launch cities.**
+  Kolkata was added on 30 Sept 2026, which widened that scope.
   Do not widen the scope without widening the ops that hold it.
 - **We no longer claim "we never ask for OTPs"** - we do, for some tasks. The
   claim narrowed to passwords/PINs/net-banking, which is keepable.

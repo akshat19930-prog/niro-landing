@@ -395,7 +395,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "Which cities is Niro serviceable in today?",
-    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad and Chennai. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai and Kolkata. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
   },
   {
     q: "How many people can I add, and how many groups can I create?",
@@ -528,14 +528,15 @@ export const COVERAGE_NOTE = {
 
 
 /* ---- Serviceable cities ----------------------------------------------------
-   Five metros at launch. Chosen as the intersection of observed demand (the
+   Six metros. Chosen as the intersection of observed demand (the
    parent-city Pareto across 26 smoke-test households and 14 research
    interviews) and the cities where the emergency SLA below actually holds.
    Roughly 58% of leads who told us where their parents live are covered.
    Deliberately NOT published as a radius: an ambulance SLA does not survive
    150km from the metro, and a service area we cannot hold the SLA in costs
    more credibility than the coverage is worth. Out-of-area families are
-   waitlisted by city - that list is how we pick city six. */
+   waitlisted by city - that list is how we picked Kolkata, city six
+   (30 Sept 2026), and how the next one gets picked. */
 export type ServiceCity = { name: string; includes?: string[] };
 
 export const SERVICE_CITIES: ServiceCity[] = [
@@ -544,6 +545,7 @@ export const SERVICE_CITIES: ServiceCity[] = [
   { name: "Mumbai", includes: ["Mumbai", "Navi Mumbai", "Thane"] },
   { name: "Hyderabad", includes: ["Hyderabad", "Secunderabad"] },
   { name: "Chennai" },
+  { name: "Kolkata", includes: ["Kolkata", "Howrah", "Salt Lake", "New Town"] },
 ];
 
 /* ---- Emergency response ----------------------------------------------------
