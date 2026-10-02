@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
 import { ROLES, CAREERS_INTRO } from "@/lib/content";
-import { SALES_WHATSAPP } from "@/lib/config";
+import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
 
 /**
  * /careers - open roles.
@@ -61,13 +61,13 @@ export default function CareersPage() {
           parents need done, and you would do it well for someone else&rsquo;s
           family, write to{" "}
           <a href="mailto:hello@tellniro.com">hello@tellniro.com</a> or{" "}
-          <a
-            href={`https://wa.me/${SALES_WHATSAPP}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <WhatsAppLink
+            placement="careers"
+            message="Hi Niro, I am writing about a role at Niro."
+            showIcon={false}
           >
             message us on WhatsApp
-          </a>
+          </WhatsAppLink>
           . Tell us about one problem you solved that nobody asked you to.
         </p>
       </article>
