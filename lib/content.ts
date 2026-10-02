@@ -1476,7 +1476,7 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
 
   B2: {
     heroSub:
-      "Niro does anything and everything for you and your family back home. Look after your family’s health, run the household, sort paperwork, plan travel and manage property - just tell Niro on WhatsApp.",
+      "Niro does anything and everything for you and your family back home. Look after your family’s health, run the household, sort paperwork, plan travel and manage property - just tell Niro.",
     heroDescriptors: [
       "24x7 1:1 WhatsApp assistant",
       "Monthly or on-demand Niro Visits",
