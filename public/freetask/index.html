@@ -12,17 +12,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
 <meta name="theme-color" content="#F6F1E7">
-<!-- Meta Pixel, both ad accounts. Inline so PageView fires as the parser
-     reaches it. This page is standalone, so it carries its own copy rather
-     than inheriting the site's loader. Keep the ids in step with
-     lib/config.ts (META_PIXEL_ID, META_PIXEL_ID_2). -->
-<script>
-!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-fbq('init','1711474783446227');
-fbq('init','1995521257777789');
-fbq('track','PageView');
-</script>
-<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1711474783446227&ev=PageView&noscript=1"/><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1995521257777789&ev=PageView&noscript=1"/></noscript>
 <style>
   /* Niro tokens, copied from app/tokens.css - the site has no global dark
      mode (its dark aliases are scoped to the emergency story), so this page is
@@ -610,13 +599,6 @@ fbq('track','PageView');
     a.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
     a.addEventListener("click", function () {
       beacon("whatsapp_click", { task: task, ref: ref() });
-      // Same pair the rest of the site sends, so this page's clicks count
-      // toward the campaign: the standard event, and the custom one that also
-      // covers opening the join form on /.
-      if (window.fbq) {
-        fbq("track", "Contact", { placement: "freetask", content_name: task });
-        fbq("trackCustom", "StartedConversation", { route: "whatsapp", placement: "freetask" });
-      }
     });
     a.target = "_blank";
     a.rel = "noopener";

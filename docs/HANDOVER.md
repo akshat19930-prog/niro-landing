@@ -144,8 +144,8 @@ columns still carry the old funnel's shape, so read them with this in mind:
 (`1711474783446227`) and the new campaign account's (`1995521257777789`) are
 both initialised, in `lib/config.ts` as `META_PIXEL_IDS`. `fbq("track")` fans
 out to every initialised pixel, so each event reaches both accounts and the old
-one keeps its history. `/freetask` is standalone and carries its own copy of the
-loader, so the ids live in two places - keep them in step.
+one keeps its history. `/freetask` carries **no** pixel: it is private, sent by hand after a
+call, so its visitors are leads we already have.
 
 What fires where:
 
