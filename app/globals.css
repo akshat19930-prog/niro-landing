@@ -1515,3 +1515,125 @@
   text-underline-offset: 2px;
   white-space: nowrap;
 }
+
+/* ======================================== arm B2 hero: 1:1 chat with Niro */
+/* One transition set, driven by a single interval in ChatThreads.tsx. The
+   whole stack is grid-stacked so swapping threads cannot change the card's
+   height, and the card reserves its height up front so the hero never shifts
+   (CLS on this page is currently 0 and the A/B needs it to stay that way). */
+.nchat {
+  width: 100%;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-3);
+  background: var(--wa-bg);
+}
+.nchat-top {
+  background: var(--brand);
+  color: var(--text-on-brand);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+}
+.nchat-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--ink-900);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.nchat-who b { display: block; font-size: var(--text-sm); font-weight: 600; }
+.nchat-who span { font-size: var(--text-xs); opacity: 0.82; }
+
+.nchat-screen { display: grid; min-height: 330px; padding: 26px 12px; }
+.nchat-thread {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  pointer-events: none;
+}
+.nchat-b {
+  max-width: 86%;
+  padding: 9px 12px;
+  border-radius: 12px;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  margin: 0;
+  color: var(--ink-900);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.nchat-thread.on .nchat-b { opacity: 1; transform: none; }
+/* Until the component has mounted, the opening thread is simply drawn: no
+   fade, so the hero has real text at first paint and LCP does not wait on a
+   transition. The entry animation applies from the first swap onwards. */
+.nchat:not([data-ready]) .nchat-thread.on .nchat-b {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+/* The question lands first, the reply a beat later: the pause is the point. */
+.nchat-thread.on .nchat-me { transition-delay: 0.5s; }
+.nchat-thread.on .nchat-sys { transition-delay: 1s; }
+.nchat-thread.on .nchat-niro { transition: opacity 1s ease, transform 1s ease; transition-delay: 1s; }
+
+.nchat-me { align-self: flex-end; background: var(--wa-out); border-top-right-radius: 5px; }
+.nchat-niro {
+  align-self: flex-start;
+  background: var(--brand);
+  color: var(--text-on-brand);
+  border-top-left-radius: 5px;
+}
+.nchat-niro i {
+  display: block;
+  font-style: normal;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--gold-300, #e3b966);
+  margin-bottom: 2px;
+}
+.nchat-sys {
+  align-self: center;
+  background: var(--accent-soft);
+  color: var(--ink-700);
+  font-size: var(--text-xs);
+  text-align: center;
+  max-width: 94%;
+}
+.nchat-dots { display: flex; gap: 6px; justify-content: center; padding-bottom: 14px; }
+.nchat-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-900);
+  opacity: 0.2;
+  transition: opacity 0.3s ease;
+}
+.nchat-dots span.on { opacity: 0.7; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* The interval never starts, so thread one simply sits there, fully shown. */
+  .nchat-b { transition: none; }
+  .nchat-thread.on .nchat-b { opacity: 1; transform: none; }
+}
+
+/* ------------------------------------------- hero descriptor row (both arms) */
+/* Inline with dot separators while the items share a line. Arm B2 carries four
+   longer descriptors, which stack one per line on a phone, and a separator at
+   the end of every line reads as a dangling bullet, so below the wrap point
+   the dots go and the stack speaks for itself. */
+.hero-desc { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; }
+@media (max-width: 600px) {
+  .hero-desc { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .hero-desc .hero-desc-sep { display: none; }
+}

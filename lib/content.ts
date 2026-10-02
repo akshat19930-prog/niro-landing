@@ -1155,7 +1155,7 @@ export const GUIDE_SCOPE: {
     items: [
       { t: "An asset register for each home: appliances, models, purchase dates, warranties, AMCs" },
       { t: "A maintenance calendar that follows the Indian seasons: AC before summer, geyser before winter, roof before the monsoon" },
-      { t: "A verified cook, maid or driver found to suit your needs, temporary or permanent" },
+      { t: "Sourcing, verifying and managing domestic staff, including attendants" },
       { t: "Your existing staff verified for peace of mind: ID, criminal and address checks" },
       { t: "Any maintenance vendor task: the vendor found, the price negotiated, and the work seen through remotely. Water tank and sump cleaning, pest control, chimney, RO and inverter servicing, painting" },
       { t: "Same-day help for a burst pipe, a power cut, a stuck lift or a lock-out" },
@@ -1405,3 +1405,192 @@ export const GUIDE_FOUNDERS: { name: string; photo: string; bio: string }[] = [
     bio: "12 years building consumer startups across fintech (VP Growth at AngelOne) and ecommerce. Second-time founder who exited his last company to Angel One.",
   },
 ];
+
+/* ===========================================================================
+   Positioning A/B: arm A (/) vs arm B2 (/start)
+   ===========================================================================
+
+   The hypothesis, from sales: buyers get convinced, go to ask their parents,
+   and drop. Arm B2 sells Niro as the NRI’s OWN 1:1 assistant for everything
+   back home, so they can start without anyone’s sign-off, and the family group
+   becomes an optional later step rather than the premise.
+
+   Price, offer and scope are identical in both arms. Only the story changes,
+   so only the strings that carry the story live here. Everything else is
+   shared, which is the point: a difference the test did not intend is a
+   difference that confounds it.
+
+   The arm itself is resolved in lib/variant.ts from a first-touch cookie. */
+
+export type ArmCopy = {
+  heroSub: string;
+  /** The short descriptor row under the hero CTA. */
+  heroDescriptors: string[];
+  howStep1Title: string;
+  howVisitsTitle: string;
+  howVisitsBullets: string[];
+  howDonePoints: { lead: string; rest: string }[];
+  familyEyebrow: string;
+  familyHeading: string;
+  familyBody: string[];
+  visitsTrustBody: string;
+  membershipFeatures: string[];
+};
+
+export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
+  A: {
+    heroSub:
+      "Your family’s personal assistant in India, getting things done for them and for you. Peace of mind for you, unmatched convenience for them - all delivered over WhatsApp.",
+    heroDescriptors: [
+      "Remote Assistant",
+      "WhatsApp groups",
+      "Shows up in person when needed",
+    ],
+    howStep1Title: "You or your family asks",
+    howVisitsTitle: "Niro Visits - booked on demand",
+    howVisitsBullets: [
+      "Home maintenance inspections",
+      "Accompanying your parents to appointments",
+      "Standing in the queue at the office, so they don\u2019t",
+    ],
+    howDonePoints: [
+      {
+        lead: "All tasks closed with proof",
+        rest: "photos, receipts and a written note in the group. You stop chasing, and you get your evenings back.",
+      },
+      {
+        lead: "Your parents ask freely",
+        rest: "because asking Niro doesn\u2019t mean worrying you. The small things they used to swallow finally get said, and handled.",
+      },
+    ],
+    familyEyebrow: "For your parents in India",
+    familyHeading: "The struggles they don\u2019t tell you about, quietly solved.",
+    familyBody: [
+      "The haggling with vendors. The fear of being scammed. The maid who stopped turning up. The grocery run on a bad knee. The ten apps they were never going to learn.",
+      "All of it solved with one WhatsApp message, or a voice note in the language they actually speak.",
+    ],
+    visitsTrustBody:
+      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a visa appointment, a government office task or a home repair vendor chore. Booked, on demand.",
+    membershipFeatures: MEMBERSHIP_FEATURES,
+  },
+
+  B2: {
+    heroSub:
+      "Niro does anything and everything for you and your family back home. Look after your family’s health, run the household, sort paperwork, plan travel and manage property - just tell Niro on WhatsApp.",
+    heroDescriptors: [
+      "24x7 1:1 WhatsApp assistant",
+      "Monthly or on-demand Niro Visits",
+      "Emergency response",
+      "Optional family group chat for tasks",
+    ],
+    howStep1Title: "You tell Niro, in your 1:1 chat",
+    howVisitsTitle: "Monthly Niro Visits, or booked on demand",
+    howVisitsBullets: [
+      "Accompanying for visa, passport and doctor appointments",
+      "Accompanying for government paperwork",
+      "Home inspection or maintenance visits",
+      "Monthly check-ins and home staff audits",
+    ],
+    howDonePoints: [
+      {
+        lead: "All tasks closed with proof",
+        rest: "photos, receipts and a written note in your chat. You stop chasing, and you get your evenings back.",
+      },
+      {
+        lead: "Your family feels the difference",
+        rest: "without having to learn or sign up for anything. Add them to a group whenever you like, and they can ask Niro directly.",
+      },
+    ],
+    familyEyebrow: "For your family in India",
+    familyHeading: "Start on your own. Then bring your family in.",
+    familyBody: [
+      "Most members begin in a 1:1 chat. Get more out of Niro by moving beyond it: create a family group so your parents and siblings can just tell Niro directly.",
+      "One WhatsApp message, or a voice note in the language they actually speak. The small things they used to swallow finally get said, and handled.",
+    ],
+    visitsTrustBody:
+      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a visa appointment, a government office task or a home repair vendor chore. Monthly, or booked on demand.",
+    membershipFeatures: [
+      "Unlimited tasks for you or your family",
+      "24x7 1:1 WhatsApp assistant",
+      "Niro assured emergency response",
+      "One free booked on-demand Niro visit",
+      "Optional family group chats - up to 2 groups",
+    ],
+  },
+};
+
+/**
+ * The B2 hero chat: five 1:1 task threads, one per screen.
+ *
+ * Every opener is the member relaying something a parent mentioned, which is
+ * the arm’s whole pitch in miniature: the parent said it in passing on a call,
+ * and the member turned it into a done thing without asking anything of them.
+ * The last thread is the only one where the family appears, and it appears as
+ * the member’s choice, which is where the group belongs in this story.
+ */
+export const B2_HERO_THREADS: {
+  me: string;
+  system?: string;
+  niro: string;
+}[] = [
+  {
+    me: "Amma mentioned her knee pain is back. Can you start weekly physio for her?",
+    niro: "Done. Home physio booked every Tuesday at 10am. First session went well, notes shared with you.",
+  },
+  {
+    me: "Papa mentioned a property tax issue, and the tenant is leaving. Sort out both this week?",
+    niro: "Done. Tax dues cleared, receipt attached. Three verified tenants shortlisted, viewings on Saturday.",
+  },
+  {
+    me: "Amma mentioned her visa appointment is this Friday and she’s nervous about going alone. Book a Niro Visit?",
+    niro: "Booked. Sunita will pick Amma up at 8am, stay with her through the appointment and update you after.",
+  },
+  {
+    me: "Papa mentioned he needs more help at home. Find and manage a full-time attendant for him?",
+    niro: "Done. Three verified attendants shortlisted. Once you pick, we handle onboarding, attendance and salary.",
+  },
+  {
+    me: "Papa mentioned a bunch of repairs. Start a group chat with him and sort it out?",
+    system: 'Niro created the group "Home repairs" with you and Papa',
+    niro: "Done. Papa is listing things in the group and we’re fixing them one by one.",
+  },
+];
+
+/**
+ * Arm B2 testimonial copy, keyed by the name used in TESTIMONIALS_SHORT.
+ *
+ * Same three members as arm A, retelling the same relationships from the 1:1
+ * starting point. Approved by each of them on 2 Oct 2026 before shipping.
+ */
+export const B2_QUOTES: Record<string, string> = {
+  "Kartik, 34":
+    "Mom can’t book a cab on the apps. I used to book one for her from the US every time. I started by just messaging Niro myself - then I made a family group and added Niro, and now she sends a voice note and it happens.",
+  "Abhishek, 43":
+    "From Dubai, I run everything for my mom living alone through one chat with Niro - her three visiting staff including her attendant, the groceries, her doctor appointments. I book a Niro Visit when someone needs to be there. My own bank and property work in Gwalior goes through the same chat.",
+  "Ankit, 37":
+    "I manage my parents' health the way I always wanted to - I just tell Niro. Medication refills, Dad’s BP readings sent to our family doctor before each appointment, a Niro Visit for every check-up. I do so much more for them now. Love it.",
+};
+
+/**
+ * The one extra FAQ arm B2 adds, as its second question.
+ *
+ * It answers the objection the whole arm exists to remove, in the place a
+ * buyer goes looking for it once the page has convinced them.
+ */
+export const B2_FAQ_EXTRA = {
+  q: "Do my parents need to sign up or agree to anything?",
+  a: "No. You join, and you tell Niro what needs doing. Your parents don’t have to install or learn anything. When a task involves their home or their time, we confirm it with them and say you arranged it. You can add them to a family group whenever you like.",
+};
+
+/**
+ * Arm B2's version of the first FAQ answer.
+ *
+ * Derived from the shared answer rather than copied, so the two cannot drift:
+ * only the clause naming where you talk to Niro differs. If that clause is
+ * ever reworded in FAQ, the replace stops matching and B2 falls back to the
+ * shared text, which is visibly wrong in review rather than quietly stale.
+ */
+export const B2_FAQ_FIRST_ANSWER: string = FAQ[0].a.replace(
+  "your family WhatsApp group",
+  "your 1:1 WhatsApp chat with Niro, optional family groups"
+);

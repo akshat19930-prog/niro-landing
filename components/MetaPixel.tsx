@@ -14,6 +14,10 @@ import { META_PIXEL_IDS } from "@/lib/config";
  * The Lead event is still fired from the join flow with an eventID for CAPI
  * de-duplication. The Conversion API itself is server-side and belongs on the
  * waitlist backend that receives the signup POST - see lib/config.ts.
+ *
+ * PageView carries lp_variant for the positioning A/B. components/VariantInit
+ * renders immediately above this in the layout for that reason: it resolves
+ * window.__niroLp before the parser reaches this script.
  */
 export function MetaPixel() {
   if (!META_PIXEL_IDS.length) return null;
@@ -21,7 +25,7 @@ export function MetaPixel() {
   // One loader, one init per pixel, then a single PageView: fbq("track") fans
   // out to every initialised pixel, so both ad accounts see the same events.
   const inits = META_PIXEL_IDS.map((id) => `fbq('init','${id}');`).join("");
-  const pixel = `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');${inits}fbq('track','PageView');`;
+  const pixel = `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');${inits}fbq('track','PageView',{lp_variant:window.__niroLp||'A'});`;
 
   return (
     <>

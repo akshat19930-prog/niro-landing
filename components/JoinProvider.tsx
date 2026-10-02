@@ -22,6 +22,7 @@ import {
 } from "@/lib/analytics";
 import { startSession, registerAnalytics, logEvent, getGeo } from "@/lib/track";
 import { readPageArm } from "@/lib/abtest";
+import { getLpVariant } from "@/lib/variant";
 import { matchCity, validateContact, type CityMatch } from "@/lib/cities";
 import {
   WAITLIST_ENDPOINT,
@@ -119,6 +120,9 @@ async function submitSignup(payload: {
    *  record of consent, and a notice nobody stores is not a record. */
   consent?: string;
   consentAt?: string;
+  /** Landing-page arm for the positioning test: "A" (/) or "B2" (/start).
+   *  Sales reads this off the lead row to pick the right pitch. */
+  lpVariant?: string;
 }): Promise<SignupResult> {
   const fallback: SignupResult = {
     position: FALLBACK_WAITLIST_POSITION,
@@ -303,7 +307,10 @@ export function JoinProvider({
       position: FALLBACK_WAITLIST_POSITION,
       referralCode: slugFromEmail(clean),
     });
-    void submitSignup({ email: clean, eventId, arm, pageArm, pitch, ref, market, page });
+    void submitSignup({
+      lpVariant: getLpVariant(), email: clean, eventId, arm, pageArm, pitch,
+      ref, market, page,
+    });
     setStep("qualify");
     return null;
   }
@@ -327,6 +334,7 @@ export function JoinProvider({
     }
     logEvent("signup_completed", market ? { market } : undefined);
     void submitSignup({
+      lpVariant: getLpVariant(),
       email,
       eventId,
       arm,
@@ -371,6 +379,7 @@ export function JoinProvider({
     setLead({ phone, name: "", ownCity: "", city: "", email: "" });
     logEvent("phone_captured", market ? { market } : undefined);
     void submitSignup({
+      lpVariant: getLpVariant(),
       email: "",
       eventId,
       arm,
@@ -435,6 +444,7 @@ export function JoinProvider({
       eventId
     );
     void submitSignup({
+      lpVariant: getLpVariant(),
       email,
       eventId,
       arm,
@@ -466,6 +476,7 @@ export function JoinProvider({
     });
     logEvent("signup_completed", market ? { market } : undefined);
     void submitSignup({
+      lpVariant: getLpVariant(),
       email,
       eventId,
       arm,
@@ -492,7 +503,10 @@ export function JoinProvider({
     const pageArm = readPageArm();
     const page = typeof window !== "undefined" ? window.location.pathname : "";
     logEvent("phone_added", market ? { market } : undefined);
-    void submitSignup({ email, eventId, arm, pageArm, pitch, ref, phone: clean, market, page });
+    void submitSignup({
+      lpVariant: getLpVariant(), email, eventId, arm, pageArm, pitch, ref,
+      phone: clean, market, page,
+    });
   }
 
   return (

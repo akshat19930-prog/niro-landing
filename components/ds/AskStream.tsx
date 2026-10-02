@@ -33,14 +33,38 @@ export const ASKS: Ask[] = [
   { from: "You", text: "File my India ITR this year - I keep missing the deadline" },
 ];
 
-export function AskStream() {
+/**
+ * The arm B2 feed (/start). Every ask is from the member, because that is the
+ * arm's entire argument: nothing here needed a parent to be set up, persuaded
+ * or even present. Most are the member relaying something a parent mentioned
+ * in passing on a call, which is the voice the B2 ad creatives lead with.
+ *
+ * Kept the same length as ASKS so the stream reads as busy on both arms, and
+ * page speed is not a difference the test has to control for.
+ */
+export const ASKS_B2: Ask[] = [
+  { from: "You", text: "Amma mentioned the AC broke down. Can you get it fixed?" },
+  { from: "You", text: "Can you chase my EPFO claim? It’s been eight months" },
+  { from: "You", text: "Papa mentioned the electricity bill says ₹19,600. Sort it?" },
+  { from: "You", text: "Mum’s blood tests are due - set up a quarterly rhythm?" },
+  { from: "You", text: "Amma’s maid absconded. Find someone reliable by Monday?" },
+  { from: "You", text: "My NRO account has gone dormant. Sort it without a branch visit?" },
+  { from: "You", text: "File my India ITR this year - I keep missing the deadline" },
+  { from: "You", text: "Need my degree apostilled and couriered to Toronto" },
+  { from: "You", text: "Papa mentioned his pension certificate is due. Get it submitted?" },
+  { from: "You", text: "Tenant’s lease is up next month - handle the renewal?" },
+  { from: "You", text: "Papa has a passport appointment. Send someone with him?" },
+  { from: "You", text: "Amma mentioned her knee is bad again. Start weekly physio?" },
+];
+
+export function AskStream({ asks = ASKS }: { asks?: Ask[] } = {}) {
   // 3 slots, one swapping every 2.6s -> each ask holds for ~7.8s.
-  const visible = useFlicker(ASKS.length, 3, 2600);
+  const visible = useFlicker(asks.length, 3, 2600);
 
   return (
     <div className="ask-stream" aria-live="off">
       {visible.map((idx, slot) => {
-        const a = ASKS[idx];
+        const a = asks[idx];
         return (
           <div className="ask-row" key={`slot-${slot}`}>
             <span className={`ask-who ask-who-${a.from === "You" ? "you" : "family"}`}>

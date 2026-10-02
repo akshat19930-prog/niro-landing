@@ -1,4 +1,5 @@
 import { META_PIXEL_IDS } from "./config";
+import { getLpVariant } from "./variant";
 
 declare global {
   interface Window {
@@ -270,8 +271,12 @@ export function track(
   eventId?: string
 ): void {
   if (typeof window === "undefined" || !window.fbq || !META_PIXEL_IDS.length) return;
-  if (eventId) window.fbq("track", event, params ?? {}, { eventID: eventId });
-  else window.fbq("track", event, params ?? {});
+  // Every Pixel event carries the landing-page arm, so the positioning test
+  // can be read in Ads Manager itself rather than only in our own sheet. One
+  // fbq("track") fans out to both initialised pixels, so both accounts get it.
+  const withArm = { lp_variant: getLpVariant(), ...(params ?? {}) };
+  if (eventId) window.fbq("track", event, withArm, { eventID: eventId });
+  else window.fbq("track", event, withArm);
 }
 
 /** Fire a CUSTOM Meta Pixel event. Used for StartedConversation, which covers
