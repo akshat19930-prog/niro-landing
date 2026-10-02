@@ -7,12 +7,17 @@ import { AskNiroCta, WhatsAppLink, ASK_MESSAGE } from "@/components/ds/WhatsAppL
 import { Badge } from "@/components/ds/Badge";
 import { Icon, type IconName } from "@/components/ds/Icon";
 import { Eyebrow } from "@/components/ds/Eyebrow";
-import { AskStream } from "@/components/ds/AskStream";
+import { AskStream, ASKS_B2 } from "@/components/ds/AskStream";
 import { VoiceStream } from "@/components/ds/VoiceStream";
 import { ChatVideo } from "@/components/ds/ChatVideo";
+import { ChatThreads } from "@/components/ds/ChatThreads";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
-import { PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, FAQ, GUIDE_SCOPE } from "@/lib/content";
+import {
+  PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, FAQ, GUIDE_SCOPE,
+  ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, type ArmCopy,
+} from "@/lib/content";
+import type { LpVariant } from "@/lib/variant";
 
 /* ---------------------------------------------------------------- helpers */
 
@@ -61,7 +66,7 @@ const h2Style = {
 
 /* ------------------------------------------------------------------- hero */
 
-function HeroB() {
+function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
   const { label: geo } = useGeo();
   return (
     <section
@@ -115,9 +120,7 @@ function HeroB() {
               margin: "0 0 24px",
             }}
           >
-            Your family&rsquo;s personal assistant in India, getting things done for
-            them and for you. Peace of mind for you, unmatched convenience for
-            them - all delivered over WhatsApp.
+            {c.heroSub}
           </p>
           <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
           {/* Matches /us placement-for-placement. The two pages are being
@@ -130,25 +133,27 @@ function HeroB() {
             marginTop={14}
           />
           <div
+            className="hero-desc"
             style={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              gap: "6px 14px",
               marginTop: 14,
               fontSize: "var(--text-sm)",
               color: "var(--text-muted)",
             }}
           >
-            <span>Remote Assistant</span>
-            <span aria-hidden="true">·</span>
-            <span>WhatsApp groups</span>
-            <span aria-hidden="true">·</span>
-            <span>Shows up in person when needed</span>
+            {c.heroDescriptors.map((d, i) => (
+              <span key={d} style={{ display: "contents" }}>
+                {i > 0 && (
+                  <span className="hero-desc-sep" aria-hidden="true">
+                    ·
+                  </span>
+                )}
+                <span>{d}</span>
+              </span>
+            ))}
           </div>
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
-          <ChatVideo />
+          {arm === "B2" ? <ChatThreads /> : <ChatVideo />}
         </div>
       </div>
     </section>
@@ -171,7 +176,7 @@ function HeroB() {
  * Niro Visits. The visits card carries the accent border - it is the part no
  * amount of software can imitate, and it was previously nowhere on the page.
  */
-function HowItWorksB() {
+function HowItWorksB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
   const remoteVerbs = [
     "Research", "Find", "Book", "Order", "Arrange",
     "Plan end to end", "Coordinate with vendors",
@@ -188,10 +193,10 @@ function HowItWorksB() {
         <div className="beat">
           <div className="beat-label">
             <span className="beat-n">01</span>
-            <span className="beat-t">You or your family asks</span>
+            <span className="beat-t">{c.howStep1Title}</span>
           </div>
           <div>
-            <AskStream />
+            <AskStream asks={arm === "B2" ? ASKS_B2 : undefined} />
           </div>
         </div>
 
@@ -216,13 +221,13 @@ function HowItWorksB() {
             <div className="does-card does-card-visit">
               <div className="does-head">
                 <Icon name="map-pin" size={19} style={{ color: "var(--accent-strong)" }} />
-                <span className="does-title">Niro Visits - booked on demand</span>
+                <span className="does-title">{c.howVisitsTitle}</span>
               </div>
               <div className="does-sub">When it needs a person in the room.</div>
               <ul className="does-visit-list">
-                <li><Icon name="check" size={15} /><span>Home maintenance inspections</span></li>
-                <li><Icon name="check" size={15} /><span>Accompanying your parents to appointments</span></li>
-                <li><Icon name="check" size={15} /><span>Standing in the queue at the office, so they don&rsquo;t</span></li>
+                {c.howVisitsBullets.map((b) => (
+                  <li key={b}><Icon name="check" size={15} /><span>{b}</span></li>
+                ))}
               </ul>
             </div>
           </div>
@@ -234,21 +239,14 @@ function HowItWorksB() {
             <span className="beat-t">It gets done - better and faster</span>
           </div>
           <div className="outcome">
-            <div className="outcome-line">
-              <Icon name="check-circle" size={20} />
-              <span>
-                <b>All tasks closed with proof</b> - photos, receipts and a written
-                note in the group. You stop chasing, and you get your evenings back.
-              </span>
-            </div>
-            <div className="outcome-line">
-              <Icon name="check-circle" size={20} />
-              <span>
-                <b>Your parents ask freely</b> - because asking Niro doesn&rsquo;t
-                mean worrying you. The small things they used to swallow finally
-                get said, and handled.
-              </span>
-            </div>
+            {c.howDonePoints.map((d) => (
+              <div className="outcome-line" key={d.lead}>
+                <Icon name="check-circle" size={20} />
+                <span>
+                  <b>{d.lead}</b> - {d.rest}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -269,7 +267,7 @@ function HowItWorksB() {
  * and the untranslated English ones sit alongside the Hindi ones because that
  * is how parents actually write.
  */
-function ParentsB() {
+function ParentsB({ c }: { c: ArmCopy }) {
   return (
     <section data-screen-label="Parents (B)" style={{ padding: sectionPad }}>
       <div
@@ -283,18 +281,15 @@ function ParentsB() {
         }}
       >
         <div>
-          <Eyebrow>For your parents in India</Eyebrow>
+          <Eyebrow>{c.familyEyebrow}</Eyebrow>
           <h2 style={{ ...h2Style, margin: "14px 0 16px" }}>
-            The struggles they don&rsquo;t tell you about, quietly solved.
+            {c.familyHeading}
           </h2>
           <p style={{ fontSize: "var(--text-md)", lineHeight: "var(--leading-body)", color: "var(--text-body)", maxWidth: 520, margin: "0 0 14px" }}>
-            The haggling with vendors. The fear of being scammed. The maid who
-            stopped turning up. The grocery run on a bad knee. The ten apps they
-            were never going to learn.
+            {c.familyBody[0]}
           </p>
           <p style={{ fontSize: "var(--text-md)", lineHeight: "var(--leading-body)", color: "var(--text-strong)", maxWidth: 520, margin: "0 0 18px", fontWeight: 500 }}>
-            All of it solved with one WhatsApp message, or a voice note in the
-            language they actually speak.
+            {c.familyBody[1]}
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {["WhatsApp", "Voice note", "A phone call", "Any language"].map((t) => (
@@ -451,7 +446,7 @@ function UseCasesB() {
 
 /* ---------------------------------------------------------------- stories */
 
-function StoriesB() {
+function StoriesB({ arm }: { arm: LpVariant }) {
   // Lead with concrete outcomes. Gulf visitors see the Dubai routes first
   // (Abhishek Dubai→Gwalior, Nikita Dubai→Noida) for regional proof.
   const { region } = useGeo();
@@ -496,7 +491,7 @@ function StoriesB() {
                   color: "var(--text-body)",
                 }}
               >
-                &ldquo;{s.quote}&rdquo;
+                &ldquo;{(arm === "B2" && B2_QUOTES[s.name]) || s.quote}&rdquo;
               </blockquote>
               <figcaption style={{ display: "flex", alignItems: "center", gap: 12, marginTop: "auto" }}>
                 <span
@@ -529,7 +524,7 @@ function StoriesB() {
 
 /* ------------------------------------------------------------------ trust */
 
-function TrustB() {
+function TrustB({ c }: { c: ArmCopy }) {
   // Four claims, not six. Each is something a member could hold us to, and
   // each answers a different objection the research actually recorded: the
   // emergency nobody believes, the visit nobody else does, the commission
@@ -545,7 +540,7 @@ function TrustB() {
     {
       icon: "map-pin",
       text: "Niro Visits",
-      sub: "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a visa appointment, a government office task or a home repair vendor chore. Booked, on demand.",
+      sub: c.visitsTrustBody,
     },
     {
       icon: "shield-check",
@@ -623,7 +618,7 @@ function TrustB() {
  *
  * No guarantee band: the site makes no written guarantees (Paarth, Sept 2026).
  */
-function PricingB() {
+function PricingB({ c }: { c: ArmCopy }) {
   return (
     <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
@@ -653,7 +648,7 @@ function PricingB() {
         <div className="price-includes">
           <div className="price-includes-title">Every membership includes</div>
           <ul className="price-includes-list">
-            {MEMBERSHIP_FEATURES.map((f) => (
+            {c.membershipFeatures.map((f) => (
               <li key={f}>
                 <Icon name="check-circle" size={17} />
                 <span>{f}</span>
@@ -753,19 +748,37 @@ const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
 /* ---------------------------------------------------------------- variant */
 
 /** Variant B - the "You can't always be in India. Niro can." reposition. */
-export function VariantB() {
+/**
+ * The landing page, rendered for one arm of the positioning A/B.
+ *
+ * Arm A is / and arm B2 is /start. Both render THIS component, from one set of
+ * sections, with the strings that carry the pitch pulled from ARM_COPY. That
+ * is deliberate rather than tidy: a forked copy of the page would drift, and
+ * every unintended difference between the arms is noise in the only number the
+ * test exists to produce.
+ */
+export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
+  const c = ARM_COPY[arm];
+  const faqItems =
+    arm === "B2"
+      ? [
+          { ...MAIN_FAQ_ITEMS[0], a: B2_FAQ_FIRST_ANSWER },
+          B2_FAQ_EXTRA,
+          ...MAIN_FAQ_ITEMS.slice(1),
+        ]
+      : MAIN_FAQ_ITEMS;
   return (
     <>
       <Nav cta="Join the beta" />
       <main>
-        <HeroB />
-        <HowItWorksB />
-        <ParentsB />
+        <HeroB c={c} arm={arm} />
+        <HowItWorksB c={c} arm={arm} />
+        <ParentsB c={c} />
         <UseCasesB />
-        <StoriesB />
-        <TrustB />
-        <PricingB />
-        <Faq items={MAIN_FAQ_ITEMS} showAsk={false} />
+        <StoriesB arm={arm} />
+        <TrustB c={c} />
+        <PricingB c={c} />
+        <Faq items={faqItems} showAsk={false} />
       </main>
       <StickyCta label="Join the beta" />
     </>

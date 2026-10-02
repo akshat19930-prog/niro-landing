@@ -19,12 +19,14 @@ import {
   getStoredUtm,
 } from "./analytics";
 import { readPageArm } from "./abtest";
+import { getLpVariant } from "./variant";
 
 declare global {
   interface Window {
     posthog?: {
       capture: (event: string, props?: Record<string, unknown>) => void;
       register: (props: Record<string, unknown>) => void;
+      setPersonProperties?: (props: Record<string, unknown>) => void;
     };
   }
 }
@@ -51,8 +53,12 @@ const PH_FORWARD: Record<string, true> = {
 /** Register the pricing arm + pitch as PostHog super-properties, so heatmaps
  *  and funnels can be filtered by cell. Safe no-op if PostHog isn't loaded. */
 export function registerAnalytics(arm: string, pitch: string): void {
+  const lp = getLpVariant();
   try {
-    window.posthog?.register({ arm: arm, pitch: pitch });
+    window.posthog?.register({ arm: arm, pitch: pitch, lp_variant: lp });
+    // Also as a person property, so a visitor can be counted in their arm in
+    // retention and funnel views that group by person rather than by event.
+    window.posthog?.setPersonProperties?.({ lp_variant: lp });
   } catch {
     /* PostHog not loaded / not configured */
   }
@@ -149,6 +155,9 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
     event,
     arm: getStoredArm(),
     page_arm: readPageArm(),
+    // Which landing page sold them: A (/) or B2 (/start). On every beacon, so
+    // the funnel can be cut by arm without joining back to the lead row.
+    lp_variant: getLpVariant(),
     pitch,
     sid: getSessionId(),
     ts: Date.now(),
@@ -190,6 +199,7 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
       window.posthog?.capture(event, {
         arm: getStoredArm(),
         page_arm: readPageArm(),
+        lp_variant: getLpVariant(),
         pitch,
         // Carry the /gulf price arm so the funnel can be split by $149 vs $99
         // in PostHog, not just in the events sheet.

@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from "next";
 import { Newsreader, Hanken_Grotesk } from "next/font/google";
 import { MetaPixel } from "@/components/MetaPixel";
 import { PostHog } from "@/components/PostHog";
+import { VariantInit } from "@/components/VariantInit";
 import "./globals.css";
 
 /**
@@ -50,6 +51,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${newsreader.variable} ${hanken.variable}`}>
       <body>
+        {/* Before the pixel, which fires PageView at parse time: that event
+            has to carry the arm or the test's top-of-funnel number is blind. */}
+        <VariantInit />
         <MetaPixel />
         <PostHog />
         {children}

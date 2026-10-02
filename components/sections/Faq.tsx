@@ -14,7 +14,14 @@ import { FAQ } from "@/lib/content";
  *  measure for those, which only makes sense for a wall of prose. */
 type FaqItem = { q: string; a: React.ReactNode; special?: boolean; wide?: boolean };
 
-/** FAQ accordion - single panel open at a time; first item open by default.
+/** FAQ accordion - single panel open at a time, all collapsed on load.
+ *
+ *  The first item used to open by default. It now does not, on every page:
+ *  with one panel pre-opened, the question the visitor actually came with is
+ *  pushed down the screen behind an answer nobody chose, and on mobile that
+ *  can be most of a fold. It also made the two arms of the positioning A/B
+ *  harder to compare, since the pre-opened answer differs between them.
+ *
  *  Defaults to the main-site FAQ; pass `items`/`heading` to reuse on /gulf. */
 export function Faq({
   items = FAQ,
@@ -28,7 +35,7 @@ export function Faq({
    *  screen later stops reading as secondary. */
   showAsk?: boolean;
 } = {}) {
-  const [open, setOpen] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(null);
 
   return (
     <section data-screen-label="FAQ" style={{ padding: "64px var(--gutter)" }}>
