@@ -51,6 +51,12 @@ tittle. It is light-only, like the rest of the site - the previous dark palette
 was a second brand nobody had signed off. The values are copied rather than
 imported, because nothing from the design system reaches `public/`.
 
+**No Meta pixel, deliberately.** The page is private, sent by hand after a
+call, so its visitors are leads we already have rather than ad traffic. A pixel
+was added with the second ad account on 2 Oct 2026 and removed the same day
+(Paarth). Its WhatsApp buttons still beacon to the `events` tab, which is where
+this page's measurement belongs.
+
 > **Do not reformat or "tidy" this file.** It was authored as a finished asset
 > and is deliberately not held to the repo's component conventions.
 
