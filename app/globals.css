@@ -1523,6 +1523,12 @@
    (CLS on this page is currently 0 and the A/B needs it to stay that way). */
 .nchat {
   width: 100%;
+  /* Same box as ChatVideo on the control page, down to the aspect ratio, so
+     the hero is identical in size on both arms and the only difference the
+     test measures is the pitch. */
+  aspect-ratio: 760 / 1080;
+  display: flex;
+  flex-direction: column;
   border-radius: var(--radius-xl);
   overflow: hidden;
   border: 1px solid var(--border);
@@ -1552,7 +1558,7 @@
 .nchat-who b { display: block; font-size: var(--text-sm); font-weight: 600; }
 .nchat-who span { font-size: var(--text-xs); opacity: 0.82; }
 
-.nchat-screen { display: grid; min-height: 330px; padding: 26px 12px; }
+.nchat-screen { flex: 1; min-height: 0; display: grid; padding: 26px 12px; }
 .nchat-thread {
   grid-area: 1 / 1;
   display: flex;
