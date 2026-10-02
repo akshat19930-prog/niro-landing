@@ -1,4 +1,4 @@
-import { META_PIXEL_ID } from "./config";
+import { META_PIXEL_IDS } from "./config";
 
 declare global {
   interface Window {
@@ -269,9 +269,21 @@ export function track(
   params?: Record<string, unknown>,
   eventId?: string
 ): void {
-  if (typeof window === "undefined" || !window.fbq || !META_PIXEL_ID) return;
+  if (typeof window === "undefined" || !window.fbq || !META_PIXEL_IDS.length) return;
   if (eventId) window.fbq("track", event, params ?? {}, { eventID: eventId });
   else window.fbq("track", event, params ?? {});
+}
+
+/** Fire a CUSTOM Meta Pixel event. Used for StartedConversation, which covers
+ *  both ways into a conversation - opening the join form, and going straight to
+ *  WhatsApp - so one ad set can optimise for the pair. The standard events
+ *  (InitiateCheckout, Contact, Lead) still fire alongside it. */
+export function trackCustom(
+  event: string,
+  params?: Record<string, unknown>
+): void {
+  if (typeof window === "undefined" || !window.fbq || !META_PIXEL_IDS.length) return;
+  window.fbq("trackCustom", event, params ?? {});
 }
 
 /**

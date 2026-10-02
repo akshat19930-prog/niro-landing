@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Icon } from "./Icon";
 import { logEvent } from "@/lib/track";
-import { track } from "@/lib/analytics";
+import { track, trackCustom } from "@/lib/analytics";
 import { whatsappUrl, whatsappRef, FROM_SITE } from "@/lib/whatsapp";
 import { SALES_WHATSAPP } from "@/lib/config";
 
@@ -67,6 +67,9 @@ export function WhatsAppLink({
         // sends. An inbound chat is matched back to it on timestamp.
         logEvent("whatsapp_click", { placement, ref: whatsappRef() });
         track("Contact", { placement });
+        // The other half of what the campaign optimises for: someone who skips
+        // the form and messages us directly.
+        trackCustom("StartedConversation", { route: "whatsapp", placement });
       }}
     >
       {showIcon && (

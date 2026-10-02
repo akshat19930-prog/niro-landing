@@ -10,6 +10,17 @@
 export const META_PIXEL_ID =
   process.env.NEXT_PUBLIC_META_PIXEL_ID || "1711474783446227";
 
+/** Second Meta Pixel, for the ad account the Oct 2026 campaign runs from. Both
+ *  are initialised and every event goes to both: fbq("track") fans out to every
+ *  initialised pixel, so the old account keeps its history while the new one
+ *  gets the same signal from day one. */
+export const META_PIXEL_ID_2 =
+  process.env.NEXT_PUBLIC_META_PIXEL_ID_2 || "1995521257777789";
+
+/** Every pixel to load, in init order. Empty entries are dropped so unsetting
+ *  one env var cleanly disables that pixel. */
+export const META_PIXEL_IDS: string[] = [META_PIXEL_ID, META_PIXEL_ID_2].filter(Boolean);
+
 /** PostHog (heatmaps, scrollmaps, session replay, autocapture). Project API key
  *  (starts "phc_"); public/client-side by design. When unset, PostHog doesn't
  *  load. Host is US by default - use "https://eu.i.posthog.com" for an EU project. */
