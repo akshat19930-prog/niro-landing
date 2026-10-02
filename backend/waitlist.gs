@@ -36,7 +36,12 @@ var SHEET_NAME = "waitlist";
 var BASE_POSITION = 320;
 
 var EVENTS_SHEET = "events";
-var EVENTS_HEADER = ["timestamp", "date", "event", "arm", "pitch", "sid", "durationMs", "engaged", "page", "geo", "market", "priceArm", "campaign", "placement"];
+var EVENTS_HEADER = ["timestamp", "date", "event", "arm", "pitch", "sid", "durationMs", "engaged", "page", "geo", "market", "priceArm", "campaign", "placement",
+  // Positioning A/B (Oct 2026): "A" for tellniro.com, "B2" for /start. On every
+  // beacon, so sessions and bounce rate can be split by arm without joining
+  // back to the leads tab. The header is widened in place below, so an existing
+  // events sheet gains the column and older rows simply stay blank there.
+  "lpVariant"];
 
 // ---- Entry points -----------------------------------------------------------
 function doPost(e) {
@@ -91,6 +96,9 @@ function doPost(e) {
     var C_TASKS = 15, C_WHOFOR = 16, C_URGENCY = 17, C_PHONE = 18;
     var C_MARKET = 19, C_PAGE = 20, C_GEO = 21, C_PRICEARM = 22;
     var C_NAME = 26, C_CITY = 27, C_CITYSERVED = 28, C_OWNCITY = 29;
+    // Positioning A/B (Oct 2026) and the WhatsApp opt-in record. Appended at
+    // the end, like every addition before them, so no existing index shifts.
+    var C_LPVARIANT = 30, C_CONSENT = 31, C_CONSENTAT = 32;
     var tasksStr = (data.tasks && data.tasks.length) ? data.tasks.join(" | ") : "";
     // Geography: prefer the market the page declared ("gulf" on /gulf), else the
     // coarse region the client inferred from its time zone ("gulf"/"na"/"other").
@@ -107,6 +115,13 @@ function doPost(e) {
     // Where the MEMBER lives (US/Gulf/etc) - distinct from `city`, which is
     // where their family lives in India. Drives market sizing and call timing.
     var leadOwnCity = String(data.ownCity || "").trim();
+    // Which landing page sold this lead: "A" (/) or "B2" (/start). First-touch
+    // on the client and never overwritten here, so sales can read the arm off
+    // the row rather than out of the WhatsApp message.
+    var lpVariant = String(data.lpVariant || "").trim();
+    // What the visitor agreed to, and when, when they gave us the number.
+    var consent = String(data.consent || "").trim();
+    var consentAt = String(data.consentAt || "").trim();
 
     if (rowIndex === -1) {
       // New signup. Order must match HEADER.
@@ -120,7 +135,8 @@ function doPost(e) {
         tasksStr, data.whoFor || "", data.urgency || "", asText_(data.phone),
         market, pagePath, geo, priceArm,
         "", "", "",                       // leadStatus, detailsShared, leadNotes
-        leadName, leadCity, cityServed, leadOwnCity
+        leadName, leadCity, cityServed, leadOwnCity,
+        lpVariant, consent, consentAt
       ]);
     } else {
       // Existing signup - enrich the row, keep its position/referralCode.
@@ -146,6 +162,11 @@ function doPost(e) {
       if (leadCity) sheet.getRange(rowIndex, C_CITY).setValue(leadCity);
       if (cityServed) sheet.getRange(rowIndex, C_CITYSERVED).setValue(cityServed);
       if (leadOwnCity) sheet.getRange(rowIndex, C_OWNCITY).setValue(leadOwnCity);
+      // First-touch, like the attribution block above: a later POST in the same
+      // journey must not move a lead between arms, or re-date their consent.
+      if (lpVariant && !row[C_LPVARIANT - 1]) sheet.getRange(rowIndex, C_LPVARIANT).setValue(lpVariant);
+      if (consent && !row[C_CONSENT - 1]) sheet.getRange(rowIndex, C_CONSENT).setValue(consent);
+      if (consentAt && !row[C_CONSENTAT - 1]) sheet.getRange(rowIndex, C_CONSENTAT).setValue(consentAt);
     }
 
     return json_({ position: position, referralCode: referralCode });
@@ -179,7 +200,10 @@ var HEADER = [
   // India; `ownCity` is where the MEMBER lives. cityServed carries the
   // CANONICAL launch city when we serve them and is blank when we do not - so
   // the waitlist-by-city view that decides city six is a single filter on it.
-  "name", "city", "cityServed", "ownCity"
+  "name", "city", "cityServed", "ownCity",
+  // Positioning A/B (Oct 2026): "A" for tellniro.com, "B2" for /start. Plus the
+  // WhatsApp opt-in: which wording they saw, and when they accepted it.
+  "lpVariant", "consent", "consentAt"
 ];
 
 /* =====================================================================
@@ -445,7 +469,8 @@ function logEventRow_(data) {
       String(data.priceArm || ""), String(data.campaign || ""),
       // Which WhatsApp entry point was clicked (pricing / faq / footer). Blank
       // for every other event.
-      String(data.placement || "")
+      String(data.placement || ""),
+      String(data.lp_variant || "")
     ]);
     return json_({ ok: true });
   } catch (err) {
