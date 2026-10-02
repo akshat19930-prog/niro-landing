@@ -1071,11 +1071,38 @@ export const SORT_OUT_OPTIONS: string[] = [
 
 /** Who the membership is for. "My India needs" is the own-admin wedge - the
  *  segment that refused monthly billing and wanted a task pack instead, so a
- *  lead answering this way is the one to show Niro Lite on a call. */
+ *  lead answering this way is the one to show Niro Lite on a call.
+ *
+ *  SUPERSEDED Oct 2026 by SORT_OUT_USAGE below, which asks the same thing with
+ *  enough resolution to read the positioning test. Kept because rows written
+ *  before that date hold these three values, and the report still has to be
+ *  able to interpret them. */
 export const SORT_OUT_WHO: string[] = [
   "My family in India",
   "My India needs",
   "Both",
+];
+
+/**
+ * How the member expects to use Niro, asked first on the last step.
+ *
+ * This is the positioning test's own question. Arm B2 claims buyers stall
+ * because the pitch implies getting their parents on board, so the thing worth
+ * measuring is where a lead actually sits on that line: entirely their own
+ * tasks at one end, their family using Niro directly at the other. Four points
+ * rather than three, because the interesting split is between coordinating FOR
+ * the family and the family talking to Niro themselves, which the old "Both"
+ * collapsed into one answer.
+ *
+ * Written to the same `whoFor` field as the question it replaces, so the sheet
+ * column and the report keep working. Rows from before Oct 2026 carry the
+ * SORT_OUT_WHO values instead.
+ */
+export const SORT_OUT_USAGE: string[] = [
+  "Mostly for my own tasks",
+  "For my tasks + my family's tasks through me",
+  "Mainly for my family's tasks - I'll be coordinating and sending their requests",
+  "For my family, with them using Niro directly too via text or call",
 ];
 
 /** Autocomplete source for the parents' city. A datalist, not a dropdown: it
@@ -1423,7 +1450,9 @@ export const GUIDE_FOUNDERS: { name: string; photo: string; bio: string }[] = [
    The arm itself is resolved in lib/variant.ts from a first-touch cookie. */
 
 export type ArmCopy = {
-  heroSub: string;
+  /** Hero subtext, one paragraph per entry. */
+  heroSub: string[];
+  howHeading: string;
   /** The short descriptor row under the hero CTA. */
   heroDescriptors: string[];
   howStep1Title: string;
@@ -1437,10 +1466,22 @@ export type ArmCopy = {
   membershipFeatures: string[];
 };
 
+/** The "for your parents" section, shared verbatim by both arms. */
+const ARM_COPY_A_FAMILY = {
+  eyebrow: "For your parents in India",
+  heading: "The struggles they don’t tell you about, quietly solved.",
+  body: [
+    "The haggling with vendors. The fear of being scammed. The maid who stopped turning up. The grocery run on a bad knee. The ten apps they were never going to learn.",
+    "All of it solved with one WhatsApp message, or a voice note in the language they actually speak.",
+  ],
+};
+
 export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
   A: {
-    heroSub:
+    heroSub: [
       "Your family’s personal assistant in India, getting things done for them and for you. Peace of mind for you, unmatched convenience for them - all delivered over WhatsApp.",
+    ],
+    howHeading: "You ask. We do the running around.",
     heroDescriptors: [
       "Remote Assistant",
       "WhatsApp groups",
@@ -1475,8 +1516,11 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
   },
 
   B2: {
-    heroSub:
-      "Niro does anything and everything for you and your family back home. Look after your family’s health, run the household, sort paperwork, plan travel and manage property - just tell Niro.",
+    heroSub: [
+      "Your personal assistant for life in India - for you, and your family.",
+      "One 1:1 WhatsApp chat. Tell Niro, & we research, call, coordinate, get it done & show up if needed.",
+    ],
+    howHeading: "Your tasks. Your family’s tasks. Same Niro.",
     heroDescriptors: [
       "24x7 1:1 WhatsApp assistant",
       "Monthly or on-demand Niro Visits",
@@ -1497,16 +1541,15 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
         rest: "photos, receipts and a written note in your chat. You stop chasing, and you get your evenings back.",
       },
       {
-        lead: "Your family feels the difference",
-        rest: "without having to learn or sign up for anything. Add them to a group whenever you like, and they can ask Niro directly.",
+        lead: "Family-friendly assistant",
+        rest: "option to add parents, siblings or other family to a group, so they can tell Niro directly.",
       },
     ],
-    familyEyebrow: "For your family in India",
-    familyHeading: "Start on your own. Then bring your family in.",
-    familyBody: [
-      "Most members begin in a 1:1 chat. Get more out of Niro by moving beyond it: create a family group so your parents and siblings can just tell Niro directly.",
-      "One WhatsApp message, or a voice note in the language they actually speak. The small things they used to swallow finally get said, and handled.",
-    ],
+    // Identical to arm A on purpose: this section tested well as it is, and the
+    // 1:1 story is already carried by the hero, step one and the outcome lines.
+    familyEyebrow: ARM_COPY_A_FAMILY.eyebrow,
+    familyHeading: ARM_COPY_A_FAMILY.heading,
+    familyBody: ARM_COPY_A_FAMILY.body,
     visitsTrustBody:
       "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a visa appointment, a government office task or a home repair vendor chore. Monthly, or booked on demand.",
     membershipFeatures: [

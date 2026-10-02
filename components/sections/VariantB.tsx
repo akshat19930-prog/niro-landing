@@ -111,18 +111,21 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
           >
             You can&rsquo;t always be in India. Niro can.
           </h1>
-          <p
-            style={{
-              fontSize: "var(--text-md)",
-              lineHeight: "var(--leading-body)",
-              color: "var(--text-body)",
-              maxWidth: 520,
-              margin: "0 0 24px",
-            }}
-          >
-            {c.heroSub}
-          </p>
-          <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
+          {c.heroSub.map((line, i) => (
+            <p
+              key={line}
+              style={{
+                fontSize: "var(--text-md)",
+                lineHeight: "var(--leading-body)",
+                color: "var(--text-body)",
+                maxWidth: 520,
+                margin: i === c.heroSub.length - 1 ? "0 0 24px" : "0 0 10px",
+              }}
+            >
+              {line}
+            </p>
+          ))}
+          <JoinCta className="btn btn-primary btn-lg">Try Niro now</JoinCta>
           {/* Matches /us placement-for-placement. The two pages are being
               compared on signup rate, so an escape hatch on one and not the
               other biases that comparison. */}
@@ -185,7 +188,7 @@ function HowItWorksB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
     <section data-screen-label="How it works (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>How it works</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>You ask. We do the running around.</h2>
+        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>{c.howHeading}</h2>
         <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", maxWidth: 560, margin: "0 0 26px" }}>
           One message is the whole of your job. Everything after it is ours.
         </p>
@@ -665,7 +668,7 @@ function PricingB({ c }: { c: ArmCopy }) {
         </dl>
 
         <div style={{ textAlign: "center" }}>
-          <JoinCta className="btn btn-primary btn-lg">Join the beta</JoinCta>
+          <JoinCta className="btn btn-primary btn-lg">Try Niro now</JoinCta>
           <AskNiroCta
             placement="pricing"
             prompt="Questions before joining?"
@@ -769,7 +772,7 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
       : MAIN_FAQ_ITEMS;
   return (
     <>
-      <Nav cta="Join the beta" />
+      <Nav cta="Try Niro now" />
       <main>
         <HeroB c={c} arm={arm} />
         <HowItWorksB c={c} arm={arm} />
@@ -780,7 +783,7 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
         <PricingB c={c} />
         <Faq items={faqItems} showAsk={false} />
       </main>
-      <StickyCta label="Join the beta" />
+      <StickyCta label="Try Niro now" />
     </>
   );
 }
