@@ -7,7 +7,7 @@ import { Icon } from "@/components/ds/Icon";
 import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
-import { SORT_OUT_OPTIONS, SORT_OUT_WHO, INDIA_CITIES } from "@/lib/content";
+import { SORT_OUT_OPTIONS, SORT_OUT_USAGE, INDIA_CITIES } from "@/lib/content";
 import { dialCode, logEvent } from "@/lib/track";
 import { SALES_WHATSAPP } from "@/lib/config";
 import { looksLikeWhatsAppId } from "@/lib/cities";
@@ -415,9 +415,35 @@ export function JoinModal() {
           <div>
             <Eyebrow>Almost there</Eyebrow>
             <h2 style={{ ...h2Style, margin: "10px 0 16px" }}>
-              What are you looking to sort out?
+              How do you see yourself using Niro?
             </h2>
 
+            {/* Asked before the categories, and asked at all, because it is the
+                positioning test's own question: arm B2 claims buyers stall when
+                the pitch implies getting their parents on board, so where a
+                lead sits between "my own tasks" and "my family talk to Niro
+                themselves" is the thing worth knowing about them. */}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 8,
+                marginBottom: 22,
+              }}
+            >
+              {SORT_OUT_USAGE.map((u) => (
+                <Chip
+                  key={u}
+                  label={u}
+                  selected={whoFor === u}
+                  onClick={() => setWhoFor(u)}
+                />
+              ))}
+            </div>
+
+            <div style={{ ...labelStyle, marginBottom: 6 }}>
+              What are you looking to sort out?
+            </div>
             <div
               style={{
                 fontSize: "var(--text-xs)",
@@ -442,18 +468,6 @@ export function JoinModal() {
                   multi
                   selected={tasks.includes(t)}
                   onClick={() => toggleTask(t)}
-                />
-              ))}
-            </div>
-
-            <div style={{ ...labelStyle, marginBottom: 10 }}>Who&rsquo;s it for?</div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 22 }}>
-              {SORT_OUT_WHO.map((w) => (
-                <Chip
-                  key={w}
-                  label={w}
-                  selected={whoFor === w}
-                  onClick={() => setWhoFor(w)}
                 />
               ))}
             </div>
