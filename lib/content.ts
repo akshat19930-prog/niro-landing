@@ -1640,34 +1640,3 @@ export const B2_FAQ_FIRST_ANSWER: string = (
   "your 1:1 WhatsApp chat with Niro, optional family groups"
 );
 
-/**
- * The three questions visitors actually hunt for, answered high on the page.
- *
- * Measured Oct 2026: the FAQ is the second most clicked thing on the site, and
- * it sits at 84-95% scroll depth, reached by under a third of visitors. The top
- * three by a distance are coverage, who the assistants are, and whether you can
- * try before paying. "Which cities" is 8th of 9 in the list and still the most
- * opened, which means people are searching for it rather than finding it: a
- * coverage question is a gate, and answering it last wastes the whole funnel on
- * anyone whose city we do not serve.
- *
- * So these three move to just under the hero. Short enough to read at a glance,
- * with the full answers still in the FAQ for anyone who wants them.
- */
-export const UPFRONT_ANSWERS: { k: string; t: string; d: string }[] = [
-  {
-    k: "Live today in",
-    t: "6 cities",
-    d: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai and Kolkata. Family somewhere else? Join anyway and tell us their city.",
-  },
-  {
-    k: "Who shows up",
-    t: "Our own people",
-    d: "Niro Assistants are on our payroll and checked for ID, criminal record and address. Never a marketplace of strangers.",
-  },
-  {
-    k: "Before you pay",
-    t: "First task is free",
-    d: "Send us something real and watch us do it. No card, and nothing to cancel.",
-  },
-];

@@ -15,7 +15,7 @@ import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import {
   PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, FAQ, GUIDE_SCOPE,
-  ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, UPFRONT_ANSWERS, type ArmCopy,
+  ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, type ArmCopy,
 } from "@/lib/content";
 import type { LpVariant } from "@/lib/variant";
 
@@ -179,80 +179,6 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
  * Niro Visits. The visits card carries the accent border - it is the part no
  * amount of software can imitate, and it was previously nowhere on the page.
  */
-/**
- * The three answers people hunt for, directly under the hero.
- *
- * Coverage, who the assistants are, and whether you can try before paying are
- * the three most opened FAQ answers by a distance, and they sat at 84-95% of
- * scroll depth, reached by under a third of visitors. A coverage question in
- * particular is a gate: answering it last spends the whole funnel on people who
- * may not be servable. Rendered flat, no accordion, so it costs a glance.
- */
-function UpfrontAnswers() {
-  return (
-    <section
-      data-screen-label="Upfront answers"
-      style={{ padding: "0 var(--gutter) 8px" }}
-    >
-      <div
-        style={{
-          maxWidth: "var(--container)",
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
-          gap: 14,
-        }}
-      >
-        {UPFRONT_ANSWERS.map((a) => (
-          <div
-            key={a.t}
-            style={{
-              background: "var(--surface-card)",
-              border: "1px solid var(--border)",
-              borderRadius: "var(--radius-lg)",
-              padding: "16px 18px",
-            }}
-          >
-            <div
-              style={{
-                fontSize: "var(--text-xs)",
-                fontWeight: 600,
-                letterSpacing: "var(--tracking-wide)",
-                textTransform: "uppercase",
-                color: "var(--accent-strong)",
-                marginBottom: 4,
-              }}
-            >
-              {a.k}
-            </div>
-            <div
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "var(--text-lg)",
-                color: "var(--text-strong)",
-                lineHeight: 1.2,
-                marginBottom: 6,
-              }}
-            >
-              {a.t}
-            </div>
-            <p
-              style={{
-                margin: 0,
-                fontSize: "var(--text-sm)",
-                lineHeight: 1.45,
-                color: "var(--text-muted)",
-              }}
-            >
-              {a.d}
-            </p>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 function HowItWorksB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
   const remoteVerbs = [
     "Research", "Find", "Book", "Order", "Arrange",
@@ -857,7 +783,6 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
       <Nav cta="What Niro does" ctaHref="#what-niro-does" />
       <main>
         <HeroB c={c} arm={arm} />
-        <UpfrontAnswers />
         <HowItWorksB c={c} arm={arm} />
         <ParentsB c={c} />
         <UseCasesB />
