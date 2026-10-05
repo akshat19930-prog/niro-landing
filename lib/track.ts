@@ -42,8 +42,16 @@ const PH_FORWARD: Record<string, true> = {
   // Scroll milestones too, so the pricing-fold -> CTA funnel is queryable in
   // PostHog directly instead of only from the events sheet.
   reached_pricing: true,
+  // All four milestones now, not just the two. scroll_25 lands inside "How it
+  // works", which is where the page loses most of its traffic, and without it
+  // PostHog could see that two thirds vanish before halfway but not where.
+  scroll_25: true,
   scroll_50: true,
+  scroll_75: true,
   scroll_100: true,
+  // Which section came into view, and which CTA was pressed. Both answer
+  // questions the page could not answer about itself.
+  section_viewed: true,
   // Click-to-chat. Worth a PostHog funnel of its own: a visitor who asks on
   // WhatsApp instead of joining never reaches email_entered, so without this
   // they read as a bounce.
@@ -194,7 +202,7 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
   }
 
   // Mirror funnel events to PostHog for funnels + heatmap segmentation.
-  if (PH_FORWARD[event]) {
+  if (PH_FORWARD[event] || event.indexOf("waitlist_click_") === 0) {
     try {
       window.posthog?.capture(event, {
         arm: getStoredArm(),
@@ -261,6 +269,36 @@ function startScrollTracking(): void {
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll(); // catch short pages / restored scroll position
+
+  // Which sections actually came into view, once each per session. Scroll
+  // milestones measure distance down a page; they cannot say which block a
+  // visitor stopped at, because a section's share of the page has nothing to
+  // do with its share of the interest. Every section carries a
+  // data-screen-label already, so this needs no new markup.
+  try {
+    if ("IntersectionObserver" in window) {
+      var seen = document.querySelectorAll("[data-screen-label]");
+      if (seen.length) {
+        var io2 = new IntersectionObserver(
+          function (entries) {
+            for (var i = 0; i < entries.length; i++) {
+              var en = entries[i];
+              if (!en.isIntersecting) continue;
+              var name = en.target.getAttribute("data-screen-label") || "";
+              if (name && fireOnce("nsec_" + name)) logEvent("section_viewed", { section: name });
+              io2.unobserve(en.target);
+            }
+          },
+          // A third of the section on screen: enough that it was actually
+          // looked at, not merely swiped past on the way somewhere else.
+          { threshold: 0.33 }
+        );
+        for (var j = 0; j < seen.length; j++) io2.observe(seen[j]);
+      }
+    }
+  } catch {
+    /* IO not supported - the scroll milestones still cover the page */
+  }
 
   // Pricing fold: fire when the $ section first enters the viewport. This is the
   // key "did they get to the price?" signal for the funnel.
