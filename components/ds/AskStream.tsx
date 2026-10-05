@@ -5,14 +5,16 @@ import { useFlicker } from "@/components/ds/Flicker";
 /**
  * A live feed of the asks families actually send Niro.
  *
- * Three slots, one of which crossfades to a new ask every few seconds - so an
- * individual ask sits still long enough to read, and nothing ever jumps.
+ * `rows` fixed slots, one of which crossfades to a new ask every few seconds -
+ * so an individual ask sits still long enough to read, and nothing ever jumps.
+ * The home page runs a single row to keep "How it works" short; the family
+ * guide, which has the vertical room, still runs three.
  *
  * Deliberately mixes FAMILY asks ("Mum") with the member's OWN India admin
  * ("You"). The research found two distinct jobs inside one product, and a
  * visitor who came for their stuck EPF claim needs to see themselves here too.
  *
- * Renders all three filled on first paint, and freezes under
+ * Renders every slot filled on first paint, and freezes under
  * prefers-reduced-motion.
  */
 
@@ -57,9 +59,14 @@ export const ASKS_B2: Ask[] = [
   { from: "You", text: "Amma mentioned her knee is bad again. Start weekly physio?" },
 ];
 
-export function AskStream({ asks = ASKS }: { asks?: Ask[] } = {}) {
-  // 3 slots, one swapping every 2.6s -> each ask holds for ~7.8s.
-  const visible = useFlicker(asks.length, 3, 2600);
+export function AskStream({
+  asks = ASKS,
+  rows = 3,
+}: { asks?: Ask[]; rows?: number } = {}) {
+  // One swap every 2.6s, so each ask holds for 2.6s * rows. At rows={1} that
+  // is a single line fluctuating in place, which is too fast to finish reading
+  // a long ask, so the single-row case gets a longer beat.
+  const visible = useFlicker(asks.length, rows, rows === 1 ? 3400 : 2600);
 
   return (
     <div className="ask-stream" aria-live="off">

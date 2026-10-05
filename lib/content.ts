@@ -1496,12 +1496,12 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
     ],
     howDonePoints: [
       {
-        lead: "All tasks closed with proof",
-        rest: "photos, receipts and a written note in the group. You stop chasing, and you get your evenings back.",
+        lead: "Closed with proof",
+        rest: "photos, receipts and a note in the group.",
       },
       {
         lead: "Your parents ask freely",
-        rest: "because asking Niro doesn\u2019t mean worrying you. The small things they used to swallow finally get said, and handled.",
+        rest: "the small things they used to swallow finally get handled.",
       },
     ],
     familyEyebrow: "For your parents in India",
@@ -1537,12 +1537,12 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
     ],
     howDonePoints: [
       {
-        lead: "All tasks closed with proof",
-        rest: "photos, receipts and a written note in your chat. You stop chasing, and you get your evenings back.",
+        lead: "Closed with proof",
+        rest: "photos, receipts and a note in your chat.",
       },
       {
         lead: "Family-friendly assistant",
-        rest: "option to add parents, siblings or other family to a group, so they can tell Niro directly.",
+        rest: "option to add parents or siblings to a group, so they can tell Niro directly.",
       },
     ],
     // Identical to arm A on purpose: this section tested well as it is, and the

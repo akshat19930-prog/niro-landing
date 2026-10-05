@@ -125,7 +125,7 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
               {line}
             </p>
           ))}
-          <JoinCta className="btn btn-primary btn-lg" position="hero">Try Niro now</JoinCta>
+          <JoinCta className="btn btn-primary btn-lg" position="hero">Try 1st free task</JoinCta>
           {/* Matches /us placement-for-placement. The two pages are being
               compared on signup rate, so an escape hatch on one and not the
               other biases that comparison. */}
@@ -180,18 +180,15 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
  * amount of software can imitate, and it was previously nowhere on the page.
  */
 function HowItWorksB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
-  const remoteVerbs = [
-    "Research", "Find", "Book", "Order", "Arrange",
-    "Plan end to end", "Coordinate with vendors",
-  ];
+  // Single words only. "Plan end to end" and "Coordinate with vendors" said
+  // little that the short verbs do not, and the two of them wrapped the chip
+  // row onto a third line on every phone width.
+  const remoteVerbs = ["Research", "Find", "Book", "Order", "Coordinate", "Chase"];
   return (
     <section data-screen-label="How it works (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>How it works</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 10px" }}>{c.howHeading}</h2>
-        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", maxWidth: 560, margin: "0 0 26px" }}>
-          One message is the whole of your job. Everything after it is ours.
-        </p>
+        <h2 style={{ ...h2Style, margin: "14px 0 22px" }}>{c.howHeading}</h2>
 
         <div className="beat">
           <div className="beat-label">
@@ -199,7 +196,7 @@ function HowItWorksB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
             <span className="beat-t">{c.howStep1Title}</span>
           </div>
           <div>
-            <AskStream asks={arm === "B2" ? ASKS_B2 : undefined} />
+            <AskStream asks={arm === "B2" ? ASKS_B2 : undefined} rows={1} />
           </div>
         </div>
 
@@ -272,7 +269,7 @@ function HowItWorksB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
  */
 function ParentsB({ c }: { c: ArmCopy }) {
   return (
-    <section data-screen-label="Parents (B)" style={{ padding: sectionPad }}>
+    <section data-screen-label="Parents (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div
         style={{
           maxWidth: "var(--container)",
@@ -352,7 +349,7 @@ function UseCasesB() {
     <section
       id="what-niro-does"
       data-screen-label="Use cases (B)"
-      style={{ padding: sectionPad, background: "var(--bg-inset)", scrollMarginTop: 72 }}
+      style={{ padding: sectionPad, scrollMarginTop: 72 }}
     >
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>What Niro handles</Eyebrow>
@@ -784,14 +781,14 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
       <main>
         <HeroB c={c} arm={arm} />
         <HowItWorksB c={c} arm={arm} />
-        <ParentsB c={c} />
         <UseCasesB />
+        <ParentsB c={c} />
         <StoriesB arm={arm} />
         <TrustB c={c} />
         <PricingB c={c} />
         <Faq items={faqItems} showAsk={false} />
       </main>
-      <StickyCta label="Try Niro now" />
+      <StickyCta label="Try 1st free task" />
     </>
   );
 }
