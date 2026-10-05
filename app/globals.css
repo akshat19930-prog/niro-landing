@@ -1643,3 +1643,129 @@
   .hero-desc { flex-direction: column; align-items: flex-start; gap: 4px; }
   .hero-desc .hero-desc-sep { display: none; }
 }
+
+/* ========================================= join modal: the first-task step */
+/* The last step of the join flow has one job: get a task sent on WhatsApp.
+   Everything here is in service of that, so nothing competes with the primary
+   button except a deliberately quiet membership link at the foot. */
+.join-task {
+  width: 100%;
+  min-height: 88px;
+  resize: none;
+  line-height: 1.5;
+  font-family: var(--font-sans);
+}
+.join-picker {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 13px 14px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 12px;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text-body);
+  text-align: left;
+  cursor: pointer;
+}
+.join-picker b { font-weight: 600; color: var(--text-strong); }
+.join-picker svg { flex-shrink: 0; color: var(--text-muted); }
+.join-opts {
+  border: 1.5px solid var(--border-strong);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.join-opt {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 14px;
+  border: none;
+  border-top: 1px solid var(--border);
+  background: var(--surface-card);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text-strong);
+  text-align: left;
+  cursor: pointer;
+}
+.join-opt:first-child { border-top: none; }
+.join-opt.on { background: var(--brand-soft); }
+.join-radio {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-strong);
+  flex-shrink: 0;
+}
+.join-opt.on .join-radio { border-color: var(--brand); border-width: 5px; }
+/* Scope, turnaround, what we need and what is NOT included, all before the
+   handoff. The last of those is the one that keeps a free task from quietly
+   becoming a paid one nobody agreed to. */
+.join-scope {
+  border: 1.5px solid var(--brand);
+  background: var(--brand-soft);
+  border-radius: 14px;
+  padding: 14px 15px;
+  margin-top: 12px;
+}
+.join-scope h4 {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-strong);
+  margin: 0 0 9px;
+}
+.join-scope dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+}
+.join-scope dt {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: var(--brand);
+}
+.join-scope dd {
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: var(--text-body);
+  margin: 0;
+}
+.join-alt {
+  margin: 18px calc(var(--space-5) * -1) calc(var(--space-5) * -1);
+  padding: 15px var(--space-5) 20px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-inset);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  text-align: center;
+}
+.join-alt p {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin: 0 0 7px;
+}
+.join-alt a {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--brand-soft);
+  padding-bottom: 2px;
+}
