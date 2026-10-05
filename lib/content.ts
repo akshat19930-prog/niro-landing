@@ -1074,13 +1074,19 @@ export const CAREERS_INTRO =
  * done, not reading a menu of services, and the answer goes straight into a
  * WhatsApp message they send in their own voice.
  *
- * `scope`, `turnaround`, `needs` and `notIncluded` are shown BEFORE the
- * handoff rather than left to the assistant to explain in chat. Two reasons.
- * Naming what is not included is what stops a free task quietly growing into
- * a paid one nobody agreed to. And surfacing `needs` up front means the
- * lead's first message can carry the input, which collapses a three-message
- * back-and-forth into one: that exchange is where most of the drop-off
- * between a lead and a started task actually happens.
+ * `scope`, `needs` and `notIncluded` are shown BEFORE the handoff rather than
+ * left to the assistant to explain in chat. Two reasons. Naming what is not
+ * included is what stops a free task quietly growing into a paid one nobody
+ * agreed to. And surfacing `needs` up front means the lead's first message can
+ * carry the input, which collapses a three-message back-and-forth into one:
+ * that exchange is where most of the drop-off between a lead and a started
+ * task actually happens.
+ *
+ * There is deliberately NO turnaround here. We used to print one per task,
+ * which made a promise on a page nobody was staffed to keep: a free task that
+ * misses a published deadline costs more trust than the deadline ever bought.
+ * The assistant commits to a date in the chat, once the task is scoped and we
+ * know what we have taken on.
  */
 export type FreeTask = {
   /** Stable key written to the sheet. Never reuse one for different work. */
@@ -1089,7 +1095,6 @@ export type FreeTask = {
   /** How the task is named inside the prefilled WhatsApp message. */
   waText: string;
   scope: string;
-  turnaround: string;
   needs: string;
   notIncluded: string;
 };
@@ -1101,7 +1106,6 @@ export const FREE_TASKS: FreeTask[] = [
     waText: "recovering my PF/EPF money",
     scope:
       "A short report: what is blocked, why, how long it will take to clear and what it will cost. The specific rejection reason named, which is the part nobody else gives you, with the sequence of steps to fix it.",
-    turnaround: "48 hours",
     needs: "UAN and claim history",
     notIncluded:
       "Filing the corrected claim. That one is a member task, and we quote it before we touch it.",
@@ -1112,7 +1116,6 @@ export const FREE_TASKS: FreeTask[] = [
     waText: "unblocking a bank account or a SIM",
     scope:
       "We find out why it is frozen: KYC, dormancy, an address mismatch or a re-verification, and tell you exactly what clears it, naming the branch or store that can do it.",
-    turnaround: "48 hours",
     needs: "The bank or operator, and whose name it is in",
     notIncluded:
       "Going in to submit it. That one is a member task, and we quote it before we touch it.",
@@ -1123,7 +1126,6 @@ export const FREE_TASKS: FreeTask[] = [
     waText: "finding the gaps in my family’s health insurance",
     scope:
       "A two-page gap report with the rupee figure at the top and the reasoning under it: room-rent sub-limit, co-pay, disease waiting periods, day-care exclusions, network hospitals near your parents’ home, and the cheapest way to close the biggest gap.",
-    turnaround: "48 hours",
     needs: "The policy PDF",
     notIncluded:
       "Buying or porting the cover. We tell you what to fix; the buying stays yours.",
@@ -1134,7 +1136,6 @@ export const FREE_TASKS: FreeTask[] = [
     waText: "finding me someone trusted in India",
     scope:
       "Three named people with quoted rates, a negotiated package price, availability windows and our vetting note. A warranty floor of 30 days on plumbing and electrical, 180 days on appliance work.",
-    turnaround: "24 hours",
     needs: "The job and the area",
     notIncluded:
       "Supervising the work once it starts. That one is a member task.",
@@ -1145,7 +1146,6 @@ export const FREE_TASKS: FreeTask[] = [
     waText: "a health check on our vehicle in India",
     scope:
       "One page per vehicle: outstanding challans with amounts, PUC expiry, insurance expiry and service due. Runs entirely on public VAHAN records, so we need no login of yours.",
-    turnaround: "48 hours",
     needs: "Registration numbers",
     notIncluded:
       "Paying the challans or renewing the cover. Member tasks, quoted first.",
@@ -1160,7 +1160,6 @@ export const FREE_TASKS: FreeTask[] = [
     // logins are the keepable version and carry the same safety value.
     scope:
       "Medical ID filled in, your number set as emergency contact, SOS configured, text size fixed. Plus the five-minute callback rule taught and left on a fridge card: nobody legitimate asks for a password, a PIN or a net-banking login, so hang up and call back on a number you already had. Before-and-after screenshots to you.",
-    turnaround: "48 hours",
     needs: "15 minutes with your parent",
     notIncluded: "Ongoing monitoring. This is a one-off setup.",
   },
@@ -1170,7 +1169,6 @@ export const FREE_TASKS: FreeTask[] = [
     waText: "sorting out a support and billing issue",
     scope:
       "We take the case over in writing: every reference number, the escalation path, the ombudsman or regulator route if it comes to that, and a written note of exactly where it stands and what happens next.",
-    turnaround: "First update in 48 hours",
     needs: "The company, the account and what went wrong",
     // Said plainly because a billing dispute genuinely cannot be closed in two
     // days, and a free task that quietly overruns is worse than one that was
@@ -1183,8 +1181,7 @@ export const FREE_TASKS: FreeTask[] = [
     label: "Get a parent started with online Yoga - Arrange a trial class",
     waText: "getting a parent started with online yoga",
     scope:
-      "Three vetted online 1:1 instructors with negotiated package rates, and a trial class arranged and paid for by us. Your parent sits in, decides for themselves, and picks the one who stays.",
-    turnaround: "Trial class within 7 days",
+      "Vetted instructors for remote sessions over video, 1:1 or in a small group, with negotiated rates. We arrange a trial class and pay for it. Your parent sits in, decides for themselves, and picks the one who stays.",
     needs: "Their timings, and the language they are comfortable in",
     notIncluded:
       "The ongoing package, which your parent chooses and we set up once they are happy.",

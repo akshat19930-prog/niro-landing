@@ -543,15 +543,16 @@ export function JoinModal() {
 
             {/* Scope before the handoff, not after. Naming what is NOT included
                 is what keeps a free task from quietly becoming a paid one, and
-                "we need" up front lets their first message carry the input. */}
+                "we need" up front lets their first message carry the input.
+                No turnaround: the assistant commits to a date in the chat once
+                the task is scoped, rather than the page promising one on their
+                behalf. */}
             {picked && (
               <div className="join-scope">
                 <h4>What you get under the free task</h4>
                 <dl>
                   <dt>Scope</dt>
                   <dd>{picked.scope}</dd>
-                  <dt>By</dt>
-                  <dd>{picked.turnaround}</dd>
                   <dt>We need</dt>
                   <dd>{picked.needs}</dd>
                   <dt>Not included</dt>
