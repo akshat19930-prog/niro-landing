@@ -250,6 +250,19 @@ export function JoinProvider({
     if (market === "gulf") assignGulfPriceArm();
     registerAnalytics(assigned, attr.pitch);
     startSession();
+
+    // Arriving from a standalone page's CTA (see JoinCta): open the form, then
+    // strip the param so a refresh or a shared URL does not reopen it.
+    try {
+      if (new URLSearchParams(window.location.search).get("join") === "1") {
+        openForm();
+        const url = new URL(window.location.href);
+        url.searchParams.delete("join");
+        window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+      }
+    } catch {
+      /* non-fatal: the visitor can still press the CTA on this page */
+    }
   }, []);
 
   // Lock body scroll while the modal is open so the page behind doesn't move.

@@ -423,7 +423,11 @@ function UseCasesB() {
     { icon: "home", title: "Property management & others" },
   ];
   return (
-    <section data-screen-label="Use cases (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
+    <section
+      id="what-niro-does"
+      data-screen-label="Use cases (B)"
+      style={{ padding: sectionPad, background: "var(--bg-inset)", scrollMarginTop: 72 }}
+    >
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>What Niro handles</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 28px" }}>Everything that makes you wish you were in India. And more.</h2>
@@ -850,7 +854,7 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
       : MAIN_FAQ_ITEMS;
   return (
     <>
-      <Nav cta="Try Niro now" ctaPosition="nav" />
+      <Nav cta="What Niro does" ctaHref="#what-niro-does" />
       <main>
         <HeroB c={c} arm={arm} />
         <UpfrontAnswers />

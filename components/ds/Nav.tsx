@@ -1,10 +1,18 @@
+"use client";
+
 import { Wordmark } from "./Wordmark";
 import { JoinCta } from "./JoinCta";
+import { logEvent } from "@/lib/track";
 
 /**
- * Minimal top nav - wordmark left, one CTA right, nothing else competes.
- * Sticky, translucent + backdrop-blur. The CTA opens the join modal (home);
- * on a standalone page pass `ctaHref` to render a plain link back home instead.
+ * Minimal top nav - wordmark left, one link right, nothing else competes.
+ *
+ * Sticky, translucent + backdrop-blur. By default the CTA opens the join modal.
+ * Pass `ctaHref` to render a link instead: a standalone page uses that to get
+ * back to the form, and the home page uses it to jump to the scope section,
+ * which converts far better than a third copy of the same join button.
+ *
+ * Either way the click is logged, so the two framings can be compared.
  */
 export function Nav({
   cta = "Try Niro now",
@@ -49,7 +57,13 @@ export function Nav({
           <Wordmark dark={dark} />
         </a>
         {ctaHref ? (
-          <a href={ctaHref} className="nav-cta">
+          <a
+            href={ctaHref}
+            className="nav-cta"
+            onClick={() =>
+              logEvent("nav_cta_click", { href: ctaHref, label: cta })
+            }
+          >
             {cta}
           </a>
         ) : (

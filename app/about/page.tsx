@@ -78,7 +78,7 @@ export default function AboutPage() {
         </p>
 
         <div style={{ marginTop: 32 }}>
-          <a href="/#join" className="btn btn-primary btn-lg">
+          <a href="/?join=1" className="btn btn-primary btn-lg">
             Try Niro now
           </a>
         </div>
