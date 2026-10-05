@@ -7,9 +7,9 @@ import { Icon } from "@/components/ds/Icon";
 import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
-import { SORT_OUT_OPTIONS, SORT_OUT_USAGE, INDIA_CITIES } from "@/lib/content";
+import { FREE_TASKS, SORT_OUT_USAGE, INDIA_CITIES } from "@/lib/content";
 import { dialCode, logEvent } from "@/lib/track";
-import { SALES_WHATSAPP } from "@/lib/config";
+import { SALES_WHATSAPP, ASSISTANT_WHATSAPP } from "@/lib/config";
 import { looksLikeWhatsAppId } from "@/lib/cities";
 
 /**
@@ -29,12 +29,26 @@ import { looksLikeWhatsAppId } from "@/lib/cities";
  *     is a datalist, not a dropdown - it suggests without constraining, so the
  *     long tail still reaches the sheet, and the long tail is exactly what
  *     decides which city we open next.
- *  3. NO FREE-TASK PICKER HERE. Sales runs the first-task experience on
- *     WhatsApp. Putting it on the page would have committed us to fulfilling
- *     a free task for every lead at 8-10 leads a day, which is the thing that
- *     breaks in week two.
- *  4. WE WRITE THE LEAD BEFORE THE HANDOFF, at both steps. If the WhatsApp
- *     click were the only capture we would lose everyone who never messages.
+ *  3. THE FREE TASK IS ASKED FOR HERE, and the last step exists to do it.
+ *     This reverses the original decision, which kept the picker off the page
+ *     so sales could run the first task on WhatsApp and we would not owe a
+ *     free task to every lead at 8-10 a day. The reversal is not a change of
+ *     mind about capacity, it is a change in the facts: about 80% of leads
+ *     never replied to our opening message, so the tasks were not being run
+ *     anyway. The cause is WhatsApp itself. An unknown Indian number messaging
+ *     first lands behind a scam warning, aimed at someone who has just handed
+ *     over their parents' details. Only two things remove that screen: being
+ *     in their contacts, or an Official Business Account. Having the LEAD
+ *     open the thread sidesteps it entirely, and opens the 24-hour service
+ *     window so the reply can be a real message rather than a template.
+ *     So this step's job is not qualification. It is to give someone a reason
+ *     to press send.
+ *  4. WE WRITE THE LEAD BEFORE THE HANDOFF, at every step. If the WhatsApp
+ *     click were the only capture we would lose everyone who never messages,
+ *     and "picked a task but never sent it" is the most useful follow-up list
+ *     we have.
+ *  5. FREE TASKS GO TO THE ASSISTANT, everything else to sales. Two different
+ *     jobs: one scopes and delivers a task, the other sells a membership.
  */
 
 const h2Style = {
@@ -137,8 +151,14 @@ export function JoinModal() {
   const [ownCity, setOwnCity] = useState("");
   const [city, setCity] = useState("");
 
-  const [tasks, setTasks] = useState<string[]>([]);
   const [whoFor, setWhoFor] = useState<string | null>(null);
+  const [taskText, setTaskText] = useState("");
+  const [taskId, setTaskId] = useState<string | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  /** Which thread we sent them to, so the confirmation can point back at the
+   *  right one if WhatsApp never opened (blocked popup, or a desktop with no
+   *  WhatsApp installed). */
+  const [sentTo, setSentTo] = useState<"assistant" | "membership" | null>(null);
 
   // Preselect the country from the visitor's time zone where we can read it;
   // otherwise leave the default. Never overwrites a choice they have made.
@@ -160,8 +180,20 @@ export function JoinModal() {
   // Switching on the input itself, so nobody has to find a toggle.
   const isId = looksLikeWhatsAppId(phone);
 
-  function toggleTask(t: string) {
-    setTasks((cur) => (cur.includes(t) ? cur.filter((x) => x !== t) : [...cur, t]));
+  const picked = FREE_TASKS.find((t) => t.id === taskId) || null;
+  // Either input is enough. Someone who has typed their own thing should not
+  // have to also pick from a list that exists only for people who could not
+  // think of anything.
+  const canStart = taskText.trim().length > 2 || !!picked;
+
+  /** The message the lead sends us, in their voice, with no encoded payload.
+   *  Attribution reconciles on the phone number against the row written
+   *  before this link is ever tapped. */
+  function waHref(): string {
+    const body = picked
+      ? `Hi Niro, I'd like to start my free task: ${picked.waText}.`
+      : `Hi Niro, here's what's been pending: ${taskText.trim()}`;
+    return `https://wa.me/${ASSISTANT_WHATSAPP}?text=${encodeURIComponent(body)}`;
   }
 
   /** The number, on its own. Banked before we ask for anything else. */
@@ -391,6 +423,28 @@ export function JoinModal() {
               </datalist>
             </div>
 
+            {/* The positioning test's own question. Arm B2 claims buyers stall
+                when the pitch implies getting their parents on board, so where
+                a lead sits between "my own tasks" and "my family talk to Niro
+                themselves" is the thing worth knowing about them. It sits here
+                rather than on the last step because that step now has one job,
+                getting a task sent, and nothing else belongs in front of it. */}
+            <div style={{ marginBottom: 14 }}>
+              <div style={{ ...labelStyle, marginBottom: 8 }}>
+                How do you see yourself using Niro?
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {SORT_OUT_USAGE.map((u) => (
+                  <Chip
+                    key={u}
+                    label={u}
+                    selected={whoFor === u}
+                    onClick={() => setWhoFor(u)}
+                  />
+                ))}
+              </div>
+            </div>
+
             {error && (
               <p
                 role="alert"
@@ -410,71 +464,161 @@ export function JoinModal() {
           </form>
         )}
 
-        {/* ---------------------------------------------- 2. needs + who for */}
+        {/* --------------------------------------------- 2. the first task */}
         {step === "qualify" && (
           <div>
-            <Eyebrow>Almost there</Eyebrow>
-            <h2 style={{ ...h2Style, margin: "10px 0 16px" }}>
-              How do you see yourself using Niro?
+            <Eyebrow>Last step</Eyebrow>
+            <h2 style={{ ...h2Style, margin: "10px 0 6px" }}>
+              What&rsquo;s been pending in India?
             </h2>
-
-            {/* Asked before the categories, and asked at all, because it is the
-                positioning test's own question: arm B2 claims buyers stall when
-                the pitch implies getting their parents on board, so where a
-                lead sits between "my own tasks" and "my family talk to Niro
-                themselves" is the thing worth knowing about them. */}
-            <div
+            <p
               style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 8,
-                marginBottom: 22,
+                fontSize: "var(--text-sm)",
+                color: "var(--text-body)",
+                margin: "0 0 14px",
               }}
             >
-              {SORT_OUT_USAGE.map((u) => (
-                <Chip
-                  key={u}
-                  label={u}
-                  selected={whoFor === u}
-                  onClick={() => setWhoFor(u)}
-                />
-              ))}
-            </div>
+              For you or your parents. Tell us anything. Your first task is on
+              us.
+            </p>
 
-            <div style={{ ...labelStyle, marginBottom: 6 }}>
-              What are you looking to sort out?
-            </div>
-            <div
+            <textarea
+              className="ds-input join-task"
+              aria-label="What's been pending in India?"
+              rows={3}
+              value={taskText}
+              onChange={(e) => setTaskText(e.target.value)}
+              placeholder="Mum&rsquo;s EPF claim has been stuck since March and nobody will tell us why&hellip;"
+            />
+            <p
               style={{
                 fontSize: "var(--text-xs)",
                 color: "var(--text-muted)",
-                marginBottom: 10,
+                lineHeight: 1.45,
+                margin: "7px 0 0",
               }}
             >
-              Select all that apply
-            </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 8,
-                marginBottom: 20,
-              }}
-            >
-              {SORT_OUT_OPTIONS.map((t) => (
-                <Chip
-                  key={t}
-                  label={t}
-                  multi
-                  selected={tasks.includes(t)}
-                  onClick={() => toggleTask(t)}
-                />
-              ))}
-            </div>
+              No need to get it right. Even &ldquo;something&rsquo;s wrong with
+              Dad&rsquo;s pension&rdquo; gives us enough to start.
+            </p>
 
-            <Button full onClick={() => submitNeeds(tasks, whoFor)}>
-              Done
-            </Button>
+            {/* The picker is the fallback for a blank box, so its label says so
+                rather than sitting under a separate "or" divider. */}
+            <button
+              type="button"
+              className="join-picker"
+              aria-expanded={pickerOpen}
+              onClick={() => setPickerOpen((v) => !v)}
+            >
+              <span>
+                {picked ? (
+                  <b>{picked.label}</b>
+                ) : (
+                  <>Or if nothing comes to mind, <b>pick one of these</b></>
+                )}
+              </span>
+              <Icon name={pickerOpen ? "chevron-up" : "chevron-down"} size={15} />
+            </button>
+
+            {pickerOpen && (
+              <div className="join-opts" role="radiogroup" aria-label="Free tasks">
+                {FREE_TASKS.map((t) => (
+                  <button
+                    type="button"
+                    key={t.id}
+                    role="radio"
+                    aria-checked={taskId === t.id}
+                    className={`join-opt${taskId === t.id ? " on" : ""}`}
+                    onClick={() => {
+                      setTaskId(t.id);
+                      setPickerOpen(false);
+                    }}
+                  >
+                    <span className="join-radio" aria-hidden="true" />
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Scope before the handoff, not after. Naming what is NOT included
+                is what keeps a free task from quietly becoming a paid one, and
+                "we need" up front lets their first message carry the input.
+                No turnaround: the assistant commits to a date in the chat once
+                the task is scoped, rather than the page promising one on their
+                behalf. */}
+            {picked && (
+              <div className="join-scope">
+                <h4>What you get under the free task</h4>
+                <dl>
+                  <dt>Scope</dt>
+                  <dd>{picked.scope}</dd>
+                  <dt>We need</dt>
+                  <dd>{picked.needs}</dd>
+                  <dt>Not included</dt>
+                  <dd>{picked.notIncluded}</dd>
+                </dl>
+              </div>
+            )}
+
+            <a
+              className="btn btn-primary btn-md btn-full"
+              href={canStart ? waHref() : undefined}
+              aria-disabled={!canStart}
+              target="_blank"
+              rel="noopener"
+              style={{
+                marginTop: 16,
+                gap: 8,
+                ...(canStart
+                  ? {}
+                  : { opacity: 0.34, pointerEvents: "none" as const }),
+              }}
+              onClick={() => {
+                if (!canStart) return;
+                setSentTo("assistant");
+                // Written before the handoff, never after. A lead who picks a
+                // task and then never presses send in WhatsApp is the warmest
+                // follow-up list we have, and it only exists if we bank the
+                // answer here.
+                submitNeeds(taskText.trim(), taskId, whoFor, true);
+              }}
+            >
+              Start my free task
+              <Icon name="message-circle" size={17} />
+            </a>
+            <p
+              style={{
+                fontSize: "var(--text-xs)",
+                color: "var(--text-muted)",
+                textAlign: "center",
+                margin: "9px 0 0",
+              }}
+            >
+              Opens WhatsApp with your Niro Assistant
+              {picked ? ", task already written in" : ""}.
+            </p>
+
+            {/* Quiet, not competing: one primary action per screen. It is here
+                at all because two leads committed to pay before their trial
+                task had even finished, so the demand to skip the trial is
+                real. Sales, not the assistant: this is a payment conversation. */}
+            <div className="join-alt">
+              <p>Already know you want Niro?</p>
+              <a
+                href={`https://wa.me/${SALES_WHATSAPP}?text=${encodeURIComponent(
+                  "Hi Niro, I'd like to start a membership."
+                )}`}
+                target="_blank"
+                rel="noopener"
+                onClick={() => {
+                  setSentTo("membership");
+                  submitNeeds(taskText.trim(), taskId, whoFor, false, true);
+                }}
+              >
+                Skip the trial, start a membership &rarr;
+              </a>
+            </div>
           </div>
         )}
 
@@ -494,55 +638,83 @@ export function JoinModal() {
                 margin: "0 0 18px",
               }}
             >
-              We&rsquo;ll message you on WhatsApp shortly.
+              {sentTo
+                ? "WhatsApp should have opened with your message ready. Send it and we pick it up from there."
+                : "We’ll message you on WhatsApp shortly."}
             </p>
 
-            {/* Saving the number is primary, and chatting now is not, because
-                of a timing asymmetry. Paarth messages them within the hour,
-                and an unsaved Indian number arrives behind WhatsApp's "Do you
-                trust this person?" scam warning, pointed at someone who just
-                handed over their parents' details. Saving only works in the
-                gap before that message lands. Chatting works forever, and
-                anyone impatient enough to want it will take the text link. */}
-            <a
-              className="btn btn-primary btn-md btn-full"
-              href="/niro.vcf"
-              download="Niro.vcf"
-              onClick={() => logEvent("save_number_click", { placement: "join_confirm" })}
-            >
-              Save our number
-            </a>
-            <p
-              style={{
-                fontSize: "var(--text-sm)",
-                color: "var(--text-muted)",
-                lineHeight: 1.5,
-                margin: "12px 0 0",
-                textAlign: "center",
-              }}
-            >
-              So you know it&rsquo;s us when we message.
-            </p>
-            {/* The number in full, for anyone whose download is blocked (the
-                Instagram and Facebook in-app browsers often are) or who would
-                rather type it. Not a tel: link: tapping that opens the dialer,
-                and the job here is to copy it into contacts. `user-select:all`
-                makes one tap select the whole number instead of a word of it. */}
-            <div
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "var(--text-md)",
-                fontWeight: 600,
-                color: "var(--text-strong)",
-                textAlign: "center",
-                margin: "4px 0 0",
-                userSelect: "all",
-                WebkitUserSelect: "all",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {displayNumber(SALES_WHATSAPP)}
-            </div>
+            {/* Two different jobs, depending on who opened the thread.
+                If the LEAD messaged us, the scam-warning problem is already
+                solved: WhatsApp only shows it on an unexpected inbound message
+                from an unknown number, and they started this one. So the only
+                thing worth offering is a way back to the thread, for a popup
+                blocker or a desktop with no WhatsApp installed.
+                If they never tapped, our outbound message is still to come and
+                it WILL land behind that warning, so saving the number first is
+                the thing that matters. */}
+            {sentTo ? (
+              <a
+                className="btn btn-primary btn-md btn-full"
+                href={
+                  sentTo === "membership"
+                    ? `https://wa.me/${SALES_WHATSAPP}?text=${encodeURIComponent(
+                        "Hi Niro, I'd like to start a membership."
+                      )}`
+                    : waHref()
+                }
+                target="_blank"
+                rel="noopener"
+                style={{ gap: 8 }}
+                onClick={() => logEvent("whatsapp_reopen", { to: sentTo })}
+              >
+                Didn&rsquo;t open? Tap here
+                <Icon name="message-circle" size={17} />
+              </a>
+            ) : (
+              <>
+                <a
+                  className="btn btn-primary btn-md btn-full"
+                  href="/niro.vcf"
+                  download="Niro.vcf"
+                  onClick={() =>
+                    logEvent("save_number_click", { placement: "join_confirm" })
+                  }
+                >
+                  Save our number
+                </a>
+                <p
+                  style={{
+                    fontSize: "var(--text-sm)",
+                    color: "var(--text-muted)",
+                    lineHeight: 1.5,
+                    margin: "12px 0 0",
+                    textAlign: "center",
+                  }}
+                >
+                  So you know it&rsquo;s us when we message.
+                </p>
+              {/* The number in full, for anyone whose download is blocked (the
+                  Instagram and Facebook in-app browsers often are) or who would
+                  rather type it. Not a tel: link: tapping that opens the dialer,
+                  and the job here is to copy it into contacts. `user-select:all`
+                  makes one tap select the whole number instead of a word of it. */}
+              <div
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "var(--text-md)",
+                  fontWeight: 600,
+                  color: "var(--text-strong)",
+                  textAlign: "center",
+                  margin: "4px 0 0",
+                  userSelect: "all",
+                  WebkitUserSelect: "all",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {displayNumber(SALES_WHATSAPP)}
+              </div>
+              </>
+            )}
           </div>
         )}
       </Card>

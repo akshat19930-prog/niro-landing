@@ -102,6 +102,13 @@ async function submitSignup(payload: {
   ref: string;
   planId?: string | null;
   tasks?: string[];
+  /** The first task in the lead's own words, verbatim. Free text, so it is
+   *  the one field that tells us what someone wants in language we did not
+   *  write for them. */
+  taskText?: string;
+  /** Which WhatsApp thread the handoff opened, if any: "assistant" for a free
+   *  task, "membership" for the sales line, empty if they never tapped. */
+  taskHandoff?: string;
   whoFor?: string | null;
   urgency?: string | null;
   phone?: string | null;
@@ -200,7 +207,13 @@ type JoinCtx = {
   capturePhone: (rawPhone: string) => string | null;
   submitLead: (raw: LeadDetails) => string | null;
   /** Record what they want sorted out and who it is for, then finish. */
-  submitNeeds: (tasks: string[], whoFor: string | null) => void;
+  submitNeeds: (
+    taskText: string,
+    taskId: string | null,
+    whoFor: string | null,
+    handoff?: boolean,
+    membership?: boolean
+  ) => void;
 };
 
 /** What we ask for up front now. Email is optional - we need it for receipts
@@ -476,17 +489,40 @@ export function JoinProvider({
     return null;
   }
 
-  /** What they want sorted out, and who it is for. Written before the
-   *  WhatsApp handoff so sales sees the answers even if they never message. */
-  function submitNeeds(tasks: string[], whoFor: string | null) {
+  /**
+   * The first task, and who they are using Niro for. Written BEFORE the
+   * WhatsApp handoff, never after.
+   *
+   * `handoff` records whether this call came from a tap that opened WhatsApp.
+   * The gap between a lead who picked a task and a lead who actually pressed
+   * send is the most useful follow-up list we have, and it only exists if the
+   * answer is banked at the tap rather than inferred from an inbound message
+   * that may never arrive.
+   */
+  function submitNeeds(
+    taskText: string,
+    taskId: string | null,
+    whoFor: string | null,
+    handoff = false,
+    membership = false
+  ) {
     const { pitch, ref } = getStoredAttribution();
     const pageArm = readPageArm();
     const page = typeof window !== "undefined" ? window.location.pathname : "";
     logEvent("qualified", {
-      tasks: tasks.join("|"),
+      taskId: taskId || "",
+      taskText,
       whoFor: whoFor || "",
+      handoff: handoff ? "1" : "",
+      membership: membership ? "1" : "",
       ...(market ? { market } : {}),
     });
+    if (handoff || membership) {
+      logEvent(membership ? "membership_click" : "freetask_handoff", {
+        taskId: taskId || (taskText ? "own" : ""),
+        ...(market ? { market } : {}),
+      });
+    }
     logEvent("signup_completed", market ? { market } : undefined);
     void submitSignup({
       lpVariant: getLpVariant(),
@@ -501,7 +537,11 @@ export function JoinProvider({
       ownCity: lead?.ownCity,
       city: lead?.city,
       cityServed: cityMatch?.served ? cityMatch.city : "",
-      tasks,
+      // `tasks` stays an array so the existing sheet column and the report
+      // keep working; it now carries at most the one chosen task id.
+      tasks: taskId ? [taskId] : [],
+      taskText,
+      taskHandoff: membership ? "membership" : handoff ? "assistant" : "",
       whoFor,
       market,
       page,

@@ -99,6 +99,9 @@ function doPost(e) {
     // Positioning A/B (Oct 2026) and the WhatsApp opt-in record. Appended at
     // the end, like every addition before them, so no existing index shifts.
     var C_LPVARIANT = 30, C_CONSENT = 31, C_CONSENTAT = 32;
+    // The free first task (Oct 2026). taskText is what the lead typed, in
+    // their own words; taskHandoff says which WhatsApp thread they opened.
+    var C_TASKTEXT = 33, C_TASKHANDOFF = 34;
     var tasksStr = (data.tasks && data.tasks.length) ? data.tasks.join(" | ") : "";
     // Geography: prefer the market the page declared ("gulf" on /gulf), else the
     // coarse region the client inferred from its time zone ("gulf"/"na"/"other").
@@ -122,6 +125,15 @@ function doPost(e) {
     // What the visitor agreed to, and when, when they gave us the number.
     var consent = String(data.consent || "").trim();
     var consentAt = String(data.consentAt || "").trim();
+    // The first task, in the lead's own words. The one free-text field we
+    // have, so it is the only place a lead tells us what they want in
+    // language we did not write for them.
+    var taskText = String(data.taskText || "").trim();
+    // "assistant" when they tapped through to the free-task thread,
+    // "membership" when they went to sales instead, blank when they did
+    // neither. Blank with a task filled in is the follow-up list that matters:
+    // they told us what they wanted and then never pressed send.
+    var taskHandoff = String(data.taskHandoff || "").trim();
 
     if (rowIndex === -1) {
       // New signup. Order must match HEADER.
@@ -136,7 +148,7 @@ function doPost(e) {
         market, pagePath, geo, priceArm,
         "", "", "",                       // leadStatus, detailsShared, leadNotes
         leadName, leadCity, cityServed, leadOwnCity,
-        lpVariant, consent, consentAt
+        lpVariant, consent, consentAt, taskText, taskHandoff
       ]);
     } else {
       // Existing signup - enrich the row, keep its position/referralCode.
@@ -167,6 +179,12 @@ function doPost(e) {
       if (lpVariant && !row[C_LPVARIANT - 1]) sheet.getRange(rowIndex, C_LPVARIANT).setValue(lpVariant);
       if (consent && !row[C_CONSENT - 1]) sheet.getRange(rowIndex, C_CONSENT).setValue(consent);
       if (consentAt && !row[C_CONSENTAT - 1]) sheet.getRange(rowIndex, C_CONSENTAT).setValue(consentAt);
+      // Not first-touch: someone can type a task, go back and pick a different
+      // one, and the latest answer is the one sales should act on. taskHandoff
+      // only ever moves from blank to a value, so a second POST cannot erase
+      // the fact that they tapped through.
+      if (taskText) sheet.getRange(rowIndex, C_TASKTEXT).setValue(taskText);
+      if (taskHandoff) sheet.getRange(rowIndex, C_TASKHANDOFF).setValue(taskHandoff);
     }
 
     return json_({ position: position, referralCode: referralCode });
@@ -203,7 +221,12 @@ var HEADER = [
   "name", "city", "cityServed", "ownCity",
   // Positioning A/B (Oct 2026): "A" for tellniro.com, "B2" for /start. Plus the
   // WhatsApp opt-in: which wording they saw, and when they accepted it.
-  "lpVariant", "consent", "consentAt"
+  "lpVariant", "consent", "consentAt",
+  // The free first task (Oct 2026). `tasks` above now carries the chosen task
+  // id (one of FREE_TASKS in lib/content.ts) rather than the old multi-select
+  // categories; `taskText` is the lead's own words; `taskHandoff` is
+  // "assistant", "membership" or blank.
+  "taskText", "taskHandoff"
 ];
 
 /* =====================================================================

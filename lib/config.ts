@@ -59,6 +59,23 @@ export const SALES_WHATSAPP =
 export const SUPPORT_WHATSAPP =
   process.env.NEXT_PUBLIC_SUPPORT_WHATSAPP || "918867738283";
 
+/**
+ * WhatsApp line for the Niro Assistant, who scopes and runs free first tasks.
+ *
+ * Used in exactly two places, both of them a free-task handoff: the last step
+ * of the join modal, and the task cards on /freetask. Every other WhatsApp
+ * link on the site goes to SALES_WHATSAPP.
+ *
+ * The split exists because these two conversations are different jobs. Sales
+ * sells a membership; the assistant delivers a task and sets its scope. It
+ * also decides which number sees the most first contact from strangers, and
+ * that is the one to put an Official Business Account tick on first: an
+ * inbound message never triggers WhatsApp's unknown-sender scam screen, so
+ * the tick is worth most where leads arrive under their own steam.
+ */
+export const ASSISTANT_WHATSAPP =
+  process.env.NEXT_PUBLIC_ASSISTANT_WHATSAPP || "918867635252";
+
 /** Waitlist position shown on the confirmation (a realistic early-stage number;
  *  the confirmation renders this instantly rather than waiting on the backend). */
 export const FALLBACK_WAITLIST_POSITION = 325;
