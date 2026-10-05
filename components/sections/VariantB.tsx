@@ -15,7 +15,7 @@ import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import {
   PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, FAQ, GUIDE_SCOPE,
-  ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, type ArmCopy,
+  ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, UPFRONT_ANSWERS, type ArmCopy,
 } from "@/lib/content";
 import type { LpVariant } from "@/lib/variant";
 
@@ -109,7 +109,7 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
               fontWeight: 500,
             }}
           >
-            You can&rsquo;t always be in India. Niro can.
+            When something needs doing in India, tell Niro
           </h1>
           {c.heroSub.map((line, i) => (
             <p
@@ -125,7 +125,7 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
               {line}
             </p>
           ))}
-          <JoinCta className="btn btn-primary btn-lg">Try Niro now</JoinCta>
+          <JoinCta className="btn btn-primary btn-lg" position="hero">Try Niro now</JoinCta>
           {/* Matches /us placement-for-placement. The two pages are being
               compared on signup rate, so an escape hatch on one and not the
               other biases that comparison. */}
@@ -179,6 +179,80 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
  * Niro Visits. The visits card carries the accent border - it is the part no
  * amount of software can imitate, and it was previously nowhere on the page.
  */
+/**
+ * The three answers people hunt for, directly under the hero.
+ *
+ * Coverage, who the assistants are, and whether you can try before paying are
+ * the three most opened FAQ answers by a distance, and they sat at 84-95% of
+ * scroll depth, reached by under a third of visitors. A coverage question in
+ * particular is a gate: answering it last spends the whole funnel on people who
+ * may not be servable. Rendered flat, no accordion, so it costs a glance.
+ */
+function UpfrontAnswers() {
+  return (
+    <section
+      data-screen-label="Upfront answers"
+      style={{ padding: "0 var(--gutter) 8px" }}
+    >
+      <div
+        style={{
+          maxWidth: "var(--container)",
+          margin: "0 auto",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(260px, 100%), 1fr))",
+          gap: 14,
+        }}
+      >
+        {UPFRONT_ANSWERS.map((a) => (
+          <div
+            key={a.t}
+            style={{
+              background: "var(--surface-card)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-lg)",
+              padding: "16px 18px",
+            }}
+          >
+            <div
+              style={{
+                fontSize: "var(--text-xs)",
+                fontWeight: 600,
+                letterSpacing: "var(--tracking-wide)",
+                textTransform: "uppercase",
+                color: "var(--accent-strong)",
+                marginBottom: 4,
+              }}
+            >
+              {a.k}
+            </div>
+            <div
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "var(--text-lg)",
+                color: "var(--text-strong)",
+                lineHeight: 1.2,
+                marginBottom: 6,
+              }}
+            >
+              {a.t}
+            </div>
+            <p
+              style={{
+                margin: 0,
+                fontSize: "var(--text-sm)",
+                lineHeight: 1.45,
+                color: "var(--text-muted)",
+              }}
+            >
+              {a.d}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function HowItWorksB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
   const remoteVerbs = [
     "Research", "Find", "Book", "Order", "Arrange",
@@ -668,7 +742,7 @@ function PricingB({ c }: { c: ArmCopy }) {
         </dl>
 
         <div style={{ textAlign: "center" }}>
-          <JoinCta className="btn btn-primary btn-lg">Try Niro now</JoinCta>
+          <JoinCta className="btn btn-primary btn-lg" position="pricing">Try Niro now</JoinCta>
           <AskNiroCta
             placement="pricing"
             prompt="Questions before joining?"
@@ -690,8 +764,11 @@ function PricingB({ c }: { c: ArmCopy }) {
  * as separate lines, the emergency answer links through to Niro Assure, and
  * the trial answer needs a live WhatsApp link to claim the free task.
  */
-const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
-  if (i === 2) {
+const MAIN_FAQ_ITEMS = FAQ.map((f) => {
+  // Matched on the question, not its index. The list gets reordered as we learn
+  // which answers people hunt for, and an index would silently bolt this markup
+  // onto whichever question happened to move into that slot.
+  if (f.q.indexOf("data safe") >= 0) {
     return {
       q: f.q,
       a: (
@@ -730,7 +807,7 @@ const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
       ),
     };
   }
-  if (i === 3) {
+  if (f.q.indexOf("emergency response") >= 0) {
     return {
       q: f.q,
       a: (
@@ -742,8 +819,6 @@ const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
         </>
       ),
     };
-  }
-  if (i === 5) {
   }
   return { q: f.q, a: f.a };
 });
@@ -762,19 +837,23 @@ const MAIN_FAQ_ITEMS = FAQ.map((f, i) => {
  */
 export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
   const c = ARM_COPY[arm];
+  // Arm B2 reworks the membership answer (it describes where you talk to Niro)
+  // and adds the question about whether parents have to agree to anything. Both
+  // are found by content rather than position, for the reason above.
   const faqItems =
     arm === "B2"
-      ? [
-          { ...MAIN_FAQ_ITEMS[0], a: B2_FAQ_FIRST_ANSWER },
-          B2_FAQ_EXTRA,
-          ...MAIN_FAQ_ITEMS.slice(1),
-        ]
+      ? MAIN_FAQ_ITEMS.flatMap((f) =>
+          f.q.indexOf("membership include") >= 0
+            ? [{ ...f, a: B2_FAQ_FIRST_ANSWER }, B2_FAQ_EXTRA]
+            : [f]
+        )
       : MAIN_FAQ_ITEMS;
   return (
     <>
-      <Nav cta="Try Niro now" />
+      <Nav cta="Try Niro now" ctaPosition="nav" />
       <main>
         <HeroB c={c} arm={arm} />
+        <UpfrontAnswers />
         <HowItWorksB c={c} arm={arm} />
         <ParentsB c={c} />
         <UseCasesB />

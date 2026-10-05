@@ -366,12 +366,20 @@ export const TESTIMONIALS_SHORT: {
    the two in sync. ------------------------------------------------------- */
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
-    q: "What does the membership include, and what does it not?",
-    a: "The membership covers Niro's time - the calls, the portals, the chasing, the coordination - with no cap on how many tasks you send us. It includes one booked on-demand Niro visit of four hours or less each month, your family WhatsApp group, and Niro Assure emergency response. What it doesn't cover is anyone else's costs. Vendor charges and anything ordered through us are billed at exactly what they cost, with no commission added. So are government and legal fees. Additional Niro visits in the same month are $15 per four hours. We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
+    q: "Which cities is Niro serviceable in today?",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai and Kolkata. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
   },
   {
     q: "How are Niro Assistants vetted and verified?",
     a: "They are on our payroll - not a marketplace we forward your family's request to. Before anyone joins we test three things: patience and warmth with older parents, communication in the language your family actually speaks, and the operational judgement to chase something until it is finished. Everyone is background-checked and identity-verified. You are introduced to your assistant by name and photo before day one. They work to central SOPs and to the protocols you set for your own family, every task is tracked to completion and closed with proof, and they are appraised on one thing: whether your family is satisfied.",
+  },
+  {
+    q: "Can I try Niro before I pay?",
+    a: "Yes. Your first task is free - tell us what you need, we do it, and you decide afterwards whether to join. And once you join, you can cancel any time.",
+  },
+  {
+    q: "What does the membership include, and what does it not?",
+    a: "The membership covers Niro's time - the calls, the portals, the chasing, the coordination - with no cap on how many tasks you send us. It includes one booked on-demand Niro visit of four hours or less each month, your family WhatsApp group, and Niro Assure emergency response. What it doesn't cover is anyone else's costs. Vendor charges and anything ordered through us are billed at exactly what they cost, with no commission added. So are government and legal fees. Additional Niro visits in the same month are $15 per four hours. We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
   },
   {
     q: "Is my family's data safe with Niro?",
@@ -386,16 +394,8 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
     a: "Both, in a specific order. Every remote task is run by a human Niro Assistant, with AI doing the parts software is genuinely better at: drafting, tracking, remembering, never letting a follow-up slip between time zones. Nothing reaches your family without a person having checked it, and one person is accountable for the task from start to finish. And for Niro Visits there is no software involved at all - a Niro Assistant physically goes to the hospital, the government office, or your parents' front door.",
   },
   {
-    q: "Can I try Niro before I pay?",
-    a: "Yes. Your first task is free - tell us what you need, we do it, and you decide afterwards whether to join. And once you join, you can cancel any time.",
-  },
-  {
     q: "Does Niro take decisions on its own?",
     a: "No. Niro understands what you need and does what it takes to get it done, but the decisions stay yours. You set in advance what needs your approval, who we may contact, and what we should never do without asking. Even when we recommend something proactively - a better vendor, a cheaper option, an appointment worth moving - we wait for your go-ahead. We spend nothing on your behalf without telling you the cost first.",
-  },
-  {
-    q: "Which cities is Niro serviceable in today?",
-    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai and Kolkata. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
   },
   {
     q: "How many people can I add, and how many groups can I create?",
@@ -1633,7 +1633,41 @@ export const B2_FAQ_EXTRA = {
  * ever reworded in FAQ, the replace stops matching and B2 falls back to the
  * shared text, which is visibly wrong in review rather than quietly stale.
  */
-export const B2_FAQ_FIRST_ANSWER: string = FAQ[0].a.replace(
+export const B2_FAQ_FIRST_ANSWER: string = (
+  FAQ.find((f) => f.a.indexOf("your family WhatsApp group") >= 0)?.a || ""
+).replace(
   "your family WhatsApp group",
   "your 1:1 WhatsApp chat with Niro, optional family groups"
 );
+
+/**
+ * The three questions visitors actually hunt for, answered high on the page.
+ *
+ * Measured Oct 2026: the FAQ is the second most clicked thing on the site, and
+ * it sits at 84-95% scroll depth, reached by under a third of visitors. The top
+ * three by a distance are coverage, who the assistants are, and whether you can
+ * try before paying. "Which cities" is 8th of 9 in the list and still the most
+ * opened, which means people are searching for it rather than finding it: a
+ * coverage question is a gate, and answering it last wastes the whole funnel on
+ * anyone whose city we do not serve.
+ *
+ * So these three move to just under the hero. Short enough to read at a glance,
+ * with the full answers still in the FAQ for anyone who wants them.
+ */
+export const UPFRONT_ANSWERS: { k: string; t: string; d: string }[] = [
+  {
+    k: "Live today in",
+    t: "6 cities",
+    d: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai and Kolkata. Family somewhere else? Join anyway and tell us their city.",
+  },
+  {
+    k: "Who shows up",
+    t: "Our own people",
+    d: "Niro Assistants are on our payroll and checked for ID, criminal record and address. Never a marketplace of strangers.",
+  },
+  {
+    k: "Before you pay",
+    t: "First task is free",
+    d: "Send us something real and watch us do it. No card, and nothing to cancel.",
+  },
+];
