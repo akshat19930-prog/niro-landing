@@ -24,6 +24,7 @@ import { startSession, registerAnalytics, logEvent, getGeo } from "@/lib/track";
 import { readPageArm } from "@/lib/abtest";
 import { getLpVariant } from "@/lib/variant";
 import { matchCity, validateContact, type CityMatch } from "@/lib/cities";
+import { FREE_TASKS } from "@/lib/content";
 import {
   WAITLIST_ENDPOINT,
   SITE_ORIGIN,
@@ -509,6 +510,7 @@ export function JoinProvider({
     const { pitch, ref } = getStoredAttribution();
     const pageArm = readPageArm();
     const page = typeof window !== "undefined" ? window.location.pathname : "";
+    const picked = FREE_TASKS.find((t) => t.id === taskId) || null;
     logEvent("qualified", {
       taskId: taskId || "",
       taskText,
@@ -538,8 +540,12 @@ export function JoinProvider({
       city: lead?.city,
       cityServed: cityMatch?.served ? cityMatch.city : "",
       // `tasks` stays an array so the existing sheet column and the report
-      // keep working; it now carries at most the one chosen task id.
-      tasks: taskId ? [taskId] : [],
+      // keep working. It carries the task's LABEL, not its id: sales read this
+      // column by eye in the sheet, and "Help me recover my PF/EPF money" is
+      // worth more there than "epf". The id goes on the PostHog beacon above,
+      // where a stable key matters and a label would break grouping the first
+      // time we reword one.
+      tasks: picked ? [picked.label] : [],
       taskText,
       taskHandoff: membership ? "membership" : handoff ? "assistant" : "",
       whoFor,
