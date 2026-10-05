@@ -52,6 +52,7 @@ const PH_FORWARD: Record<string, true> = {
   // Which section came into view, and which CTA was pressed. Both answer
   // questions the page could not answer about itself.
   section_viewed: true,
+  nav_cta_click: true,
   // Click-to-chat. Worth a PostHog funnel of its own: a visitor who asks on
   // WhatsApp instead of joining never reaches email_entered, so without this
   // they read as a bounce.

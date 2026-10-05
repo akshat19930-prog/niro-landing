@@ -1,11 +1,16 @@
 import { SHARE_CARD } from "@/lib/content";
 import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
-import { INDIA_SCOPE, SERVICE_CITIES } from "@/lib/content";
+import { GUIDE_SCOPE, SERVICE_CITIES } from "@/lib/content";
 import { JoinCta } from "@/components/ds/JoinCta";
 
 /**
  * /what-we-do - the full scope, as a page rather than a screenshot.
+ *
+ * Reads from GUIDE_SCOPE, the SAME list the home page's "What Niro handles"
+ * section renders. It used to read INDIA_SCOPE, a second list that had drifted
+ * 20 items behind with different group titles, so the page sales were pasting
+ * into chats described a smaller product than the page ads were paying for.
  *
  * This exists because the founders were pasting a screenshot of the task grid
  * into WhatsApp threads with leads. A link does the same job better: it is
@@ -33,7 +38,7 @@ export const metadata: Metadata = {
 };
 
 export default function WhatWeDoPage() {
-  const total = INDIA_SCOPE.reduce((n, g) => n + g.items.length, 0);
+  const total = GUIDE_SCOPE.reduce((n, g) => n + g.items.length, 0);
 
   return (
     <PageShell>
@@ -47,12 +52,20 @@ export default function WhatWeDoPage() {
         </p>
 
         <div className="scope-grid">
-          {INDIA_SCOPE.map((g) => (
+          {GUIDE_SCOPE.map((g) => (
             <section key={g.title} className="scope-group">
               <h2>{g.title}</h2>
               <ul>
                 {g.items.map((it) => (
-                  <li key={it}>{it}</li>
+                  <li key={it.t}>
+                    {it.t}
+                    {it.href && it.hrefLabel ? (
+                      <>
+                        {" "}
+                        <a href={it.href}>{it.hrefLabel} &rarr;</a>
+                      </>
+                    ) : null}
+                  </li>
                 ))}
               </ul>
             </section>
