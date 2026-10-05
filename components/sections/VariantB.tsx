@@ -788,7 +788,7 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
         <PricingB c={c} />
         <Faq items={faqItems} showAsk={false} />
       </main>
-      <StickyCta label="Try Niro now" />
+      <StickyCta label="Try 1st free task" />
     </>
   );
 }
