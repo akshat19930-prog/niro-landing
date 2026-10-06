@@ -4,7 +4,7 @@ import { PageShell } from "@/components/PageShell";
 export const metadata: Metadata = {
   title: "Terms of Use - Niro",
   description:
-    "The terms that govern your use of the Niro website and beta.",
+    "The terms that govern your use of the Niro website and membership.",
 };
 
 export default function TermsPage() {
@@ -21,7 +21,7 @@ export default function TermsPage() {
           India (CIN{" "}
           <span style={{ whiteSpace: "nowrap" }}>U62099KA2026PTC228168</span>)
           and trading as <strong>Niro</strong> (&ldquo;we&rdquo;,
-          &ldquo;us&rdquo;). By using the Site or joining the beta, you agree
+          &ldquo;us&rdquo;). By using the Site or becoming a member, you agree
           to these Terms. If you do not agree, please do not use the Site.
         </p>
 
@@ -38,10 +38,26 @@ export default function TermsPage() {
           surprise.
         </p>
         <p>
-          Joining the beta without paying is{" "}
-          <strong>not</strong> an order, a contract for services, or a payment. Any
-          prices, plans, or features shown to a beta member are indicative and
-          may change before they join.
+          Signing up without paying is{" "}
+          <strong>not</strong> an order, a contract for services, or a payment.
+          Any prices, plans, or features shown before you join are indicative
+          and may change.
+        </p>
+
+        <h2>Money-back guarantee</h2>
+        <p>
+          If Niro is not for you, ask for a refund at any time up to and
+          including the <strong>25th day</strong> after your first payment and
+          we will refund that payment <strong>in full</strong>. There are no
+          deductions. Tell your family manager or write to{" "}
+          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. We refund
+          to the original payment method, and your membership ends when the
+          refund is issued.
+        </p>
+        <p>
+          The guarantee covers your membership fee. Third-party costs we have
+          already paid on your behalf with your approval, described below, are
+          not part of that fee and are not refundable once spent.
         </p>
 
         <h2>What your membership fee covers</h2>
@@ -63,12 +79,14 @@ export default function TermsPage() {
           <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Cancellation
           stops future charges and takes effect at the end of the period you have
           already paid for - you keep the service until then.{" "}
-          Cancelling does not refund the current period.
+          Outside the money-back guarantee above, cancelling does not refund the
+          current period.
         </p>
 
         <h2>Eligibility</h2>
         <p>
-          You must be at least 18 years old to use the Site and join the beta.
+          You must be at least 18 years old to use the Site and to become a
+          member.
           By doing so, you confirm that the information you provide is accurate and
           that you are entitled to share it.
         </p>
@@ -113,7 +131,7 @@ export default function TermsPage() {
           To the fullest extent permitted by law, Domiro Private Limited and its
           directors, employees, and partners will not be liable for any indirect,
           incidental, or consequential loss arising from your use of the Site or
-          the beta.
+          the service.
         </p>
 
         <h2>Governing law</h2>
