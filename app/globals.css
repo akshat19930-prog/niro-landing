@@ -1769,3 +1769,33 @@
   border-bottom: 1.5px solid var(--brand-soft);
   padding-bottom: 2px;
 }
+
+/* ---- money-back guarantee, at the pricing fold ---- */
+/* Quiet rather than loud. A refund promise shouted in a yellow box reads as a
+   hard sell; the same sentence stated plainly reads as a company that expects
+   not to need it. */
+.guarantee {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  max-width: 520px;
+  margin: 22px auto 24px;
+  padding: 14px 16px;
+  border: 1px solid var(--brand);
+  border-radius: var(--radius-lg);
+  background: var(--brand-soft);
+}
+.guarantee svg { flex-shrink: 0; margin-top: 2px; color: var(--brand); }
+.guarantee b {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-strong);
+  margin-bottom: 2px;
+}
+.guarantee span {
+  display: block;
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--text-body);
+}

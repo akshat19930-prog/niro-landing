@@ -44,6 +44,23 @@ export default function TermsPage() {
           may change before they join.
         </p>
 
+        <h2>Money-back guarantee</h2>
+        <p>
+          If Niro is not for you, ask for a refund at any time up to and
+          including the <strong>25th day</strong> after your first payment and
+          we will refund that payment <strong>in full</strong>. There are no
+          deductions, and we will not ask you for a reason. Tell your family
+          manager or write to{" "}
+          <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. We refund
+          to the original payment method, and your membership ends when the
+          refund is issued.
+        </p>
+        <p>
+          The guarantee covers your membership fee. Third-party costs we have
+          already paid on your behalf with your approval, described below, are
+          not part of that fee and are not refundable once spent.
+        </p>
+
         <h2>What your membership fee covers</h2>
         <p>
           Your fee covers Niro&rsquo;s own time - the calls, the chasing, the
@@ -63,7 +80,8 @@ export default function TermsPage() {
           <a href="mailto:hello@tellniro.com">hello@tellniro.com</a>. Cancellation
           stops future charges and takes effect at the end of the period you have
           already paid for - you keep the service until then.{" "}
-          Cancelling does not refund the current period.
+          Outside the money-back guarantee above, cancelling does not refund the
+          current period.
         </p>
 
         <h2>Eligibility</h2>

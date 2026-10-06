@@ -14,7 +14,7 @@ import { ChatThreads } from "@/components/ds/ChatThreads";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import {
-  PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, FAQ, GUIDE_SCOPE,
+  PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, GUARANTEE, FAQ, GUIDE_SCOPE,
   ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, type ArmCopy,
 } from "@/lib/content";
 import type { LpVariant } from "@/lib/variant";
@@ -667,6 +667,17 @@ function PricingB({ c }: { c: ArmCopy }) {
           <dt>Billed separately, at actual cost</dt>
           <dd>{COVERAGE_NOTE.excludes}</dd>
         </dl>
+
+        {/* Directly above the CTA, so it is the last thing read before the tap.
+            The objection it answers is risk, not price, and risk is what stops
+            someone at this exact point. */}
+        <div className="guarantee">
+          <Icon name="shield-check" size={19} />
+          <div>
+            <b>{GUARANTEE.title}</b>
+            <span>{GUARANTEE.body}</span>
+          </div>
+        </div>
 
         <div style={{ textAlign: "center" }}>
           <JoinCta className="btn btn-primary btn-lg" position="pricing">Try Niro now</JoinCta>
