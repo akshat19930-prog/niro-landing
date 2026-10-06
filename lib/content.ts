@@ -537,14 +537,14 @@ export const COVERAGE_NOTE = {
  * answering it is worth more at the moment of decision than it is buried on a
  * page nobody opens.
  *
- * "No questions asked" is load-bearing and must not be softened into "subject
- * to review" or similar. A conditional guarantee reassures nobody and reads as
- * a trap, which is worse than making no promise at all.
+ * Keep it unconditional. Softening this into "subject to review" or similar
+ * reassures nobody and reads as a trap, which is worse than making no promise
+ * at all.
  */
 export const GUARANTEE = {
   title: "Money-back guarantee",
   body:
-    "Not for you? Ask any time up to the 25th day after you pay and we refund in full. No deductions, and we will not ask you why.",
+    "Not for you? Ask any time up to the 25th day after you pay and we refund in full. No deductions."
 };
 
 
