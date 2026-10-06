@@ -57,6 +57,18 @@ const PH_FORWARD: Record<string, true> = {
   // WhatsApp instead of joining never reaches email_entered, so without this
   // they read as a bounce.
   whatsapp_click: true,
+  // The join funnel itself. Without these, PostHog can see someone OPEN the
+  // form and never see what happened next, so the only way to read the form
+  // was to infer it from $autocapture element text, which misses any session
+  // with autocapture off and breaks the moment a button is reworded.
+  phone_captured: true,
+  lead_captured: true,
+  qualified: true,
+  // The first-task handoff (Oct 2026): the moment a lead taps through to open
+  // the WhatsApp thread themselves. This is the metric the whole flow exists
+  // to move, so it belongs where the funnel is, not only in the sheet.
+  freetask_handoff: true,
+  membership_click: true,
 };
 
 /** Register the pricing arm + pitch as PostHog super-properties, so heatmaps
