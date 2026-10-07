@@ -1120,6 +1120,10 @@ export type FreeTask = {
   notIncluded: string;
 };
 
+/** The ninth option on the last step: none of the eight, tell us yourself.
+ *  Kept out of FREE_TASKS because it has no scope of its own to show. */
+export const OTHER_ID = "other";
+
 export const FREE_TASKS: FreeTask[] = [
   {
     id: "epf",

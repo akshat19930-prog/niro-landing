@@ -215,6 +215,7 @@ type JoinCtx = {
     handoff?: boolean,
     membership?: boolean
   ) => void;
+  saveTaskDraft: (taskText: string, taskId: string | null) => void;
 };
 
 /** What we ask for up front now. Email is optional - we need it for receipts
@@ -491,6 +492,38 @@ export function JoinProvider({
   }
 
   /**
+   * Bank a part-finished answer on the last step, without completing it.
+   *
+   * Fires no funnel events on purpose. `qualified` and `signup_completed`
+   * mean the step was finished; a draft is someone mid-decision, and counting
+   * it would quietly inflate completion. taskHandoff is left blank, so the
+   * "chose a task and never sent it" list stays meaningful.
+   */
+  function saveTaskDraft(taskText: string, taskId: string | null) {
+    if (!lead?.phone) return;
+    const { pitch, ref } = getStoredAttribution();
+    const picked = FREE_TASKS.find((t) => t.id === taskId) || null;
+    void submitSignup({
+      lpVariant: getLpVariant(),
+      email,
+      eventId,
+      arm,
+      pageArm: readPageArm(),
+      pitch,
+      ref,
+      phone: lead.phone,
+      name: lead.name,
+      ownCity: lead.ownCity,
+      city: lead.city,
+      cityServed: cityMatch?.served ? cityMatch.city : "",
+      tasks: picked ? [picked.label] : [],
+      taskText,
+      market,
+      page: typeof window !== "undefined" ? window.location.pathname : "",
+    });
+  }
+
+  /**
    * The first task, and who they are using Niro for. Written BEFORE the
    * WhatsApp handoff, never after.
    *
@@ -590,6 +623,7 @@ export function JoinProvider({
         capturePhone,
         submitLead,
         submitNeeds,
+        saveTaskDraft,
       }}
     >
       {children}
