@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card } from "@/components/ds/Card";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
 import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
-import { FREE_TASKS, SORT_OUT_USAGE, INDIA_CITIES } from "@/lib/content";
+import { FREE_TASKS, OTHER_ID, SORT_OUT_USAGE, INDIA_CITIES } from "@/lib/content";
 import { dialCode, logEvent } from "@/lib/track";
 import { SALES_WHATSAPP, ASSISTANT_WHATSAPP } from "@/lib/config";
 import { looksLikeWhatsAppId } from "@/lib/cities";
@@ -142,7 +142,8 @@ function Chip({
 }
 
 export function JoinModal() {
-  const { open, setOpen, step, lead, capturePhone, submitLead, submitNeeds } = useJoin();
+  const { open, setOpen, step, lead, capturePhone, submitLead, submitNeeds, saveTaskDraft } =
+    useJoin();
 
   const [error, setError] = useState<string | undefined>();
   const [dial, setDial] = useState("+1");
@@ -154,7 +155,8 @@ export function JoinModal() {
   const [whoFor, setWhoFor] = useState<string | null>(null);
   const [taskText, setTaskText] = useState("");
   const [taskId, setTaskId] = useState<string | null>(null);
-  const [pickerOpen, setPickerOpen] = useState(false);
+  /** Debounce handle for the free-text draft save. */
+  const draftTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   /** Which thread we sent them to, so the confirmation can point back at the
    *  right one if WhatsApp never opened (blocked popup, or a desktop with no
    *  WhatsApp installed). */
@@ -181,10 +183,36 @@ export function JoinModal() {
   const isId = looksLikeWhatsAppId(phone);
 
   const picked = FREE_TASKS.find((t) => t.id === taskId) || null;
-  // Either input is enough. Someone who has typed their own thing should not
-  // have to also pick from a list that exists only for people who could not
-  // think of anything.
-  const canStart = taskText.trim().length > 2 || !!picked;
+  // One of the eight is enough on its own. "Something else" needs the box
+  // filled, because an empty one tells the assistant nothing.
+  const canStart = !!picked || (taskId === OTHER_ID && taskText.trim().length > 2);
+
+  /**
+   * Bank the answer the moment it is given, rather than only when they tap
+   * through to WhatsApp.
+   *
+   * The first version of this step wrote nothing until the handoff, so anyone
+   * who chose a task and then closed the modal was discarded: the one piece of
+   * data this screen exists to collect, thrown away at the last moment. The
+   * row already exists by now (it is written at the phone step), so this is an
+   * enrich, and the Apps Script overwrites the same two cells each time.
+   *
+   * Selecting saves at once; typing is debounced so a sentence is one write
+   * rather than forty. Neither sets taskHandoff, which stays blank until they
+   * actually tap: "chose a task and never sent it" is only a useful list if
+   * the two are recorded separately.
+   */
+  function pickTask(id: string) {
+    setTaskId(id);
+    if (draftTimer.current) clearTimeout(draftTimer.current);
+    saveTaskDraft(id === OTHER_ID ? taskText.trim() : "", id);
+  }
+
+  function onTaskText(v: string) {
+    setTaskText(v);
+    if (draftTimer.current) clearTimeout(draftTimer.current);
+    draftTimer.current = setTimeout(() => saveTaskDraft(v.trim(), OTHER_ID), 900);
+  }
 
   /** The message the lead sends us, in their voice, with no encoded payload.
    *  Attribution reconciles on the phone number against the row written
@@ -478,67 +506,64 @@ export function JoinModal() {
                 margin: "0 0 14px",
               }}
             >
-              For you or your parents. Tell us anything. Your first task is on
-              us.
+              For you or your family, select any one.
             </p>
 
-            <textarea
-              className="ds-input join-task"
-              aria-label="What's been pending in India?"
-              rows={3}
-              value={taskText}
-              onChange={(e) => setTaskText(e.target.value)}
-              placeholder="Mum&rsquo;s EPF claim has been stuck since March and nobody will tell us why&hellip;"
-            />
-            <p
-              style={{
-                fontSize: "var(--text-xs)",
-                color: "var(--text-muted)",
-                lineHeight: 1.45,
-                margin: "7px 0 0",
-              }}
-            >
-              No need to get it right. Even &ldquo;something&rsquo;s wrong with
-              Dad&rsquo;s pension&rdquo; gives us enough to start.
-            </p>
+            {/* All nine on screen, nothing collapsed. The first version opened
+                with a blank text box and hid the list behind a tap, which put
+                the HARDEST option (compose a sentence about your parents'
+                problems, on a phone, at the end of a form) in front of the
+                easiest one. Recognition beats recall here, so the list leads
+                and free text is the ninth option rather than the default. */}
+            <div className="join-opts" role="radiogroup" aria-label="Your first task">
+              {FREE_TASKS.map((t) => (
+                <button
+                  type="button"
+                  key={t.id}
+                  role="radio"
+                  aria-checked={taskId === t.id}
+                  className={`join-opt${taskId === t.id ? " on" : ""}`}
+                  onClick={() => pickTask(t.id)}
+                >
+                  <span className="join-radio" aria-hidden="true" />
+                  {t.label}
+                </button>
+              ))}
+              <button
+                type="button"
+                role="radio"
+                aria-checked={taskId === OTHER_ID}
+                className={`join-opt${taskId === OTHER_ID ? " on" : ""}`}
+                onClick={() => pickTask(OTHER_ID)}
+              >
+                <span className="join-radio" aria-hidden="true" />
+                Something else
+              </button>
+            </div>
 
-            {/* The picker is the fallback for a blank box, so its label says so
-                rather than sitting under a separate "or" divider. */}
-            <button
-              type="button"
-              className="join-picker"
-              aria-expanded={pickerOpen}
-              onClick={() => setPickerOpen((v) => !v)}
-            >
-              <span>
-                {picked ? (
-                  <b>{picked.label}</b>
-                ) : (
-                  <>Or if nothing comes to mind, <b>pick one of these</b></>
-                )}
-              </span>
-              <Icon name={pickerOpen ? "chevron-up" : "chevron-down"} size={15} />
-            </button>
-
-            {pickerOpen && (
-              <div className="join-opts" role="radiogroup" aria-label="Free tasks">
-                {FREE_TASKS.map((t) => (
-                  <button
-                    type="button"
-                    key={t.id}
-                    role="radio"
-                    aria-checked={taskId === t.id}
-                    className={`join-opt${taskId === t.id ? " on" : ""}`}
-                    onClick={() => {
-                      setTaskId(t.id);
-                      setPickerOpen(false);
-                    }}
-                  >
-                    <span className="join-radio" aria-hidden="true" />
-                    {t.label}
-                  </button>
-                ))}
-              </div>
+            {taskId === OTHER_ID && (
+              <>
+                <textarea
+                  className="ds-input join-task"
+                  aria-label="Tell us what is pending"
+                  rows={3}
+                  autoFocus
+                  value={taskText}
+                  onChange={(e) => onTaskText(e.target.value)}
+                  placeholder="Mum&rsquo;s EPF claim has been stuck since March and nobody will tell us why&hellip;"
+                />
+                <p
+                  style={{
+                    fontSize: "var(--text-xs)",
+                    color: "var(--text-muted)",
+                    lineHeight: 1.45,
+                    margin: "7px 0 0",
+                  }}
+                >
+                  No need to get it right. Even &ldquo;something&rsquo;s wrong
+                  with Dad&rsquo;s pension&rdquo; gives us enough to start.
+                </p>
+              </>
             )}
 
             {/* Scope before the handoff, not after. Naming what is NOT included
