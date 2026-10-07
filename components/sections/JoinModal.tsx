@@ -497,7 +497,7 @@ export function JoinModal() {
           <div>
             <Eyebrow>Last step</Eyebrow>
             <h2 style={{ ...h2Style, margin: "10px 0 6px" }}>
-              What&rsquo;s been pending in India?
+              Your first task free - what should we do first?
             </h2>
             <p
               style={{
@@ -506,7 +506,7 @@ export function JoinModal() {
                 margin: "0 0 14px",
               }}
             >
-              For you or your family, select any one.
+              For you or your family in India.
             </p>
 
             {/* All nine on screen, nothing collapsed. The first version opened
@@ -545,7 +545,7 @@ export function JoinModal() {
               <>
                 <textarea
                   className="ds-input join-task"
-                  aria-label="Tell us what is pending"
+                  aria-label="What should we do first?"
                   rows={3}
                   autoFocus
                   value={taskText}
