@@ -421,8 +421,14 @@ export const TESTIMONIALS_SHORT: {
    the two in sync. ------------------------------------------------------- */
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
+    // The city list here is deliberately NOT built from SERVICE_CITIES.
+    // That constant also scopes the emergency response times on /niro-assure
+    // and decides, via matchCity(), whether a lead counts as serviceable. The
+    // three cities added in Oct 2026 have assistants on the ground but are
+    // not launch cities, so the SLA sentence below names the first six rather
+    // than the whole list.
     q: "Which cities is Niro serviceable in today?",
-    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai and Kolkata. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Gwalior, Ajmer and Kozhikode. These are the cities where our assistants are on the ground. Our published emergency response times hold in the first six. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
   },
   {
     q: "How are Niro Assistants vetted and verified?",
