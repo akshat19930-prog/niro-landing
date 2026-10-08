@@ -342,7 +342,7 @@ export const MEMBER_STORIES: MemberStory[] = [
   },
   {
     name: "Sunita, 66",
-    location: "Bengaluru \u00b7 mother of Kartik, Seattle",
+    location: "Bengaluru \u00b7 mother of Vaibhav, Seattle",
     headline: "Now I don\u2019t have to ask my son for every little thing.",
     body:
       "Niro booked me cabs with a voice note and arranges doctor appointments in Delhi, and I don\u2019t have to bother my son too much anymore.",

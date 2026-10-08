@@ -376,7 +376,10 @@ function StoriesB() {
         <div className="story-grid">
           {MEMBER_STORIES.map((s) => (
             <figure key={s.name} className="story-card">
-              <blockquote>{s.headline}</blockquote>
+              {/* Curly doubles, because the headline IS the quote. The body
+                  under it is the same person still speaking, left unquoted so
+                  the card does not turn into a wall of quote marks. */}
+              <blockquote>&ldquo;{s.headline}&rdquo;</blockquote>
               <p>{s.body}</p>
               <figcaption>
                 <span
