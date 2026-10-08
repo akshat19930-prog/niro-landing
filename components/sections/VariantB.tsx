@@ -13,7 +13,7 @@ import { ChatThreads } from "@/components/ds/ChatThreads";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import {
-  PLANS, MEMBERSHIP_FEATURES, MEMBER_STORIES, COVERAGE_FAQ, GUARANTEE, FAQ, GUIDE_SCOPE,
+  PLANS, MEMBERSHIP_FEATURES, MEMBER_STORIES, GUARANTEE, FAQ, GUIDE_SCOPE,
   ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, type ArmCopy,
 } from "@/lib/content";
 import type { LpVariant } from "@/lib/variant";
@@ -579,7 +579,7 @@ function PricingB({ c }: { c: ArmCopy }) {
  * as separate lines, the emergency answer links through to Niro Assure, and
  * the trial answer needs a live WhatsApp link to claim the free task.
  */
-const MAIN_FAQ_ITEMS = [...FAQ, COVERAGE_FAQ].map((f) => {
+const MAIN_FAQ_ITEMS = FAQ.map((f) => {
   // Matched on the question, not its index. The list gets reordered as we learn
   // which answers people hunt for, and an index would silently bolt this markup
   // onto whichever question happened to move into that slot.

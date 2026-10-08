@@ -433,7 +433,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
     a: "Yes. Your first task is free - tell us what you need, we do it, and you decide afterwards whether to join. And once you join, you can cancel any time.",
   },
   {
-    q: "What does the membership include, and what does it not?",
+    q: "What does the membership include, and what is billed separately?",
     a: "The membership covers Niro's time - the calls, the portals, the chasing, the coordination - with no cap on how many tasks you send us. It includes one booked on-demand Niro visit of four hours or less each month, your family WhatsApp group, and Niro Assure emergency response. What it doesn't cover is anyone else's costs. Vendor charges and anything ordered through us are billed at exactly what they cost, with no commission added. So are government and legal fees. Additional Niro visits in the same month are $15 per four hours. We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
   },
   {
@@ -573,11 +573,10 @@ export const PLANS: Plan[] = [MEMBERSHIP_SINGLE, MEMBERSHIP_QUARTER];
  * cost?" was a live question in the WhatsApp threads, and an unstated answer
  * becomes a refund request in week two.
  */
-/** Shown as the last FAQ rather than at the pricing fold. On the page it sat
- *  between the price and the CTA, where the only thing it did was put a list
- *  of exclusions in front of someone who had just decided to buy. As a FAQ it
- *  is still findable by anyone who wants it, and /terms carries the binding
- *  version either way. */
+/** Used by /lite only. The home page used to print this between the price and
+ *  the CTA, where its one job was putting a list of exclusions in front of
+ *  someone who had just decided to buy. The membership FAQ already answers the
+ *  same question in prose, and /terms carries the binding version. */
 export const COVERAGE_NOTE = {
   covers:
     "Niro's time - the calls, the chasing, the coordination - and one booked on-demand Niro assistant visit of four hours or less.",
@@ -586,18 +585,6 @@ export const COVERAGE_NOTE = {
   promise: "We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
 };
 
-/** The coverage note as the FAQ's last question, which is where it now lives
- *  on the page. Composed from COVERAGE_NOTE so the two can never drift, and
- *  declared AFTER it: an earlier version declared it first with an empty
- *  answer and filled it in by mutation, which the bundler dropped, so the
- *  question shipped with nothing under it. */
-export const COVERAGE_FAQ = {
-  q: "What does the membership cover, and what is billed separately?",
-  a:
-    "Your membership covers " + COVERAGE_NOTE.covers +
-    " Billed separately, at actual cost: " + COVERAGE_NOTE.excludes.charAt(0).toLowerCase() + COVERAGE_NOTE.excludes.slice(1) +
-    " " + COVERAGE_NOTE.promise,
-};
 
 /**
  * The money-back guarantee, shown at the pricing fold and stated in full on
