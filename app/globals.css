@@ -1799,3 +1799,69 @@
   line-height: 1.5;
   color: var(--text-body);
 }
+
+/* ---- testimonial cards ---- */
+/* Headline first, at reading size, then what actually happened underneath.
+   The old cards ran one long quote at body size, which meant the card had no
+   entry point: you either read all of it or none of it. */
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+  gap: 16px;
+}
+.story-card {
+  margin: 0;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-2);
+  display: flex;
+  flex-direction: column;
+}
+.story-card blockquote {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--text-strong);
+}
+.story-card > p {
+  margin: 0 0 18px;
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--text-body);
+}
+.story-card figcaption {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+.story-face {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: var(--gold-200, #EAD9B8);
+  background-image: linear-gradient(150deg, #EAD9B8, #C9986A);
+  background-size: cover;
+  background-position: center;
+  box-shadow: var(--shadow-1);
+}
+.story-card figcaption > span:last-child { line-height: 1.35; }
+.story-card figcaption b {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-strong);
+}
+.story-card figcaption span span {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+/* Five trust claims in a two-column grid leaves the last one orphaned in the
+   left half. Spanning it reads as a closing statement rather than a leftover. */
+@media (min-width: 720px) { .trust-wide { grid-column: 1 / -1; } }

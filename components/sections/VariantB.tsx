@@ -7,14 +7,13 @@ import { AskNiroCta, WhatsAppLink, ASK_MESSAGE } from "@/components/ds/WhatsAppL
 import { Badge } from "@/components/ds/Badge";
 import { Icon, type IconName } from "@/components/ds/Icon";
 import { Eyebrow } from "@/components/ds/Eyebrow";
-import { AskStream, ASKS_B2 } from "@/components/ds/AskStream";
 import { VoiceStream } from "@/components/ds/VoiceStream";
 import { ChatVideo } from "@/components/ds/ChatVideo";
 import { ChatThreads } from "@/components/ds/ChatThreads";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import {
-  PLANS, MEMBERSHIP_FEATURES, TESTIMONIALS_SHORT, COVERAGE_NOTE, GUARANTEE, FAQ, GUIDE_SCOPE,
+  PLANS, MEMBERSHIP_FEATURES, MEMBER_STORIES, COVERAGE_FAQ, GUARANTEE, FAQ, GUIDE_SCOPE,
   ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, type ArmCopy,
 } from "@/lib/content";
 import type { LpVariant } from "@/lib/variant";
@@ -179,94 +178,6 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
  * Niro Visits. The visits card carries the accent border - it is the part no
  * amount of software can imitate, and it was previously nowhere on the page.
  */
-function HowItWorksB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
-  // Single words only. "Plan end to end" and "Coordinate with vendors" said
-  // little that the short verbs do not, and the two of them wrapped the chip
-  // row onto a third line on every phone width.
-  const remoteVerbs = ["Research", "Find", "Book", "Order", "Coordinate", "Chase"];
-  return (
-    <section data-screen-label="How it works (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
-      <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
-        <Eyebrow>How it works</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 22px" }}>{c.howHeading}</h2>
-
-        <div className="beat">
-          <div className="beat-label">
-            <span className="beat-n">01</span>
-            <span className="beat-t">{c.howStep1Title}</span>
-          </div>
-          <div>
-            <AskStream asks={arm === "B2" ? ASKS_B2 : undefined} rows={1} />
-          </div>
-        </div>
-
-        <div className="beat">
-          <div className="beat-label">
-            <span className="beat-n">02</span>
-            <span className="beat-t">Your Niro Assistant takes it from there</span>
-          </div>
-          <div className="does-grid">
-            <div className="does-card">
-              <div className="does-head">
-                <Icon name="message-circle" size={19} style={{ color: "var(--brand)" }} />
-                <span className="does-title">Handled remotely</span>
-              </div>
-              <div className="does-sub">The calls, the portals, the chasing.</div>
-              <div className="does-verbs">
-                {remoteVerbs.map((r) => (
-                  <span className="does-verb" key={r}>{r}</span>
-                ))}
-              </div>
-            </div>
-            <div className="does-card does-card-visit">
-              <div className="does-head">
-                <Icon name="map-pin" size={19} style={{ color: "var(--accent-strong)" }} />
-                <span className="does-title">{c.howVisitsTitle}</span>
-              </div>
-              <div className="does-sub">When it needs a person in the room.</div>
-              <ul className="does-visit-list">
-                {c.howVisitsBullets.map((b) => (
-                  <li key={b}><Icon name="check" size={15} /><span>{b}</span></li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="beat">
-          <div className="beat-label">
-            <span className="beat-n">03</span>
-            <span className="beat-t">It gets done - better and faster</span>
-          </div>
-          <div className="outcome">
-            {c.howDonePoints.map((d) => (
-              <div className="outcome-line" key={d.lead}>
-                <Icon name="check-circle" size={20} />
-                <span>
-                  <b>{d.lead}</b> - {d.rest}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-      </div>
-    </section>
-  );
-}
-
-/**
- * For your parents.
- *
- * The claim is not "we are kind to your parents" - anyone can say that. It is
- * that the things they quietly put up with, and never mention on a call, stop
- * being their problem: the haggling, the scam risk, the maid who vanished, the
- * grocery run on bad knees, the ten apps they were never going to learn.
- *
- * Six asks cycle three at a time so the breadth reads without a wall of text,
- * and the untranslated English ones sit alongside the Hindi ones because that
- * is how parents actually write.
- */
 function ParentsB({ c }: { c: ArmCopy }) {
   return (
     <section data-screen-label="Parents (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
@@ -349,7 +260,7 @@ function UseCasesB() {
     <section
       id="what-niro-does"
       data-screen-label="Use cases (B)"
-      style={{ padding: sectionPad, scrollMarginTop: 72 }}
+      style={{ padding: sectionPad, background: "var(--bg-inset)", scrollMarginTop: 72 }}
     >
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>What Niro handles</Eyebrow>
@@ -450,73 +361,36 @@ function UseCasesB() {
 
 /* ---------------------------------------------------------------- stories */
 
-function StoriesB({ arm }: { arm: LpVariant }) {
-  // Lead with concrete outcomes. Gulf visitors see the Dubai routes first
-  // (Abhishek Dubai→Gwalior, Nikita Dubai→Noida) for regional proof.
-  const { region } = useGeo();
-  const picks =
-    region === "gulf"
-      ? ["Abhishek, 43", "Nikita, 38", "Kartik, 34"]
-      : ["Kartik, 34", "Abhishek, 43", "Ankit, 37"];
-  const stories = picks
-    .map((n) => TESTIMONIALS_SHORT.find((t) => t.name === n))
-    .filter(Boolean) as typeof TESTIMONIALS_SHORT;
+function StoriesB() {
+  // All four, in one grid, no geo picking. The set is deliberately two members
+  // and two parents: the members say what they stopped doing, the parents say
+  // they actually use it themselves, which is the claim a member's quote can
+  // never make on their behalf.
   return (
     <section data-screen-label="Stories (B)" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>Real families</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 28px" }}>What Niro has already done.</h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(300px, 100%), 1fr))",
-            gap: 16,
-          }}
-        >
-          {stories.map((s) => (
-            <figure
-              key={s.name}
-              style={{
-                margin: 0,
-                background: "var(--surface-card)",
-                border: "1px solid var(--border)",
-                borderRadius: "var(--radius-xl)",
-                padding: "var(--space-5)",
-                boxShadow: "var(--shadow-2)",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <blockquote
-                style={{
-                  margin: "0 0 18px",
-                  fontSize: "var(--text-base)",
-                  lineHeight: 1.55,
-                  color: "var(--text-body)",
-                }}
-              >
-                &ldquo;{(arm === "B2" && B2_QUOTES[s.name]) || s.quote}&rdquo;
-              </blockquote>
-              <figcaption style={{ display: "flex", alignItems: "center", gap: 12, marginTop: "auto" }}>
+        <h2 style={{ ...h2Style, margin: "14px 0 28px", maxWidth: 760 }}>
+          Real people. Real things they stopped having to chase.
+        </h2>
+        <div className="story-grid">
+          {MEMBER_STORIES.map((s) => (
+            <figure key={s.name} className="story-card">
+              <blockquote>{s.headline}</blockquote>
+              <p>{s.body}</p>
+              <figcaption>
                 <span
-                  style={{
-                    width: 42,
-                    height: 42,
-                    borderRadius: "50%",
-                    flexShrink: 0,
-                    backgroundColor: "var(--gold-200, #EAD9B8)",
-                    backgroundImage: `url("${s.photo}"), linear-gradient(150deg,#EAD9B8,#C9986A)`,
-                    backgroundSize: "cover, cover",
-                    backgroundPosition: "center, center",
-                    boxShadow: "var(--shadow-1)",
-                  }}
+                  className="story-face"
+                  style={
+                    s.photo
+                      ? { backgroundImage: `url("${s.photo}"), linear-gradient(150deg,#EAD9B8,#C9986A)` }
+                      : undefined
+                  }
                 />
-                <div style={{ lineHeight: 1.35 }}>
-                  <div style={{ fontWeight: 600, fontSize: "var(--text-sm)", color: "var(--text-strong)" }}>
-                    {s.name}
-                  </div>
-                  <div style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>{s.location}</div>
-                </div>
+                <span>
+                  <b>{s.name}</b>
+                  <span>{s.location}</span>
+                </span>
               </figcaption>
             </figure>
           ))}
@@ -526,49 +400,59 @@ function StoriesB({ arm }: { arm: LpVariant }) {
   );
 }
 
-/* ------------------------------------------------------------------ trust */
-
 function TrustB({ c }: { c: ArmCopy }) {
-  // Four claims, not six. Each is something a member could hold us to, and
-  // each answers a different objection the research actually recorded: the
-  // emergency nobody believes, the visit nobody else does, the commission
-  // everyone suspects, and the stranger nobody vetted.
+  // Five claims, each something a member could hold us to. Four answer an
+  // objection the research recorded: the emergency nobody believes, the visit
+  // nobody else does, the commission everyone suspects, and the stranger
+  // nobody vetted. The fifth states the everyday thing most of the membership
+  // actually is, which the page had been leaving the pricing section to say.
   const items: { icon: IconName; text: string; sub: string; href?: string; hrefLabel?: string }[] = [
     {
       icon: "heart-pulse",
-      text: "Emergency protocol",
+      text: "Assure - emergency protocol",
       sub: "The assurance of a rapid, contextual response to a medical emergency back home. You define it, we execute it.",
       href: "/niro-assure/",
       hrefLabel: "Read more on Niro Assure",
     },
     {
       icon: "map-pin",
-      text: "Niro Visits",
+      text: "Visits - assistant on demand",
       sub: c.visitsTrustBody,
+    },
+    {
+      icon: "message-circle",
+      text: "Unlimited tasks - done remotely",
+      sub: "50+ types of task done with a simple text or voice message, saving you and your family the time, the hassle and sometimes the money too.",
+    },
+    {
+      icon: "user-check",
+      text: "Verified assistants, on our payroll",
+      sub: "Vetted extensively, on our own payroll, and appraised on one thing: whether your family is satisfied.",
     },
     {
       icon: "shield-check",
       text: "Honest recommendations",
       sub: "We never earn a commission from any third-party vendor. We find and book only what is actually best for you.",
     },
-    {
-      icon: "user-check",
-      text: "Verified Niro Assistants",
-      sub: "Vetted extensively, on our own payroll, and appraised on one thing: whether your family is satisfied.",
-    },
   ];
   return (
-    <section data-screen-label="Trust (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
+    <section data-screen-label="Trust (B)" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>Why families trust Niro</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 30px", maxWidth: 900 }}>
-          Purpose-built for NRIs and their families&rsquo; daily needs.
+          Built to elevate the lives of NRIs and their families.
         </h2>
         {/* Four items, so an explicit two-up rather than auto-fit: auto-fit
             gives three columns at this width and orphans the fourth. */}
         <div className="trust-grid">
-          {items.map((it) => (
-            <div key={it.text} style={{ display: "flex", alignItems: "flex-start", gap: 13 }}>
+          {items.map((it, i) => (
+            <div
+              key={it.text}
+              // Odd count, two columns: the last item would sit alone in the
+              // left half and read as a leftover. Spanning it looks deliberate.
+              className={i === items.length - 1 ? "trust-wide" : undefined}
+              style={{ display: "flex", alignItems: "flex-start", gap: 13 }}
+            >
               <span
                 style={{
                   width: 42,
@@ -624,7 +508,7 @@ function TrustB({ c }: { c: ArmCopy }) {
  */
 function PricingB({ c }: { c: ArmCopy }) {
   return (
-    <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad }}>
+    <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 8px", textAlign: "center" }}>
@@ -661,13 +545,6 @@ function PricingB({ c }: { c: ArmCopy }) {
           </ul>
         </div>
 
-        <dl className="coverage">
-          <dt>What the membership covers</dt>
-          <dd>{COVERAGE_NOTE.covers}</dd>
-          <dt>Billed separately, at actual cost</dt>
-          <dd>{COVERAGE_NOTE.excludes}</dd>
-        </dl>
-
         {/* Directly above the CTA, so it is the last thing read before the tap.
             The objection it answers is risk, not price, and risk is what stops
             someone at this exact point. */}
@@ -702,7 +579,7 @@ function PricingB({ c }: { c: ArmCopy }) {
  * as separate lines, the emergency answer links through to Niro Assure, and
  * the trial answer needs a live WhatsApp link to claim the free task.
  */
-const MAIN_FAQ_ITEMS = FAQ.map((f) => {
+const MAIN_FAQ_ITEMS = [...FAQ, COVERAGE_FAQ].map((f) => {
   // Matched on the question, not its index. The list gets reordered as we learn
   // which answers people hunt for, and an index would silently bolt this markup
   // onto whichever question happened to move into that slot.
@@ -791,10 +668,9 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
       <Nav cta="What Niro does" ctaHref="#what-niro-does" />
       <main>
         <HeroB c={c} arm={arm} />
-        <HowItWorksB c={c} arm={arm} />
         <UseCasesB />
+        <StoriesB />
         <ParentsB c={c} />
-        <StoriesB arm={arm} />
         <TrustB c={c} />
         <PricingB c={c} />
         <Faq items={faqItems} showAsk={false} />
