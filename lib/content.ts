@@ -427,8 +427,12 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
     // three cities added in Oct 2026 have assistants on the ground but are
     // not launch cities, so the SLA sentence below names the first six rather
     // than the whole list.
+    // This list is written out rather than built from SERVICE_CITIES, because
+    // FAQ is declared above it in this file. Keep the two in step BY HAND: it
+    // already drifted once, in Oct 2026, when three cities were added here and
+    // not there.
     q: "Which cities is Niro serviceable in today?",
-    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Gwalior, Ajmer and Kozhikode. These are the cities where our assistants are on the ground. Our published emergency response times hold in the first six. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Gwalior, Ajmer and Kozhikode. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
   },
   {
     q: "How are Niro Assistants vetted and verified?",
@@ -615,7 +619,7 @@ export const GUARANTEE = {
 
 
 /* ---- Serviceable cities ----------------------------------------------------
-   Six metros. Chosen as the intersection of observed demand (the
+   Nine cities. Chosen as the intersection of observed demand (the
    parent-city Pareto across 26 smoke-test households and 14 research
    interviews) and the cities where the emergency SLA below actually holds.
    Roughly 58% of leads who told us where their parents live are covered.
@@ -626,6 +630,12 @@ export const GUARANTEE = {
    (30 Sept 2026), and how the next one gets picked. */
 export type ServiceCity = { name: string; includes?: string[] };
 
+/** Small counts spelled out, so prose reads "our nine launch cities" rather
+ *  than "our 9 launch cities". Falls back to the digits past ten. */
+export function spellCount(n: number): string {
+  return ["zero","one","two","three","four","five","six","seven","eight","nine","ten"][n] || String(n);
+}
+
 export const SERVICE_CITIES: ServiceCity[] = [
   { name: "Bengaluru" },
   { name: "Delhi NCR", includes: ["Delhi", "Noida", "Greater Noida", "Ghaziabad", "Gurugram", "Faridabad"] },
@@ -633,6 +643,13 @@ export const SERVICE_CITIES: ServiceCity[] = [
   { name: "Hyderabad", includes: ["Hyderabad", "Secunderabad"] },
   { name: "Chennai" },
   { name: "Kolkata", includes: ["Kolkata", "Howrah", "Salt Lake", "New Town"] },
+  // Added Oct 2026. Full service cities on the same terms as the five non-
+  // Bengaluru metros: same scope, same ambulance response times. The one thing
+  // none of them has yet is a Niro Assistant meeting your parents AT the
+  // hospital, which EMERGENCY_STEPS already scopes to Bengaluru by name.
+  { name: "Gwalior" },
+  { name: "Ajmer" },
+  { name: "Kozhikode" },
 ];
 
 /* ---- Emergency response ----------------------------------------------------

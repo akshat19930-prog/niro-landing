@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
-import { EMERGENCY_SLA, EMERGENCY_STEPS, SERVICE_CITIES } from "@/lib/content";
+import { EMERGENCY_SLA, EMERGENCY_STEPS, SERVICE_CITIES, spellCount } from "@/lib/content";
 
 /**
  * /niro-assure - the emergency response protocol, with numbers.
@@ -48,7 +48,7 @@ export default function EmergencyPage() {
         </div>
 
         <p className="sla-scope">
-          These times apply in our six launch cities:{" "}
+          These times apply in our {spellCount(SERVICE_CITIES.length)} launch cities:{" "}
           <strong>
             {SERVICE_CITIES.map((c) => c.name).join(", ").replace(/, ([^,]*)$/, " and $1")}
           </strong>
