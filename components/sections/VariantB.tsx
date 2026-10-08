@@ -401,11 +401,11 @@ function StoriesB() {
 }
 
 function TrustB({ c }: { c: ArmCopy }) {
-  // Four claims, each something a member could hold us to. Three answer an
+  // Five claims, each something a member could hold us to. Four answer an
   // objection the research recorded: the emergency nobody believes, the visit
-  // nobody else does, and the stranger nobody vetted. The fourth states the
-  // everyday thing most of the membership actually is, which the page had
-  // been leaving the pricing section to say on its own.
+  // nobody else does, the commission everyone suspects, and the stranger
+  // nobody vetted. The fifth states the everyday thing most of the membership
+  // actually is, which the page had been leaving the pricing section to say.
   const items: { icon: IconName; text: string; sub: string; href?: string; hrefLabel?: string }[] = [
     {
       icon: "heart-pulse",
@@ -429,6 +429,11 @@ function TrustB({ c }: { c: ArmCopy }) {
       text: "Verified assistants, on our payroll",
       sub: "Vetted extensively, on our own payroll, and appraised on one thing: whether your family is satisfied.",
     },
+    {
+      icon: "shield-check",
+      text: "Honest recommendations",
+      sub: "We never earn a commission from any third-party vendor. We find and book only what is actually best for you.",
+    },
   ];
   return (
     <section data-screen-label="Trust (B)" style={{ padding: sectionPad }}>
@@ -440,8 +445,14 @@ function TrustB({ c }: { c: ArmCopy }) {
         {/* Four items, so an explicit two-up rather than auto-fit: auto-fit
             gives three columns at this width and orphans the fourth. */}
         <div className="trust-grid">
-          {items.map((it) => (
-            <div key={it.text} style={{ display: "flex", alignItems: "flex-start", gap: 13 }}>
+          {items.map((it, i) => (
+            <div
+              key={it.text}
+              // Odd count, two columns: the last item would sit alone in the
+              // left half and read as a leftover. Spanning it looks deliberate.
+              className={i === items.length - 1 ? "trust-wide" : undefined}
+              style={{ display: "flex", alignItems: "flex-start", gap: 13 }}
+            >
               <span
                 style={{
                   width: 42,

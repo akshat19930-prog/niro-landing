@@ -1861,3 +1861,7 @@
   font-size: var(--text-xs);
   color: var(--text-muted);
 }
+
+/* Five trust claims in a two-column grid leaves the last one orphaned in the
+   left half. Spanning it reads as a closing statement rather than a leftover. */
+@media (min-width: 720px) { .trust-wide { grid-column: 1 / -1; } }

@@ -330,6 +330,7 @@ export const MEMBER_STORIES: MemberStory[] = [
     headline: "I just hand Niro the things I don\u2019t want to chase.",
     body:
       "I use Niro for my India ITR, paperwork, managing my properties and my India visit logistics. I send a message and they figure out what needs to be done.",
+    photo: "/people/pavas.jpg",
   },
   {
     name: "Kartik, 38",
@@ -345,6 +346,7 @@ export const MEMBER_STORIES: MemberStory[] = [
     headline: "Now I don\u2019t have to ask my son for every little thing.",
     body:
       "Niro booked me cabs with a voice note and arranges doctor appointments in Delhi, and I don\u2019t have to bother my son too much anymore.",
+    photo: "/people/sunita.jpg",
   },
   {
     name: "Tara, 69",
@@ -352,6 +354,7 @@ export const MEMBER_STORIES: MemberStory[] = [
     headline: "They sorted the house, and then planned our whole trip.",
     body:
       "Niro found us a cook when the previous one absconded, and managed the visa process for my Dubai trip. An assistant even accompanied me to the centre, which was a relief.",
+    photo: "/people/tara.jpg",
   },
 ];
 
