@@ -303,6 +303,58 @@ export const PARENT_VOICE = {
  * the family reports. These are synthesized from research, not verbatim-approved
  * quotes: get each named person's sign-off before public launch.
  */
+/**
+ * The testimonial cards on the home page.
+ *
+ * Two members and two parents, because the parents' voice answers a question
+ * the members' cannot: whether the person in India actually uses this, or
+ * whether it stays one more thing their child manages for them. Sunita and
+ * Tara say it in their own words, which is worth more than any claim we make
+ * about adoption.
+ *
+ * `headline` is the line that carries the card. `body` is what they actually
+ * had done, in their own phrasing, lightly corrected for spelling only.
+ */
+export type MemberStory = {
+  name: string;
+  location: string;
+  headline: string;
+  body: string;
+  photo?: string;
+};
+
+export const MEMBER_STORIES: MemberStory[] = [
+  {
+    name: "Pavas, 36",
+    location: "Sweden",
+    headline: "I just hand Niro the things I don\u2019t want to chase.",
+    body:
+      "I use Niro for my India ITR, paperwork, managing my properties and my India visit logistics. I send a message and they figure out what needs to be done.",
+  },
+  {
+    name: "Kartik, 38",
+    location: "San Francisco \u2194 Mumbai",
+    headline: "My parents tell me what they need. I tell Niro.",
+    body:
+      "Managing a house and three household staff used to be a headache for my dad, and sometimes for me. Niro handles it entirely now.",
+    photo: "/people/kartik.jpg",
+  },
+  {
+    name: "Sunita, 66",
+    location: "Bengaluru \u00b7 mother of Kartik, Seattle",
+    headline: "Now I don\u2019t have to ask my son for every little thing.",
+    body:
+      "Niro booked me cabs with a voice note and arranges doctor appointments in Delhi, and I don\u2019t have to bother my son too much anymore.",
+  },
+  {
+    name: "Tara, 69",
+    location: "Ghaziabad \u00b7 mother of Mayank, Dubai",
+    headline: "They sorted the house, and then planned our whole trip.",
+    body:
+      "Niro found us a cook when the previous one absconded, and managed the visa process for my Dubai trip. An assistant even accompanied me to the centre, which was a relief.",
+  },
+];
+
 export const TESTIMONIALS_SHORT: {
   name: string;
   location: string;
@@ -518,12 +570,30 @@ export const PLANS: Plan[] = [MEMBERSHIP_SINGLE, MEMBERSHIP_QUARTER];
  * cost?" was a live question in the WhatsApp threads, and an unstated answer
  * becomes a refund request in week two.
  */
+/** Shown as the last FAQ rather than at the pricing fold. On the page it sat
+ *  between the price and the CTA, where the only thing it did was put a list
+ *  of exclusions in front of someone who had just decided to buy. As a FAQ it
+ *  is still findable by anyone who wants it, and /terms carries the binding
+ *  version either way. */
 export const COVERAGE_NOTE = {
   covers:
     "Niro's time - the calls, the chasing, the coordination - and one booked on-demand Niro assistant visit of four hours or less.",
   excludes:
     "Vendor charges and the cost of any product or service ordered through Niro, at cost and with no commission added. Government and legal fees. Additional Niro visits in the same month, at $15 per four hours.",
   promise: "We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
+};
+
+/** The coverage note as the FAQ's last question, which is where it now lives
+ *  on the page. Composed from COVERAGE_NOTE so the two can never drift, and
+ *  declared AFTER it: an earlier version declared it first with an empty
+ *  answer and filled it in by mutation, which the bundler dropped, so the
+ *  question shipped with nothing under it. */
+export const COVERAGE_FAQ = {
+  q: "What does the membership cover, and what is billed separately?",
+  a:
+    "Your membership covers " + COVERAGE_NOTE.covers +
+    " Billed separately, at actual cost: " + COVERAGE_NOTE.excludes.charAt(0).toLowerCase() + COVERAGE_NOTE.excludes.slice(1) +
+    " " + COVERAGE_NOTE.promise,
 };
 
 /**
