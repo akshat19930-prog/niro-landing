@@ -35,8 +35,9 @@ export default function TasksPackPage() {
         <h1>Niro Lite</h1>
         <p>
           If you have a handful of specific things to get done in India this
-          year - a stuck EPF claim, a dormant account, paperwork that needs a
-          person on the ground - this is the simpler way to buy.
+          year - a stuck EPF claim, a dormant account, a wrong electricity bill
+          at your parents&rsquo; place that nobody will correct - this is the
+          simpler way to buy.
         </p>
 
         <div className="pack-card">
