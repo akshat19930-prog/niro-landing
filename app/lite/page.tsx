@@ -36,7 +36,7 @@ export default function TasksPackPage() {
         <p>
           If you have a handful of specific things to get done in India this
           year - a stuck EPF claim, a dormant account, a wrong electricity bill
-          at your parents&rsquo; place that nobody will correct - this is the
+          at your parents&rsquo; place that needs correction - this is the
           simpler way to buy.
         </p>
 
