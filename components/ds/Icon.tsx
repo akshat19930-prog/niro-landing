@@ -13,6 +13,7 @@ export type IconName =
   | "chevron-up"
   | "check"
   | "check-circle"
+  | "x-circle"
   | "shield"
   | "shield-check"
   | "home"
@@ -57,6 +58,13 @@ const PATHS: Record<IconName, React.ReactNode> = {
   "chevron-down": <polyline points="6 9 12 15 18 9" />,
   "chevron-up": <polyline points="18 15 12 9 6 15" />,
   check: <polyline points="20 6 9 17 4 12" />,
+  "x-circle": (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <line x1="9" y1="9" x2="15" y2="15" />
+      <line x1="15" y1="9" x2="9" y2="15" />
+    </>
+  ),
   "check-circle": (
     <>
       <circle cx="12" cy="12" r="9" />
