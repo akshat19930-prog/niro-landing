@@ -562,16 +562,27 @@ export const MEMBERSHIP_QUARTER: Plan = {
 export const NIRO_LITE: Plan = {
   id: "lite",
   name: "Niro Lite",
-  price: "$270",
+  price: "$300",
   per: "/year",
-  sub: "For a handful of things a year",
+  sub: "20 tasks, over 12 months",
   features: [
-    "15 tasks, used any time across the year",
-    "Same WhatsApp group, same vetted Niro Assistants",
-    "Emergency ambulance through our partner network - no Niro Assistant on the ground",
+    "20 tasks, used any time in 12 months",
+    "The same WhatsApp chat, the same vetted Niro Assistants",
+    "A task is one thing run to completion, not one phone call",
   ],
   highlight: false,
 };
+
+/** Stated on the card next to what IS included, with x marks, because the
+ *  pack is defined as much by its exclusions as by its tasks. Niro Assure and
+ *  Niro Visits are membership things, and a buyer who assumes otherwise finds
+ *  out at the worst moment. */
+export const NIRO_LITE_EXCLUDES: string[] = [
+  "Niro Assure emergency response",
+  "Niro Visits, booked and priced separately",
+  "A dedicated family manager, or a second family group",
+  "Third party costs: vendors, government and legal fees, at actual",
+];
 
 /** The two public SKUs. NIRO_LITE is deliberately NOT here - it lives only on
  *  the unlisted /lite page, for the segment that refuses monthly billing. */

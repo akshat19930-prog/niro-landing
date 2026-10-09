@@ -943,6 +943,18 @@
   line-height: 1.45;
 }
 .prose ul.pack-features svg { margin-top: 2px; flex-shrink: 0; color: var(--brand); }
+.prose .pack-excl-label {
+  margin: 0 0 9px;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.prose ul.pack-excludes { margin-bottom: 20px; }
+.prose ul.pack-excludes li { color: var(--text-body); }
+.prose ul.pack-excludes svg { color: var(--danger); }
 
 /* --------------------------------------------------------- /what-we-do grid
    Column flow rather than a card grid: the groups are wildly uneven in length

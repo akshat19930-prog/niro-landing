@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
-import { NIRO_LITE, COVERAGE_NOTE } from "@/lib/content";
+import { NIRO_LITE, NIRO_LITE_EXCLUDES } from "@/lib/content";
 import { Icon } from "@/components/ds/Icon";
 import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
 
 /**
- * /lite - UNLISTED. The 15-task annual pack, for sales to share on a call.
+ * /lite - UNLISTED. The 20-task annual pack, for sales to share on a call.
  *
- * Deliberately off the public pricing grid. At $270 a year it reads as $22.50
+ * Deliberately off the public pricing grid. At $300 a year it reads as $25
  * a month, which sits inside the band where six research respondents said a
  * low price made them DISTRUST the service ("I would be suspicious it's
  * basically a glorified wrapper"), and putting it beside $99 would reset the
@@ -23,7 +23,7 @@ import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
  * put anything here you would mind a competitor reading.
  */
 export const metadata: Metadata = {
-  title: "Niro Lite - 15 tasks a year",
+  title: "Niro Lite - 20 tasks a year",
   description: "A task pack for people who don't want a monthly membership.",
   robots: { index: false, follow: false },
 };
@@ -54,10 +54,22 @@ export default function TasksPackPage() {
               </li>
             ))}
           </ul>
+          {/* The exclusions sit on the card, not in prose further down, because
+              this is the moment someone decides. Assure and Visits are the two
+              people assume are in it. */}
+          <p className="pack-excl-label">Not included</p>
+          <ul className="pack-features pack-excludes">
+            {NIRO_LITE_EXCLUDES.map((f) => (
+              <li key={f}>
+                <Icon name="x-circle" size={16} />
+                <span>{f}</span>
+              </li>
+            ))}
+          </ul>
           <WhatsAppLink
             className="btn btn-primary btn-md"
             placement="lite_payment_link"
-            message="Hi Niro - I'd like the Niro Lite pack at $270 a year. Can you send me the payment link?"
+            message="Hi Niro - I'd like the Niro Lite pack, 20 tasks at $300 a year. Can you send me the payment link?"
             showIcon={false}
           >
             Ask for the payment link
@@ -70,14 +82,6 @@ export default function TasksPackPage() {
           call. Chasing an EPF claim through four visits to the office is one
           task, not four. We tell you before we start if something is large
           enough to count as two, and you decide.
-        </p>
-
-        <h2>What is not included</h2>
-        <p>{COVERAGE_NOTE.excludes}</p>
-        <p className="note">
-          The pack does <strong>not</strong> include a dedicated family manager,
-          a Niro Assistant on the ground during an emergency, or a second family
-          group. Those are part of the monthly membership.
         </p>
 
         <p>
