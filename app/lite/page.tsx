@@ -32,7 +32,7 @@ export default function TasksPackPage() {
   return (
     <PageShell>
       <article className="prose">
-        <h1>Niro Lite</h1>
+        <h1 className="pack-title">Niro Lite</h1>
         <p>
           If you have a handful of specific things to get done in India this
           year - a stuck EPF claim, a dormant account, a wrong electricity bill

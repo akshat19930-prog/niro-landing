@@ -943,6 +943,7 @@
   line-height: 1.45;
 }
 .prose ul.pack-features svg { margin-top: 2px; flex-shrink: 0; color: var(--brand); }
+.prose h1.pack-title { color: var(--brand); }
 .prose .pack-excl-label {
   margin: 0 0 9px;
   font-family: var(--font-sans);
