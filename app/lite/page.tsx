@@ -34,10 +34,9 @@ export default function TasksPackPage() {
       <article className="prose">
         <h1>Niro Lite</h1>
         <p>
-          Most people join Niro monthly, because the work is continuous. But if
-          you have a handful of specific things to get done in India this year -
-          a stuck EPF claim, a dormant account, paperwork that needs a person on
-          the ground - this is the simpler way to buy.
+          If you have a handful of specific things to get done in India this
+          year - a stuck EPF claim, a dormant account, paperwork that needs a
+          person on the ground - this is the simpler way to buy.
         </p>
 
         <div className="pack-card">
