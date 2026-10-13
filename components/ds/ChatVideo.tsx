@@ -17,12 +17,15 @@ export function ChatVideo({
   aspect = "760 / 1080",
   maxWidth = 380,
   ariaLabel = "A Niro WhatsApp thread cycling three requests - filing an India tax return, booking home physio for a parent, and renewing a pension life certificate - each confirmed done by Niro.",
+  playbackRate = 1,
 }: {
   src?: string;
   poster?: string;
   aspect?: string;
   maxWidth?: number;
   ariaLabel?: string;
+  /** Below 1 slows the loop down so each request stays readable for longer. */
+  playbackRate?: number;
 } = {}) {
   const ref = useRef<HTMLVideoElement>(null);
 
@@ -33,12 +36,16 @@ export function ChatVideo({
     v.muted = true;
     v.defaultMuted = true;
     v.setAttribute("muted", "");
+    // defaultPlaybackRate survives the load() below, which resets playbackRate.
+    v.defaultPlaybackRate = playbackRate;
+    v.playbackRate = playbackRate;
 
     const tryPlay = () => {
       // With preload="none" nothing is fetched until we ask; kick the download
       // here (post-hydration) so the 285KB clip never competes with the HTML,
       // pixel, and critical JS during the first-paint window.
       if (v.preload === "none" || v.networkState === v.NETWORK_EMPTY) v.load();
+      v.playbackRate = playbackRate;
       const p = v.play();
       if (p && typeof p.catch === "function") p.catch(() => {});
     };
@@ -57,7 +64,7 @@ export function ChatVideo({
       document.removeEventListener("pointerdown", kick);
       document.removeEventListener("scroll", kick);
     };
-  }, []);
+  }, [playbackRate]);
 
   return (
     <div

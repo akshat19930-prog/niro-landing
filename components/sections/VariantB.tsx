@@ -155,7 +155,9 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
           </div>
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
-          {arm === "B2" ? <ChatThreads /> : <ChatVideo />}
+          {/* 0.65x: each request holds about 7s instead of 4.5s. At full speed
+              the thread changed faster than people could read it. */}
+          {arm === "B2" ? <ChatThreads /> : <ChatVideo playbackRate={0.65} />}
         </div>
       </div>
     </section>
