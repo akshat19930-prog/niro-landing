@@ -557,17 +557,37 @@ export const MEMBERSHIP_QUARTER: Plan = {
  */
 export const NIRO_LITE: Plan = {
   id: "lite",
-  name: "Niro Lite",
-  price: "$270",
-  per: "/year",
-  sub: "For a handful of things a year",
+  name: "Task pack",
+  price: "$300",
+  per: "for 20 tasks",
+  sub: "For a few specific things, not ongoing care",
+  // Shown on the public pricing grid from Oct 2026, beside the membership.
+  //
+  // The headline stays the PACK price, never the $25/month it works out at.
+  // Six research respondents said unprompted that a sub-$50 monthly figure
+  // made them suspect the service is not staffed by real people, and a $25
+  // headline would also re-anchor the page: $99 stops reading as the price
+  // and starts reading as four times the cheap one. The monthly equivalence
+  // is carried as a small grey line instead, for comparability only.
   features: [
-    "15 tasks, used any time across the year",
-    "Same WhatsApp group, same vetted Niro Assistants",
-    "Emergency ambulance through our partner network - no Niro Assistant on the ground",
+    "20 tasks, used any time across the year",
+    "The same 50+ task types, the same vetted assistants",
+    "Closed with proof, like every Niro task",
   ],
   highlight: false,
 };
+
+/** What the pack does NOT carry. Stated plainly on the card rather than left
+ *  for someone to discover after paying: the pack is the lower-commitment way
+ *  in, and the three hooks below are exactly what the membership is for. */
+export const LITE_EXCLUDES: string[] = [
+  "No Niro Assure emergency response",
+  "No Niro Visits",
+  "No family group, and no dedicated family manager",
+];
+
+/** The pack's monthly equivalent, for comparison only. Never the headline. */
+export const LITE_MONTHLY_EQUIV = "works out at about $25 a month";
 
 /** The two public SKUs. NIRO_LITE is deliberately NOT here - it lives only on
  *  the unlisted /lite page, for the segment that refuses monthly billing. */
