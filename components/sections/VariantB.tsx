@@ -108,7 +108,7 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
               fontWeight: 500,
             }}
           >
-            When something needs doing in India, tell Niro
+            {c.heroHeadline}
           </h1>
           {c.heroSub.map((line, i) => (
             <p
@@ -134,25 +134,27 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
             label="Ask Niro on WhatsApp"
             marginTop={14}
           />
-          <div
-            className="hero-desc"
-            style={{
-              marginTop: 14,
-              fontSize: "var(--text-sm)",
-              color: "var(--text-muted)",
-            }}
-          >
-            {c.heroDescriptors.map((d, i) => (
-              <span key={d} style={{ display: "contents" }}>
-                {i > 0 && (
-                  <span className="hero-desc-sep" aria-hidden="true">
-                    ·
-                  </span>
-                )}
-                <span>{d}</span>
-              </span>
-            ))}
-          </div>
+          {c.heroDescriptors.length > 0 && (
+            <div
+              className="hero-desc"
+              style={{
+                marginTop: 14,
+                fontSize: "var(--text-sm)",
+                color: "var(--text-muted)",
+              }}
+            >
+              {c.heroDescriptors.map((d, i) => (
+                <span key={d} style={{ display: "contents" }}>
+                  {i > 0 && (
+                    <span className="hero-desc-sep" aria-hidden="true">
+                      ·
+                    </span>
+                  )}
+                  <span>{d}</span>
+                </span>
+              ))}
+            </div>
+          )}
         </div>
         <div style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
           {/* 0.65x: each request holds about 7s instead of 4.5s. At full speed
