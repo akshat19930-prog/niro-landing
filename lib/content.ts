@@ -558,8 +558,16 @@ export const NIRO_LITE: Plan = {
   id: "lite",
   name: "Niro Lite",
   price: "$300",
-  per: "/year",
-  sub: "20 tasks, over 12 months",
+  per: "for 20 tasks",
+  sub: "For a few specific things, not ongoing care",
+  // Shown on the public pricing grid from Oct 2026, beside the membership.
+  //
+  // The headline is the PACK price. It is never shown as the $25 a month it
+  // works out at, not even as a grey line: six research respondents said
+  // unprompted that a sub-$50 monthly figure made them suspect the service
+  // is not staffed by real people, and a $25 figure re-anchors the page so
+  // $99 stops reading as the price and starts reading as four times the
+  // cheap one.
   features: [
     "20 tasks, used any time in 12 months",
     "The same WhatsApp chat, the same vetted Niro Assistants",

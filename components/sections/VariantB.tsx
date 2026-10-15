@@ -14,7 +14,8 @@ import { ChatThreads } from "@/components/ds/ChatThreads";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import {
-  PLANS, MEMBERSHIP_FEATURES, MEMBER_STORIES, FREE_TASKS, GUARANTEE, FAQ, GUIDE_SCOPE,
+  PLANS, MEMBERSHIP_FEATURES, MEMBER_STORIES, FREE_TASKS, NIRO_LITE, NIRO_LITE_EXCLUDES,
+  GUARANTEE, FAQ, GUIDE_SCOPE,
   ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, type ArmCopy,
 } from "@/lib/content";
 import type { LpVariant } from "@/lib/variant";
@@ -545,37 +546,68 @@ function PricingB({ c }: { c: ArmCopy }) {
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 8px", textAlign: "center" }}>
-          One membership. Two ways to pay.
+          One membership. Or just the tasks you need.
         </h2>
         <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 26px", textAlign: "center" }}>
-          Your first trial task is free. And you can cancel any time.
+          Your first task is free either way.
         </p>
 
-        <div className="price-pair">
-          {PLANS.map((p) => (
-            <div className="price-opt" key={p.id}>
-              <div className="price-opt-name">{p.name}</div>
-              <div className="price-opt-amount">
-                <span className="price-opt-num">{p.price}</span>
-                <span className="price-opt-per">{p.per}</span>
-              </div>
-              <div className="price-opt-note">
-                {p.id === "quarter" ? "Billed $250 every three months." : "Billed monthly. No lock-in."}
-              </div>
+        {/* Two TIERS, not three cards.
+            Monthly and quarterly are nested inside the membership because they
+            are a payment choice, not a product choice: presenting them as two
+            equal cards spent the whole visual budget on the smaller decision,
+            and the one that matters now is membership vs pack. Neither billing
+            option is styled as preferred, and neither tier carries a badge,
+            which is the standing rule. The membership is the darker card and
+            the pack the lighter one: a product distinction (continuous vs
+            occasional), not a recommendation. */}
+        <div className="tier-pair">
+          <div className="tier tier-main">
+            <div className="tier-head">
+              <span className="tier-name">Membership</span>
             </div>
-          ))}
-        </div>
+            <div className="tier-price">
+              <span className="tier-num">{PLANS[0].price}</span>
+              <span className="tier-per">{PLANS[0].per}</span>
+            </div>
+            <div className="tier-alt">
+              or <b>{PLANS[1].price}{PLANS[1].per}</b> billed quarterly, $250 every
+              three months. Same membership, lower rate.
+            </div>
+            <p className="tier-for">Everything Niro does, continuously, with no cap on tasks.</p>
+            <ul className="tier-list">
+              {c.membershipFeatures.map((f) => (
+                <li key={f}><Icon name="check-circle" size={16} /><span>{f}</span></li>
+              ))}
+            </ul>
+          </div>
 
-        <div className="price-includes">
-          <div className="price-includes-title">Every membership includes</div>
-          <ul className="price-includes-list">
-            {c.membershipFeatures.map((f) => (
-              <li key={f}>
-                <Icon name="check-circle" size={17} />
-                <span>{f}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="tier tier-lite">
+            <div className="tier-head">
+              <span className="tier-name">{NIRO_LITE.name}</span>
+            </div>
+            <div className="tier-price">
+              <span className="tier-num">{NIRO_LITE.price}</span>
+              <span className="tier-per">{NIRO_LITE.per}</span>
+            </div>
+            <div className="tier-alt">Paid once. Nothing recurring.</div>
+            <p className="tier-for">{NIRO_LITE.sub}.</p>
+            <ul className="tier-list">
+              {NIRO_LITE.features.map((f) => (
+                <li key={f}><Icon name="check-circle" size={16} /><span>{f}</span></li>
+              ))}
+              {NIRO_LITE_EXCLUDES.map((f) => (
+                <li key={f} className="tier-no"><span className="tier-x" aria-hidden="true" />
+                  <span>{f}</span></li>
+              ))}
+            </ul>
+            {/* A text link, not a button: the section keeps one primary action,
+                and that stays the free task. This is for someone who wants to
+                read how the pack works before deciding. */}
+            <a className="tier-more" href="/lite/">
+              How Niro Lite works &rarr;
+            </a>
+          </div>
         </div>
 
         {/* Directly above the CTA, so it is the last thing read before the tap.
