@@ -53,6 +53,10 @@ const PH_FORWARD: Record<string, true> = {
   // questions the page could not answer about itself.
   section_viewed: true,
   nav_cta_click: true,
+  // Opening a "what Niro handles" card. The section converts better than any
+  // other on the page, so what people actually open inside it is worth seeing
+  // in the funnel rather than inferred from autocapture element text.
+  usecase_open: true,
   // Click-to-chat. Worth a PostHog funnel of its own: a visitor who asks on
   // WhatsApp instead of joining never reaches email_entered, so without this
   // they read as a bounce.

@@ -6,6 +6,7 @@ import { JoinCta } from "@/components/ds/JoinCta";
 import { AskNiroCta, WhatsAppLink, ASK_MESSAGE } from "@/components/ds/WhatsAppLink";
 import { Badge } from "@/components/ds/Badge";
 import { Icon, type IconName } from "@/components/ds/Icon";
+import { logEvent } from "@/lib/track";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { VoiceStream } from "@/components/ds/VoiceStream";
 import { ChatVideo } from "@/components/ds/ChatVideo";
@@ -252,6 +253,15 @@ function UseCasesB() {
   // rather than the title so a wording tweak on either side cannot silently
   // break the pairing.
   const [openCard, setOpenCard] = useState<string | null>(null);
+  /** Opening a card is the only engagement signal this section has. Until now
+   *  there was none at all, so every read of it came from matching autocapture
+   *  element text, which breaks the moment a label is reworded. Fires on open
+   *  only, not on close. Note it is mobile-biased by design: on a desktop the
+   *  card also reveals on hover, so those visitors never need to click. */
+  function toggleCard(title: string, isOpen: boolean) {
+    if (!isOpen) logEvent("usecase_open", { category: title });
+    setOpenCard(isOpen ? null : title);
+  }
   const cases: { icon: IconName; title: string }[] = [
     { icon: "heart-pulse", title: "Family's health admin & emergency response" },
     { icon: "wrench", title: "Household chores, upkeep & staff" },
@@ -292,11 +302,11 @@ function UseCasesB() {
                 role="button"
                 tabIndex={0}
                 aria-expanded={isOpen}
-                onClick={() => setOpenCard(isOpen ? null : c.title)}
+                onClick={() => toggleCard(c.title, isOpen)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    setOpenCard(isOpen ? null : c.title);
+                    toggleCard(c.title, isOpen);
                   }
                 }}
               >
@@ -306,10 +316,23 @@ function UseCasesB() {
                 <div className="uc-title">{c.title}</div>
                 {scope && (
                   <>
+                    {/* Two real tasks, always visible. Four in five people who
+                        reach this section never opened a card, so everything
+                        inside it was invisible to them. The card now says
+                        something on its own, and the toggle is a decision about
+                        whether to see MORE rather than whether to see anything. */}
+                    <ul className="uc-peek">
+                      {scope.items.slice(0, 2).map((it) => (
+                        <li key={it.t}>
+                          <Icon name="check" size={14} />
+                          <span>{it.t}</span>
+                        </li>
+                      ))}
+                    </ul>
                     <span className="uc-hint">
-                      {scope.items.length} things we handle
+                      See all {scope.items.length}
                       <span aria-hidden="true" className="uc-chev">
-                        <Icon name="chevron-right" size={15} />
+                        <Icon name="chevron-down" size={14} />
                       </span>
                     </span>
                     <ul className="uc-list">
