@@ -316,13 +316,16 @@ function UseCasesB() {
                 <div className="uc-title">{c.title}</div>
                 {scope && (
                   <>
-                    {/* Two real tasks, always visible. Four in five people who
+                    {/* One real task, always visible. Four in five people who
                         reach this section never opened a card, so everything
                         inside it was invisible to them. The card now says
                         something on its own, and the toggle is a decision about
-                        whether to see MORE rather than whether to see anything. */}
+                        whether to see MORE rather than whether to see anything.
+                        One rather than two: two cost 716px of extra page on a
+                        390px screen, pushing testimonials, trust and pricing
+                        all down by close to a full phone screen. */}
                     <ul className="uc-peek">
-                      {scope.items.slice(0, 2).map((it) => (
+                      {scope.items.slice(0, 1).map((it) => (
                         <li key={it.t}>
                           <Icon name="check" size={14} />
                           <span>{it.t}</span>

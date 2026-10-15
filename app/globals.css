@@ -1499,9 +1499,9 @@
   font-size: var(--text-lg); font-weight: 600;
   color: var(--text-strong); line-height: 1.3;
 }
-/* Two tasks shown before anything is tapped. Each is clamped to two lines so
-   six cards of previews cannot run away with the section's height; the full
-   sentence is still there once the card opens. */
+/* One task shown before anything is tapped, clamped to two lines so six cards
+   of previews cannot run away with the section's height; the full sentence is
+   still there once the card opens. */
 .uc-peek { margin: 12px 0 0; padding: 0; list-style: none; }
 .uc-peek li {
   display: flex; align-items: flex-start; gap: 8px;
