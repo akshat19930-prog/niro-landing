@@ -13,7 +13,7 @@ import { ChatThreads } from "@/components/ds/ChatThreads";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { Faq } from "@/components/sections/Faq";
 import {
-  PLANS, MEMBERSHIP_FEATURES, MEMBER_STORIES, GUARANTEE, FAQ, GUIDE_SCOPE,
+  PLANS, MEMBERSHIP_FEATURES, MEMBER_STORIES, FREE_TASKS, GUARANTEE, FAQ, GUIDE_SCOPE,
   ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, type ArmCopy,
 } from "@/lib/content";
 import type { LpVariant } from "@/lib/variant";
@@ -264,7 +264,7 @@ function UseCasesB() {
     <section
       id="what-niro-does"
       data-screen-label="Use cases (B)"
-      style={{ padding: sectionPad, background: "var(--bg-inset)", scrollMarginTop: 72 }}
+      style={{ padding: sectionPad, scrollMarginTop: 72 }}
     >
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>What Niro handles</Eyebrow>
@@ -371,7 +371,7 @@ function StoriesB() {
   // they actually use it themselves, which is the claim a member's quote can
   // never make on their behalf.
   return (
-    <section data-screen-label="Stories (B)" style={{ padding: sectionPad }}>
+    <section data-screen-label="Stories (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>Real families</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 28px", maxWidth: 760 }}>
@@ -584,7 +584,11 @@ function PricingB({ c }: { c: ArmCopy }) {
  * The page FAQ. Answers come from lib/content FAQ, except the three that carry
  * structure a plain string cannot: the data answer needs its four commitments
  * as separate lines, the emergency answer links through to Niro Assure, and
- * the trial answer needs a live WhatsApp link to claim the free task.
+ * the trial answer names actual tasks and routes into /freetask.
+ *
+ * The trial answer lists real tasks rather than restating that the first one
+ * is free. Someone asking whether they can try before paying is not asking
+ * about the price, they are asking what they would even use it for.
  */
 const MAIN_FAQ_ITEMS = FAQ.map((f) => {
   // Matched on the question, not its index. The list gets reordered as we learn
@@ -625,6 +629,27 @@ const MAIN_FAQ_ITEMS = FAQ.map((f) => {
           <p style={{ margin: 0 }}>
             Questions? hello@tellniro.com reaches the founders.
           </p>
+        </>
+      ),
+    };
+  }
+  if (f.q.indexOf("try Niro before") >= 0) {
+    return {
+      q: f.q,
+      a: (
+        <>
+          <p style={{ margin: "0 0 10px" }}>{f.a}</p>
+          <p style={{ margin: "0 0 10px" }}>
+            Pick any one of these, and we start today:
+          </p>
+          <ul className="faq-points">
+            {FREE_TASKS.slice(0, 4).map((t) => (
+              <li key={t.id}>{t.label}</li>
+            ))}
+          </ul>
+          <a href="/freetask/" style={{ fontWeight: 600 }}>
+            See all {FREE_TASKS.length} free tasks, and start one &rarr;
+          </a>
         </>
       ),
     };
@@ -675,8 +700,8 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
       <Nav cta="What Niro does" ctaHref="#what-niro-does" />
       <main>
         <HeroB c={c} arm={arm} />
-        <UseCasesB />
         <StoriesB />
+        <UseCasesB />
         <ParentsB c={c} />
         <TrustB c={c} />
         <PricingB c={c} />
