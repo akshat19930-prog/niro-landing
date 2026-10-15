@@ -7,6 +7,7 @@ import { Icon } from "@/components/ds/Icon";
 import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
+import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
 import { FREE_TASKS, OTHER_ID, SORT_OUT_USAGE, INDIA_CITIES } from "@/lib/content";
 import { dialCode, logEvent } from "@/lib/track";
 import { SALES_WHATSAPP, ASSISTANT_WHATSAPP } from "@/lib/config";
@@ -386,6 +387,27 @@ export function JoinModal() {
             >
               By continuing you&rsquo;re asking Niro to message you on WhatsApp.
             </p>
+
+            {/* The escape hatch, placed BELOW the opt-in notice on purpose.
+                That notice has to stay attached to the button it refers to:
+                put a second action between them and "by continuing" stops
+                naming one thing, which is what makes the consent record worth
+                having. Styled as a link, not a button, so it cannot outweigh
+                the field above it.
+
+                It names the hesitation rather than just offering a second
+                door. Someone stalling on a phone field is usually not lost,
+                they have a question they want answered before they commit. */}
+            <div className="join-alt-chat">
+              <span>Rather ask a question first?</span>
+              <WhatsAppLink
+                placement="join_step1"
+                message="Hi Niro, I had a question before I sign up."
+                showIcon={false}
+              >
+                Chat with Niro on WhatsApp &rarr;
+              </WhatsAppLink>
+            </div>
           </form>
         )}
 
