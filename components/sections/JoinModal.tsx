@@ -258,7 +258,13 @@ export function JoinModal() {
         zIndex: 100,
         background: "rgba(12,31,24,0.55)",
         display: "flex",
-        alignItems: "center",
+        // flex-start, NOT center. A centred flex item that is taller than its
+        // scrolling container overflows in BOTH directions, and the part that
+        // goes off the top cannot be scrolled back to: on the last step the
+        // heading and the close button were simply unreachable on a short
+        // phone. `margin: auto` on the card below still centres it whenever
+        // there is room, and collapses to zero when there is not.
+        alignItems: "flex-start",
         justifyContent: "center",
         padding: "20px var(--gutter)",
         overflowY: "auto",
@@ -268,6 +274,7 @@ export function JoinModal() {
         style={{
           width: "100%",
           maxWidth: 460,
+          margin: "auto",
           background: "var(--surface-card)",
           padding: "var(--space-5)",
           position: "relative",
