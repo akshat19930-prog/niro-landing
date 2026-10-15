@@ -1279,13 +1279,24 @@
 
 /* Sign-up phone row: ISD select + national number. The select is sized to its
    longest option so the number field keeps a usable width on a phone. */
-.phone-row { display: flex; gap: 8px; align-items: stretch; }
-.phone-row > *:last-child { flex: 1; min-width: 0; }
+/* The country selector used to be `flex: 0 0 auto`, which means it cannot
+   shrink, while a <select>'s closed width is set by the SELECTED option's
+   text. With labels like "Saudi Arabia +966" that intrinsic width was wider
+   than the room available, and on mobile browsers that honour it the number
+   field was squeezed off the right edge of the card.
+
+   Now the selector is a fixed box and the labels are short ("+971 AE"), so
+   neither the option text nor the font can drive the layout. The number field
+   takes everything left over and is allowed to shrink to nothing, which is
+   what min-width: 0 is for inside a flex row. */
+.phone-row { display: flex; gap: 8px; align-items: stretch; width: 100%; }
+.phone-row > *:last-child { flex: 1 1 auto; min-width: 0; }
 .dial-select {
-  width: auto;
-  flex: 0 0 auto;
-  max-width: 45%;
-  padding-right: 34px;
+  flex: 0 0 118px;
+  width: 118px;
+  min-width: 0;
+  padding-right: 26px;
+  text-overflow: ellipsis;
   cursor: pointer;
   appearance: none;
   background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),

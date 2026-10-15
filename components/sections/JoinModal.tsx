@@ -65,25 +65,26 @@ const h2Style = {
  * A select rather than a free-text prefix - a mistyped country code is a lead
  * we can never message back.
  */
-const DIAL_CODES: { code: string; label: string }[] = [
-  { code: "+1", label: "US / Canada +1" },
-  { code: "+971", label: "UAE +971" },
-  { code: "+966", label: "Saudi Arabia +966" },
-  { code: "+974", label: "Qatar +974" },
-  { code: "+965", label: "Kuwait +965" },
-  { code: "+968", label: "Oman +968" },
-  { code: "+973", label: "Bahrain +973" },
-  { code: "+44", label: "UK +44" },
-  { code: "+353", label: "Ireland +353" },
-  { code: "+49", label: "Germany +49" },
-  { code: "+31", label: "Netherlands +31" },
-  { code: "+41", label: "Switzerland +41" },
-  { code: "+61", label: "Australia +61" },
-  { code: "+64", label: "New Zealand +64" },
-  { code: "+65", label: "Singapore +65" },
-  { code: "+852", label: "Hong Kong +852" },
-  { code: "+91", label: "India +91" },
+const DIAL_CODES: { code: string; short: string; example: string }[] = [
+  { code: "+1",   short: "US/CA", example: "415 555 0134" },
+  { code: "+971", short: "AE",    example: "50 123 4567" },
+  { code: "+966", short: "SA",    example: "50 123 4567" },
+  { code: "+974", short: "QA",    example: "3312 3456" },
+  { code: "+965", short: "KW",    example: "5012 3456" },
+  { code: "+968", short: "OM",    example: "9212 3456" },
+  { code: "+973", short: "BH",    example: "3612 3456" },
+  { code: "+44",  short: "UK",    example: "7400 123456" },
+  { code: "+353", short: "IE",    example: "85 123 4567" },
+  { code: "+49",  short: "DE",    example: "151 2345678" },
+  { code: "+31",  short: "NL",    example: "6 1234 5678" },
+  { code: "+41",  short: "CH",    example: "78 123 45 67" },
+  { code: "+61",  short: "AU",    example: "412 345 678" },
+  { code: "+64",  short: "NZ",    example: "21 123 4567" },
+  { code: "+65",  short: "SG",    example: "8123 4567" },
+  { code: "+852", short: "HK",    example: "5123 4567" },
+  { code: "+91",  short: "IN",    example: "98765 43210" },
 ];
+
 
 const labelStyle = {
   display: "block",
@@ -310,7 +311,7 @@ export function JoinModal() {
 
             <div style={{ marginBottom: 14 }}>
               <label style={labelStyle} htmlFor="join-phone">
-                WhatsApp number or ID
+                Your WhatsApp number
               </label>
               <div className="phone-row">
                 <select
@@ -323,7 +324,7 @@ export function JoinModal() {
                 >
                   {DIAL_CODES.map((d) => (
                     <option key={d.code} value={d.code}>
-                      {d.label}
+                      {d.code} {d.short}
                     </option>
                   ))}
                 </select>
@@ -332,7 +333,9 @@ export function JoinModal() {
                   type="tel"
                   inputMode="tel"
                   autoComplete="tel-national"
-                  placeholder="415 555 0134"
+                  placeholder={
+                    DIAL_CODES.find((d) => d.code === dial)?.example || "98765 43210"
+                  }
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                 />
@@ -365,7 +368,7 @@ export function JoinModal() {
             )}
 
             <Button full type="submit">
-              Next: a few details
+              Continue
             </Button>
             {/* The opt-in. Notice plus an affirmative action (this button), not
                 a checkbox: Meta accepts it, and a tick box on the one screen we
