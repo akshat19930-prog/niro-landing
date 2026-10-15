@@ -1697,10 +1697,14 @@ export const GUIDE_FOUNDERS: { name: string; photo: string; bio: string }[] = [
    The arm itself is resolved in lib/variant.ts from a first-touch cookie. */
 
 export type ArmCopy = {
+  /** The hero headline. Arm copy rather than a constant in the component,
+   *  because the two arms now say different things above the fold. */
+  heroHeadline: string;
   /** Hero subtext, one paragraph per entry. */
   heroSub: string[];
   howHeading: string;
-  /** The short descriptor row under the hero CTA. */
+  /** The short descriptor row under the hero CTA. Empty on arm A since Oct
+   *  2026: three more ideas above the fold, one of them jargon. */
   heroDescriptors: string[];
   howStep1Title: string;
   howVisitsTitle: string;
@@ -1725,15 +1729,12 @@ const ARM_COPY_A_FAMILY = {
 
 export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
   A: {
+    heroHeadline: "You can’t always be in India. Niro can.",
     heroSub: [
-      "Your family’s personal assistant in India, getting things done for them and for you. Peace of mind for you, unmatched convenience for them - all delivered over WhatsApp.",
+      "Bills, paperwork, repairs, appointments and more. Just tell Niro on WhatsApp.",
     ],
     howHeading: "You ask. We do the running around.",
-    heroDescriptors: [
-      "Remote Assistant",
-      "WhatsApp groups",
-      "Shows up in person when needed",
-    ],
+    heroDescriptors: [],
     howStep1Title: "You or your family asks",
     howVisitsTitle: "Niro Visits - booked on demand",
     howVisitsBullets: [
@@ -1763,6 +1764,7 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
   },
 
   B2: {
+    heroHeadline: "When something needs doing in India, tell Niro",
     heroSub: [
       "Your personal assistant for life in India - for you, and your family.",
       "One 1:1 WhatsApp chat. Tell Niro, & we research, call, coordinate, get it done & show up if needed.",
