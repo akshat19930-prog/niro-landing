@@ -264,7 +264,7 @@ function UseCasesB() {
     <section
       id="what-niro-does"
       data-screen-label="Use cases (B)"
-      style={{ padding: sectionPad, scrollMarginTop: 72 }}
+      style={{ padding: sectionPad, background: "var(--bg-inset)", scrollMarginTop: 72 }}
     >
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>What Niro handles</Eyebrow>
@@ -371,7 +371,7 @@ function StoriesB() {
   // they actually use it themselves, which is the claim a member's quote can
   // never make on their behalf.
   return (
-    <section data-screen-label="Stories (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
+    <section data-screen-label="Stories (B)" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>Real families</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 28px", maxWidth: 760 }}>
@@ -700,8 +700,8 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
       <Nav cta="What Niro does" ctaHref="#what-niro-does" />
       <main>
         <HeroB c={c} arm={arm} />
-        <StoriesB />
         <UseCasesB />
+        <StoriesB />
         <ParentsB c={c} />
         <TrustB c={c} />
         <PricingB c={c} />
