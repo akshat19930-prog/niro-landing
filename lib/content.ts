@@ -1281,6 +1281,17 @@ export const FREE_TASKS: FreeTask[] = [
     waText: "Aadhaar or government document work",
     prompt: "What needs doing: an update, a new one, or a correction?",
   },
+  {
+    // Seasonal framing, permanent task. Only the words "before the Diwali
+    // rush" date; a deep clean is wanted all year, so after Diwali this loses
+    // the prefix rather than the option. Sits second from last, in front of
+    // "Something else" only, because it is the newest and least proven of
+    // these and should not push a task we know gets picked down the list.
+    id: "deepclean",
+    label: "Get pre-Diwali deep cleaning done for my parents' home",
+    waText: "a pre-Diwali deep clean for my parents' home",
+    prompt: "Which area or pin code, and how many BHK?",
+  },
 ];
 
 export const SORT_OUT_OPTIONS: string[] = [
