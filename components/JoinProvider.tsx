@@ -94,6 +94,28 @@ export function validateEmail(raw: string): { email?: string; error?: string } {
  *  is live today. */
 const WHATSAPP_CONSENT_VERSION = "whatsapp-2026-09-30";
 
+/**
+ * Tie this visitor's PostHog session to their row in the leads sheet. The row
+ * is keyed on eventId; registering it as a super-property puts it on every
+ * PostHog event from here on, and one `lead_submitted` event marks the moment
+ * the phone number landed. Sales reads the session back by eventId to see what
+ * the lead looked at before they signed up. eventId is a random id, not the
+ * phone or the name, so nothing personal goes to PostHog.
+ */
+const linkedLeads = new Set<string>();
+function linkLeadToPostHog(eventId: string, hasPhone: boolean) {
+  if (!eventId || typeof window === "undefined") return;
+  try {
+    window.posthog?.register({ lead_event_id: eventId });
+    if (hasPhone && !linkedLeads.has(eventId)) {
+      linkedLeads.add(eventId);
+      window.posthog?.capture("lead_submitted", { lead_event_id: eventId });
+    }
+  } catch {
+    /* PostHog not loaded */
+  }
+}
+
 async function submitSignup(payload: {
   email: string;
   eventId: string;
@@ -136,6 +158,7 @@ async function submitSignup(payload: {
     position: FALLBACK_WAITLIST_POSITION,
     referralCode: slugFromEmail(payload.email),
   };
+  linkLeadToPostHog(payload.eventId, !!payload.phone);
   if (!WAITLIST_ENDPOINT) return fallback;
   try {
     const res = await fetch(WAITLIST_ENDPOINT, {
