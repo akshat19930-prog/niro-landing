@@ -48,73 +48,34 @@ const WA = `https://wa.me/${SALES_WHATSAPP}?text=${encodeURIComponent(
   "Hi Niro, I read the Assure+ page. Here's what I'd pick and why:"
 )}`;
 
-/** Cited on the page, not in a footnote. A member reading a claim about their
- *  own parents is entitled to see where the number came from, and two of
- *  these are consumer surveys rather than clinical studies, which the page
- *  says rather than implies. */
-const STATS = [
-  {
-    value: "82%",
-    body:
-      "of falls among older people living on their own happened with nobody else there to see it. More than half could not get back up unaided.",
-    cite: "UK study of older people living alone, cited in our hardware review",
-  },
-  {
-    value: "18%",
-    body:
-      "of people who own a medical alert pendant say they wear it at all times. 64% take it off in the shower, and 39% do not wear it to bed.",
-    cite: "The Senior List, 2026 survey of 2,695 adults",
-  },
-  {
-    value: "55%",
-    body:
-      "fewer falls in care communities after ambient sensors went in. The category works; what has not existed is a version built for an Indian home.",
-    cite: "Nobi's own published figure from its care-home deployments",
-  },
-];
-
 const PROPS: {
   icon: Parameters<typeof Icon>[0]["name"];
   title: string;
   body: string;
-  exampleLabel: string;
-  example: string;
 }[] = [
   {
     icon: "heart-pulse",
-    title: "It calls for help when nobody can",
+    title: "Fall detection",
     body:
-      "The sensor watches for the shape of a fall: a fast drop to the floor, then stillness. It does not need anyone to press anything. If your mother gets up on her own, or someone walks into the room, the alert cancels itself and you never hear about it. If she does not, Niro Assure starts without waiting to be asked.",
-    exampleLabel: "What you would see",
-    example:
-      "A call to your mother first, then to you, then the ambulance, exactly as Niro Assure runs today. The difference is that it starts on its own.",
+      "A fall is noticed as it happens, with nothing worn and nobody to press anything. If they get back up on their own, the alert cancels itself and you never hear about it.",
   },
   {
     icon: "sunrise",
-    title: "The changes too slow to notice on a call",
+    title: "Health analytics",
     body:
-      "When your father gets up, how long he is on his feet during the day, how often he is up at night. Not readings, and not a medical opinion: a pattern, and a nudge when it moves. The fortnightly call where everything is fine is exactly where this kind of change hides.",
-    exampleLabel: "What you would see",
-    example:
-      "\"Up four times a night this week, against once a night last month.\" That is a conversation with his doctor, two months earlier than you would have had it.",
+      "When they wake, how long they are up, how often they are up at night. The slow changes a fortnightly call never shows. Patterns, not readings.",
   },
   {
     icon: "user-check",
-    title: "Who came, and how long they stayed",
+    title: "Staff monitoring and attendance",
     body:
-      "The cook who is paid for two hours and stays forty minutes is the most common complaint we hear, and the one your parents are least likely to raise with you. Presence in a room at a time, turned into a weekly log you can actually check.",
-    exampleLabel: "What you would see",
-    example:
-      "A week on one screen: who was expected, when they arrived, how long they were there. No cameras, no recordings, and the staff are told the sensor is in the house.",
+      "Who came, when they arrived, how long they stayed, in one weekly log. Built from presence in a room: no cameras, no recordings, and the staff are told.",
   },
   {
     icon: "lock",
-    title: "The house when it is locked",
+    title: "Empty home safety",
     body:
-      "When your parents travel, or when the flat sits empty between visits, the same sensor switches to watching for movement instead of watching for falls. An empty house that nobody has checked on in three weeks is its own quiet worry.",
-    exampleLabel: "What you would see",
-    example:
-      "Movement in an empty flat raises the Niro desk, who call your neighbour or the society office before they call you at 3 a.m. for nothing.",
+      "While your parents travel, the same sensor watches an empty house for movement instead of watching for falls.",
   },
 ];
 
@@ -126,6 +87,14 @@ const STEPS = [
   {
     t: "It learns the house",
     b: "The first days are spent learning what normal looks like in those rooms. We do not act on anything it says until it has settled.",
+  },
+  {
+    // Added third on purpose: the two steps before it are ours, everything
+    // after it runs on what the member sets here. It is also the answer to
+    // the objection this page attracts most, which is not "does it work" but
+    // "what will it do without asking me".
+    t: "You define the protocol",
+    b: "For falls, for staff attendance, for every other signal: what we act on, what we only mention, and who we call first. We nudge or act on nothing you have not set.",
   },
   {
     t: "It watches, quietly",
@@ -186,9 +155,9 @@ export default function AssurePlusPage() {
         <section className="ap-hero">
           <div className="ap-wrap ap-hero-grid">
             <div>
-              <span className="ap-stamp">Private preview</span>
+              <span className="ap-stamp">Launching soon</span>
               <h1>
-                Help that does not wait to be <em>asked for</em>.
+                Enhanced peace of mind. <em>For you &amp; your family.</em>
               </h1>
               <p className="ap-lead">
                 Niro Assure answers in 45 seconds when somebody calls it. Assure+
@@ -320,45 +289,15 @@ export default function AssurePlusPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------- why it matters */}
-        <section className="ap-inset">
-          <div className="ap-wrap">
-            <p className="ap-eyebrow">Why we are building this</p>
-            <h2>The button only works if they are wearing it</h2>
-            <p className="ap-lead">
-              Everything Niro Assure does today starts with somebody raising the
-              alarm. That is the part that fails: most falls happen alone, in
-              the bathroom or at night, with the phone in another room.
-            </p>
-
-            <div className="ap-stats">
-              {STATS.map((s) => (
-                <div className="ap-stat" key={s.value}>
-                  <div className="ap-stat-value">{s.value}</div>
-                  <p>{s.body}</p>
-                  <cite>{s.cite}</cite>
-                </div>
-              ))}
-            </div>
-
-            <p className="ap-note">
-              For scale at home: about one in nine Indians over 60 reported a
-              fall in the previous two years, in a survey of 28,710 people
-              (Longitudinal Ageing Study in India). The question is not how
-              often it happens. It is who knows when it does.
-            </p>
-          </div>
-        </section>
-
         {/* ------------------------------------------------- the four props */}
         <section>
           <div className="ap-wrap">
-            <p className="ap-eyebrow">What it would do</p>
+            <p className="ap-eyebrow">What it does</p>
             <h2>Four things, from one sensor on the wall</h2>
             <p className="ap-lead">
-              Three of these have nothing to do with emergencies. That is
-              deliberate: a device you only hear from on the worst day of your
-              life is a device you stop trusting is working.
+              Three of them have nothing to do with emergencies. A device you
+              only hear from on the worst day of your life is a device you stop
+              trusting is working.
             </p>
 
             <div className="ap-props">
@@ -369,10 +308,6 @@ export default function AssurePlusPage() {
                   </span>
                   <h3>{p.title}</h3>
                   <p>{p.body}</p>
-                  <div className="ap-prop-example">
-                    <b>{p.exampleLabel}</b>
-                    {p.example}
-                  </div>
                 </article>
               ))}
             </div>
@@ -390,7 +325,7 @@ export default function AssurePlusPage() {
         <section className="ap-inset">
           <div className="ap-wrap">
             <p className="ap-eyebrow">How it works</p>
-            <h2>Five steps, and a person at the fourth</h2>
+            <h2>Six steps, and a person at the fifth</h2>
             <ol className="ap-steps">
               {STEPS.map((s) => (
                 <li key={s.t}>
@@ -495,8 +430,8 @@ export default function AssurePlusPage() {
             <p className="ap-eyebrow">What it misses</p>
             <h2>The things we would rather you heard from us</h2>
             <p className="ap-lead">
-              This is a real sensor with real limits, and you are being asked
-              about putting one in your parents' home. So here they are.
+              This is a real sensor with real limits, and it would be going
+              into your parents' home. So here they are.
             </p>
             <ul className="ap-limits">
               {LIMITS.map((l) => (
@@ -517,24 +452,6 @@ export default function AssurePlusPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ the ask */}
-        <div className="ap-wrap ap-narrow">
-          <div className="ap-ask">
-            <h2>Which of the two would you take?</h2>
-            <p>
-              That is the whole reason this page exists. Tell us which one, and
-              more usefully, why: what made the difference, and what you would
-              drop from the list without noticing.
-            </p>
-            <a className="ap-ask-cta" href={WA} target="_blank" rel="noopener">
-              Tell us on WhatsApp
-              <Icon name="message-circle" size={18} />
-            </a>
-            <p className="ap-ask-note">
-              A private preview for Niro members. Nothing here is on sale yet.
-            </p>
-          </div>
-        </div>
       </main>
 
       <Footer />
