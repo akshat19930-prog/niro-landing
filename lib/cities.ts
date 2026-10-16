@@ -28,6 +28,10 @@ const ALIASES: Record<string, string[]> = {
   Mumbai: ["mumbai", "bombay", "navi mumbai", "thane", "borivali", "andheri", "powai"],
   Hyderabad: ["hyderabad", "hyd", "secunderabad", "cyberabad", "gachibowli"],
   Chennai: ["chennai", "madras", "chennai tamil nadu"],
+  // Gandhinagar is deliberately absent: it is a separate city 25km out, and
+  // claiming it would be the false positive this matcher exists to avoid.
+  Ahmedabad: ["ahmedabad", "amdavad", "ahmadabad", "ahemdabad"],
+  Indore: ["indore", "indaur"],
   Kozhikode: ["kozhikode", "calicut", "kozhikkode"],
   Kolkata: [
     "kolkata", "calcutta", "howrah", "salt lake", "saltlake", "bidhannagar",
