@@ -1760,42 +1760,35 @@
   flex-shrink: 0;
 }
 .join-opt.on .join-radio { border-color: var(--brand); border-width: 5px; }
-/* Scope, turnaround, what we need and what is NOT included, all before the
-   handoff. The last of those is the one that keeps a free task from quietly
-   becoming a paid one nobody agreed to. */
-.join-scope {
+/* The one follow-up question under the chosen task.
+
+   Styled as part of the selected option rather than as a separate field: it
+   is bordered in brand like the picked radio above it and sits tight under
+   the list, so it reads as the task opening up rather than as one more thing
+   the form wants before it will let you leave. */
+.join-detail {
   border: 1.5px solid var(--brand);
   background: var(--brand-soft);
   border-radius: 14px;
-  padding: 14px 15px;
+  padding: 13px 14px 12px;
   margin-top: 12px;
 }
-.join-scope h4 {
-  font-family: var(--font-sans);
+.join-detail label {
+  display: block;
   font-size: var(--text-sm);
   font-weight: 600;
+  line-height: 1.4;
   color: var(--text-strong);
-  margin: 0 0 9px;
+  margin: 0 0 8px;
 }
-.join-scope dl {
-  margin: 0;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 6px 12px;
+.join-detail .ds-input {
+  background: var(--bg-card);
 }
-.join-scope dt {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  line-height: 1.5;
-  color: var(--brand);
-}
-.join-scope dd {
+.join-detail p {
   font-size: var(--text-xs);
   line-height: 1.45;
-  color: var(--text-body);
-  margin: 0;
+  color: var(--text-muted);
+  margin: 7px 0 0;
 }
 .join-alt {
   margin: 18px calc(var(--space-5) * -1) calc(var(--space-5) * -1);

@@ -1175,27 +1175,30 @@ export const CAREERS_INTRO =
 
 /** "What are you looking to sort out?" - multi-select. Grouped the way the ops
  *  team scopes work, so an answer maps straight onto who picks the lead up. */
+/** The last option on the task step: none of the listed ones, tell us
+ *  yourself. Kept out of FREE_TASKS because it has no prompt of its own: the
+ *  free text IS the answer, so there is nothing further to ask. */
+export const OTHER_ID = "other";
+
 /**
- * The eight free first tasks.
+ * The free first tasks.
  *
  * One definition, two surfaces: the picker on the last step of the join modal,
  * and the cards on /freetask. /freetask is a static asset in public/ and
  * cannot import this file, so its copy is kept in sync BY HAND. If you change
- * a label or a scope here, change it there too. (The same hand-sync applies to
- * the attribution keys that page re-reads; there is a note to match in its
- * script block.)
+ * a label here, change it there too. (The same hand-sync applies to the
+ * attribution keys that page re-reads; there is a note to match in its script
+ * block.)
  *
  * `label` is first person on purpose. The lead is telling us what they want
  * done, not reading a menu of services, and the answer goes straight into a
  * WhatsApp message they send in their own voice.
  *
- * `scope`, `needs` and `notIncluded` are shown BEFORE the handoff rather than
- * left to the assistant to explain in chat. Two reasons. Naming what is not
- * included is what stops a free task quietly growing into a paid one nobody
- * agreed to. And surfacing `needs` up front means the lead's first message can
- * carry the input, which collapses a three-message back-and-forth into one:
- * that exchange is where most of the drop-off between a lead and a started
- * task actually happens.
+ * The scope/not-included detail that used to sit under the picker now lives
+ * only on /freetask. On the last step of the form it was three paragraphs of
+ * reading between a decision and a handoff, and the one thing that screen
+ * needs is the opposite: the single detail that saves a WhatsApp round trip.
+ * That is what `prompt` asks for.
  *
  * There is deliberately NO turnaround here. We used to print one per task,
  * which made a promise on a page nobody was staffed to keep: a free task that
@@ -1209,101 +1212,74 @@ export type FreeTask = {
   label: string;
   /** How the task is named inside the prefilled WhatsApp message. */
   waText: string;
-  scope: string;
-  needs: string;
-  notIncluded: string;
+  /**
+   * The one follow-up question asked once this task is picked.
+   *
+   * Specific on purpose. A generic "anything else we should know?" returns
+   * blanks and "asap"; a named question returns the thing that would otherwise
+   * cost a WhatsApp round trip, and a round trip across these time zones costs
+   * a day. Where the task needs a location it asks for an AREA or a pin code,
+   * not a pin code alone: most members do not know their parents' six digits
+   * offhand but can name the locality without looking anything up.
+   */
+  prompt: string;
 };
 
-/** The ninth option on the last step: none of the eight, tell us yourself.
- *  Kept out of FREE_TASKS because it has no scope of its own to show. */
-export const OTHER_ID = "other";
-
+/**
+ * The free first tasks, rebuilt Oct 2026 from what members actually chose.
+ *
+ * The previous eight captured about half the demand: "Something else" was the
+ * most-picked option of all, and three of the eight were never picked once in
+ * ten days. The free text people typed instead clustered into finding a person
+ * (a cook, a driver, a physio), getting a SIM rather than unblocking one, and
+ * government paperwork, none of which the old list offered.
+ *
+ * Only two of these need a locality, which is why the area is asked here
+ * rather than earlier in the form: asking everyone would collect it from the
+ * majority whose task is done remotely and gains nothing from it.
+ */
 export const FREE_TASKS: FreeTask[] = [
   {
-    id: "epf",
-    label: "Help me recover my PF/EPF money",
-    waText: "recovering my PF/EPF money",
-    scope:
-      "A short report: what is blocked, why, how long it will take to clear and what it will cost. The specific rejection reason named, which is the part nobody else gives you, with the sequence of steps to fix it.",
-    needs: "UAN and claim history",
-    notIncluded:
-      "Filing the corrected claim. That one is a member task, and we quote it before we touch it.",
+    id: "staff",
+    label: "Find a cook, maid or driver for my family",
+    waText: "finding a cook, maid or driver for my family",
+    prompt: "Which one, and which area or pin code?",
   },
   {
-    id: "bank-sim",
-    label: "Help me unblock a bank account or a SIM",
-    waText: "unblocking a bank account or a SIM",
-    scope:
-      "We find out why it is frozen: KYC, dormancy, an address mismatch or a re-verification, and tell you exactly what clears it, naming the branch or store that can do it.",
-    needs: "The bank or operator, and whose name it is in",
-    notIncluded:
-      "Going in to submit it. That one is a member task, and we quote it before we touch it.",
-  },
-  {
-    id: "insurance",
-    label: "Find gaps with my family’s health insurance policy",
-    waText: "finding the gaps in my family’s health insurance",
-    scope:
-      "A two-page gap report with the rupee figure at the top and the reasoning under it: room-rent sub-limit, co-pay, disease waiting periods, day-care exclusions, network hospitals near your parents’ home, and the cheapest way to close the biggest gap.",
-    needs: "The policy PDF",
-    notIncluded:
-      "Buying or porting the cover. We tell you what to fix; the buying stays yours.",
-  },
-  {
-    id: "professional",
-    label: "Find me domestic staff, a physio, a painter or a property tenant",
-    waText: "finding me someone trusted in India",
-    scope:
-      "Three named people with quoted rates, a negotiated package price, availability windows and our vetting note. A warranty floor of 30 days on plumbing and electrical, 180 days on appliance work.",
-    needs: "The job and the area",
-    notIncluded:
-      "Supervising the work once it starts. That one is a member task.",
-  },
-  {
-    id: "vehicle",
-    label: "Health check that India vehicle (challans, PUC, insurance)",
-    waText: "a health check on our vehicle in India",
-    scope:
-      "One page per vehicle: outstanding challans with amounts, PUC expiry, insurance expiry and service due. Runs entirely on public VAHAN records, so we need no login of yours.",
-    needs: "Registration numbers",
-    notIncluded:
-      "Paying the challans or renewing the cover. Member tasks, quoted first.",
-  },
-  {
-    id: "phone-safety",
-    label: "Make my parent’s phones safe from cyber scams",
-    waText: "making my parents’ phones safe from scams",
-    // The old version of this promised that nobody from Niro, a bank or the
-    // government would ever ask for an OTP. We do ask for OTPs on some tasks,
-    // so the claim was not ours to make. Passwords, PINs and net-banking
-    // logins are the keepable version and carry the same safety value.
-    scope:
-      "Medical ID filled in, your number set as emergency contact, SOS configured, text size fixed. Plus the five-minute callback rule taught and left on a fridge card: nobody legitimate asks for a password, a PIN or a net-banking login, so hang up and call back on a number you already had. Before-and-after screenshots to you.",
-    needs: "15 minutes with your parent",
-    notIncluded: "Ongoing monitoring. This is a one-off setup.",
-  },
-  {
-    id: "support-case",
-    label: "Sort out a tricky support/refund/claim/billing issue",
-    waText: "sorting out a support and billing issue",
-    scope:
-      "We take the case over in writing: every reference number, the escalation path, the ombudsman or regulator route if it comes to that, and a written note of exactly where it stands and what happens next.",
-    needs: "The company, the account and what went wrong",
-    // Said plainly because a billing dispute genuinely cannot be closed in two
-    // days, and a free task that quietly overruns is worse than one that was
-    // honest about its edges.
-    notIncluded:
-      "Running the case to its end, which can take weeks. The free task gets it properly opened and escalated.",
+    id: "sim",
+    label: "Unblock a SIM, or get me an Indian phone number",
+    waText: "my India phone number",
+    prompt: "Unblocking an existing number, or getting a new one?",
   },
   {
     id: "yoga",
-    label: "Get a parent started with online Yoga - Arrange a trial class",
-    waText: "getting a parent started with online yoga",
-    scope:
-      "Vetted instructors for remote sessions over video, 1:1 or in a small group, with negotiated rates. We arrange a trial class and pay for it. Your parent sits in, decides for themselves, and picks the one who stays.",
-    needs: "Their timings, and the language they are comfortable in",
-    notIncluded:
-      "The ongoing package, which your parent chooses and we set up once they are happy.",
+    label: "Get my parent started with yoga, arrange a trial class",
+    waText: "getting a parent started with yoga",
+    prompt: "Online or at home? And which area or pin code?",
+  },
+  {
+    id: "epf",
+    label: "Recover or close my PPF/EPF account",
+    waText: "recovering or closing my PPF/EPF account",
+    prompt: "Recovering or closing? And the UAN, if you have it.",
+  },
+  {
+    id: "physio",
+    label: "Find an at-home physio for my family",
+    waText: "finding an at-home physio for my family",
+    prompt: "How often, and which area or pin code?",
+  },
+  {
+    id: "tech",
+    label: "Do a tech support task for my family",
+    waText: "a tech support task for my family",
+    prompt: "Which device, and what is stuck?",
+  },
+  {
+    id: "govt",
+    label: "Aadhaar or government document work",
+    waText: "Aadhaar or government document work",
+    prompt: "What needs doing: an update, a new one, or a correction?",
   },
 ];
 
