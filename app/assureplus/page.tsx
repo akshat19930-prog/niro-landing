@@ -164,10 +164,6 @@ export default function AssurePlusPage() {
                 is for the times nobody can. A small radar sensor on the wall
                 notices a fall and raises the alarm itself.
               </p>
-              <p className="ap-lead">
-                No camera. No microphone. Nothing for your parents to wear,
-                charge or remember.
-              </p>
             </div>
 
             {/* The device. Drawn rather than photographed: the unit is a
@@ -347,11 +343,7 @@ export default function AssurePlusPage() {
         <section>
           <div className="ap-wrap">
             <p className="ap-eyebrow">The two memberships</p>
-            <h2>What you have now, and what this would add</h2>
-            <p className="ap-lead">
-              Same service, same people, same emergency line. Assure+ adds the
-              sensing, and the hardware costs you nothing up front.
-            </p>
+            <h2>Choose one membership tier</h2>
 
             <div className="ap-compare">
               <div className="ap-tier">
