@@ -220,9 +220,13 @@ Change these only deliberately - each one cost a test or an interview to learn.
   roles you will actually fill; a stale board proves the opposite.
 - **"AI" appears exactly once on the page**, in the humans-or-AI FAQ answer.
   Nobody in the research bought *because* of AI and several discounted for it.
-- **Emergency SLA numbers are published and scoped to the six launch cities.**
-  Kolkata was added on 30 Sept 2026, which widened that scope.
-  Do not widen the scope without widening the ops that hold it.
+- **Emergency SLA numbers are published and scoped to the service cities.**
+  Kolkata was added on 30 Sept 2026, then Gwalior, Ajmer and Kozhikode in
+  Oct 2026, then Ahmedabad and Indore on 16 Oct, taking the list to eleven.
+  The ambulance response times hold in all of them; what only Bengaluru has
+  is an assistant meeting your parents AT the hospital, and EMERGENCY_STEPS
+  says so by name. Do not widen the scope without widening the ops that hold
+  it.
 - **We no longer claim "we never ask for OTPs"** - we do, for some tasks. The
   claim narrowed to passwords/PINs/net-banking, which is keepable.
 

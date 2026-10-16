@@ -421,18 +421,13 @@ export const TESTIMONIALS_SHORT: {
    the two in sync. ------------------------------------------------------- */
 export const FAQ: { q: string; a: string; special?: boolean }[] = [
   {
-    // The city list here is deliberately NOT built from SERVICE_CITIES.
-    // That constant also scopes the emergency response times on /niro-assure
-    // and decides, via matchCity(), whether a lead counts as serviceable. The
-    // three cities added in Oct 2026 have assistants on the ground but are
-    // not launch cities, so the SLA sentence below names the first six rather
-    // than the whole list.
     // This list is written out rather than built from SERVICE_CITIES, because
     // FAQ is declared above it in this file. Keep the two in step BY HAND: it
     // already drifted once, in Oct 2026, when three cities were added here and
-    // not there.
+    // not there. The order matches SERVICE_CITIES: the six launch cities, then
+    // the five added in Oct 2026 by size.
     q: "Which cities is Niro serviceable in today?",
-    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Gwalior, Ajmer and Kozhikode. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Ahmedabad, Indore, Gwalior, Ajmer and Kozhikode. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
   },
   {
     q: "How are Niro Assistants vetted and verified?",
@@ -641,10 +636,11 @@ export const GUARANTEE = {
    (30 Sept 2026), and how the next one gets picked. */
 export type ServiceCity = { name: string; includes?: string[] };
 
-/** Small counts spelled out, so prose reads "our nine launch cities" rather
- *  than "our 9 launch cities". Falls back to the digits past ten. */
+/** Small counts spelled out, so prose reads "our eleven launch cities" rather
+ *  than "our 11 launch cities". Falls back to the digits past twelve. */
 export function spellCount(n: number): string {
-  return ["zero","one","two","three","four","five","six","seven","eight","nine","ten"][n] || String(n);
+  return ["zero","one","two","three","four","five","six","seven","eight","nine",
+          "ten","eleven","twelve"][n] || String(n);
 }
 
 export const SERVICE_CITIES: ServiceCity[] = [
@@ -654,10 +650,17 @@ export const SERVICE_CITIES: ServiceCity[] = [
   { name: "Hyderabad", includes: ["Hyderabad", "Secunderabad"] },
   { name: "Chennai" },
   { name: "Kolkata", includes: ["Kolkata", "Howrah", "Salt Lake", "New Town"] },
-  // Added Oct 2026. Full service cities on the same terms as the five non-
-  // Bengaluru metros: same scope, same ambulance response times. The one thing
-  // none of them has yet is a Niro Assistant meeting your parents AT the
-  // hospital, which EMERGENCY_STEPS already scopes to Bengaluru by name.
+  // Added Oct 2026, in two batches. Full service cities on the same terms as
+  // the five non-Bengaluru metros: same scope, same ambulance response times.
+  // The one thing none of them has yet is a Niro Assistant meeting your
+  // parents AT the hospital, which EMERGENCY_STEPS already scopes to
+  // Bengaluru by name.
+  //
+  // The six launch cities stay first in this array and the rest follow by
+  // size, because the only place this order shows up is a list a visitor
+  // scans for their own city. Nothing in the code reads a position.
+  { name: "Ahmedabad" },
+  { name: "Indore" },
   { name: "Gwalior" },
   { name: "Ajmer" },
   { name: "Kozhikode" },
