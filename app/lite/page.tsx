@@ -76,6 +76,10 @@ export default function TasksPackPage() {
           </WhatsAppLink>
         </div>
 
+        <p className="note">
+          Niro Visits can be booked as an add-on to a task, at $25 per task.
+        </p>
+
         <h2>How the tasks work</h2>
         <p>
           A task is one thing you want done, run to completion - not one phone
