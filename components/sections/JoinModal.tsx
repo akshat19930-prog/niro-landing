@@ -185,8 +185,10 @@ export function JoinModal() {
   const isId = looksLikeWhatsAppId(phone);
 
   const picked = FREE_TASKS.find((t) => t.id === taskId) || null;
-  // One of the eight is enough on its own. "Something else" needs the box
-  // filled, because an empty one tells the assistant nothing.
+  // Picking a listed task is enough on its own: its follow-up detail is asked
+  // for but never required, because this is the last tap before the handoff
+  // and the assistant can ask the same question in the chat. "Something else"
+  // does need the box filled, since an empty one tells the assistant nothing.
   const canStart = !!picked || (taskId === OTHER_ID && taskText.trim().length > 2);
 
   /**
@@ -206,23 +208,35 @@ export function JoinModal() {
    */
   function pickTask(id: string) {
     setTaskId(id);
+    // The detail is answered against a specific question, so it cannot survive
+    // a change of task: "cook, Indiranagar" under the physio prompt would be
+    // worse than a blank. Clearing on switch costs a retype in the rare case
+    // someone goes back and forth, and prevents a wrong brief in every case.
+    setTaskText("");
     if (draftTimer.current) clearTimeout(draftTimer.current);
-    saveTaskDraft(id === OTHER_ID ? taskText.trim() : "", id);
+    saveTaskDraft("", id);
   }
 
   function onTaskText(v: string) {
     setTaskText(v);
     if (draftTimer.current) clearTimeout(draftTimer.current);
-    draftTimer.current = setTimeout(() => saveTaskDraft(v.trim(), OTHER_ID), 900);
+    const id = taskId;
+    draftTimer.current = setTimeout(() => saveTaskDraft(v.trim(), id), 900);
   }
 
   /** The message the lead sends us, in their voice, with no encoded payload.
    *  Attribution reconciles on the phone number against the row written
    *  before this link is ever tapped. */
   function waHref(): string {
+    const detail = taskText.trim();
     const body = picked
-      ? `Hi Niro, I'd like to start my free task: ${picked.waText}.`
-      : `Hi Niro, here's what's been pending: ${taskText.trim()}`;
+      ? `Hi Niro, I'd like to start my free task: ${picked.waText}.` +
+        // The answer to the follow-up question rides along in the same
+        // message. The point of asking it on the page is that the assistant
+        // opens the chat already knowing it, so leaving it out of the text
+        // would collect the detail and then throw it away.
+        (detail ? `\n\nDetails: ${detail}` : "")
+      : `Hi Niro, here's what's been pending: ${detail}`;
     return `https://wa.me/${ASSISTANT_WHATSAPP}?text=${encodeURIComponent(body)}`;
   }
 
@@ -541,12 +555,18 @@ export function JoinModal() {
               For you or your family in India.
             </p>
 
-            {/* All nine on screen, nothing collapsed. The first version opened
-                with a blank text box and hid the list behind a tap, which put
-                the HARDEST option (compose a sentence about your parents'
-                problems, on a phone, at the end of a form) in front of the
-                easiest one. Recognition beats recall here, so the list leads
-                and free text is the ninth option rather than the default. */}
+            {/* All of them on screen, nothing collapsed. The first version
+                opened with a blank text box and hid the list behind a tap,
+                which put the HARDEST option (compose a sentence about your
+                parents' problems, on a phone, at the end of a form) in front
+                of the easiest one. Recognition beats recall here, so the list
+                leads and free text is the last option rather than the default.
+
+                This list is the second cut. The first one offered insurance,
+                phone safety and support cases, which between them were picked
+                zero times in ten days, while "Something else" outdrew every
+                named task on the list. These seven are what people typed into
+                that box instead. */}
             <div className="join-opts" role="radiogroup" aria-label="Your first task">
               {FREE_TASKS.map((t) => (
                 <button
@@ -573,6 +593,29 @@ export function JoinModal() {
               </button>
             </div>
 
+            {/* One question, asked only once a task is picked, and specific to
+                that task. A generic "anything else?" box here returned blanks
+                and "asap"; a named question returns the thing that otherwise
+                costs a WhatsApp round trip, and a round trip across these time
+                zones costs a day. Where a locality is needed it asks for an
+                AREA or a pin code: most members cannot recall their parents'
+                six digits but can name the neighbourhood without looking. */}
+            {picked && (
+              <div className="join-detail">
+                <label htmlFor="join-task-detail">{picked.prompt}</label>
+                <input
+                  id="join-task-detail"
+                  className="ds-input"
+                  type="text"
+                  autoFocus
+                  autoComplete="off"
+                  value={taskText}
+                  onChange={(e) => onTaskText(e.target.value)}
+                />
+                <p>Optional. We can sort this out on WhatsApp instead.</p>
+              </div>
+            )}
+
             {taskId === OTHER_ID && (
               <>
                 <textarea
@@ -596,26 +639,6 @@ export function JoinModal() {
                   with Dad&rsquo;s pension&rdquo; gives us enough to start.
                 </p>
               </>
-            )}
-
-            {/* Scope before the handoff, not after. Naming what is NOT included
-                is what keeps a free task from quietly becoming a paid one, and
-                "we need" up front lets their first message carry the input.
-                No turnaround: the assistant commits to a date in the chat once
-                the task is scoped, rather than the page promising one on their
-                behalf. */}
-            {picked && (
-              <div className="join-scope">
-                <h4>What you get under the free task</h4>
-                <dl>
-                  <dt>Scope</dt>
-                  <dd>{picked.scope}</dd>
-                  <dt>We need</dt>
-                  <dd>{picked.needs}</dd>
-                  <dt>Not included</dt>
-                  <dd>{picked.notIncluded}</dd>
-                </dl>
-              </div>
             )}
 
             <a
