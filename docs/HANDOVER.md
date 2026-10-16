@@ -222,7 +222,7 @@ Change these only deliberately - each one cost a test or an interview to learn.
   Nobody in the research bought *because* of AI and several discounted for it.
 - **Emergency SLA numbers are published and scoped to the service cities.**
   Kolkata was added on 30 Sept 2026, then Gwalior, Ajmer and Kozhikode in
-  Oct 2026, then Ahmedabad and Indore on 16 Oct, taking the list to eleven.
+  Oct 2026, then Ahmedabad, Indore and Aligarh on 16 Oct, taking the list to twelve.
   The ambulance response times hold in all of them; what only Bengaluru has
   is an assistant meeting your parents AT the hospital, and EMERGENCY_STEPS
   says so by name. Do not widen the scope without widening the ops that hold

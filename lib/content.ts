@@ -425,9 +425,9 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
     // FAQ is declared above it in this file. Keep the two in step BY HAND: it
     // already drifted once, in Oct 2026, when three cities were added here and
     // not there. The order matches SERVICE_CITIES: the six launch cities, then
-    // the five added in Oct 2026 by size.
+    // the six added in Oct 2026 by size.
     q: "Which cities is Niro serviceable in today?",
-    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Ahmedabad, Indore, Gwalior, Ajmer and Kozhikode. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Ahmedabad, Indore, Gwalior, Aligarh, Ajmer and Kozhikode. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
   },
   {
     q: "How are Niro Assistants vetted and verified?",
@@ -650,7 +650,7 @@ export const SERVICE_CITIES: ServiceCity[] = [
   { name: "Hyderabad", includes: ["Hyderabad", "Secunderabad"] },
   { name: "Chennai" },
   { name: "Kolkata", includes: ["Kolkata", "Howrah", "Salt Lake", "New Town"] },
-  // Added Oct 2026, in two batches. Full service cities on the same terms as
+  // Added Oct 2026, over several batches. Full service cities on the same terms as
   // the five non-Bengaluru metros: same scope, same ambulance response times.
   // The one thing none of them has yet is a Niro Assistant meeting your
   // parents AT the hospital, which EMERGENCY_STEPS already scopes to
@@ -659,9 +659,15 @@ export const SERVICE_CITIES: ServiceCity[] = [
   // The six launch cities stay first in this array and the rest follow by
   // size, because the only place this order shows up is a list a visitor
   // scans for their own city. Nothing in the code reads a position.
+  //
+  // Adding one here is never the whole job. The FAQ answer above keeps its
+  // own copy of this list, matchCity() needs an alias entry or the form will
+  // waitlist a city the page says we serve, and spellCount() has to know the
+  // new total or the prose turns into digits.
   { name: "Ahmedabad" },
   { name: "Indore" },
   { name: "Gwalior" },
+  { name: "Aligarh" },
   { name: "Ajmer" },
   { name: "Kozhikode" },
 ];
