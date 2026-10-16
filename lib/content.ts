@@ -1267,7 +1267,7 @@ export const FREE_TASKS: FreeTask[] = [
     id: "physio",
     label: "Find an at-home physio for my family",
     waText: "finding an at-home physio for my family",
-    prompt: "How often, and which area or pin code?",
+    prompt: "Which area or pin code?",
   },
   {
     id: "tech",
