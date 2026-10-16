@@ -1,0 +1,541 @@
+/* =====================================================================
+   /assureplus - Niro Assure+ concept page.
+
+   Scoped to this route rather than added to globals.css: it is a private
+   preview shown to a handful of members, and none of it is wanted on the
+   main page. Every value resolves to a token in app/tokens.css.
+   ===================================================================== */
+
+.ap {
+  background: var(--bg-page);
+}
+.ap-wrap {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+.ap-narrow {
+  max-width: 760px;
+}
+.ap section {
+  padding-block: var(--space-8);
+}
+.ap-inset {
+  background: var(--bg-inset);
+}
+
+/* ---- shared type ---- */
+.ap-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-strong);
+  margin: 0 0 var(--space-4);
+}
+.ap-eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: var(--accent);
+}
+.ap h1 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+  margin: 0 0 var(--space-5);
+  text-wrap: balance;
+}
+.ap h1 em {
+  font-style: italic;
+  font-weight: var(--weight-medium);
+  color: var(--brand);
+}
+.ap h2 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-regular);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+  margin: 0 0 var(--space-4);
+  text-wrap: balance;
+}
+.ap h3 {
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  color: var(--text-strong);
+  margin: 0 0 var(--space-2);
+}
+.ap-lead {
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+  margin: 0 0 var(--space-5);
+  max-width: 60ch;
+}
+.ap-note {
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  color: var(--text-muted);
+  margin: var(--space-4) 0 0;
+  max-width: 68ch;
+}
+.ap-note a {
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---- hero ---- */
+.ap-hero {
+  padding-block: var(--space-7) var(--space-8);
+}
+.ap-hero-grid {
+  display: grid;
+  gap: var(--space-7);
+  align-items: center;
+}
+@media (min-width: 880px) {
+  .ap-hero-grid {
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: var(--space-8);
+  }
+}
+.ap-stamp {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--brand);
+  background: var(--brand-soft);
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+  margin-bottom: var(--space-4);
+}
+
+/* ---- the device drawing ---- */
+.ap-device {
+  background: linear-gradient(170deg, var(--sand-50), var(--sand-100));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-2);
+  padding: var(--space-6) var(--space-5) var(--space-5);
+}
+.ap-device svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.ap-device-caption {
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--text-muted);
+  text-align: center;
+  margin: var(--space-4) 0 0;
+}
+.ap-specs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2) var(--space-4);
+  margin: var(--space-5) 0 0;
+  padding: var(--space-4) 0 0;
+  border-top: 1px solid var(--border);
+  list-style: none;
+}
+.ap-specs li {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: var(--text-body);
+}
+.ap-specs svg {
+  flex: none;
+  width: 15px;
+  margin-top: 2px;
+  color: var(--brand);
+}
+
+/* ---- statistics ---- */
+.ap-stats {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 0;
+}
+@media (min-width: 720px) {
+  .ap-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.ap-stat {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-1);
+}
+.ap-stat-value {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  color: var(--brand);
+  margin-bottom: var(--space-3);
+}
+.ap-stat p {
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+  margin: 0;
+}
+.ap-stat cite {
+  display: block;
+  font-style: normal;
+  font-size: var(--text-xs);
+  line-height: 1.45;
+  color: var(--text-muted);
+  margin-top: var(--space-3);
+}
+
+/* ---- the four props ---- */
+.ap-props {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 0;
+  counter-reset: prop;
+}
+@media (min-width: 760px) {
+  .ap-props {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.ap-prop {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-1);
+  display: flex;
+  flex-direction: column;
+}
+.ap-prop-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-md);
+  background: var(--brand-soft);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+.ap-prop p {
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+  margin: 0;
+}
+.ap-prop-example {
+  margin: var(--space-4) 0 0;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-raised);
+  border-left: 2px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-body);
+}
+.ap-prop-example b {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-strong);
+  margin-bottom: 4px;
+}
+
+/* ---- how it works ---- */
+.ap-steps {
+  display: grid;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+@media (min-width: 900px) {
+  .ap-steps {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+.ap-steps li {
+  background: var(--surface-card);
+  padding: var(--space-5);
+  counter-increment: step;
+}
+.ap-steps li::before {
+  content: counter(step);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: var(--text-on-brand);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--space-3);
+}
+.ap-steps b {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--text-strong);
+  margin-bottom: 5px;
+}
+.ap-steps span {
+  display: block;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-body);
+}
+
+/* ---- the comparison ---- */
+.ap-compare {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 0;
+}
+@media (min-width: 820px) {
+  .ap-compare {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
+}
+/* Neither column is styled as the preferred one. Same card, same border,
+   same button: the page is asking which they would choose, so putting a
+   "most popular" ribbon on one of them would answer its own question. */
+.ap-tier {
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  box-shadow: var(--shadow-2);
+  display: flex;
+  flex-direction: column;
+}
+.ap-tier-name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-medium);
+  color: var(--text-strong);
+  margin: 0 0 var(--space-1);
+}
+.ap-tier-sub {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin: 0 0 var(--space-5);
+  min-height: 2.6em;
+}
+.ap-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: var(--space-1);
+}
+.ap-price b {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+}
+.ap-price span {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+.ap-billed {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-5);
+}
+.ap-feats {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-5) 0 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex: 1;
+}
+.ap-feats li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--text-body);
+}
+.ap-feats svg {
+  flex: none;
+  width: 16px;
+  margin-top: 2px;
+  color: var(--brand);
+}
+.ap-feats li.ap-dim {
+  color: var(--text-muted);
+}
+.ap-feats li.ap-dim svg {
+  color: var(--border-strong);
+}
+/* The added rows, marked so the extra is readable at a glance without
+   making the other column look like the lesser product. */
+.ap-feats li.ap-new {
+  font-weight: var(--weight-medium);
+  color: var(--text-strong);
+}
+.ap-feats li.ap-new svg {
+  color: var(--accent-strong);
+}
+.ap-extra-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-5) 0 var(--space-1);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-strong);
+}
+.ap-extra-head::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--accent-soft);
+}
+.ap-hardware {
+  margin: var(--space-5) 0 0;
+  padding: var(--space-4);
+  background: var(--brand-soft);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--forest-800);
+}
+.ap-hardware b {
+  font-weight: var(--weight-semibold);
+}
+
+/* ---- honest limits ---- */
+.ap-limits {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 760px) {
+  .ap-limits {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.ap-limits li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+}
+.ap-limits svg {
+  flex: none;
+  width: 17px;
+  margin-top: 3px;
+  color: var(--danger);
+}
+.ap-limits b {
+  color: var(--text-strong);
+  font-weight: var(--weight-semibold);
+}
+
+/* ---- closing ask ---- */
+.ap-ask {
+  background: var(--surface-brand);
+  color: var(--text-on-brand);
+  border-radius: var(--radius-xl);
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
+  margin-block: var(--space-8);
+  background-image: var(--jaali);
+  background-blend-mode: soft-light;
+}
+.ap-ask h2 {
+  color: var(--text-on-brand);
+  max-width: 20ch;
+  margin-inline: auto;
+}
+.ap-ask p {
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  color: var(--forest-200);
+  max-width: 54ch;
+  margin: 0 auto var(--space-6);
+}
+.ap-ask-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--ivory);
+  color: var(--forest-800);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  padding: 15px 28px;
+  box-shadow: var(--shadow-2);
+  transition: transform var(--dur-fast) var(--ease-calm);
+}
+.ap-ask-cta:hover {
+  transform: var(--lift);
+}
+.ap-ask-note {
+  font-size: var(--text-xs);
+  color: var(--forest-300);
+  margin: var(--space-4) 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ap-ask-cta {
+    transition: none;
+  }
+  .ap-ask-cta:hover {
+    transform: none;
+  }
+}
