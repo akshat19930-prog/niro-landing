@@ -452,28 +452,6 @@ export default function AssurePlusPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ the ask */}
-        {/* Deliberately quiet: a line and a link, on the page background,
-            not the dark panel this replaced. The page reads as a product
-            launching rather than a concept being tested, and a full-width
-            green block asking people to vote puts the research framing back
-            on a page we took it off. But the question still has to be
-            askable from the page itself, or the only route to an answer is
-            the nav link nobody scrolls back up to. */}
-        <section className="ap-close">
-          <div className="ap-wrap ap-close-inner">
-            <h2>Which of the two would you take?</h2>
-            <p>
-              We would rather hear it before we build it. Tell us which one,
-              and more usefully why: what tipped it, and what on that list you
-              would drop without noticing.
-            </p>
-            <a className="ap-close-cta" href={WA} target="_blank" rel="noopener">
-              Tell us on WhatsApp
-              <Icon name="message-circle" size={18} />
-            </a>
-          </div>
-        </section>
       </main>
 
       <Footer />
