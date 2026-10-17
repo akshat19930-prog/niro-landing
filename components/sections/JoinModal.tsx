@@ -8,9 +8,9 @@ import { Input } from "@/components/ds/Input";
 import { Button } from "@/components/ds/Button";
 import { useJoin } from "@/components/JoinProvider";
 import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
-import { FREE_TASKS, OTHER_ID, SORT_OUT_USAGE, INDIA_CITIES } from "@/lib/content";
+import { FREE_TASKS, OTHER_ID, SORT_OUT_USAGE, INDIA_CITIES, INTENT_OPTIONS } from "@/lib/content";
 import { dialCode, logEvent } from "@/lib/track";
-import { SALES_WHATSAPP, ASSISTANT_WHATSAPP } from "@/lib/config";
+import { SALES_WHATSAPP, ASSISTANT_WHATSAPP, TRIAL_FIRST, TRIALS_OPEN } from "@/lib/config";
 import { looksLikeWhatsAppId } from "@/lib/cities";
 
 /**
@@ -155,6 +155,7 @@ export function JoinModal() {
   const [city, setCity] = useState("");
 
   const [whoFor, setWhoFor] = useState<string | null>(null);
+  const [intent, setIntent] = useState<string | null>(null);
   const [taskText, setTaskText] = useState("");
   const [taskId, setTaskId] = useState<string | null>(null);
   /** Debounce handle for the free-text draft save. */
@@ -162,7 +163,7 @@ export function JoinModal() {
   /** Which thread we sent them to, so the confirmation can point back at the
    *  right one if WhatsApp never opened (blocked popup, or a desktop with no
    *  WhatsApp installed). */
-  const [sentTo, setSentTo] = useState<"assistant" | "membership" | null>(null);
+  const [sentTo, setSentTo] = useState<"assistant" | "membership" | "sales" | null>(null);
 
   // Preselect the country from the visitor's time zone where we can read it;
   // otherwise leave the default. Never overwrites a choice they have made.
@@ -247,15 +248,44 @@ export function JoinModal() {
     setError(err || undefined);
   }
 
+  const intentOptions = TRIALS_OPEN ? INTENT_OPTIONS : INTENT_OPTIONS.filter((o) => o.route !== "trial");
+  const chosen = INTENT_OPTIONS.find((o) => o.id === intent) || null;
+
   function onDetailsSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!TRIAL_FIRST && !chosen) {
+      setError("Pick one, so we send you to the right person.");
+      return;
+    }
     const err = submitLead({
       phone: isId ? phone.trim() : `${dial} ${phone}`.trim(),
       name,
       ownCity,
       city,
+      ...(chosen ? { intent: chosen.id } : {}),
     });
     setError(err || undefined);
+  }
+
+  /** The conversation routes end in a link, not a button: the lead opens
+   *  WhatsApp themselves with the message already written. The row is banked
+   *  on the click, before the handoff, like every other handoff on the form.
+   *  If the details fail validation the link does nothing and the error shows. */
+  function onSalesHandoff(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (!chosen || chosen.route !== "sales") return;
+    const err = submitLead({
+      phone: isId ? phone.trim() : `${dial} ${phone}`.trim(),
+      name,
+      ownCity,
+      city,
+      intent: chosen.id,
+    });
+    if (err) {
+      e.preventDefault();
+      setError(err);
+      return;
+    }
+    setSentTo("sales");
   }
 
   return (
@@ -436,7 +466,7 @@ export function JoinModal() {
           <form onSubmit={onDetailsSubmit}>
             <Eyebrow>Get started</Eyebrow>
             <h2 style={{ ...h2Style, margin: "10px 0 6px" }}>
-              Your first task is on us.
+              {TRIAL_FIRST ? "Your first task is on us." : "Almost there."}
             </h2>
             <p
               style={{
@@ -445,8 +475,9 @@ export function JoinModal() {
                 margin: "0 0 18px",
               }}
             >
-              A few details so your assistant knows who they are helping, and
-              where.
+              {TRIAL_FIRST
+                ? "A few details so your assistant knows who they are helping, and where."
+                : "A few details so the right person picks this up, and knows where."}
             </p>
 
             <div style={{ marginBottom: 14 }}>
@@ -503,21 +534,48 @@ export function JoinModal() {
                 themselves" is the thing worth knowing about them. It sits here
                 rather than on the last step because that step now has one job,
                 getting a task sent, and nothing else belongs in front of it. */}
-            <div style={{ marginBottom: 14 }}>
-              <div style={{ ...labelStyle, marginBottom: 8 }}>
-                How do you see yourself using Niro?
+            {TRIAL_FIRST ? (
+              <div style={{ marginBottom: 14 }}>
+                <div style={{ ...labelStyle, marginBottom: 8 }}>
+                  How do you see yourself using Niro?
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                  {SORT_OUT_USAGE.map((u) => (
+                    <Chip
+                      key={u}
+                      label={u}
+                      selected={whoFor === u}
+                      onClick={() => setWhoFor(u)}
+                    />
+                  ))}
+                </div>
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {SORT_OUT_USAGE.map((u) => (
-                  <Chip
-                    key={u}
-                    label={u}
-                    selected={whoFor === u}
-                    onClick={() => setWhoFor(u)}
-                  />
-                ))}
+            ) : (
+              /* The routing question. Same control as the task picker so the
+                 two steps read as one form. The three conversation routes come
+                 first and the trial last, on purpose: the trial is throttled,
+                 and the top option is where the unsure land. */
+              <div style={{ marginBottom: 14 }}>
+                <div style={{ ...labelStyle, marginBottom: 8 }}>
+                  What would help most right now?
+                </div>
+                <div className="join-opts" role="radiogroup" aria-label="What would help most right now?">
+                  {intentOptions.map((o) => (
+                    <button
+                      type="button"
+                      key={o.id}
+                      role="radio"
+                      aria-checked={intent === o.id}
+                      className={`join-opt${intent === o.id ? " on" : ""}`}
+                      onClick={() => { setIntent(o.id); setError(undefined); }}
+                    >
+                      <span className="join-radio" aria-hidden="true" />
+                      {o.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {error && (
               <p
@@ -532,9 +590,35 @@ export function JoinModal() {
               </p>
             )}
 
-            <Button full type="submit">
-              Continue
-            </Button>
+            {chosen && chosen.route === "sales" ? (
+              <a
+                className="btn btn-primary btn-md btn-full"
+                href={`https://wa.me/${SALES_WHATSAPP}?text=${encodeURIComponent(chosen.wa)}`}
+                target="_blank"
+                rel="noopener"
+                style={{ gap: 8 }}
+                onClick={onSalesHandoff}
+              >
+                Continue on WhatsApp
+                <Icon name="message-circle" size={17} />
+              </a>
+            ) : (
+              <Button full type="submit">
+                Continue
+              </Button>
+            )}
+            {chosen && chosen.route === "sales" && (
+              <p
+                style={{
+                  fontSize: "var(--text-xs)",
+                  color: "var(--text-muted)",
+                  textAlign: "center",
+                  margin: "9px 0 0",
+                }}
+              >
+                Opens WhatsApp with your message already written in.
+              </p>
+            )}
           </form>
         )}
 

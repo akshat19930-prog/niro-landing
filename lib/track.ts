@@ -37,6 +37,7 @@ declare global {
 const PH_FORWARD: Record<string, true> = {
   ab_exposure: true,
   join_initiated: true,
+  intent_selected: true,
   email_entered: true,
   reserve_clicked: true,
   // Scroll milestones too, so the pricing-fold -> CTA funnel is queryable in

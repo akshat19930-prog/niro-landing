@@ -12,6 +12,7 @@ import { VoiceStream } from "@/components/ds/VoiceStream";
 import { ChatVideo } from "@/components/ds/ChatVideo";
 import { ChatThreads } from "@/components/ds/ChatThreads";
 import { StickyCta } from "@/components/sections/StickyCta";
+import { PRIMARY_CTA } from "@/lib/config";
 import { Faq } from "@/components/sections/Faq";
 import {
   PLANS, MEMBERSHIP_FEATURES, MEMBER_STORIES, FREE_TASKS, NIRO_LITE, NIRO_LITE_EXCLUDES,
@@ -126,7 +127,7 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
               {line}
             </p>
           ))}
-          <JoinCta className="btn btn-primary btn-lg" position="hero">Try a free task</JoinCta>
+          <JoinCta className="btn btn-primary btn-lg" position="hero">{PRIMARY_CTA}</JoinCta>
           {/* Matches /us placement-for-placement. The two pages are being
               compared on signup rate, so an escape hatch on one and not the
               other biases that comparison. */}
@@ -764,7 +765,7 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
         <ParentsB c={c} />
         <Faq items={faqItems} showAsk={false} />
       </main>
-      <StickyCta label="Try a free task" />
+      <StickyCta label={PRIMARY_CTA} />
     </>
   );
 }

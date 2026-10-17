@@ -1348,6 +1348,53 @@ export const SORT_OUT_WHO: string[] = [
  * column and the report keep working. Rows from before Oct 2026 carry the
  * SORT_OUT_WHO values instead.
  */
+/**
+ * The routing question on the form's second step, used when TRIAL_FIRST is
+ * off. One tap, four answers, in this order on purpose: the three conversation
+ * routes first and the trial last, because the trial is being throttled and
+ * the first option on a list is the one people pick when they are unsure.
+ *
+ * The trial option is worded as having a task, not as wanting to try. Of the
+ * 20 free tasks started in October, 17 stalled, and the ones that finished
+ * belonged to people with something real to do. "Want to try" selects for the
+ * curious; "something specific" selects for the people trials work for.
+ *
+ * `wa` is the message the lead sends, in their voice, when the route is a
+ * conversation. The id goes to the sheet and to PostHog as `intent`.
+ */
+export type IntentOption = {
+  id: "how" | "pricing" | "membership" | "task";
+  label: string;
+  route: "sales" | "trial";
+  wa: string;
+};
+export const INTENT_OPTIONS: IntentOption[] = [
+  {
+    id: "how",
+    label: "I want to understand how Niro works",
+    route: "sales",
+    wa: "Hi Niro, I'd like to understand how Niro works for my family.",
+  },
+  {
+    id: "pricing",
+    label: "I want to understand pricing and plans",
+    route: "sales",
+    wa: "Hi Niro, I'd like to understand the pricing and plans.",
+  },
+  {
+    id: "membership",
+    label: "I'm ready to start a membership",
+    route: "sales",
+    wa: "Hi Niro, I'd like to start a membership.",
+  },
+  {
+    id: "task",
+    label: "I have something specific that needs doing",
+    route: "trial",
+    wa: "",
+  },
+];
+
 export const SORT_OUT_USAGE: string[] = [
   "Mostly for my own tasks",
   "For my tasks + my family's tasks through me",

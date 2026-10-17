@@ -76,6 +76,30 @@ export const SUPPORT_WHATSAPP =
 export const ASSISTANT_WHATSAPP =
   process.env.NEXT_PUBLIC_ASSISTANT_WHATSAPP || "918867635252";
 
+/**
+ * The front door, Oct 2026.
+ *
+ * TRIAL_FIRST=true is the October funnel: the page CTA promises a free task
+ * and the form runs straight into the task picker. It engaged well (18 of 73
+ * October leads started a trial) and converted nobody, and 17 of the 18
+ * stalled, so the trial is being throttled until fulfilment can carry it.
+ *
+ * TRIAL_FIRST=false asks the lead what would help most and routes them: a
+ * question goes to a sales conversation the lead opens themselves, a specific
+ * task goes to the trial. Flip this one line to go back to trial-first when
+ * the ops side is ready; nothing else needs touching.
+ */
+export const TRIAL_FIRST = false;
+
+/** Whether "I have something specific that needs doing" is offered at all
+ *  under the routed funnel. Off = no new trials start from the form, without
+ *  changing anything else about it. */
+export const TRIALS_OPEN = true;
+
+/** The label on the hero and sticky CTA. "Try a free task" promises a thing
+ *  that then has to be throttled; "Try Niro now" promises nothing specific. */
+export const PRIMARY_CTA = TRIAL_FIRST ? "Try a free task" : "Try Niro now";
+
 /** Waitlist position shown on the confirmation (a realistic early-stage number;
  *  the confirmation renders this instantly rather than waiting on the backend). */
 export const FALLBACK_WAITLIST_POSITION = 325;
