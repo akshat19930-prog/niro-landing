@@ -1935,22 +1935,16 @@
 }
 
 /* ---- pricing: two tiers ---- */
-/* Membership and task pack, with the monthly/quarterly choice nested inside
-   the membership card. The pack is deliberately the lighter of the two: it is
-   the lower-commitment way in, and nothing about it should read as the
-   recommendation. */
+/* Membership and Niro Lite, with the monthly/quarterly choice nested inside
+   the membership card. The two cards match on purpose: nothing about either
+   should read as the recommendation. */
 .tier-pair { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 18px; }
-@media (min-width: 680px) { .tier-pair { grid-template-columns: 1.15fr 1fr; align-items: stretch; } }
+@media (min-width: 680px) { .tier-pair { grid-template-columns: 1fr 1fr; align-items: stretch; } }
 .tier {
   border-radius: var(--radius-lg);
   padding: 22px 24px;
   border: 1px solid var(--border);
   background: var(--surface-card);
-}
-.tier-main {
-  background: var(--surface-brand);
-  color: var(--text-on-brand);
-  border-color: transparent;
 }
 .tier-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .tier-name {
@@ -1960,7 +1954,6 @@
   text-transform: uppercase;
   color: var(--accent-strong);
 }
-.tier-main .tier-name { color: var(--gold-300, #E3C98B); }
 .tier-price { display: flex; align-items: baseline; gap: 6px; margin: 10px 0 4px; }
 .tier-num {
   font-family: var(--font-display);
@@ -1970,19 +1963,14 @@
   font-variant-numeric: tabular-nums;
   color: var(--text-strong);
 }
-.tier-main .tier-num { color: var(--text-on-brand); }
 .tier-per { font-size: var(--text-sm); color: var(--text-muted); }
-.tier-main .tier-per { color: rgba(255, 255, 255, 0.72); }
 .tier-alt { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.5; }
-.tier-main .tier-alt { color: rgba(255, 255, 255, 0.72); }
-.tier-main .tier-alt b { color: var(--text-on-brand); font-weight: 600; }
 .tier-for {
   font-size: var(--text-sm);
   line-height: 1.5;
   color: var(--text-body);
   margin: 12px 0 14px;
 }
-.tier-main .tier-for { color: rgba(255, 255, 255, 0.88); }
 .tier-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; }
 .tier-list li {
   display: flex;
@@ -1992,9 +1980,7 @@
   line-height: 1.45;
   color: var(--text-body);
 }
-.tier-main .tier-list li { color: var(--text-on-brand); }
 .tier-list svg { flex-shrink: 0; margin-top: 2px; color: var(--brand); }
-.tier-main .tier-list svg { color: var(--gold-300, #E3C98B); }
 /* The excluded lines carry a muted cross rather than a red one: this is the
    honest shape of the cheaper tier, not a warning. */
 .tier-no { color: var(--text-muted) !important; }

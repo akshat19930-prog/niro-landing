@@ -470,7 +470,7 @@ function TrustB({ c }: { c: ArmCopy }) {
     },
   ];
   return (
-    <section data-screen-label="Trust (B)" style={{ padding: sectionPad }}>
+    <section data-screen-label="Trust (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
       <div style={{ maxWidth: "var(--container)", margin: "0 auto" }}>
         <Eyebrow>Why families trust Niro</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 30px", maxWidth: 900 }}>
@@ -542,7 +542,7 @@ function TrustB({ c }: { c: ArmCopy }) {
  */
 function PricingB({ c }: { c: ArmCopy }) {
   return (
-    <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad, background: "var(--bg-inset)" }}>
+    <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 8px", textAlign: "center" }}>
@@ -557,12 +557,11 @@ function PricingB({ c }: { c: ArmCopy }) {
             are a payment choice, not a product choice: presenting them as two
             equal cards spent the whole visual budget on the smaller decision,
             and the one that matters now is membership vs pack. Neither billing
-            option is styled as preferred, and neither tier carries a badge,
-            which is the standing rule. The membership is the darker card and
-            the pack the lighter one: a product distinction (continuous vs
-            occasional), not a recommendation. */}
+            option is styled as preferred, neither tier carries a badge, and
+            the two cards match, which is the standing rule: same service,
+            two ways to pay for it. */}
         <div className="tier-pair">
-          <div className="tier tier-main">
+          <div className="tier">
             <div className="tier-head">
               <span className="tier-name">Membership</span>
             </div>
@@ -760,9 +759,9 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
         <HeroB c={c} arm={arm} />
         <UseCasesB />
         <StoriesB />
-        <ParentsB c={c} />
         <TrustB c={c} />
         <PricingB c={c} />
+        <ParentsB c={c} />
         <Faq items={faqItems} showAsk={false} />
       </main>
       <StickyCta label="Try a free task" />
