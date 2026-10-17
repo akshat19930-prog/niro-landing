@@ -355,7 +355,7 @@ export default function AssurePlusPage() {
                   <b>$83</b>
                   <span>/ month</span>
                 </div>
-                <p className="ap-billed">Billed quarterly, $249 every 3 months</p>
+                <p className="ap-billed">Billed quarterly, $250 every 3 months</p>
                 <ul className="ap-feats">
                   {SHARED.map((f) => (
                     <li key={f}>

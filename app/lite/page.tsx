@@ -5,22 +5,20 @@ import { Icon } from "@/components/ds/Icon";
 import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
 
 /**
- * /lite - UNLISTED. The 20-task annual pack, for sales to share on a call.
+ * /lite - the detail page for Niro Lite, linked from the pricing section.
  *
- * Deliberately off the public pricing grid. At $300 a year it reads as $25
- * a month, which sits inside the band where six research respondents said a
- * low price made them DISTRUST the service ("I would be suspicious it's
- * basically a glorified wrapper"), and putting it beside $99 would reset the
- * anchor on the page that is doing the selling.
+ * UNLISTED until Oct 2026, to keep a sub-$50 monthly figure off the page:
+ * six research respondents said unprompted that such a price made them
+ * DISTRUST the service ("I would be suspicious it's basically a glorified
+ * wrapper"). The pack is now shown beside the membership, which is a
+ * deliberate reversal, but the same finding still governs how it is PRICED
+ * on screen: the headline is the $300 pack, never the $25 a month it works
+ * out at. Keep it that way here too.
  *
  * It exists because the demand is real and specific: the leads who refused
  * monthly billing outright wanted their OWN India admin done - a blocked OTP,
  * a stuck EPF claim - rather than parent care. That is a different job, and
  * this is the SKU for it.
- *
- * Note on "private": the path is unguessable-ish and noindex'd, but this is a
- * static export - anyone with the URL can open it. Obscure, not secret. Do not
- * put anything here you would mind a competitor reading.
  */
 export const metadata: Metadata = {
   title: "Niro Lite - 20 tasks a year",
@@ -89,7 +87,8 @@ export default function TasksPackPage() {
         </p>
 
         <p>
-          Unused tasks do not carry into a second year.
+          The pack is paid in one go, and unused tasks do not carry into a
+          second year.
         </p>
       </article>
     </PageShell>
