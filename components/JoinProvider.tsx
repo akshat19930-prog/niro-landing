@@ -133,6 +133,9 @@ async function submitSignup(payload: {
    *  task, "membership" for the sales line, empty if they never tapped. */
   taskHandoff?: string;
   whoFor?: string | null;
+  /** The routing answer on step two: "how", "pricing", "membership" or
+   *  "task". Blank under the trial-first funnel. */
+  intent?: string | null;
   urgency?: string | null;
   phone?: string | null;
   /** Phone-first fields. The Apps Script ignores unknown keys, so these are
@@ -252,6 +255,9 @@ export type LeadDetails = {
   /** Where their family lives in India. Drives serviceability. */
   city: string;
   email?: string;
+  /** Which route step two chose. Decides whether the form continues into
+   *  the task picker or ends here with a conversation the lead opens. */
+  intent?: string | null;
 };
 
 const Ctx = createContext<JoinCtx | null>(null);
@@ -482,6 +488,7 @@ export function JoinProvider({
 
     // Still lead_captured: this is the point the lead becomes actionable
     // (name + city), which is what the funnel has always meant by it.
+    if (raw.intent) logEvent("intent_selected", { intent: raw.intent, ...(market ? { market } : {}) });
     logEvent("lead_captured", {
       // `served` decides which half of the funnel this lead belongs to; keeping
       // it on the beacon means we can read serviceable-lead CPL without waiting
@@ -507,10 +514,14 @@ export function JoinProvider({
       ownCity,
       city: cityRaw,
       cityServed: match.served ? match.city : "",
+      ...(raw.intent ? { intent: raw.intent } : {}),
       market,
       page,
     });
-    setStep("qualify");
+    // A conversation route ends the form here: the lead has opened WhatsApp
+    // with their message written, and the row above is already banked. Only
+    // a task continues into the picker.
+    setStep(raw.intent && raw.intent !== "task" ? "done" : "qualify");
     return null;
   }
 

@@ -102,6 +102,10 @@ function doPost(e) {
     // The free first task (Oct 2026). taskText is what the lead typed, in
     // their own words; taskHandoff says which WhatsApp thread they opened.
     var C_TASKTEXT = 33, C_TASKHANDOFF = 34;
+    // The routing answer on the form (Oct 2026): "how", "pricing",
+    // "membership" or "task". Latest answer wins, so a lead who picks a
+    // question and then comes back for a task reads as a task.
+    var C_INTENT = 35;
     var tasksStr = (data.tasks && data.tasks.length) ? data.tasks.join(" | ") : "";
     // Geography: prefer the market the page declared ("gulf" on /gulf), else the
     // coarse region the client inferred from its time zone ("gulf"/"na"/"other").
@@ -134,6 +138,7 @@ function doPost(e) {
     // neither. Blank with a task filled in is the follow-up list that matters:
     // they told us what they wanted and then never pressed send.
     var taskHandoff = String(data.taskHandoff || "").trim();
+    var intent = String(data.intent || "").trim();
 
     if (rowIndex === -1) {
       // New signup. Order must match HEADER.
@@ -148,7 +153,7 @@ function doPost(e) {
         market, pagePath, geo, priceArm,
         "", "", "",                       // leadStatus, detailsShared, leadNotes
         leadName, leadCity, cityServed, leadOwnCity,
-        lpVariant, consent, consentAt, taskText, taskHandoff
+        lpVariant, consent, consentAt, taskText, taskHandoff, intent
       ]);
     } else {
       // Existing signup - enrich the row, keep its position/referralCode.
@@ -185,6 +190,7 @@ function doPost(e) {
       // the fact that they tapped through.
       if (taskText) sheet.getRange(rowIndex, C_TASKTEXT).setValue(taskText);
       if (taskHandoff) sheet.getRange(rowIndex, C_TASKHANDOFF).setValue(taskHandoff);
+      if (intent) sheet.getRange(rowIndex, C_INTENT).setValue(intent);
     }
 
     return json_({ position: position, referralCode: referralCode });
@@ -226,7 +232,9 @@ var HEADER = [
   // id (one of FREE_TASKS in lib/content.ts) rather than the old multi-select
   // categories; `taskText` is the lead's own words; `taskHandoff` is
   // "assistant", "membership" or blank.
-  "taskText", "taskHandoff"
+  "taskText", "taskHandoff",
+  // The routing answer on step two (Oct 2026). See C_INTENT.
+  "intent"
 ];
 
 /* =====================================================================
