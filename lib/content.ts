@@ -584,7 +584,6 @@ export const NIRO_LITE_EXCLUDES: string[] = [
   "Niro Assure emergency response",
   "Niro Visits, booked and priced separately",
   "A dedicated family manager, or a second family group",
-  "Third party costs: vendors, government and legal fees, at actual",
 ];
 
 /** The two public SKUs. NIRO_LITE is deliberately NOT here - it lives only on
