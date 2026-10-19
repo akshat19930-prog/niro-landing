@@ -559,26 +559,8 @@ function PricingB({ c }: { c: ArmCopy }) {
             the two cards match, which is the standing rule: same service,
             two ways to pay for it. */}
         <div className="tier-pair">
-          <div className="tier">
-            <div className="tier-head">
-              <span className="tier-name">Membership</span>
-            </div>
-            <div className="tier-price">
-              <span className="tier-num">{PLANS[0].price}</span>
-              <span className="tier-per">{PLANS[0].per}</span>
-            </div>
-            <div className="tier-alt">
-              or <b>{PLANS[1].price}{PLANS[1].per}</b> billed quarterly, $250 every
-              three months. Same membership, lower rate.
-            </div>
-            <p className="tier-for">Everything Niro does, continuously, with no cap on tasks.</p>
-            <ul className="tier-list">
-              {c.membershipFeatures.map((f) => (
-                <li key={f}><Icon name="check-circle" size={16} /><span>{f}</span></li>
-              ))}
-            </ul>
-          </div>
-
+          {/* Lite sits first: on a phone the cards stack, and the pack is the
+              one most price-objectors are looking for. */}
           <div className="tier tier-lite">
             <div className="tier-head">
               <span className="tier-name">{NIRO_LITE.name}</span>
@@ -604,6 +586,27 @@ function PricingB({ c }: { c: ArmCopy }) {
             <a className="tier-more" href="/lite/">
               How Niro Lite works &rarr;
             </a>
+          </div>
+
+          <div className="tier">
+            <div className="tier-head">
+              <span className="tier-name">Membership</span>
+            </div>
+            {/* The quarterly rate is the headline; the monthly figure is the
+                alternative, not the anchor. */}
+            <div className="tier-price">
+              <span className="tier-num">{PLANS[1].price}</span>
+              <span className="tier-per">{PLANS[1].per}</span>
+            </div>
+            <div className="tier-alt">
+              Billed quarterly, $250 every three months. Or pay <b>{PLANS[0].price}</b> per month.
+            </div>
+            <p className="tier-for">Everything Niro does, continuously, with no cap on tasks.</p>
+            <ul className="tier-list">
+              {c.membershipFeatures.map((f) => (
+                <li key={f}><Icon name="check-circle" size={16} /><span>{f}</span></li>
+              ))}
+            </ul>
           </div>
         </div>
 
