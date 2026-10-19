@@ -127,6 +127,7 @@ export default function FamilyGuidePage() {
                       ))}
                     </ul>
 
+                    {c.more.length > 0 && (
                     <details className="fg-more">
                       <summary>
                         <span>More we can help with</span>
@@ -141,6 +142,7 @@ export default function FamilyGuidePage() {
                         ))}
                       </ul>
                     </details>
+                    )}
 
                     {c.note && <p className="fg-cat-note">{c.note}</p>}
 
