@@ -1601,7 +1601,7 @@ export const GUIDE_ASSURE: { title: string; body: string; tag?: string }[] = [
    targets: the site makes no written guarantees. */
 export const GUIDE_VISIT_PRICE = {
   included: "One visit a month, up to four hours, is part of your membership.",
-  extra: "Extra visits are $15 for up to four hours.",
+  extra: "Extra visits are chargeable at $15 per visit.",
 };
 
 export const GUIDE_VISIT_MONTHLY: string[] = [

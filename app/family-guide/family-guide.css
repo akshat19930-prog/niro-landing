@@ -3,67 +3,13 @@
    rules in globals.css are untouched. Every value is a token from tokens.css.
    ===================================================================== */
 
-/* ---- opening ---- */
-.fg-h1 {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 7.2vw, 2.9rem);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-  font-weight: 500;
-  color: var(--text-strong);
-  margin: 10px 0 18px;
-  text-wrap: balance;
-}
+/* ---- final CTA body ---- */
 .fg-open p {
   font-size: var(--text-md);
   line-height: var(--leading-body);
   color: var(--text-body);
   margin: 0 0 14px;
   max-width: 560px;
-}
-.fg-open p:first-child {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  color: var(--text-strong);
-}
-.fg-hero-cta { margin-top: 24px; }
-.fg-hero-cta .btn { width: 100%; }
-@media (min-width: 520px) { .fg-hero-cta .btn { width: auto; } }
-
-/* ---- the six examples ---- */
-.fg-exs {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 1fr;
-  margin: 18px 0 0;
-  padding: 0;
-  list-style: none;
-}
-@media (min-width: 640px) { .fg-exs { grid-template-columns: 1fr 1fr; } }
-.fg-ex {
-  position: relative;
-  background: var(--surface-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px;
-  box-shadow: var(--shadow-1);
-  padding: 14px 16px 14px 18px;
-  font-size: var(--text-base);
-  line-height: 1.5;
-  color: var(--text-strong);
-}
-.fg-ex::before {
-  content: "";
-  position: absolute;
-  left: 0; top: 14px; bottom: 14px;
-  width: 3px;
-  border-radius: 2px;
-  background: var(--accent);
-}
-.fg-ex-note {
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  color: var(--text-muted);
-  margin: 12px 0 0;
 }
 
 /* ---- jump links ---- */

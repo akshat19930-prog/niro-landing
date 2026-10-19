@@ -17,25 +17,11 @@ import type { IconName } from "@/components/ds/Icon";
    it ends mid-sentence on purpose: the reader finishes it. */
 const FROM_GUIDE = "Hi Niro, I'm reading your family guide.";
 
-export const GUIDE_FIRST_TASK_MESSAGE =
-  `${FROM_GUIDE} Here's the first task I'd like to hand over: `;
-
 export const GUIDE_SOMETHING_ELSE_MESSAGE =
   `${FROM_GUIDE} I need something else done in India: `;
 
 export const GUIDE_FINAL_MESSAGE =
   `${FROM_GUIDE} Here's what needs doing, and the city: `;
-
-/* ---- Six examples of what someone can ask. Illustrative, and labelled as
-   such on the page: not customer conversations, not completed tasks. */
-export const GUIDE_EXAMPLES: string[] = [
-  "Dad needs a follow-up appointment. Can you arrange the visit and the cab?",
-  "Our cook has stopped coming. Can you help find someone?",
-  "My EPFO claim keeps getting rejected. Can someone work out what's wrong?",
-  "Mum has called customer care three times. The refund still hasn't come.",
-  "My parents are visiting me. Can you help organise the trip?",
-  "The tenant is moving out next month. Can you coordinate the handover?",
-];
 
 export type GuideCategory = {
   /** Stable anchor, also the suffix on the click beacon's placement. */

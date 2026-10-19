@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/ds/Footer";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
-import { ChatVideo } from "@/components/ds/ChatVideo";
 import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
 import {
   GUIDE_ASSURE,
@@ -18,12 +17,10 @@ import {
   SHARE_CARD,
 } from "@/lib/content";
 import {
-  GUIDE_EXAMPLES,
   GUIDE_CATEGORIES,
   GUIDE_FOLLOW_THROUGH,
   GUIDE_PROACTIVE,
   GUIDE_ON_FILE,
-  GUIDE_FIRST_TASK_MESSAGE,
   GUIDE_SOMETHING_ELSE_MESSAGE,
   GUIDE_FINAL_MESSAGE,
 } from "./guide-content";
@@ -35,8 +32,8 @@ import "./family-guide.css";
  * replacing the "What we do" PDF that was being passed around on WhatsApp.
  *
  * Built for a phone and for one outcome: the reader recognises a task of their
- * own and sends it. So the page opens on "start with one thing", shows six
- * requests people can send, and then a catalogue in six cards. Every card
+ * own and sends it. So the page opens straight on the catalogue, six cards
+ * with a WhatsApp link each, and nothing before it but the logo. Every card
  * carries its own WhatsApp link with a prefilled, editable opening line, all
  * to the sales line. No form, no sign-up.
  *
@@ -75,81 +72,21 @@ export default function FamilyGuidePage() {
     <>
       <OpenOnHash />
       <main className="fg">
-        {/* ------------------------------------------------- 1. opening */}
-        <section className="fg-hero">
-          <div className="fg-jaali" aria-hidden="true" />
-          <div className="fg-wrap fg-hero-grid">
-            <div>
-              {/* The official logo file, not the text-rendered Wordmark. */}
-              <img
-                src="/brand/niro-logo.svg"
-                alt="Niro"
-                className="fg-logo"
-                width={3454}
-                height={2037}
-              />
-              <Eyebrow>For Indians abroad, with family back home</Eyebrow>
-              <h1 className="fg-h1">Start with one thing your family needs done in India.</h1>
-              <div className="fg-open">
-                <p>
-                  Something your parents need help arranging. Something you keep
-                  postponing. Something that has already taken too many calls.
-                </p>
-                <p>
-                  Niro is your family&rsquo;s personal assistant in India. You or
-                  your parents send a WhatsApp message or voice note. We work out
-                  what&rsquo;s needed, coordinate the next steps and keep you
-                  informed.
-                </p>
-                <p>
-                  From everyday errands to paperwork that needs persistent
-                  follow-up, here are some of the things you can hand over.
-                </p>
-              </div>
-              <div className="fg-hero-cta">
-                <WhatsAppLink
-                  placement="family-guide-hero"
-                  message={GUIDE_FIRST_TASK_MESSAGE}
-                  className="btn btn-primary btn-lg"
-                >
-                  Tell us your first task <span aria-hidden="true">&rarr;</span>
-                </WhatsAppLink>
-              </div>
-            </div>
-            <div className="fg-hero-media">
-              <ChatVideo maxWidth={340} />
-            </div>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------- 2. examples */}
-        <section className="fg-sec fg-inset" aria-labelledby="fg-ex-h">
-          <div className="fg-wrap">
-            <Eyebrow>Things people ask</Eyebrow>
-            <h2 className="fg-h2" id="fg-ex-h">
-              Sound familiar?
-            </h2>
-            <ul className="fg-exs">
-              {GUIDE_EXAMPLES.map((q) => (
-                <li key={q} className="fg-ex">
-                  {q}
-                </li>
-              ))}
-            </ul>
-            <p className="fg-ex-note">
-              Examples of the kind of request you can send. Not customer
-              conversations, and not a record of completed tasks.
-            </p>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------- 3. catalogue */}
+        {/* ------------------------------------------------- 1. catalogue */}
         <section className="fg-sec" aria-labelledby="fg-cat-h">
           <div className="fg-wrap">
-            <Eyebrow>The catalogue</Eyebrow>
-            <h2 className="fg-h2" id="fg-cat-h">
-              What would you like to hand over?
-            </h2>
+            {/* The official logo file, not the text-rendered Wordmark. */}
+            <img
+              src="/brand/niro-logo.svg"
+              alt="Niro"
+              className="fg-logo"
+              width={3454}
+              height={2037}
+            />
+            <Eyebrow>For Indians abroad, with family back home</Eyebrow>
+            <h1 className="fg-h2" id="fg-cat-h">
+              What all can Niro take over for your family
+            </h1>
             <p className="fg-p">
               Everyday errands, complicated paperwork and the follow-ups that
               never seem to end. Explore some of the things Niro can help with.
@@ -241,7 +178,7 @@ export default function FamilyGuidePage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------- 4. after you ask */}
+        {/* ------------------------------------------------- 2. after you ask */}
         <section className="fg-sec fg-inset" aria-labelledby="fg-how-h">
           <div className="fg-wrap">
             <Eyebrow>How it runs</Eyebrow>
@@ -293,7 +230,7 @@ export default function FamilyGuidePage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------- 5. visits */}
+        {/* ------------------------------------------------- 3. visits */}
         <section className="fg-sec" aria-labelledby="fg-visits-h">
           <div className="fg-wrap">
             <Eyebrow>Niro Visits</Eyebrow>
@@ -371,7 +308,7 @@ export default function FamilyGuidePage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------- 6. assure */}
+        {/* ------------------------------------------------- 4. assure */}
         <section className="fg-sec fg-dark" data-theme="dark" aria-labelledby="fg-assure-h">
           <div className="fg-wrap">
             <Eyebrow>Niro Assure</Eyebrow>
@@ -405,7 +342,7 @@ export default function FamilyGuidePage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------- 7. membership */}
+        {/* ------------------------------------------------- 5. membership */}
         <section className="fg-sec fg-inset" aria-labelledby="fg-mem-h">
           <div className="fg-wrap">
             <Eyebrow>The membership</Eyebrow>
@@ -436,7 +373,7 @@ export default function FamilyGuidePage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------- 8. faq + founders */}
+        {/* ------------------------------------------------- 6. faq + founders */}
         <section className="fg-sec" aria-labelledby="fg-faq-h">
           <div className="fg-wrap">
             <Eyebrow>Questions we get asked first</Eyebrow>
@@ -480,7 +417,7 @@ export default function FamilyGuidePage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------- 9. final */}
+        {/* ------------------------------------------------- 7. final */}
         <section className="fg-sec fg-close" aria-labelledby="fg-close-h">
           <div className="fg-wrap">
             <img src="/brand/niro-mark.svg" alt="" className="fg-mark" width={22} height={24} />
