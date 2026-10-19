@@ -546,12 +546,9 @@ function PricingB({ c }: { c: ArmCopy }) {
     <section id="pricing-fold" data-screen-label="Pricing (B)" style={{ padding: sectionPad }}>
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
-        <h2 style={{ ...h2Style, margin: "14px 0 8px", textAlign: "center" }}>
+        <h2 style={{ ...h2Style, margin: "14px 0 26px", textAlign: "center" }}>
           One membership. Or just the tasks you need.
         </h2>
-        <p style={{ fontSize: "var(--text-md)", color: "var(--text-body)", margin: "0 0 26px", textAlign: "center" }}>
-          Your first task is free either way.
-        </p>
 
         {/* Two TIERS, not three cards.
             Monthly and quarterly are nested inside the membership because they
