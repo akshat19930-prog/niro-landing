@@ -3,41 +3,55 @@ import { Footer } from "@/components/ds/Footer";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
 import { ChatVideo } from "@/components/ds/ChatVideo";
-import { AskStream } from "@/components/ds/AskStream";
 import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
 import {
-  GUIDE_SCOPE,
   GUIDE_ASSURE,
   GUIDE_VISITS,
   GUIDE_VISIT_PRICE,
   GUIDE_VISIT_MONTHLY,
   GUIDE_VISIT_DETAILS,
-  GUIDE_STEPS,
   GUIDE_FAQ,
   GUIDE_FOUNDERS,
+  MEMBERSHIP_FEATURES,
+  COVERAGE_NOTE,
   SERVICE_CITIES,
   SHARE_CARD,
 } from "@/lib/content";
+import {
+  GUIDE_EXAMPLES,
+  GUIDE_CATEGORIES,
+  GUIDE_FOLLOW_THROUGH,
+  GUIDE_PROACTIVE,
+  GUIDE_ON_FILE,
+  GUIDE_FIRST_TASK_MESSAGE,
+  GUIDE_SOMETHING_ELSE_MESSAGE,
+  GUIDE_FINAL_MESSAGE,
+} from "./guide-content";
+import { OpenOnHash } from "./OpenOnHash";
+import "./family-guide.css";
 
 /**
  * /family-guide - UNLISTED. What sales sends a lead after the first call,
  * replacing the "What we do" PDF that was being passed around on WhatsApp.
  *
- * Built for a phone: every section is a self-contained card, the six scope
- * lists collapse (native <details>, so they work before hydration), and the
- * creatives are the ones already on the home page (the chat video, the live
- * ask feed) so the lead recognises the product from the ad and the site.
+ * Built for a phone and for one outcome: the reader recognises a task of their
+ * own and sends it. So the page opens on "start with one thing", shows six
+ * requests people can send, and then a catalogue in six cards. Every card
+ * carries its own WhatsApp link with a prefilled, editable opening line, all
+ * to the sales line. No form, no sign-up.
  *
- * No nav CTA and no "Join the beta": this reader has already spoken to us, so
- * the only action is a message to the sales line.
+ * The cards are native <details>, so they open before hydration and without
+ * JS; OpenOnHash only makes a jump link land on an open card. The catalogue's
+ * copy lives in ./guide-content.ts rather than lib/content.ts because the
+ * home page and /what-we-do read GUIDE_SCOPE, and this page arranges the same
+ * scope differently.
  *
- * Like /lite this is a static export: noindex, but anyone with the URL can
- * open it. Obscure, not secret.
+ * Static export: noindex, but anyone with the URL can open it.
  */
 export const metadata: Metadata = {
   title: "Your Niro family guide",
   description:
-    "What Niro does for your family in India, how it runs, and who is behind it.",
+    "What Niro can take care of for your family in India, how it follows through, and who is behind it.",
   robots: { index: false, follow: false },
   alternates: { canonical: "https://tellniro.com/family-guide/" },
   openGraph: {
@@ -48,14 +62,20 @@ export const metadata: Metadata = {
   },
 };
 
+const cityList = SERVICE_CITIES.map((c) => c.name)
+  .join(", ")
+  .replace(/, ([^,]*)$/, " and $1");
+
 export default function FamilyGuidePage() {
-  const total = GUIDE_SCOPE.reduce((n, g) => n + g.items.length, 0);
-  const rounded = Math.floor(total / 10) * 10;
+  // Roadmap items stay out of the emergency narrative; one line notes them.
+  const assureLive = GUIDE_ASSURE.filter((s) => s.tag !== "In build");
+  const assureRoadmap = GUIDE_ASSURE.filter((s) => s.tag === "In build");
 
   return (
     <>
+      <OpenOnHash />
       <main className="fg">
-        {/* ------------------------------------------------------ hero */}
+        {/* ------------------------------------------------- 1. opening */}
         <section className="fg-hero">
           <div className="fg-jaali" aria-hidden="true" />
           <div className="fg-wrap fg-hero-grid">
@@ -69,20 +89,31 @@ export default function FamilyGuidePage() {
                 height={2037}
               />
               <Eyebrow>For Indians abroad, with family back home</Eyebrow>
-              <p className="fg-lead">
-                Niro is your family&rsquo;s personal assistant in India, getting
-                things done for your parents and for you. It all runs on
-                WhatsApp: a group with you and your parents (you can set up two),
-                a private chat for your own errands, and an assistant who picks
-                up whatever is asked and sees it through. In person too, when
-                that&rsquo;s what it takes.
-              </p>
-              <div className="fg-chips">
-                <span>Remote assistant</span>
-                <span aria-hidden="true">·</span>
-                <span>WhatsApp groups</span>
-                <span aria-hidden="true">·</span>
-                <span>Shows up in person</span>
+              <h1 className="fg-h1">Start with one thing your family needs done in India.</h1>
+              <div className="fg-open">
+                <p>
+                  Something your parents need help arranging. Something you keep
+                  postponing. Something that has already taken too many calls.
+                </p>
+                <p>
+                  Niro is your family&rsquo;s personal assistant in India. You or
+                  your parents send a WhatsApp message or voice note. We work out
+                  what&rsquo;s needed, coordinate the next steps and keep you
+                  informed.
+                </p>
+                <p>
+                  From everyday errands to paperwork that needs persistent
+                  follow-up, here are some of the things you can hand over.
+                </p>
+              </div>
+              <div className="fg-hero-cta">
+                <WhatsAppLink
+                  placement="family-guide-hero"
+                  message={GUIDE_FIRST_TASK_MESSAGE}
+                  className="btn btn-primary btn-lg"
+                >
+                  Tell us your first task <span aria-hidden="true">&rarr;</span>
+                </WhatsAppLink>
               </div>
             </div>
             <div className="fg-hero-media">
@@ -91,112 +122,189 @@ export default function FamilyGuidePage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ scope */}
-        <section className="fg-sec fg-inset">
+        {/* ------------------------------------------------- 2. examples */}
+        <section className="fg-sec fg-inset" aria-labelledby="fg-ex-h">
           <div className="fg-wrap">
-            <Eyebrow>The scope</Eyebrow>
-            <h2 className="fg-h2">
-              {rounded}+ kinds of task, across six categories.
+            <Eyebrow>Things people ask</Eyebrow>
+            <h2 className="fg-h2" id="fg-ex-h">
+              Sound familiar?
+            </h2>
+            <ul className="fg-exs">
+              {GUIDE_EXAMPLES.map((q) => (
+                <li key={q} className="fg-ex">
+                  {q}
+                </li>
+              ))}
+            </ul>
+            <p className="fg-ex-note">
+              Examples of the kind of request you can send. Not customer
+              conversations, and not a record of completed tasks.
+            </p>
+          </div>
+        </section>
+
+        {/* ------------------------------------------------- 3. catalogue */}
+        <section className="fg-sec" aria-labelledby="fg-cat-h">
+          <div className="fg-wrap">
+            <Eyebrow>The catalogue</Eyebrow>
+            <h2 className="fg-h2" id="fg-cat-h">
+              What would you like to hand over?
             </h2>
             <p className="fg-p">
-              Ask the way you&rsquo;d ask a capable younger cousin who lives around
-              the corner. Behind the chat is your Niro Assistant, a task tracker,
-              vetted vendors, an encrypted document vault hosted in India, and
-              people who visit when it needs someone there.
+              Everyday errands, complicated paperwork and the follow-ups that
+              never seem to end. Explore some of the things Niro can help with.
             </p>
 
-            <div className="fg-card fg-ask">
-              <div className="fg-card-label">What families send us</div>
-              <AskStream />
-              <p className="fg-small">
-                Your parents ask too. After the first month most requests come
-                from them, which is the point. They rarely ask you, but
-                they&rsquo;ll ask someone whose job it is.
-              </p>
-            </div>
+            <nav aria-label="Jump to a category">
+              <ul className="fg-jump">
+                {GUIDE_CATEGORIES.map((c) => (
+                  <li key={c.id}>
+                    <a href={`#${c.id}`}>{c.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
 
             <div className="fg-cats">
-              {GUIDE_SCOPE.map((g) => (
-                <details key={g.title} className="fg-cat">
+              {GUIDE_CATEGORIES.map((c) => (
+                <details key={c.id} id={c.id} className="fg-cat">
                   <summary>
                     <span className="fg-ico">
-                      <Icon name={g.icon} size={20} />
+                      <Icon name={c.icon} size={20} />
                     </span>
                     <span className="fg-cat-t">
-                      {g.title}
-                      <span className="fg-cat-n">{g.items.length} tasks</span>
+                      {c.title}
+                      <span className="fg-cat-prev">{c.preview}</span>
                     </span>
                     <span className="fg-chev" aria-hidden="true">
                       <Icon name="chevron-right" size={18} />
                     </span>
                   </summary>
                   <div className="fg-cat-body">
-                    <p className="fg-cat-intro">{g.intro}</p>
                     <ul className="fg-list">
-                      {g.items.map((it) => (
-                        <li key={it.t}>
+                      {c.core.map((t) => (
+                        <li key={t}>
                           <Icon name="check" size={15} />
-                          <span>
-                            {it.t}
-                            {it.tag && <span className="fg-tag">{it.tag}</span>}
-                            {it.href && (
-                              <a href={it.href} className="uc-more">
-                                {it.hrefLabel || "Learn more"}
-                              </a>
-                            )}
-                          </span>
+                          <span>{t}</span>
                         </li>
                       ))}
                     </ul>
+
+                    <details className="fg-more">
+                      <summary>
+                        <span>More we can help with</span>
+                        <span className="fg-plus" aria-hidden="true" />
+                      </summary>
+                      <ul className="fg-list">
+                        {c.more.map((t) => (
+                          <li key={t}>
+                            <Icon name="check" size={15} />
+                            <span>{t}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+
+                    {c.note && <p className="fg-cat-note">{c.note}</p>}
+
+                    {/* The link sits outside both summaries, so a tap on it
+                        never toggles the card. */}
+                    <WhatsAppLink
+                      placement={`family-guide-${c.id}`}
+                      message={c.message}
+                      className="fg-cat-cta"
+                      showIcon={false}
+                    >
+                      <span>
+                        {c.cta} <span aria-hidden="true">&rarr;</span>
+                      </span>
+                    </WhatsAppLink>
                   </div>
                 </details>
               ))}
             </div>
+
+            <div className="fg-card fg-else">
+              <h3>Something else you need done in India?</h3>
+              <p>From sending a courier to organising a gift, tell us what you have in mind.</p>
+              <WhatsAppLink
+                placement="family-guide-else"
+                message={GUIDE_SOMETHING_ELSE_MESSAGE}
+                className="fg-cat-cta"
+                showIcon={false}
+              >
+                <span>
+                  Ask Niro <span aria-hidden="true">&rarr;</span>
+                </span>
+              </WhatsAppLink>
+            </div>
           </div>
         </section>
 
-        {/* ------------------------------------------------------ assure */}
-        <section className="fg-sec fg-dark" data-theme="dark">
+        {/* ------------------------------------------------- 4. after you ask */}
+        <section className="fg-sec fg-inset" aria-labelledby="fg-how-h">
           <div className="fg-wrap">
-            <Eyebrow>Niro Assure</Eyebrow>
-            <h2 className="fg-h2">The emergency plan, agreed before you need it.</h2>
-            <p className="fg-p">
-              In a medical emergency, the ambulance is only part of it. Which
-              hospital, which doctor, what medicines, what the policy covers:
-              those questions take the most time, and every one of them can be
-              answered in advance.
-            </p>
-            <blockquote className="fg-quote">
-              What you would do if you were there, done by someone who is.
-            </blockquote>
-
-            <ol className="fg-steps fg-steps-dark">
-              {GUIDE_ASSURE.map((s) => (
+            <Eyebrow>How it runs</Eyebrow>
+            <h2 className="fg-h2" id="fg-how-h">
+              What happens after you ask?
+            </h2>
+            <ol className="fg-steps">
+              {GUIDE_FOLLOW_THROUGH.map((s) => (
                 <li key={s.title}>
                   <p>
                     <b>{s.title}</b> {s.body}
-                    {s.tag && <span className="fg-tag">{s.tag}</span>}
                   </p>
                 </li>
               ))}
             </ol>
-            <p className="fg-fine">
-              The response times apply in{" "}
-              {SERVICE_CITIES.map((c) => c.name).join(", ").replace(/, ([^,]*)$/, " and $1")}
-              .
+            <p className="fg-small">
+              Field work closes with photos and an invoice at actuals. We take no
+              commission from any vendor, so we pick the right one, not the one
+              that pays.
             </p>
+
+            <h3 className="fg-h3" style={{ marginTop: 32 }}>
+              And the things nobody asked about yet
+            </h3>
+            <p className="fg-p" style={{ marginBottom: 0 }}>
+              As we get to know your family, we start reminding before you have
+              to remember. We propose; you decide.
+            </p>
+            <div className="fg-pro">
+              {GUIDE_PROACTIVE.map((p) => (
+                <div key={p.title} className="fg-card">
+                  <h3>{p.title}</h3>
+                  <p>{p.body}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="fg-onfile">
+              <h3 className="fg-h3">What we keep on file to make this work</h3>
+              <ul className="fg-list">
+                {GUIDE_ON_FILE.map((t) => (
+                  <li key={t}>
+                    <Icon name="check" size={15} />
+                    <span>{t}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
 
-        {/* ------------------------------------------------------ visits */}
-        <section className="fg-sec">
+        {/* ------------------------------------------------- 5. visits */}
+        <section className="fg-sec" aria-labelledby="fg-visits-h">
           <div className="fg-wrap">
             <Eyebrow>Niro Visits</Eyebrow>
-            <h2 className="fg-h2">For the things that need someone standing there.</h2>
+            <h2 className="fg-h2" id="fg-visits-h">
+              For the things that need someone standing there.
+            </h2>
             <p className="fg-p">
               A lot of India still runs on being there in person. A vetted Niro
-              Assistant goes, and every visit closes with photos and a written
-              report in the family group.
+              Assistant goes, and every visit closes with a written report in the
+              family group, with photos where your parents are happy for us to
+              take them.
             </p>
 
             <div className="fg-card fg-included">
@@ -231,7 +339,8 @@ export default function FamilyGuidePage() {
               ))}
             </div>
             <p className="fg-small">
-              Anything else that needs a person there, in a city we cover, just ask.
+              Visits run in the cities we cover: {cityList}. Anything else that
+              needs a person there, in one of them, just ask.
             </p>
 
             <div className="fg-cats fg-visit-more">
@@ -262,28 +371,78 @@ export default function FamilyGuidePage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ how it runs */}
-        <section className="fg-sec fg-inset">
+        {/* ------------------------------------------------- 6. assure */}
+        <section className="fg-sec fg-dark" data-theme="dark" aria-labelledby="fg-assure-h">
           <div className="fg-wrap">
-            <Eyebrow>Working with Niro</Eyebrow>
-            <h2 className="fg-h2">How it actually runs.</h2>
-            <ol className="fg-steps">
-              {GUIDE_STEPS.map((s) => (
+            <Eyebrow>Niro Assure</Eyebrow>
+            <h2 className="fg-h2" id="fg-assure-h">
+              The emergency plan, agreed before you need it.
+            </h2>
+            <p className="fg-p">
+              In a medical emergency, the ambulance is only part of it. Which
+              hospital, which doctor, what medicines, what the policy covers:
+              those questions take the most time, and every one of them can be
+              answered in advance.
+            </p>
+
+            <ol className="fg-steps fg-steps-dark">
+              {assureLive.map((s) => (
                 <li key={s.title}>
                   <p>
                     <b>{s.title}</b> {s.body}
+                    {s.tag && <span className="fg-tag">{s.tag}</span>}
                   </p>
                 </li>
               ))}
             </ol>
+            <p className="fg-fine">The response times apply in {cityList}.</p>
+            {assureRoadmap.length > 0 && (
+              <p className="fg-fine">
+                On the roadmap, not yet live:{" "}
+                {assureRoadmap.map((s) => s.body.replace(/^We.re adding /, "")).join(" ")}
+              </p>
+            )}
           </div>
         </section>
 
-        {/* ------------------------------------------------------ faq */}
-        <section className="fg-sec">
+        {/* ------------------------------------------------- 7. membership */}
+        <section className="fg-sec fg-inset" aria-labelledby="fg-mem-h">
+          <div className="fg-wrap">
+            <Eyebrow>The membership</Eyebrow>
+            <h2 className="fg-h2" id="fg-mem-h">
+              What the fee covers, and what is charged separately.
+            </h2>
+            <div className="fg-cover">
+              <div className="fg-card">
+                <div className="fg-card-label">Included</div>
+                <ul className="fg-list">
+                  {MEMBERSHIP_FEATURES.map((t) => (
+                    <li key={t}>
+                      <Icon name="check" size={15} />
+                      <span>{t}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p>{COVERAGE_NOTE.covers}</p>
+              </div>
+              <div className="fg-card">
+                <div className="fg-card-label">Charged separately</div>
+                <p>{COVERAGE_NOTE.excludes}</p>
+                <p style={{ marginTop: 12 }}>
+                  <b>{COVERAGE_NOTE.promise}</b>
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ------------------------------------------------- 8. faq + founders */}
+        <section className="fg-sec" aria-labelledby="fg-faq-h">
           <div className="fg-wrap">
             <Eyebrow>Questions we get asked first</Eyebrow>
-            <h2 className="fg-h2">Before you decide.</h2>
+            <h2 className="fg-h2" id="fg-faq-h">
+              Before you decide.
+            </h2>
             <div className="fg-faq">
               {GUIDE_FAQ.map((f) => (
                 <details key={f.q}>
@@ -298,11 +457,12 @@ export default function FamilyGuidePage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ about */}
-        <section className="fg-sec fg-inset">
+        <section className="fg-sec fg-inset" aria-labelledby="fg-about-h">
           <div className="fg-wrap">
             <Eyebrow>About us</Eyebrow>
-            <h2 className="fg-h2">Who is behind Niro.</h2>
+            <h2 className="fg-h2" id="fg-about-h">
+              Who is behind Niro.
+            </h2>
             <div className="fg-founders">
               {GUIDE_FOUNDERS.map((p) => (
                 <div key={p.name} className="fg-card fg-founder">
@@ -320,17 +480,24 @@ export default function FamilyGuidePage() {
           </div>
         </section>
 
-        {/* ------------------------------------------------------ close */}
-        <section className="fg-sec fg-close">
+        {/* ------------------------------------------------- 9. final */}
+        <section className="fg-sec fg-close" aria-labelledby="fg-close-h">
           <div className="fg-wrap">
             <img src="/brand/niro-mark.svg" alt="" className="fg-mark" width={22} height={24} />
-            <h2 className="fg-h2 fg-close-h">Anything else on your mind?</h2>
+            <h2 className="fg-h2 fg-close-h" id="fg-close-h">
+              What would you like Niro to take care of?
+            </h2>
+            <div className="fg-open">
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "var(--text-md)", color: "var(--text-body)" }}>
+                Tell us what needs doing and the city. We&rsquo;ll confirm how we can help.
+              </p>
+            </div>
             <WhatsAppLink
-              placement="family-guide"
-              message="Hi Niro, I've been reading your family guide and have a question."
+              placement="family-guide-final"
+              message={GUIDE_FINAL_MESSAGE}
               className="btn btn-primary btn-lg"
             >
-              Message us on WhatsApp
+              Tell Niro what you need <span aria-hidden="true">&rarr;</span>
             </WhatsAppLink>
             <p className="fg-fine fg-disclaimer">
               Niro is a family concierge service operating in India for families

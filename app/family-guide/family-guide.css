@@ -1,0 +1,199 @@
+/* =====================================================================
+   /family-guide additions. Scoped to this route by import; the shared .fg-*
+   rules in globals.css are untouched. Every value is a token from tokens.css.
+   ===================================================================== */
+
+/* ---- opening ---- */
+.fg-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7.2vw, 2.9rem);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  font-weight: 500;
+  color: var(--text-strong);
+  margin: 10px 0 18px;
+  text-wrap: balance;
+}
+.fg-open p {
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+  margin: 0 0 14px;
+  max-width: 560px;
+}
+.fg-open p:first-child {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--text-strong);
+}
+.fg-hero-cta { margin-top: 24px; }
+.fg-hero-cta .btn { width: 100%; }
+@media (min-width: 520px) { .fg-hero-cta .btn { width: auto; } }
+
+/* ---- the six examples ---- */
+.fg-exs {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 640px) { .fg-exs { grid-template-columns: 1fr 1fr; } }
+.fg-ex {
+  position: relative;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) 4px;
+  box-shadow: var(--shadow-1);
+  padding: 14px 16px 14px 18px;
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: var(--text-strong);
+}
+.fg-ex::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 14px; bottom: 14px;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.fg-ex-note {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin: 12px 0 0;
+}
+
+/* ---- jump links ---- */
+.fg-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+}
+.fg-jump a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+  color: var(--text-strong);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.fg-jump a:hover { border-color: var(--brand); background: var(--brand-soft); }
+.fg-jump a:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+/* ---- catalogue cards (extends .fg-cat in globals.css) ---- */
+.fg-cat { scroll-margin-top: 16px; }
+.fg-cat summary { min-height: 56px; }
+.fg-cat summary:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; border-radius: var(--radius-lg); }
+.fg-cat-prev {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.fg-cat-body .fg-list { padding-top: 16px; }
+.fg-cat-note {
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin: 14px 0 0;
+}
+
+/* the secondary disclosure inside a card */
+.fg-more { margin-top: 14px; border-top: 1px solid var(--border); }
+.fg-more summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-strong);
+  -webkit-tap-highlight-color: transparent;
+}
+.fg-more summary::-webkit-details-marker { display: none; }
+.fg-more summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 6px; }
+.fg-more[open] summary { color: var(--brand); }
+.fg-more .fg-list { padding: 4px 0 6px; }
+.fg-more .fg-list li { font-size: var(--text-sm); }
+
+/* the category's own WhatsApp link: a text link with a comfortable tap
+   target, visibly subordinate to the page's two primary buttons */
+.fg-cat-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 12px;
+  padding: 11px 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--brand);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.fg-cat-cta:hover { color: var(--brand-hover); }
+.fg-cat-cta:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 4px; }
+
+/* ---- something else ---- */
+.fg-else {
+  margin-top: 22px;
+  text-align: center;
+  padding: 24px 20px;
+}
+.fg-else h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  color: var(--text-strong);
+  margin: 0 0 6px;
+}
+.fg-else p { margin: 0 0 4px; font-size: var(--text-base); color: var(--text-body); line-height: 1.5; }
+.fg-else .fg-cat-cta { margin-top: 6px; }
+
+/* ---- after you ask ---- */
+.fg-pro {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  margin-top: 24px;
+}
+.fg-pro .fg-card { padding: 18px; }
+.fg-pro h3 { font-size: var(--text-base); font-weight: 600; color: var(--text-strong); margin: 0 0 6px; }
+.fg-pro p { margin: 0; font-size: var(--text-sm); line-height: 1.6; color: var(--text-body); }
+.fg-onfile { margin-top: 24px; }
+.fg-onfile .fg-list { margin-top: 12px; }
+
+/* ---- membership inclusions ---- */
+.fg-cover {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+}
+.fg-cover p { margin: 0; font-size: 0.9375rem; line-height: 1.6; color: var(--text-body); }
+.fg-cover .fg-list { margin-bottom: 14px; }
+
+/* ---- final ---- */
+.fg-close .fg-open p { margin-left: auto; margin-right: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fg-jump a, .fg-cat-cta { transition: none; }
+}
