@@ -572,17 +572,20 @@ export const NIRO_LITE: Plan = {
     "20 tasks, used any time in 12 months",
     "The same WhatsApp chat, the same vetted Niro Assistants",
     "A task is one thing run to completion, not one phone call",
+    // A tick, not a cross: Visits are available on the pack, as a paid add-on
+    // to a task. Listing them as excluded read as "no one will come to the
+    // door", which is the opposite of what the pack offers.
+    "Niro Visits, booked and priced separately",
   ],
   highlight: false,
 };
 
 /** Stated on the card next to what IS included, with x marks, because the
- *  pack is defined as much by its exclusions as by its tasks. Niro Assure and
- *  Niro Visits are membership things, and a buyer who assumes otherwise finds
- *  out at the worst moment. */
+ *  pack is defined as much by its exclusions as by its tasks. Niro Assure is
+ *  a membership thing, and a buyer who assumes otherwise finds out at the
+ *  worst moment. */
 export const NIRO_LITE_EXCLUDES: string[] = [
   "Niro Assure emergency response",
-  "Niro Visits, booked and priced separately",
   "A dedicated family manager, or a second family group",
 ];
 
