@@ -493,6 +493,7 @@ export const MEMBERSHIP_FEATURES: string[] = [
   "Niro assured emergency response",
   "One free booked on-demand Niro visit",
   "Create up to 2 groups",
+  "Request a pause, say when the family is travelling",
 ];
 
 /**
