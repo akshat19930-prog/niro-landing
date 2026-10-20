@@ -954,6 +954,12 @@
   color: var(--text-muted);
 }
 .prose ul.pack-excludes { margin-bottom: 20px; }
+/* The task-count table on /lite: two columns, the number right-aligned and
+   strong so the eye can run down it. */
+.prose table.pack-counts { width: 100%; border-collapse: collapse; margin: 0 0 18px; font-size: 0.9375rem; }
+.prose table.pack-counts td { padding: 10px 0; border-top: 1px solid var(--border); vertical-align: top; line-height: 1.45; color: var(--text-body); }
+.prose table.pack-counts tr:last-child td { border-bottom: 1px solid var(--border); }
+.prose table.pack-counts td:last-child { text-align: right; white-space: nowrap; font-weight: 600; color: var(--text-strong); padding-left: 16px; }
 .prose ul.pack-excludes li { color: var(--text-body); }
 .prose ul.pack-excludes svg { color: var(--danger); }
 
