@@ -368,6 +368,12 @@ export default function FamilyGuidePage() {
                 <div className="fg-card-label">Charged separately</div>
                 <p>{COVERAGE_NOTE.excludes}</p>
                 <p style={{ marginTop: 12 }}>
+                  On Niro Lite, a visit counts as two tasks (three for a long
+                  one, like a hospital day), finding a tenant or a buyer as up
+                  to five, and a property registration as up to six. We tell
+                  you the number before we start.
+                </p>
+                <p style={{ marginTop: 12 }}>
                   <b>{COVERAGE_NOTE.promise}</b>
                 </p>
               </div>

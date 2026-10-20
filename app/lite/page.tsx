@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageShell } from "@/components/PageShell";
-import { NIRO_LITE, NIRO_LITE_EXCLUDES } from "@/lib/content";
+import { NIRO_LITE, NIRO_LITE_EXCLUDES, NIRO_LITE_COUNTS } from "@/lib/content";
 import { Icon } from "@/components/ds/Icon";
 import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
 
@@ -74,16 +74,26 @@ export default function TasksPackPage() {
           </WhatsAppLink>
         </div>
 
-        <p className="note">
-          Niro Visits can be booked as an add-on to a task, at $25 per task.
-        </p>
-
-        <h2>How the tasks work</h2>
+        <h2>How tasks are counted</h2>
         <p>
-          A task is one thing you want done, run to completion - not one phone
-          call. Chasing an EPF claim through four visits to the office is one
-          task, not four. We tell you before we start if something is large
-          enough to count as two, and you decide.
+          A task is one thing you want done, run to completion, not one phone
+          call. Chasing an EPF claim through four follow-ups is one task, not
+          four. A few things are really a bundle of tasks, and count as more.
+        </p>
+        <table className="pack-counts">
+          <tbody>
+            {NIRO_LITE_COUNTS.map((r) => (
+              <tr key={r.what}>
+                <td>{r.what}</td>
+                <td>{r.count}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p>
+          Before we start anything that counts as more than one, we tell you
+          the number and you decide. The count never changes afterwards: if a
+          visit overruns, that is on us.
         </p>
 
         <p>

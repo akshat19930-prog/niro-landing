@@ -571,14 +571,26 @@ export const NIRO_LITE: Plan = {
   features: [
     "20 tasks, used any time in 12 months",
     "The same WhatsApp chat, the same vetted Niro Assistants",
-    "A task is one thing run to completion, not one phone call",
-    // A tick, not a cross: Visits are available on the pack, as a paid add-on
-    // to a task. Listing them as excluded read as "no one will come to the
-    // door", which is the opposite of what the pack offers.
-    "Niro Visits, booked and priced separately",
+    "A task is one thing run to completion. Bigger jobs count as more, agreed before we start",
+    // A tick, not a cross: Visits are in the pack, paid for in tasks. Listing
+    // them as excluded read as "no one will come to the door", which is the
+    // opposite of what the pack offers.
+    "Niro Visits included, at 2 tasks each",
   ],
   highlight: false,
 };
+
+/** How a Niro Lite task is counted. Printed on /lite and quoted on the
+ *  family guide. The ceiling is the point: "up to 6" without a ceiling
+ *  becomes "so what stops you calling everything six tasks". The count is
+ *  told before the work starts and never changes afterwards. */
+export const NIRO_LITE_COUNTS: { what: string; count: string }[] = [
+  { what: "Most tasks: a bill corrected, a cab booked, a claim chased through four follow-ups", count: "1 task" },
+  { what: "A Niro Visit, up to four hours", count: "2 tasks" },
+  { what: "A long visit: a hospital day, a registration, a visa centre", count: "3 tasks" },
+  { what: "Finding a tenant, or a buyer or seller for something (a car, a property, anything else)", count: "Up to 5 tasks" },
+  { what: "Property registration, start to finish", count: "Up to 6 tasks" },
+];
 
 /** Stated on the card next to what IS included, with x marks, because the
  *  pack is defined as much by its exclusions as by its tasks. Niro Assure is
