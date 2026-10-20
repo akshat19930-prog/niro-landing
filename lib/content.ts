@@ -1551,6 +1551,7 @@ export const GUIDE_SCOPE: {
     intro:
       "Periodic visits, tenants, agreements, repairs. Everything you’d hire a property manager for, from the same team.",
     items: [
+      { t: "Property registration orchestrated end to end" },
       { t: "Periodic inspections of the house or the let-out flat, with dated photographs" },
       { t: "Tenant sourcing, screening and replacement" },
       { t: "Rent agreements, renewals, registration and police verification coordinated" },

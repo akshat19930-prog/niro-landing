@@ -163,6 +163,7 @@ export const GUIDE_CATEGORIES: GuideCategory[] = [
     icon: "home",
     preview: "Inspections, tenants, agreements, repairs and handovers",
     core: [
+      "Property registration orchestrated end to end.",
       "Manage tenant sourcing and screening end to end.",
       "Arrange inspections and condition reports.",
       "Follow up on agreements, renewals and property paperwork.",
