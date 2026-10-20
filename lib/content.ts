@@ -1619,9 +1619,9 @@ export const GUIDE_VISITS: { title: string; body: string; icon: IconName }[] = [
     body: "Painting, plumbing, electrical, AC service, cleaning, pest control, appliances. We inspect, get quotes, compare them, and stay in the room while the work is done and paid for.",
   },
   {
-    title: "Doctor\u2019s appointments",
+    title: "Doctor\u2019s appointments & second opinions",
     icon: "heart-pulse",
-    body: "Picked up from home, through registration and into the consult. We take notes, sort the prescription, and book the follow-up.",
+    body: "Picked up from home, through registration and into the consult. We take notes, sort the prescription, and book the follow-up. That includes a second opinion from a specialist who doesn\u2019t take online consults: we book it, go along, and send you the notes the same day.",
   },
   {
     title: "Visa appointments",
@@ -1813,7 +1813,7 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
       "All of it solved with one WhatsApp message, or a voice note in the language they actually speak.",
     ],
     visitsTrustBody:
-      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a visa appointment, a government office task or a home repair vendor chore. Booked, on demand.",
+      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a second opinion from a specialist who doesn't consult online, a visa appointment, a government office task or a home repair vendor chore. Booked, on demand.",
     membershipFeatures: MEMBERSHIP_FEATURES,
   },
 
@@ -1854,7 +1854,7 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
     familyHeading: ARM_COPY_A_FAMILY.heading,
     familyBody: ARM_COPY_A_FAMILY.body,
     visitsTrustBody:
-      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a visa appointment, a government office task or a home repair vendor chore. Monthly, or booked on demand.",
+      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a second opinion from a specialist who doesn't consult online, a visa appointment, a government office task or a home repair vendor chore. Monthly, or booked on demand.",
     membershipFeatures: [
       "Unlimited tasks for you or your family",
       "24x7 1:1 WhatsApp assistant",
