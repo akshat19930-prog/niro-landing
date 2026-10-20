@@ -461,6 +461,10 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
     q: "How many people can I add, and how many groups can I create?",
     a: "You can add up to 5 family members including yourself to a family group - your parents, a sibling, anyone who needs to be able to ask. You also get a private 1:1 chat with Niro for anything you'd rather keep between us. And you can create up to 2 groups, for two separate family locations - your parents in one city and your in-laws in another, say.",
   },
+  {
+    q: "On Niro Lite, how is a task counted?",
+    a: "A task is one thing you want done, run to completion, not one phone call: a bill corrected, a cab booked, an EPF claim chased through four follow-ups is one task. A few things are really a bundle of tasks and count as more. A Niro Visit of up to four hours counts as 2, a long visit like a hospital day or a registration as 3, finding a tenant or a buyer or seller for something as up to 5, and a property registration from start to finish as up to 6. Before we start anything that counts as more than one, we tell you the number and you decide. The count never changes afterwards. The membership has no cap on tasks, so none of this applies there.",
+  },
 ];
 
 /* ---- Membership plans (shown inside the join flow after email) ---- */
