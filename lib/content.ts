@@ -1468,124 +1468,251 @@ export type GuideItem = {
   hrefLabel?: string;
 };
 
-export const GUIDE_SCOPE: {
+/* ---- The catalogue, ONE list for three pages.
+   /family-guide renders it as six cards (core lines, then "More we can help
+   with"); the home page's "What Niro handles" cards and /what-we-do render it
+   as one list per category, in the same category order and the same line
+   order, so the first lines a visitor reads are the same on every page. Change
+   a line or the order here and all three move together. */
+
+/** The opening line of every family-guide WhatsApp prefill. It names the page,
+ *  so the inbox can tell a guide reader from a cold visitor, and the prefills
+ *  built on it end mid-sentence on purpose: the reader finishes them. */
+export const GUIDE_FROM = "Hi Niro, I'm reading your family guide.";
+const FROM_GUIDE = GUIDE_FROM;
+
+export type GuideCategory = {
+  /** Stable anchor, also the suffix on the click beacon's placement. */
+  id: string;
   title: string;
   icon: IconName;
-  intro: string;
-  items: GuideItem[];
-}[] = [
+  /** One line under the title, visible before the card is opened. */
+  preview: string;
+  /** The core examples. */
+  core: string[];
+  /** The rest of the existing breadth, under a secondary disclosure. */
+  more: string[];
+  /** A caveat shown with the more list, where one exists. */
+  note?: string;
+  cta: string;
+  message: string;
+};
+
+export const GUIDE_CATEGORIES: GuideCategory[] = [
   {
-    title: "Family’s health admin & emergency response",
+    id: "health",
+    title: "Health & appointments",
     icon: "heart-pulse",
+    preview: "Doctor visits, home tests, medicines, physiotherapy",
+    core: [
+      "Book doctor appointments and manage the transport end to end.",
+      "Arrange home sample collection and collect reports.",
+      "Manage prescription refills and medicine deliveries end to end.",
+      "Find physiotherapists, attendants and other support at home.",
+      "A health file for each parent: conditions, current medicines and strengths, allergies, treating doctors.",
+      "Reliable emergency response with Niro Assure: hospitals chosen in advance, a 24x7 first-response line, ambulance dispatch and tracking, and a Niro Assistant at the hospital.",
+      "A policy audit: what your parents' cover actually pays, in plain language.",
+      "Appointments with their own doctor, in their city or another, with someone to go along if needed.",
+      "Prescription refills with two-person verification, plus medication and supplement reminders kept running.",
+      "Regular health tests on a schedule, with home sample collection and the reports collected.",
+      "BP, sugar and weight readings recorded on chat, trends tracked, sent to the doctor before each visit, and flagged when one looks off.",
+      "Physiotherapists, attendants, yoga trainers and dieticians found, vetted, negotiated and supervised.",
+    ],
+    more: [],
+    note: "Nobody at Niro gives medical advice. Emergencies run on the Niro Assure protocol below.",
+    cta: "Ask about health support",
+    message: `${FROM_GUIDE} I'd like help with a health or appointment task for my family. Here's what needs doing: `,
+  },
+  {
+    id: "home",
+    title: "Home & household help",
+    icon: "wrench",
+    preview: "Cooks and maids, repairs, cleaning, appliance servicing",
+    core: [
+      "Find cooks, maids, drivers and household help.",
+      "Arrange plumbers, electricians and appliance technicians.",
+      "Manage deep cleaning, pest control and painting end to end.",
+      "Follow up on quotes, appointments and unfinished work.",
+    ],
+    more: [
+      "Your existing staff verified for peace of mind: ID, criminal and address checks.",
+      "Same-day help for a burst pipe, a power cut, a stuck lift or a lock-out.",
+      "Water tank and sump cleaning, chimney, RO and inverter servicing.",
+      "The vendor found, the price negotiated, and the work seen through remotely.",
+      "Vehicle upkeep: insurance, PUC, challans and servicing, and a verified driver when one is needed.",
+      "Remote tech help: the wifi, the TV, the printer, the smart lock, the apps.",
+      "Groceries ordered over chat.",
+    ],
+    cta: "Ask about help at home",
+    message: `${FROM_GUIDE} I'd like help with something at my parents' home. Here's what needs doing: `,
+  },
+  {
+    id: "paperwork",
+    title: "Paperwork & renewals",
+    icon: "file-text",
+    preview: "EPFO, pension certificates, Aadhaar/PAN, tax paperwork",
+    core: [
+      "Investigate EPFO claim issues and manage the next steps end to end.",
+      "Help with pension life certificates and document updates.",
+      "Manage India tax paperwork end to end, with the relevant professional.",
+      "Organise documents and follow up on renewals and applications.",
+    ],
+    more: [
+      "The name, date of birth and UAN mismatches behind most EPFO refusals, worked through.",
+      "Dormant accounts, unclaimed dividends, IEPF holdings, NPS and PPF traced, and the claims filed.",
+      "Form 26AS and AIS checked for TDS mismatches and missing credits.",
+      "Tax residency certificates, Form 10F and DTAA paperwork managed end to end.",
+      "NRO repatriation paperwork, within the annual limit.",
+      "Tenant-side TDS on your rented-out property, followed through.",
+      "Aadhaar and PAN corrections, linking and updates.",
+    ],
+    note: "Nothing here is tax or legal advice. Where a chartered accountant or lawyer is needed, we work with yours or help you find one.",
+    cta: "Ask about paperwork",
+    message: `${FROM_GUIDE} I'd like help with some paperwork or a renewal in India. Here's what needs doing: `,
+  },
+  {
+    id: "banking",
+    title: "Banking, bills & refunds",
+    icon: "wallet",
+    preview: "KYC, dormant accounts, wrong bills, unresolved complaints",
+    core: [
+      "Manage KYC updates and dormant-account requirements end to end.",
+      "Follow up on incorrect utility and subscription bills.",
+      "Pursue refunds, warranty claims and unresolved complaints.",
+      "Track recurring bills and upcoming payment dates.",
+    ],
+    more: [
+      "Electricity, water, gas, broadband, DTH, society dues and insurance premiums listed with their due dates.",
+      "Blocked and frozen accounts: the paperwork and branch follow-up needed to get them reviewed.",
+      "Bank mandate updates managed end to end.",
+      "Banking complaints escalated step by step, up to the RBI Ombudsman where needed.",
+      "Telecom and electricity complaints taken up each company's escalation ladder.",
+      "Mis-sold subscriptions and refused warranties, contested.",
+    ],
+    note: "We do the chasing and keep you informed. We cannot promise what a bank or a company will decide.",
+    cta: "Ask about a banking or billing issue",
+    message: `${FROM_GUIDE} I'd like help with a banking, bill or refund issue. Here's what needs doing: `,
+  },
+  {
+    id: "travel",
+    title: "Travel & getting around",
+    icon: "plane",
+    preview: "Cabs, flights, visas, airport assistance",
+    core: [
+      "Research and book flights, hotels and train journeys.",
+      "Manage visa paperwork and appointments end to end.",
+      "Arrange airport assistance and wheelchair requests.",
+      "Book local cabs and handle changes to travel plans.",
+    ],
+    more: [
+      "Reliable city cabs arranged and tracked, with the driver's details sent to you.",
+      "Tatkal bookings, tried the moment the window opens. Seats go in minutes, so we can't promise one, but we'll give it our best shot every time.",
+      "Passport and OCI renewals, and someone to sit through the appointment.",
+      "Itineraries, check-ins, and re-bookings when a flight moves.",
+      "Fares watched for price before booking.",
+    ],
+    note: "Visa decisions and appointment slots are the authorities' to give. We prepare, book and follow up.",
+    cta: "Ask about travel",
+    message: `${FROM_GUIDE} I'd like help with travel or getting around. Here's what needs doing: `,
+  },
+  {
+    id: "property",
+    title: "Property & tenants",
+    icon: "home",
+    preview: "Inspections, tenants, agreements, repairs and handovers",
+    core: [
+      "Property registration orchestrated end to end.",
+      "Manage tenant sourcing and screening end to end.",
+      "Arrange inspections and condition reports.",
+      "Follow up on agreements, renewals and property paperwork.",
+      "Organise repairs, painting, access and key handovers.",
+    ],
+    more: [
+      "Periodic inspections of the house or the let-out flat, with dated photographs.",
+      "Rent agreement registration and police verification managed end to end.",
+      "Property tax, water and electricity transfers, and khata or mutation follow-ups.",
+      "Repairs and painting supervised, with an invoice at actuals.",
+      "Locking up, and access for agents or contractors.",
+    ],
+    cta: "Ask about your property",
+    message: `${FROM_GUIDE} I'd like help with a property or tenant matter. Here's what needs doing: `,
+  },
+];
+
+/* The home page and /what-we-do keep their own category titles and intros
+   (worded to match the sign-up qualifier and the ops taxonomy), plus a few
+   lines the guide moved into "how it runs" rather than listing as tasks.
+   Those go at the END of their category, so the opening lines still match. */
+const SCOPE_FRAME: Record<string, { title: string; intro: string; extras: GuideItem[] }> = {
+  health: {
+    title: "Family’s health admin & emergency response",
     intro:
       "From quarterly check-ups that run themselves to a calm, planned response when something goes wrong.",
-    items: [
-      { t: "A health file for each parent: conditions, current medicines and strengths, allergies, treating doctors" },
-      {
-        // Was four separate lines: hospitals chosen in advance, the 24x7
-        // first-response line, ambulance dispatch, and an Assistant at the
-        // hospital. They are one promise, and the detail lives on its own page.
-        t: "Reliable emergency response with Niro Assure: hospitals chosen in advance, a 24x7 first-response line, ambulance dispatch and tracking, and a Niro Assistant at the hospital",
-        tag: "Bengaluru",
-        href: "/niro-assure/",
-        hrefLabel: "Learn more",
-      },
-      { t: "A policy audit: what your parents’ cover actually pays, in plain language" },
-      { t: "Appointments with their own doctor, in their city or another, with someone to go along if needed" },
-      { t: "Prescription refills with two-person verification, plus medication and supplement reminders kept running" },
-      { t: "Regular health tests on a schedule, with home sample collection and reports collected" },
-      { t: "BP, sugar and weight readings recorded on chat, trends tracked, sent to the doctor before each visit, and flagged when one looks off" },
-      { t: "Physiotherapists, attendants, yoga trainers and dieticians found, vetted, negotiated and supervised" },
-    ],
+    extras: [],
   },
-  {
+  home: {
     title: "Household chores, upkeep & staff",
-    icon: "wrench",
     intro:
       "The leaking tap, the AC, the help who didn’t turn up, the cab Mum can’t book herself. Your parents shouldn’t have to struggle with it, and you shouldn’t have to drop your day for it.",
-    items: [
+    extras: [
       { t: "An asset register for each home: appliances, models, purchase dates, warranties, AMCs" },
       { t: "A maintenance calendar that follows the Indian seasons: AC before summer, geyser before winter, roof before the monsoon" },
-      { t: "Sourcing, verifying and managing domestic staff, including attendants" },
-      { t: "Your existing staff verified for peace of mind: ID, criminal and address checks" },
-      { t: "Any maintenance vendor task: the vendor found, the price negotiated, and the work seen through remotely. Water tank and sump cleaning, pest control, chimney, RO and inverter servicing, painting" },
-      { t: "Same-day help for a burst pipe, a power cut, a stuck lift or a lock-out" },
-      { t: "Vehicle watch: insurance, PUC, challans and servicing, and a verified driver when one is needed" },
-      { t: "Remote tech help: the wifi, the TV, the printer, the smart lock, the apps" },
-      { t: "A cab booked or the groceries ordered, over chat" },
     ],
   },
-  {
+  paperwork: {
     title: "EPFO, tax, govt paperwork & documents",
-    icon: "file-text",
     intro:
       "Government portals, forms and follow-ups wear everyone down. For us it’s a normal day at work.",
-    items: [
-      { t: "EPFO claims filed, and rejected ones unstuck, including the name, date of birth and UAN fixes behind most refusals" },
-      { t: "Dormant accounts, unclaimed dividends, IEPF holdings, NPS and PPF traced and recovered" },
-      { t: "Form 26AS and AIS checked for TDS mismatches and missing credits" },
-      { t: "Tax residency certificates, Form 10F and DTAA coordination" },
-      { t: "NRO repatriation paperwork, within the annual limit" },
-      { t: "Tenant-side TDS on your rented-out property, followed through" },
-      { t: "Pension life certificates submitted before the deadline" },
-      { t: "Aadhaar and PAN corrections, linking and updates" },
+    extras: [
       { t: "A yearly check of everything in India that quietly lapses when a family lives abroad" },
       { t: "One renewal calendar: passport, OCI, visas, policies, AMCs, licences, so neither you nor your parents have to remember" },
       { t: "An encrypted vault, hosted in India, for policies, prescriptions, property papers and IDs" },
       { t: "A signed, scope-limited authorisation, so we can represent your parents where needed" },
     ],
   },
-  {
-    title: "Travel concierge & admin",
-    icon: "plane",
-    intro:
-      "A train ticket for Mum, a reliable cab to visit a relative, or the full visa run so they can come and see you.",
-    items: [
-      { t: "Flights and hotels researched, watched for price, and booked" },
-      { t: "Regular train bookings, handled end to end" },
-      {
-        t: "Tatkal bookings, tried the moment the window opens. Seats go in minutes, so we can’t promise one, but we’ll give it our best shot every time",
-        tag: "Best effort",
-      },
-      { t: "Reliable city cabs arranged and tracked, with the driver’s details sent to you" },
-      { t: "Visa applications, appointments and document packs for their trip to you" },
-      { t: "Passport and OCI renewals, and someone to sit through the appointment" },
-      { t: "Airport assistance, wheelchair requests and meet-and-greet" },
-      { t: "Itineraries, check-ins, and re-bookings when a flight moves" },
-    ],
-  },
-  {
+  banking: {
     title: "Bills, banking, customer support issues & refund claims",
-    icon: "wallet",
     intro:
       "The wrong utility bill, the blocked account, the customer care number nobody answers. We do the chasing.",
-    items: [
-      { t: "Every recurring payment listed with its due date, then tracked, flagged and reconciled" },
-      { t: "Electricity, water, gas, broadband, DTH, society dues and insurance premiums tracked" },
-      { t: "Blocked, frozen and dormant accounts reactivated" },
-      { t: "Bank KYC re-verification and mandate updates coordinated" },
-      { t: "Banking complaints escalated step by step, up to the RBI Ombudsman where needed" },
-      { t: "Telecom and electricity complaints taken up each company’s escalation ladder" },
-      { t: "Wrong bills, refused warranties, mis-sold subscriptions and stuck refunds, fought" },
-    ],
+    extras: [],
   },
-  {
+  travel: {
+    title: "Travel concierge & admin",
+    intro:
+      "A train ticket for Mum, a reliable cab to visit a relative, or the full visa run so they can come and see you.",
+    extras: [],
+  },
+  property: {
     title: "Property management & others",
-    icon: "home",
     intro:
       "Periodic visits, tenants, agreements, repairs. Everything you’d hire a property manager for, from the same team.",
-    items: [
-      { t: "Property registration orchestrated end to end" },
-      { t: "Periodic inspections of the house or the let-out flat, with dated photographs" },
-      { t: "Tenant sourcing, screening and replacement" },
-      { t: "Rent agreements, renewals, registration and police verification coordinated" },
-      { t: "Property tax, water and electricity transfers, and khata or mutation follow-ups" },
-      { t: "Maintenance, repairs and painting supervised, with an invoice at actuals" },
-      { t: "Locking up, key handovers, and access for agents or contractors" },
+    extras: [
       { t: "Gifting, couriering, and the long tail of small things that are easy from Bengaluru and hard from New Jersey" },
     ],
   },
+};
+
+/** Tags and links the list pages show on particular lines, matched on how the
+ *  line begins so a small rewording elsewhere in it does not drop them. */
+const SCOPE_DECOR: { starts: string; tag?: string; href?: string; hrefLabel?: string }[] = [
+  { starts: "Reliable emergency response with Niro Assure", tag: "Bengaluru", href: "/niro-assure/", hrefLabel: "Learn more" },
+  { starts: "Tatkal bookings", tag: "Best effort" },
 ];
+
+export const GUIDE_SCOPE: {
+  title: string;
+  icon: IconName;
+  intro: string;
+  items: GuideItem[];
+}[] = GUIDE_CATEGORIES.map((c) => {
+  const frame = SCOPE_FRAME[c.id];
+  const lines: GuideItem[] = [...c.core, ...c.more].map((line) => {
+    const t = line.replace(/\.$/, "");
+    const d = SCOPE_DECOR.find((x) => t.startsWith(x.starts));
+    return d ? { t, tag: d.tag, href: d.href, hrefLabel: d.hrefLabel } : { t };
+  });
+  return { title: frame.title, icon: c.icon, intro: frame.intro, items: [...lines, ...frame.extras] };
+});
 
 export const GUIDE_ASSURE: { title: string; body: string; tag?: string }[] = [
   {

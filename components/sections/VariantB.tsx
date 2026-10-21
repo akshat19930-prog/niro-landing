@@ -265,11 +265,12 @@ function UseCasesB() {
     setOpenCard(isOpen ? null : title);
   }
   const cases: { icon: IconName; title: string }[] = [
+    // Same order as the family guide's catalogue (GUIDE_CATEGORIES).
     { icon: "heart-pulse", title: "Family's health admin & emergency response" },
     { icon: "wrench", title: "Household chores, upkeep & staff" },
     { icon: "file-text", title: "EPFO, tax, govt paperwork & documents" },
-    { icon: "plane", title: "Travel concierge & admin" },
     { icon: "wallet", title: "Bills, banking, customer support issues & refund claims" },
+    { icon: "plane", title: "Travel concierge & admin" },
     { icon: "home", title: "Property management & others" },
   ];
   return (
