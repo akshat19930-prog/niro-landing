@@ -1312,21 +1312,28 @@ export const FREE_TASKS: FreeTask[] = [
     prompt: "Which device, and what is stuck?",
   },
   {
-    id: "govt",
-    label: "Aadhaar or government document work",
-    waText: "Aadhaar or government document work",
-    prompt: "What needs doing: an update, a new one, or a correction?",
+    // Narrowed Oct 2026 from "Aadhaar or government document work" to the two
+    // jobs that actually came in. New id, because the sheet must not read the
+    // old, broader option and this one as the same thing.
+    id: "aadhaar_lc",
+    label: "Aadhaar work, or a Jeevan Pramaan pension life certificate",
+    waText: "Aadhaar work or a Jeevan Pramaan life certificate",
+    prompt: "Which one, and in which city? For Aadhaar, an update or a correction?",
   },
   {
-    // Seasonal framing, permanent task. Only the words "before the Diwali
-    // rush" date; a deep clean is wanted all year, so after Diwali this loses
-    // the prefix rather than the option. Sits second from last, in front of
-    // "Something else" only, because it is the newest and least proven of
-    // these and should not push a task we know gets picked down the list.
-    id: "deepclean",
-    label: "Get pre-Diwali deep cleaning done for my parents' home",
-    waText: "a pre-Diwali deep clean for my parents' home",
-    prompt: "Which area or pin code, and how many BHK?",
+    // Not an attendant: someone already making the same journey, found and
+    // introduced by us. The parent and the family speak to them first and
+    // decide; we never hand over anyone's number without both sides agreeing.
+    id: "travelpeer",
+    label: "Find a fellow traveller for my parents' flight abroad",
+    waText: "finding a fellow traveller for my parents' flight",
+    prompt: "Which route, and the dates? Say if the dates are flexible.",
+  },
+  {
+    id: "courier",
+    label: "Send something between India and me, either way",
+    waText: "sending something between India and me",
+    prompt: "What is it, which way is it going, and the city at each end?",
   },
 ];
 
