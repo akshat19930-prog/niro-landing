@@ -231,7 +231,7 @@ export function JoinModal() {
   function waHref(): string {
     const detail = taskText.trim();
     const body = picked
-      ? `Hi Niro, I'd like to start my free task: ${picked.waText}.` +
+      ? `Hi Niro, I'd like to request my first task free: ${picked.waText}.` +
         // The answer to the follow-up question rides along in the same
         // message. The point of asking it on the page is that the assistant
         // opens the chat already knowing it, so leaving it out of the text
@@ -627,7 +627,9 @@ export function JoinModal() {
           <div>
             <Eyebrow>Last step</Eyebrow>
             <h2 style={{ ...h2Style, margin: "10px 0 6px" }}>
-              Your first task free - what should we do first?
+              {/* "Request", not "your": the first task is free on request,
+                  not promised to everyone who reaches this step. */}
+              Request the first task free: what do you need done right away?
             </h2>
             <p
               style={{
@@ -748,7 +750,7 @@ export function JoinModal() {
                 submitNeeds(taskText.trim(), taskId, whoFor, true);
               }}
             >
-              Start my free task
+              Request this task
               <Icon name="message-circle" size={17} />
             </a>
             <p
