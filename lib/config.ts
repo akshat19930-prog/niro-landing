@@ -63,7 +63,7 @@ export const SUPPORT_WHATSAPP =
  * WhatsApp line for the Niro Assistant, who scopes and runs free first tasks.
  *
  * Used in exactly two places, both of them a free-task handoff: the last step
- * of the join modal, and the task cards on /freetask. Every other WhatsApp
+ * of the join modal, and the task cards on /firsttrialtask. Every other WhatsApp
  * link on the site goes to SALES_WHATSAPP.
  *
  * The split exists because these two conversations are different jobs. Sales

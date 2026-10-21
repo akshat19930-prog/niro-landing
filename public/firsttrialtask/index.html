@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="One real task for your family in India, start to finish. Ask for it free.">
+<meta property="og:title" content="Request your first Niro task free">
+<meta property="og:description" content="Pick the one thing you need done right away, and ask for it free. No card, nothing to install.">
+<title>Niro First Trial Task</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<meta name="theme-color" content="#F6F1E7">
+<style>
+  /* Niro tokens, copied from app/tokens.css - the site has no global dark
+     mode (its dark aliases are scoped to the emergency story), so this page is
+     ivory in both schemes rather than inventing a dark palette of its own. */
+  :root {
+    color-scheme: light;
+    --bg: #F6F1E7;            /* ivory */
+    --surface: #FFFFFF;
+    --surface-2: #FCFAF4;     /* sand-50 */
+    --sand: #EFE7D6;          /* sand-100 */
+    --ink: #191A16;
+    --ink-2: #33352D;
+    --muted: #767869;
+    --line: rgba(25, 26, 22, .12);
+    --accent: #1E4536;        /* forest-700, the brand green */
+    --accent-hover: #16362A;  /* forest-800 */
+    --accent-ink: #F6F1E7;
+    --accent-soft: #E2EEE8;   /* forest-100 */
+    --gold: #B8863B;          /* wordmark bubble only - under 10% of the page */
+    --brick: #A6432E;
+    --shadow: 0 2px 6px rgba(25, 26, 22, .06), 0 8px 20px rgba(25, 26, 22, .07);
+    --radius: 20px;
+    --radius-sm: 14px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding-inline: 20px;
+    padding-block: 0 64px;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  /* ---------- masthead ---------- */
+  .top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+    padding-block: 22px 0;
+  }
+  /* The wordmark, matching components/ds/Wordmark.tsx: lowercase Newsreader in
+     forest, the dot on the "i" replaced by the gold speech bubble. Never set in
+     the sans, never given a second graphic element. */
+  .mark {
+    font-family: "Newsreader", Georgia, serif;
+    font-size: 26px; font-weight: 500; letter-spacing: -.01em; line-height: 1;
+    color: var(--accent-hover);
+    display: inline-flex; align-items: baseline;
+  }
+  .mark .i { position: relative; display: inline-block; }
+  .mark .i svg {
+    position: absolute; left: 50%; top: -.34em;
+    width: .5em; height: .5em; transform: translateX(-50%); display: block;
+  }
+  .stamp {
+    font-family: inherit;
+    font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .09em;
+    color: var(--muted);
+  }
+
+  header.hero { padding-block: 40px 30px; max-width: 720px; }
+  h1 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(32px, 5.2vw, 50px);
+    line-height: 1.1;
+    letter-spacing: -.015em;
+    margin: 0 0 18px;
+    text-wrap: balance;
+  }
+  h1 em { font-style: italic; font-weight: 500; color: var(--accent); }
+  .lede { font-size: clamp(16px, 2.2vw, 18.5px); color: var(--ink-2); margin: 0; max-width: 62ch; }
+  .lede + .lede { margin-top: 12px; }
+
+  /* ---------- how it works ---------- */
+  .steps {
+    display: grid; gap: 1px;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-bottom: 44px;
+  }
+  .step { background: var(--surface); padding: 20px 22px; }
+  .step b {
+    display: block;
+    font-family: inherit;
+    font-size: 11.5px; font-weight: 600; letter-spacing: .09em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .step p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+
+  /* ---------- section head ---------- */
+  .sec-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 10px; margin-bottom: 26px;
+  }
+  .sec-head h2 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 400; font-size: 26px; margin: 0; letter-spacing: -.01em;
+  }
+  .sec-head .note { font-size: 13.5px; color: var(--muted); margin: 0; }
+
+  /* ---------- cards ---------- */
+  .grid { display: grid; gap: 18px; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 24px 22px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .kicker {
+    font-family: inherit;
+    font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .pill {
+    font-family: inherit;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+    background: var(--sand); color: var(--brick);
+    border-radius: 999px; padding: 4px 9px; white-space: nowrap;
+  }
+  .card h3 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 500; font-size: 22px; line-height: 1.22;
+    margin: 0; letter-spacing: -.01em; text-wrap: balance;
+  }
+  .card .ask { margin: 0; font-size: 15px; color: var(--ink-2); }
+  .card .ask strong { font-weight: 600; color: var(--ink); }
+  .deliver {
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 13px 15px;
+    font-size: 14.5px; color: var(--ink-2);
+  }
+  .deliver b {
+    display: block;
+    font-family: inherit;
+    font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--muted); font-weight: 500; margin-bottom: 5px;
+  }
+  .meta {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px 18px;
+    border-top: 1px solid var(--line); padding-top: 13px;
+    margin-top: auto;
+  }
+  .meta div { min-width: 0; }
+  .meta dt {
+    font-family: inherit;
+    font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 3px;
+  }
+  .meta dd { margin: 0; font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .cta {
+    display: flex; width: 100%; box-sizing: border-box; align-items: center; justify-content: center; gap: 8px;
+    background: var(--accent); color: var(--accent-ink);
+    text-decoration: none; font-weight: 600; font-size: 15px;
+    padding: 13px 18px; border-radius: var(--radius-sm);
+    min-height: 44px;
+    transition: background .16s ease, transform .16s ease;
+  }
+  .cta:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .cta svg { width: 16px; height: 16px; flex: none; }
+
+  /* Progressive disclosure: the kicker, heading and hook stay visible; what
+     you get, the turnaround and the CTA sit behind a toggle. Native <details>,
+     so it needs no JS and stays keyboard-operable. Opening one is the interest
+     signal the page is instrumented for. */
+  .more { margin-top: auto; padding-top: 4px; }
+  /* "Request this task" is now always on the card, so this is no longer the only
+     control and must not look like a second button competing with it. It is a
+     quiet text row, open or closed. */
+  .more > summary {
+    list-style: none; cursor: pointer; user-select: none;
+    display: flex; align-items: center; gap: 7px;
+    font-weight: 600; font-size: 13.5px; line-height: 1.2;
+    color: var(--muted);
+    background: none;
+    border: 0;
+    border-radius: 0;
+    padding: 10px 2px 2px; min-height: 0;
+    transition: color .12s ease;
+  }
+  .more > summary:hover { color: var(--ink); }
+  .more > summary::-webkit-details-marker { display: none; }
+  .more > summary:hover { filter: brightness(.97); transform: translateY(-1px); }
+  .more > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .more > summary::after {
+    content: ""; width: 7px; height: 7px; flex: none;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform .15s ease;
+  }
+  .more[open] > summary {
+    background: transparent; border-color: var(--line);
+    color: var(--muted); font-weight: 500;
+  }
+  .more[open] > summary:hover { transform: none; color: var(--ink); }
+  .more[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+  /* Swap the label rather than leave "Know more" on an open card. */
+  .more > summary .lbl-hide,
+  .more[open] > summary .lbl-show { display: none; }
+  .more[open] > summary .lbl-hide { display: inline; }
+  .more > *:not(summary) { margin-top: 12px; }
+  /* The divider and bottom-push now live on .more, not on .meta. */
+  .more .meta { border-top: 0; padding-top: 0; margin-top: 12px; }
+  .more .cta { display: flex; }
+
+  /* Close, not a second offer: the mark and the tagline, no competing CTA. */
+  .foot {
+    margin-top: 56px; padding-top: 22px;
+    border-top: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  }
+  .foot .mark { font-size: 22px; }
+  .foot p { margin: 0; font-size: 14px; color: var(--muted); }
+
+  @media (max-width: 760px) {
+    .grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<style>
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0}
+  img{max-width:100%}
+  :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="mark" role="img" aria-label="niro"><span aria-hidden="true">n</span><span class="i" aria-hidden="true">&#x131;<svg viewBox="0 0 24 24"><path d="M12 2 C 12 2 5.5 9.5 5.5 15 A 6.5 6.5 0 0 0 18.5 15 C 18.5 9.5 12 2 12 2 Z" transform="rotate(214 12 13.5)" fill="var(--gold)"/></svg></span><span aria-hidden="true">ro</span></div>
+    <div class="stamp">First task &middot; free on request</div>
+  </div>
+
+  <header class="hero">
+    <h1>Request the first task free. <em>What do you need done right away?</em></h1>
+    <p class="lede">One real task for you or your family in India, run start to finish by your Niro assistant on WhatsApp. Whether a first task is free is our call, depending on the task and how much we&rsquo;re carrying that week. We always tell you before anything starts, and if it isn&rsquo;t free, we tell you the cost and you decide.</p>
+  </header>
+
+  <div class="steps">
+    <div class="step">
+      <b>Step one</b>
+      <p>Pick a task below. It opens a WhatsApp chat with your Niro assistant, with the request already filled in.</p>
+    </div>
+    <div class="step">
+      <b>Step two</b>
+      <p>Your assistant confirms the details, and whether this one is free, before any work starts. Where it&rsquo;s needed, they speak to your parents directly.</p>
+    </div>
+    <div class="step">
+      <b>Step three</b>
+      <p>You get the finished thing, not a status update. Your assistant agrees a date with you once the task is scoped.</p>
+    </div>
+  </div>
+
+  <div class="sec-head">
+    <h2>Pick the one you need most</h2>
+    <p class="note">One request per family. Something else on your mind? Ask, and we&rsquo;ll tell you honestly whether we can do it, and whether it&rsquo;s free.</p>
+  </div>
+
+  <div class="grid">
+
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Home &amp; help</div>
+      </div>
+      <h3>Find a cook, maid or driver for my family</h3>
+      <p class="ask">Not a list of numbers off a building WhatsApp group. <strong>Three people, checked, priced and available</strong>, with references we rang ourselves.</p>
+      <a class="cta" data-task="finding a cook, maid or driver for my family" href="#">Request this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+      <details class="more" data-task="finding a cook, maid or driver for my family">
+        <summary><span class="lbl-show">What&rsquo;s included</span><span class="lbl-hide">Hide details</span></summary>
+      <div class="deliver">
+        <b>What you get</b>
+        Three named candidates with quoted monthly rates, the hours each can actually do, references we have spoken to, and our own note on every one of them. Your parents meet them and pick; we settle the terms with whoever stays.
+      </div>
+      <dl class="meta">
+        <div><dt>We need</dt><dd>Cook, maid or driver, and the area or pin code</dd></div>
+      </dl>
+      </details>
+    </article>
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Money &amp; admin</div>
+      </div>
+      <h3>Unblock a SIM, or get me an Indian phone number</h3>
+      <p class="ask">A number gone dead from disuse, or no Indian number at all for the OTPs that everything back home now wants. <strong>Neither one needs a flight.</strong></p>
+      <a class="cta" data-task="my India phone number" href="#">Request this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+      <details class="more" data-task="my India phone number">
+        <summary><span class="lbl-show">What&rsquo;s included</span><span class="lbl-hide">Hide details</span></summary>
+      <div class="deliver">
+        <b>What you get</b>
+        For a number that has stopped working: why it is barred, named, what clears it, and the one store that can actually do it, so nobody makes a wasted trip. For a new connection: one in your name or your parents&rsquo;, the documents listed before anything starts, and somebody who goes to the store on your behalf.
+      </div>
+      <dl class="meta">
+        <div><dt>We need</dt><dd>The operator, and whose name the number is in</dd></div>
+      </dl>
+      </details>
+    </article>
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Daily care</div>
+      </div>
+      <h3>Get my parent started with yoga, arrange a trial class</h3>
+      <p class="ask">The hardest part of any of this is <strong>your parent agreeing to it.</strong> So let them sit in on one class, decide for themselves, and pick their own teacher.</p>
+      <a class="cta" data-task="getting a parent started with yoga" href="#">Request this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+      <details class="more" data-task="getting a parent started with yoga">
+        <summary><span class="lbl-show">What&rsquo;s included</span><span class="lbl-hide">Hide details</span></summary>
+      <div class="deliver">
+        <b>What you get</b>
+        Vetted instructors, online over video or at home in the cities where we have them, 1:1 or in a small group, at rates we have negotiated. We arrange a trial class and pay for it. Your parent sits in, makes their own mind up, and chooses the one who stays. The ongoing package is theirs to pick; we set it up once they are happy.
+      </div>
+      <dl class="meta">
+        <div><dt>We need</dt><dd>Online or at home, their timings, and the language they are comfortable in</dd></div>
+      </dl>
+      </details>
+    </article>
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Money &amp; admin</div>
+      </div>
+      <h3>Recover or close my PPF/EPF account</h3>
+      <p class="ask">A claim that keeps bouncing back with no reason you can read, or an old account you simply want shut and paid out. <strong>We&rsquo;ll name the exact blocker.</strong></p>
+      <a class="cta" data-task="recovering or closing my PPF/EPF account" href="#">Request this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+      <details class="more" data-task="recovering or closing my PPF/EPF account">
+        <summary><span class="lbl-show">What&rsquo;s included</span><span class="lbl-hide">Hide details</span></summary>
+      <div class="deliver">
+        <b>What you get</b>
+        A short report: what is blocked, why, how long clearing it will take and what it will cost. The specific rejection reason named, which is the part nobody else gives you, with the sequence of steps that fixes it. For a closure, the same thing for the withdrawal or transfer route.
+      </div>
+      <dl class="meta">
+        <div><dt>We need</dt><dd>Whether you want it recovered or closed, and the UAN or account number if you have it</dd></div>
+      </dl>
+      </details>
+    </article>
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Daily care</div>
+      </div>
+      <h3>Find an at-home physio for my family</h3>
+      <p class="ask">After a surgery, a knee that has got worse, a parent who has quietly stopped walking much. <strong>Someone who comes to the house</strong>, not an address they have to get to.</p>
+      <a class="cta" data-task="finding an at-home physio for my family" href="#">Request this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+      <details class="more" data-task="finding an at-home physio for my family">
+        <summary><span class="lbl-show">What&rsquo;s included</span><span class="lbl-hide">Hide details</span></summary>
+      <div class="deliver">
+        <b>What you get</b>
+        Two or three physiotherapists who visit at home, qualifications checked, per-session rates quoted and a package negotiated, with the slots each has free. We arrange the first visit, and send you what the physio said after it.
+      </div>
+      <dl class="meta">
+        <div><dt>We need</dt><dd>The area or pin code</dd></div>
+      </dl>
+      </details>
+    </article>
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Home &amp; help</div>
+      </div>
+      <h3>Do a tech support task for my family</h3>
+      <p class="ask">A phone that refuses to update, a TV nobody can get Netflix onto, a printer that stopped talking to the laptop. <strong>We get on a call and fix it</strong>, as slowly as it takes.</p>
+      <a class="cta" data-task="a tech support task for my family" href="#">Request this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+      <details class="more" data-task="a tech support task for my family">
+        <summary><span class="lbl-show">What&rsquo;s included</span><span class="lbl-hide">Hide details</span></summary>
+      <div class="deliver">
+        <b>What you get</b>
+        A call with your parent in the language they prefer, for as long as the thing needs, and it working at the end. If it genuinely needs somebody in the room, we say so and tell you what that would cost, rather than leaving them to wait on a helpline.
+      </div>
+      <dl class="meta">
+        <div><dt>We need</dt><dd>Which device, and what is stuck</dd></div>
+      </dl>
+      </details>
+    </article>
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Money &amp; admin</div>
+      </div>
+      <h3>Aadhaar work, or Jeevan Pramaan life certificate renewal</h3>
+      <p class="ask">An Aadhaar address to update or a name spelt wrong, or the life certificate a pension stops without. <strong>Done without the queue where it can be.</strong></p>
+      <a class="cta" data-task="Aadhaar work, or Jeevan Pramaan life certificate renewal" href="#">Request this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+      <details class="more" data-task="Aadhaar work, or Jeevan Pramaan life certificate renewal">
+        <summary><span class="lbl-show">What&rsquo;s included</span><span class="lbl-hide">Hide details</span></summary>
+      <div class="deliver">
+        <b>What you get</b>
+        For Aadhaar: exactly what the update or correction needs, the documents checked, and the appointment booked at the right centre, with somebody to take your parent there if it cannot be done online. For the life certificate: submitted before the pension is held, by face authentication at home or a doorstep visit where that works, or with someone alongside them at the bank or office where it does not. Written out before anything starts, so nobody queues twice.
+      </div>
+      <dl class="meta">
+        <div><dt>We need</dt><dd>Which one, the city, and for Aadhaar whether it is an update or a correction</dd></div>
+      </dl>
+      </details>
+    </article>
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Travel &amp; errands</div>
+      </div>
+      <h3>Find a fellow traveller for my parents&rsquo; flight abroad</h3>
+      <p class="ask">For a parent who would rather not fly alone. <strong>Someone already on the same journey</strong>, found and introduced, not a paid attendant.</p>
+      <a class="cta" data-task="finding a fellow traveller for my parents' flight" href="#">Request this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+      <details class="more" data-task="finding a fellow traveller for my parents' flight">
+        <summary><span class="lbl-show">What&rsquo;s included</span><span class="lbl-hide">Hide details</span></summary>
+      <div class="deliver">
+        <b>What you get</b>
+        We look for someone, usually a fellow NRI, already booked on your parents&rsquo; flight. If the dates are flexible, we look on the same route and help book your parents&rsquo; tickets to match. We introduce them on a call before the day, so you and your parents can decide for yourselves, and nobody&rsquo;s number is shared without both sides agreeing. We cannot promise a match on every route; if there isn&rsquo;t one, we set up the airline&rsquo;s own assistance instead.
+      </div>
+      <dl class="meta">
+        <div><dt>We need</dt><dd>The route and the dates, and whether the dates are flexible</dd></div>
+      </dl>
+      </details>
+    </article>
+    <article class="card">
+      <div class="card-top">
+        <div class="kicker">Travel &amp; errands</div>
+      </div>
+      <h3>Send something between India and me, either way</h3>
+      <p class="ask">Papers that need to reach you, something left behind, a parcel from home. <strong>A courier, or someone already making the trip.</strong></p>
+      <a class="cta" data-task="sending something between India and me" href="#">Request this task
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.13c-.25.69-1.44 1.32-1.99 1.4-.53.08-1.2.11-1.94-.12-.45-.14-1.02-.33-1.76-.65-3.1-1.34-5.12-4.46-5.28-4.67-.15-.21-1.26-1.67-1.26-3.19s.8-2.27 1.08-2.58c.28-.31.61-.39.81-.39.2 0 .41 0 .58.01.19.01.44-.07.69.53.25.6.85 2.07.93 2.22.08.15.13.33.02.54-.1.21-.16.34-.31.52-.15.18-.32.4-.46.54-.15.15-.31.32-.13.62.18.31.79 1.3 1.69 2.11 1.16 1.03 2.14 1.35 2.45 1.5.31.15.49.13.67-.08.18-.21.77-.9.98-1.21.21-.31.41-.26.69-.15.28.1 1.76.83 2.06.98.31.15.51.23.58.35.08.13.08.72-.17 1.41Z"/></svg>
+      </a>
+      <details class="more" data-task="sending something between India and me">
+        <summary><span class="lbl-show">What&rsquo;s included</span><span class="lbl-hide">Hide details</span></summary>
+      <div class="deliver">
+        <b>What you get</b>
+        Depending on what it is and how fast it needs to arrive: an international courier booked, picked up from your parents&rsquo; door and tracked, or someone travelling on that route found and introduced to carry it. Only what customs and the airline allow: we check before anything moves. You pay the courier or any carrying cost at actuals.
+      </div>
+      <dl class="meta">
+        <div><dt>We need</dt><dd>What it is, which way it is going, and the city at each end</dd></div>
+      </dl>
+      </details>
+    </article>
+  </div>
+
+  <footer class="foot">
+    <div class="mark" role="img" aria-label="niro"><span aria-hidden="true">n</span><span class="i" aria-hidden="true">&#x131;<svg viewBox="0 0 24 24"><path d="M12 2 C 12 2 5.5 9.5 5.5 15 A 6.5 6.5 0 0 0 18.5 15 C 18.5 9.5 12 2 12 2 Z" transform="rotate(214 12 13.5)" fill="var(--gold)"/></svg></span><span aria-hidden="true">ro</span></div>
+    <p>Your family&rsquo;s India Home Manager.</p>
+  </footer>
+
+</div>
+
+<script>
+  /* The Niro Assistant line, country code first, digits only. NOT the sales
+     number: every link on this page is a free-task handoff, and those are the
+     assistant's job. Sales owns payment conversations and gets its number from
+     lib/config.ts (SALES_WHATSAPP); this one mirrors ASSISTANT_WHATSAPP there.
+     The tasks below mirror FREE_TASKS in lib/content.ts. This page is a
+     static asset and cannot import it, so the two are kept in step BY HAND. */
+  var WA_NUMBER = "918867635252";
+
+  /* --------------------------------------------------------------- attribution
+     This page is a static asset and cannot import lib/whatsapp.ts or
+     lib/track.ts, so the few fields they read are re-read by hand here, using
+     the SAME sessionStorage keys and the SAME payload shape. An inbound chat
+     from this page then reconciles against the events sheet exactly like one
+     from the React site. If those files change their keys, change them here. */
+  var UTM_KEY  = "niro_utm";
+  var SID_KEY  = "niro_sid";
+  var ATTR_KEY = "niro_attr";
+  var ENDPOINT = "https://script.google.com/macros/s/AKfycbwFnBAz3ZFXKr3D13KtKqOyATFW2TVb5gIFOJfch6GJwLbABYzWoMntnvPFl8m2Qunl_A/exec";
+
+  function ss() { try { return window.sessionStorage; } catch (e) { return null; } }
+
+  // This link is sent by hand, so the query string on THIS page is usually the
+  // only attribution there is. Merge it over anything stored first-touch and
+  // write it back, so it survives if the visitor carries on into the site.
+  function utm() {
+    var keys = ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","fbclid","gclid"];
+    var st = ss(), stored = {};
+    try { stored = JSON.parse((st && st.getItem(UTM_KEY)) || "{}"); } catch (e) { stored = {}; }
+    var q, found = false;
+    try { q = new URLSearchParams(window.location.search); } catch (e) { return stored; }
+    keys.forEach(function (k) { var v = q.get(k); if (v) { stored[k] = v; found = true; } });
+    if (found && st) { try { st.setItem(UTM_KEY, JSON.stringify(stored)); } catch (e) {} }
+    return stored;
+  }
+
+  function sid() {
+    var st = ss(); if (!st) return "s0";
+    var id = st.getItem(SID_KEY);
+    if (!id) {
+      id = "s_" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      try { st.setItem(SID_KEY, id); } catch (e) {}
+    }
+    return id;
+  }
+
+  function pitch() {
+    try { return (JSON.parse((ss() && ss().getItem(ATTR_KEY)) || "{}").pitch) || ""; }
+    catch (e) { return ""; }
+  }
+
+  // Coarse region from the time zone, same buckets as lib/track.ts coarseGeo().
+  var _geo = null;
+  function geo() {
+    if (_geo) return _geo;
+    var g = "other";
+    try {
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      if (/Dubai|Abu_Dhabi|Qatar|Bahrain|Riyadh|Kuwait|Muscat|Aden/i.test(tz)) g = "gulf";
+      else if (/^America\//.test(tz)) g = "na";
+    } catch (e) {}
+    _geo = g; return g;
+  }
+
+  // Same shape as whatsappRef(): market, then the creative (or the campaign if
+  // the ad carried no utm_content), then the pitch cell. This page is neither
+  // /gulf nor /us, so the market code is "na".
+  function ref() {
+    var u = utm(), parts = ["na"];
+    var creative = u.utm_content || u.utm_campaign || "";
+    if (creative) parts.push(creative);
+    var p = pitch(); if (p) parts.push("v" + p);
+    return parts.join(" \u00b7 ");
+  }
+
+  function beacon(event, extra) {
+    if (!ENDPOINT) return;
+    var u = utm(), body;
+    var payload = {
+      type: "event", event: event, sid: sid(), ts: Date.now(),
+      page: window.location.pathname || "/firsttrialtask/",
+      geo: geo(), campaign: u.utm_campaign || "", placement: "freetask"
+    };
+    if (extra) { for (var k in extra) { if (Object.prototype.hasOwnProperty.call(extra, k)) payload[k] = extra[k]; } }
+    body = JSON.stringify(payload);
+    try {
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(ENDPOINT, new Blob([body], { type: "text/plain;charset=UTF-8" }));
+      } else {
+        fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: body, keepalive: true });
+      }
+    } catch (e) { /* never block the chat */ }
+  }
+
+  // A view beacon, so the numbers below have a denominator. Without it you can
+  // count opens and chats but not the share of readers who did either.
+  beacon("freetask_view");
+
+  /* Which of them got opened. First open per task per session only -
+     re-opening the same card is the same person still deciding, not a second
+     signal, and counting it twice would flatter whichever card sits first. */
+  var seen = {};
+  document.querySelectorAll("details.more[data-task]").forEach(function (d) {
+    d.addEventListener("toggle", function () {
+      var task = d.getAttribute("data-task");
+      if (!d.open || seen[task]) return;
+      seen[task] = 1;
+      beacon("freetask_expand", { task: task });
+    });
+  });
+
+  document.querySelectorAll("a.cta[data-task]").forEach(function (a) {
+    var task = a.getAttribute("data-task");
+    // Same opening line as the last step of the join form, so the assistant
+    // reads a request from either place the same way: asked for, not owed.
+    var msg = "Hi Niro, I'd like to request my first task free: " + task + ".";
+    // Nothing but the message goes in the prefill: the visitor sends it under
+    // their own name, straight after WhatsApp warns them about scammers. The
+    // source ref goes on the beacon, read at click time so a UTM that landed
+    // in storage after this script ran is still picked up.
+    a.href = "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(msg);
+    a.addEventListener("click", function () {
+      beacon("whatsapp_click", { task: task, ref: ref() });
+    });
+    a.target = "_blank";
+    a.rel = "noopener";
+  });
+</script>
+</body>
+</html>
