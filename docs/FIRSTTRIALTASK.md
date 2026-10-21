@@ -1,6 +1,13 @@
-# /freetask - the first-task sales page
+# /firsttrialtask - the first-task page
 
-**Live:** https://tellniro.com/freetask/
+**Live:** https://tellniro.com/firsttrialtask/
+
+**Moved Oct 2026** from `/freetask/`. `public/freetask/index.html` is now a
+redirect stub that carries the query string across, so links already sent
+keep working. The first task is **free on request, not promised**: the page
+says the free call is ours, made per task, and told before work starts.
+The event names below keep their `freetask_` prefix on purpose, so the
+reports read one continuous series across the move.
 **Status:** shipped 25 Sept 2026. Unlisted - `noindex, nofollow`. Obscure, not
 secret: anyone with the link can open it.
 
@@ -13,13 +20,13 @@ instrumented so we learn which of the eight people actually want.
 ## 1. What it is, and what it is not
 
 It is a **static HTML file**, not a React page. It lives at
-`public/freetask/index.html` and Next copies it into the build **verbatim** -
+`public/firsttrialtask/index.html` and Next copies it into the build **verbatim** -
 nothing in the site's design system, layout, nav, footer, fonts or analytics
 touches it.
 
 That was deliberate. In the Next App Router the root layout (`app/layout.tsx`)
 is inescapable: it renders `<html>`/`<body>`, imports `globals.css`, and injects
-the Meta Pixel, PostHog and two fonts. Any `app/freetask/page.tsx` would have
+the Meta Pixel, PostHog and two fonts. Any `app/firsttrialtask/page.tsx` would have
 inherited all of it. `public/` is the only way to get a genuinely standalone
 page.
 
@@ -31,7 +38,7 @@ and editing this page cannot break anything else.
 
 ## 2. Editing it
 
-Open `public/freetask/index.html`. It is one file: inline CSS in `<style>`, the
+Open `public/firsttrialtask/index.html`. It is one file: inline CSS in `<style>`, the
 markup, and one `<script>` at the bottom. No build step, no components.
 
 | To change | Where |
@@ -115,7 +122,7 @@ hand and that is usually the only attribution there is. Tag the link when you
 send it:
 
 ```
-https://tellniro.com/freetask/?utm_source=whatsapp&utm_campaign=<campaign>&utm_content=<who_or_which_send>
+https://tellniro.com/firsttrialtask/?utm_source=whatsapp&utm_campaign=<campaign>&utm_content=<who_or_which_send>
 ```
 
 Those land in the beacons, and they also go into the WhatsApp message as a `Ref`

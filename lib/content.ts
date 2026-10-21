@@ -435,7 +435,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "Can I try Niro before I pay?",
-    a: "Yes. Your first task is free - tell us what you need, we do it, and you decide afterwards whether to join. And once you join, you can cancel any time.",
+    a: "Usually, yes. You can request your first task free: tell us what you need, and we confirm before any work starts whether we can take it on free, which depends on the task and how much we're carrying that week. Then you decide whether to join. And once you join, you can cancel any time.",
   },
   {
     q: "What does the membership include, and what is billed separately?",
@@ -1220,7 +1220,7 @@ export const OTHER_ID = "other";
  * The free first tasks.
  *
  * One definition, two surfaces: the picker on the last step of the join modal,
- * and the cards on /freetask. /freetask is a static asset in public/ and
+ * and the cards on /firsttrialtask. That page is a static asset in public/ and
  * cannot import this file, so its copy is kept in sync BY HAND. If you change
  * a label here, change it there too. (The same hand-sync applies to the
  * attribution keys that page re-reads; there is a note to match in its script
@@ -1231,7 +1231,7 @@ export const OTHER_ID = "other";
  * WhatsApp message they send in their own voice.
  *
  * The scope/not-included detail that used to sit under the picker now lives
- * only on /freetask. On the last step of the form it was three paragraphs of
+ * only on /firsttrialtask. On the last step of the form it was three paragraphs of
  * reading between a decision and a handoff, and the one thing that screen
  * needs is the opposite: the single detail that saves a WhatsApp round trip.
  * That is what `prompt` asks for.

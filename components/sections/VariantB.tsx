@@ -643,7 +643,7 @@ function PricingB({ c }: { c: ArmCopy }) {
  * The page FAQ. Answers come from lib/content FAQ, except the three that carry
  * structure a plain string cannot: the data answer needs its four commitments
  * as separate lines, the emergency answer links through to Niro Assure, and
- * the trial answer names actual tasks and routes into /freetask.
+ * the trial answer names actual tasks and routes into /firsttrialtask.
  *
  * The trial answer lists real tasks rather than restating that the first one
  * is free. Someone asking whether they can try before paying is not asking
@@ -699,15 +699,15 @@ const MAIN_FAQ_ITEMS = FAQ.map((f) => {
         <>
           <p style={{ margin: "0 0 10px" }}>{f.a}</p>
           <p style={{ margin: "0 0 10px" }}>
-            Pick any one of these, and we start today:
+            Ask for any one of these:
           </p>
           <ul className="faq-points">
             {FREE_TASKS.slice(0, 4).map((t) => (
               <li key={t.id}>{t.label}</li>
             ))}
           </ul>
-          <a href="/freetask/" style={{ fontWeight: 600 }}>
-            See all {FREE_TASKS.length} free tasks, and start one &rarr;
+          <a href="/firsttrialtask/" style={{ fontWeight: 600 }}>
+            See all {FREE_TASKS.length} first tasks you can request &rarr;
           </a>
         </>
       ),
