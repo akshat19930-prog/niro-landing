@@ -1316,8 +1316,8 @@ export const FREE_TASKS: FreeTask[] = [
     // jobs that actually came in. New id, because the sheet must not read the
     // old, broader option and this one as the same thing.
     id: "aadhaar_lc",
-    label: "Aadhaar work, or a Jeevan Pramaan pension life certificate",
-    waText: "Aadhaar work or a Jeevan Pramaan life certificate",
+    label: "Aadhaar work, or Jeevan Pramaan life certificate renewal",
+    waText: "Aadhaar work, or Jeevan Pramaan life certificate renewal",
     prompt: "Which one, and in which city? For Aadhaar, an update or a correction?",
   },
   {
