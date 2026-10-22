@@ -3,6 +3,7 @@ import { Nav } from "@/components/ds/Nav";
 import { Footer } from "@/components/ds/Footer";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
+import { PLANS, NIRO_LITE } from "@/lib/content";
 import { PfAuditForm } from "./PfAuditForm";
 import "./pf.css";
 
@@ -98,6 +99,19 @@ const US: string[] = [
   "Fix the mismatches and chase your old employer.",
   "File the right claim, and handle the PPF branch.",
   "Update you on WhatsApp every week until the money lands.",
+];
+
+/* The rest of Niro, shown so a PF lead is not surprised when sales mentions
+   it. Not a call to action: one plain link to the full list. */
+const BEYOND: { icon: IconName; t: string }[] = [
+  { icon: "heart-pulse", t: "Doctor visits for your parents" },
+  { icon: "shield-check", t: "Emergency response" },
+  { icon: "file-text", t: "Aadhaar and pension life certificates" },
+  { icon: "wallet", t: "Bank KYC and dormant accounts" },
+  { icon: "home", t: "Property registration and tenants" },
+  { icon: "wrench", t: "Cooks, maids and home repairs" },
+  { icon: "plane", t: "Travel and visas" },
+  { icon: "users", t: "A fellow traveller for your parents" },
 ];
 
 const FAQ: { q: string; a: string }[] = [
@@ -237,6 +251,26 @@ export default function PfMoneyPage() {
                 </ul>
               </div>
             </div>
+
+            <div className="pf-beyond">
+              <h3>PF is one of 50+ things Niro handles for Indians abroad.</h3>
+              <p>
+                The same WhatsApp thread, for you and for your parents in India.
+              </p>
+              <ul>
+                {BEYOND.map((b) => (
+                  <li key={b.t}>
+                    <Icon name={b.icon} size={16} />
+                    <span>{b.t}</span>
+                  </li>
+                ))}
+              </ul>
+              <a href="/family-guide/" className="pf-beyond-link">
+                <span>
+                  See everything Niro does <span aria-hidden="true">&rarr;</span>
+                </span>
+              </a>
+            </div>
           </div>
         </section>
 
@@ -259,6 +293,13 @@ export default function PfMoneyPage() {
                   <a href="/lite/">Niro Lite</a>, a case counts as 3 or 6 of your
                   20 tasks. Hiring help yourself, a complex case can cost
                   &#8377;10,000 to &#8377;20,000.
+                  {/* Said here, before the audit, so the price is never a
+                      surprise on the call that follows it. */}
+                  <span className="pf-price">
+                    Niro membership from {PLANS[1].price} a month, billed
+                    quarterly, or Niro Lite at {NIRO_LITE.price} for 20 tasks.
+                    Both cover far more than PF.
+                  </span>
                 </li>
                 <li>
                   <b>We run it.</b> Simpler cases usually take three to eight

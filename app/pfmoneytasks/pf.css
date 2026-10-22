@@ -116,6 +116,36 @@
 .pf-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9375rem; line-height: 1.5; color: var(--text-body); }
 .pf-list svg { color: var(--brand); flex-shrink: 0; margin-top: 3px; }
 
+/* the rest of Niro: context, not a call to action */
+.pf-beyond {
+  margin-top: 28px; padding: var(--space-5);
+  border: 1px dashed var(--border-strong); border-radius: var(--radius-xl);
+  background: var(--bg-inset);
+}
+.pf-beyond h3 {
+  font-family: var(--font-display); font-size: var(--text-xl); font-weight: 500;
+  line-height: 1.25; color: var(--text-strong); margin: 0 0 6px;
+}
+.pf-beyond p { margin: 0 0 16px; font-size: 0.9375rem; line-height: 1.55; color: var(--text-body); }
+.pf-beyond ul {
+  list-style: none; margin: 0 0 16px; padding: 0;
+  display: grid; gap: 10px 16px; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+}
+.pf-beyond li { display: flex; gap: 10px; align-items: center; font-size: 0.9375rem; line-height: 1.4; color: var(--text-strong); }
+.pf-beyond li svg { color: var(--brand); flex-shrink: 0; }
+.pf-beyond-link {
+  display: inline-flex; padding: 11px 0; font-size: var(--text-sm); font-weight: 600;
+  color: var(--brand); text-decoration: underline; text-underline-offset: 3px;
+}
+.pf-beyond-link:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 4px; }
+
+.pf-price {
+  display: block; margin-top: 10px; padding: 10px 12px;
+  border-left: 2px solid var(--accent); background: var(--surface-card); border-radius: 0 8px 8px 0;
+  font-size: var(--text-sm); line-height: 1.5; color: var(--text-strong);
+}
+.pf-opt { font-weight: 400; color: var(--text-muted); margin-left: 4px; }
+
 /* steps + form */
 .pf-steps-grid {
   display: grid; gap: 36px; align-items: start;
