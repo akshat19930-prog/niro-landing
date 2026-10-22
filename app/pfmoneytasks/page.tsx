@@ -346,7 +346,7 @@ export default function PfMoneyPage() {
               ))}
             </ul>
             <PfLink href="/family-guide/" kind="guide" placement="about_niro" className="pf-text-link pf-guide-link">
-              See all 50+ tasks in the family guide
+              See Niro&rsquo;s 50+ tasks catalogue
             </PfLink>
           </div>
         </section>
