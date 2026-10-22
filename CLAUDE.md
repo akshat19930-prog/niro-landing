@@ -38,8 +38,11 @@ backend, deploys, and the decisions that look arbitrary but are not.
 - **"AI" appears at most once on the page.** It is currently spent on the
   humans-or-AI FAQ answer. Nobody in the research bought *because* of AI and
   several discounted for it.
-- **Do not claim we never ask for OTPs.** We do, for some tasks. The keepable
-  claim is passwords, PINs and net-banking logins.
+- **Do not claim we never ask for OTPs or passwords.** We ask for OTPs on
+  some tasks, and for the EPFO (UAN) login on PF cases: it gives view access
+  only, and anything that moves money still needs a code on the member's
+  phone. The keepable claim is bank PINs, card details, net-banking and UPI
+  logins.
 - **Never state a price below ~$50/month anywhere prominent.** Six research
   respondents said a sub-$50 price made them distrust the service. This is why
   `/lite` is unlisted.

@@ -957,7 +957,7 @@ function UsFamilies() {
 function UsTrustStrip() {
   const items: { icon: IconName; text: string }[] = [
     { icon: "shield-check", text: "Background-checked people" },
-    { icon: "lock", text: "We never ask for passwords" },
+    { icon: "lock", text: "We never ask for net-banking logins" },
     { icon: "camera", text: "Every task closed with proof" },
     { icon: "user-check", text: "Built by NRIs who lived this" },
   ];

@@ -227,8 +227,9 @@ Change these only deliberately - each one cost a test or an interview to learn.
   is an assistant meeting your parents AT the hospital, and EMERGENCY_STEPS
   says so by name. Do not widen the scope without widening the ops that hold
   it.
-- **We no longer claim "we never ask for OTPs"** - we do, for some tasks. The
-  claim narrowed to passwords/PINs/net-banking, which is keepable.
+- **We no longer claim "we never ask for OTPs" or "passwords"** - we do ask
+  for OTPs on some tasks, and for the EPFO (UAN) login on PF cases (Oct 2026).
+  The claim narrowed to bank PINs, card details, net-banking and UPI logins.
 
 **The fuller record is `git log`.** Commit messages here carry the *reasoning*,
 not just the change. `git log --oneline` then `git show <sha>` beats asking.

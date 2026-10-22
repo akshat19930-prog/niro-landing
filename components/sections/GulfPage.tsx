@@ -898,7 +898,7 @@ function GulfTrustStrip() {
     "One person, accountable end to end",
     "Dedicated contact",
     "WhatsApp-first",
-    "We never ask for your passwords",
+    "We never ask for your net-banking logins",
     "Clear pricing",
   ];
   return (
