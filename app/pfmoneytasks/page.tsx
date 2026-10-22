@@ -15,13 +15,14 @@ import "./pf.css";
  *
  * One offer, in two stages, kept visibly apart:
  *  1. The free audit: review, diagnosis, action plan. No purchase needed.
- *     Delivered within 24 hours of receiving the records it needs.
+ *     Delivered within 24 to 48 hours of receiving the records it needs.
  *  2. Optional paid execution, through Niro Lite only ($300 once, 20 tasks,
  *     12 months). There is no standalone PF purchase, and the monthly
  *     membership is deliberately not pitched in this flow.
  *
  * Proof: Kustodian's own record, 2,000+ EPFO cases resolved, attributed to
- * Kustodian and founder-supplied (Oct 2026). It is not Niro's case count, not
+ * Kustodian, confirmed by the founders and with Kustodian's OK to be named
+ * (Oct 2026). It is not Niro's case count, not
  * an NRI-only figure, and implies no success rate or timeline. Two national
  * figures stay, each linked to the report it comes from; the interest-loss
  * and tax claims and the diaspora figure are gone.
@@ -36,12 +37,12 @@ import "./pf.css";
 export const metadata: Metadata = {
   title: "Free PF audit for Indians abroad - Niro",
   description:
-    "Left PF money behind when you moved abroad? Get a free audit of your EPF or PPF in 24 hours: the status, any blockers, and the steps to access it.",
+    "Left PF money behind when you moved abroad? Get a free audit of your EPF or PPF in 24 to 48 hours: the status, any blockers, and the steps to access it.",
   alternates: { canonical: "https://tellniro.com/pfmoneytasks/" },
   openGraph: {
     title: "Left PF money behind when you moved abroad?",
     description:
-      "A free PF audit in 24 hours: what is blocking your money, and the steps to access it.",
+      "A free PF audit in 24 to 48 hours: what is blocking your money, and the steps to access it.",
     type: "website",
     url: "https://tellniro.com/pfmoneytasks/",
   },
@@ -121,8 +122,8 @@ const FAQ: { q: string; a: string }[] = [
     a: "A review of your PF records and a written action plan on WhatsApp: the current status of each account, anything blocking access to the money and the record that shows it, the steps and documents needed next, and anything that still needs confirming. It is free, and there is no purchase required.",
   },
   {
-    q: "When does the 24-hour clock start?",
-    a: "When we have the records needed for review. On WhatsApp we first tell you which records those are, usually your passbook and service history. If a record has to be obtained first, for example because the mobile registered with EPFO has lapsed, the 24 hours start once it is in.",
+    q: "When do the 24 to 48 hours start?",
+    a: "When we have the records needed for review. On WhatsApp we first tell you which records those are, usually your passbook and service history. If a record has to be obtained first, for example because the mobile registered with EPFO has lapsed, the 24 to 48 hours start once it is in.",
   },
   {
     q: "Do I need a membership for the audit?",
@@ -160,7 +161,7 @@ export default function PfMoneyPage() {
               <h1 className="pf-h1">Left PF money behind when you moved abroad?</h1>
               <p className="pf-lead pf-lead-strong">
                 Find out what&rsquo;s needed to access it, with a free PF audit in
-                24 hours.
+                24 to 48 hours.
               </p>
               <p className="pf-lead">
                 We review your account, identify any blockers and explain the
@@ -171,8 +172,8 @@ export default function PfMoneyPage() {
                 Get my free PF audit
               </PfLink>
               <p className="pf-support">
-                Free diagnosis. No purchase required. Delivered within 24 hours
-                of receiving the records needed for review.
+                Free diagnosis. No purchase required. Delivered within 24 to 48
+                hours of receiving the records needed for review.
               </p>
             </div>
             <div className="pf-card pf-answers">
@@ -183,8 +184,8 @@ export default function PfMoneyPage() {
                 ))}
               </ol>
               <p className="pf-answers-foot">
-                A clear action plan, delivered on WhatsApp within 24 hours of
-                receiving the required records.
+                A clear action plan, delivered on WhatsApp within 24 to 48 hours
+                of receiving the required records.
               </p>
             </div>
           </div>
@@ -273,7 +274,7 @@ export default function PfMoneyPage() {
             </div>
             <p className="pf-fine">
               Not every account has a blocker, and some records take longer than
-              24 hours to obtain. The audit says which applies to yours.
+              48 hours to obtain. The audit says which applies to yours.
             </p>
           </div>
         </section>
@@ -399,7 +400,8 @@ export default function PfMoneyPage() {
           <div className="pf-wrap">
             <h2 className="pf-h2">Find out where your PF money stands.</h2>
             <p className="pf-p">
-              Free, within 24 hours of receiving the records needed for review.
+              Free, within 24 to 48 hours of receiving the records needed for
+              review.
             </p>
             <PfLink href="#audit" kind="cta" placement="final" className="btn btn-primary btn-lg">
               Get my free PF audit

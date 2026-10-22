@@ -54,8 +54,10 @@ export const SITE_ORIGIN =
 export const SALES_WHATSAPP =
   process.env.NEXT_PUBLIC_SALES_WHATSAPP || "919180581481";
 
-/** WhatsApp support line, for members rather than prospects. Powers the footer
- *  "Contact us" link only. */
+/** WhatsApp support line, for members rather than prospects. No longer used on
+ *  the site: the footer "Contact us" link moved to SALES_WHATSAPP in Oct 2026,
+ *  so visitors see two numbers, sales and the assistant. Kept for members'
+ *  materials outside this repo. */
 export const SUPPORT_WHATSAPP =
   process.env.NEXT_PUBLIC_SUPPORT_WHATSAPP || "918867738283";
 
