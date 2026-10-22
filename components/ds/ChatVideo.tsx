@@ -18,8 +18,8 @@ import { useEffect, useRef } from "react";
  * video. Poster shows instantly; aspect-ratio reserves the box to avoid shift.
  */
 export function ChatVideo({
-  src = "/media/chat-pain.mp4",
-  poster = "/media/chat-pain-poster.webp",
+  src = "/media/chat-pain-2.mp4",
+  poster = "/media/chat-pain-2-poster.webp",
   aspect = "760 / 1080",
   maxWidth = 380,
   ariaLabel = "A Niro WhatsApp story: Ankush sets a Friday pain checker for his mother's knee, Niro asks her on Friday and she reports 8 out of 10, and Niro books three physio sessions for next week, which Ankush approves.",
