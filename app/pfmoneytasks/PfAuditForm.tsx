@@ -36,6 +36,16 @@ const DIALS = ["+1", "+971", "+966", "+974", "+965", "+968", "+973", "+44", "+35
 const ACCOUNT = ["EPF", "PPF", "Both", "Not sure"];
 const STATUS = ["Tried, it's stuck", "Haven't tried yet", "Not sure"];
 const AMOUNT = ["Under ₹2 lakh", "₹2 lakh or more", "Not sure"];
+/* Optional, several allowed. Plants that Niro does more than PF, and hands
+   sales a specific opener. Written to the row's tasks column. */
+const ELSE = [
+  "Parents' health and appointments",
+  "Bank or tax paperwork",
+  "Property or tenants",
+  "Home help and repairs",
+  "Travel and visas",
+];
+const NOTHING_ELSE = "Nothing else right now";
 
 function Choice({
   legend,
@@ -76,6 +86,7 @@ export function PfAuditForm() {
   const [account, setAccount] = useState("");
   const [status, setStatus] = useState("");
   const [amount, setAmount] = useState("");
+  const [also, setAlso] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
   const [eventId] = useState(() => newEventId());
@@ -95,6 +106,7 @@ export function PfAuditForm() {
     account && `Account: ${account}`,
     status && `Status: ${status}`,
     amount && `Amount: ${amount}`,
+    also.length > 0 && !also.includes(NOTHING_ELSE) && `Also pending: ${also.join(", ")}`,
   ]
     .filter(Boolean)
     .join(". ");
@@ -128,6 +140,7 @@ export function PfAuditForm() {
       phone: value,
       name: name.trim(),
       intent: "pf_audit",
+      ...(also.length ? { tasks: also } : {}),
       taskText: "Free PF audit" + (summary ? `: ${summary}` : ""),
       taskHandoff: "membership",
       page: "/pfmoneytasks/",
@@ -138,6 +151,7 @@ export function PfAuditForm() {
       account: account || "",
       status: status || "",
       amount: amount || "",
+      also: also.join("|"),
     });
     track("Lead", { content_name: "pf_audit" }, eventId);
     trackCustom("StartedConversation", { route: "whatsapp", placement: "pf_audit" });
@@ -149,6 +163,34 @@ export function PfAuditForm() {
       <Choice legend="Which account?" options={ACCOUNT} value={account} onChange={setAccount} />
       <Choice legend="Where are you with it?" options={STATUS} value={status} onChange={setStatus} />
       <Choice legend="Roughly how much is in it?" options={AMOUNT} value={amount} onChange={setAmount} />
+
+      <fieldset className="pf-choice">
+        <legend>
+          Anything else pending in India? <span className="pf-opt">Optional</span>
+        </legend>
+        <div className="pf-chips">
+          {[...ELSE, NOTHING_ELSE].map((o) => {
+            const on = also.includes(o);
+            return (
+              <button
+                type="button"
+                key={o}
+                aria-pressed={on}
+                className={"pf-chip" + (on ? " on" : "")}
+                onClick={() =>
+                  setAlso((cur) => {
+                    if (o === NOTHING_ELSE) return on ? [] : [NOTHING_ELSE];
+                    const rest = cur.filter((x) => x !== NOTHING_ELSE);
+                    return on ? rest.filter((x) => x !== o) : [...rest, o];
+                  })
+                }
+              >
+                {o}
+              </button>
+            );
+          })}
+        </div>
+      </fieldset>
 
       <div className="pf-field">
         <label htmlFor="pf-name">Your name</label>
