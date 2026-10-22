@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Wordmark } from "./Wordmark";
 import { WhatsAppLink } from "./WhatsAppLink";
-import { SUPPORT_WHATSAPP } from "@/lib/config";
+import { SALES_WHATSAPP } from "@/lib/config";
 
 /**
  * Minimal footer for the waitlist stage. "Contact us" opens a WhatsApp chat to
@@ -71,7 +71,9 @@ export function Footer({
                 arrived with no page, campaign or creative attached. */}
             <WhatsAppLink
               placement="footer"
-              phone={SUPPORT_WHATSAPP}
+              // Sales, since Oct 2026: the site now uses two numbers only,
+              // sales for questions and the assistant for task handoffs.
+              phone={SALES_WHATSAPP}
               className="footer-link"
               showIcon={false}
               style={{ display: "inline-flex", alignItems: "center", gap: 7 }}

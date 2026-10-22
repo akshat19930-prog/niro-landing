@@ -3,181 +3,195 @@ import { Nav } from "@/components/ds/Nav";
 import { Footer } from "@/components/ds/Footer";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
-import { PLANS, NIRO_LITE } from "@/lib/content";
+import { NIRO_LITE } from "@/lib/content";
 import { PfAuditForm } from "./PfAuditForm";
+import { PfLink } from "./PfLink";
 import "./pf.css";
 
 /**
- * /pfmoneytasks - EPF and PPF recovery for Indians abroad.
+ * /pfmoneytasks - the free PF audit, for a campaign aimed at Indians abroad
+ * (mostly 30 to 40, Gulf and other served markets; North America is out of
+ * the ad targeting but not out of the form).
  *
- * EPFO is the hero because it is most of the demand; PPF is in scope.
+ * One offer, in two stages, kept visibly apart:
+ *  1. The free audit: review, diagnosis, action plan. No purchase needed.
+ *     Delivered within 24 to 48 hours of receiving the records it needs.
+ *  2. Optional paid execution, through Niro Lite only ($300 once, 20 tasks,
+ *     12 months). There is no standalone PF purchase, and the monthly
+ *     membership is deliberately not pitched in this flow.
  *
- * Every number on this page is an official all-India figure with its source
- * printed next to it. None is NRI-specific because nobody publishes an NRI
- * split; the page says so rather than presenting a modelled estimate as fact.
+ * Proof: Kustodian's own record, 2,000+ EPFO cases resolved, attributed to
+ * Kustodian, confirmed by the founders and with Kustodian's OK to be named
+ * (Oct 2026). It is not Niro's case count, not
+ * an NRI-only figure, and implies no success rate or timeline. Two national
+ * figures stay, each linked to the report it comes from; the interest-loss
+ * and tax claims and the diaspora figure are gone.
  *
- * The hero says the money "may have stopped earning", not "isn't growing":
- * most EPF keeps earning until 58, so the true claims are the narrower ones.
- * Permanent migration abroad is an inoperative trigger, inoperative accounts
- * earn nothing, irregular NRI PPF accounts have earned 0% since 1 Oct 2024,
- * and EPF interest after you stop working is taxable.
+ * Credentials: members log in and enter OTPs themselves. Passwords and OTPs
+ * for the PF case are never shared with Niro.
  *
- * Partner figures are the partner's own published ones ("families
- * supported"), not resolutions. Fees are as agreed: members have up to
- * Rs 4,500 of the partner's fee covered; Niro Lite counts a case as 3 or 6
- * tasks; the longest cases are quoted separately.
+ * Lite task counts (3 or 6 tasks for a PF case, the specialist fee included,
+ * the longest cases quoted separately) are the ones in NIRO_LITE_COUNTS in
+ * lib/content.ts, set by the founders on 22 Oct 2026, and match /lite.
  */
 export const metadata: Metadata = {
-  title: "Get your PF money out of India - Niro",
+  title: "Free PF audit for Indians abroad - Niro",
   description:
-    "Your EPF or PPF in India may have stopped earning. Niro and its resolution partner recover it for you, starting with a free audit.",
+    "Left PF money behind when you moved abroad? Get a free audit of your EPF or PPF in 24 to 48 hours: the status, any blockers, and the steps to access it.",
   alternates: { canonical: "https://tellniro.com/pfmoneytasks/" },
   openGraph: {
-    title: "Your PF money in India may have stopped earning",
+    title: "Left PF money behind when you moved abroad?",
     description:
-      "A free audit, then Niro gets your EPF or PPF out, with minutes of effort at your end.",
+      "A free PF audit in 24 to 48 hours: what is blocking your money, and the steps to access it.",
     type: "website",
     url: "https://tellniro.com/pfmoneytasks/",
   },
 };
 
-const IDLE: { label: string; value: string }[] = [
-  { label: "Inoperative EPF account", value: "0% interest" },
-  { label: "NRI PPF account gone irregular, since Oct 2024", value: "0% interest" },
-  { label: "EPF interest after you stop working", value: "Taxable" },
+const ANSWERS: string[] = [
+  "What is the current status of your PF account?",
+  "Is anything blocking access to the money?",
+  "What steps and documents are needed next?",
 ];
 
 const BLOCKERS: { icon: IconName; title: string; body: string }[] = [
   {
     icon: "phone",
-    title: "A portal you can't get into",
-    body: "OTPs go to an Indian number you no longer have, and the portal logs you out or stalls just when you get through.",
+    title: "Records without your Indian number",
+    body: "The portal sends codes to the mobile registered with EPFO. If that number has lapsed, getting your passbook and claim history takes a different route.",
   },
   {
     icon: "users",
-    title: "An employer you can't reach",
-    body: "Your exit date was never marked, or the company has closed. Most claims can't move until that is fixed.",
+    title: "Employment details that don't match",
+    body: "A missing exit date, a closed employer, or a name or date of birth that differs across records can each hold a claim until it is corrected.",
   },
   {
     icon: "wallet",
-    title: "A bank visit, from abroad",
-    body: "EPFO pays only into an Indian resident or NRO account. PPF usually means forms at the branch that holds it.",
+    title: "Bank requirements from abroad",
+    body: "EPF is paid into an Indian resident or NRO account, not an NRE account or a bank abroad. The account on record has to be one that works.",
   },
   {
     icon: "file-text",
-    title: "Rules nobody explains",
-    body: "A name spelt differently on Aadhaar and PAN, the wrong form, the wrong exit reason. Each one is a rejection and another month.",
-  },
-];
-
-const STATS: { value: string; label: string; source: string }[] = [
-  {
-    value: "₹9,330 cr",
-    label: "sitting in inoperative EPF accounts",
-    source: "As of 31 March 2026. Government reply in Parliament, July 2026.",
-  },
-  {
-    value: "1 in 5",
-    label: "EPF claims rejected in 2024-25",
-    source: "About 1.74 crore of 7.96 crore claims. EPFO annual report.",
-  },
-  {
-    value: "18.5 M",
-    label: "Indians living outside India",
-    source: "UN DESA migrant stock, 2024.",
+    title: "Rejections without a clear reason",
+    body: "A rejected claim comes with a short code, not an explanation. Working out what it means, and what to file next, is most of the follow-up.",
   },
 ];
 
 const YOU: string[] = [
-  "Tell us about your account in a two-minute form.",
-  "Share your UAN login and a few documents on WhatsApp.",
-  "Approve one-time codes on your phone when a step needs one.",
+  "Answer three questions below, then continue on WhatsApp.",
+  "Log in to the EPFO portal yourself and send the records we ask for, or let us guide you through getting them.",
+  "Enter one-time codes yourself, and approve each step before it is taken.",
 ];
 
-const US: string[] = [
-  "Audit your passbook, service history and KYC.",
-  "Fix the mismatches and chase your old employer.",
-  "File the right claim, and handle the PPF branch.",
-  "Update you on WhatsApp every week until the money lands.",
+const NIRO: string[] = [
+  "Review your records and explain what is blocking access.",
+  "Coordinate corrections and submissions with our specialist partner.",
+  "Follow up with EPFO, your former employer and your bank.",
+  "Keep you updated on WhatsApp at every stage.",
 ];
 
-/* The rest of Niro, shown so a PF lead is not surprised when sales mentions
-   it. Not a call to action: one plain link to the full list. */
-const BEYOND: { icon: IconName; t: string }[] = [
-  { icon: "heart-pulse", t: "Doctor visits for your parents" },
-  { icon: "shield-check", t: "Emergency response" },
-  { icon: "file-text", t: "Aadhaar and pension life certificates" },
-  { icon: "wallet", t: "Bank KYC and dormant accounts" },
-  { icon: "home", t: "Property registration and tenants" },
-  { icon: "wrench", t: "Cooks, maids and home repairs" },
-  { icon: "plane", t: "Travel and visas" },
-  { icon: "users", t: "A fellow traveller for your parents" },
+const PREVIEW: { label: string; body: string }[] = [
+  {
+    label: "Account status",
+    body: "Which accounts sit under your UAN, and whether each one is active, settled or inoperative.",
+  },
+  {
+    label: "Findings and supporting records",
+    body: "Anything that would hold a claim, with the record that shows it: a missing exit date, a mismatch, an earlier rejection.",
+  },
+  {
+    label: "Steps and documents required",
+    body: "What to correct or file, in order, and which documents each step needs.",
+  },
+  {
+    label: "Anything still needing confirmation",
+    body: "What the records could not settle yet, and what would confirm it.",
+  },
+];
+
+const LITE_USES: { icon: IconName; t: string }[] = [
+  { icon: "wallet", t: "Bank KYC or a dormant account" },
+  { icon: "file-text", t: "Aadhaar or other document updates" },
+  { icon: "wrench", t: "Repairs or household help for parents" },
+  { icon: "home", t: "Property paperwork or tenant coordination" },
 ];
 
 const FAQ: { q: string; a: string }[] = [
   {
-    q: "Why do you need my UAN password, and is it safe?",
-    a: "Most stuck claims go wrong in the service history, the KYC or the exit date, and the login is how we see them. It gives view access. Filing a claim, or anything else that moves money, still needs a one-time code sent to your phone, so nothing happens without you. Only the person working your case uses it, for your case only, and you can change the password the day the case closes. We never ask for bank PINs, card details or net-banking logins.",
+    q: "What does the free audit include?",
+    a: "A review of your PF records and a written action plan on WhatsApp: the current status of each account, anything blocking access to the money and the record that shows it, the steps and documents needed next, and anything that still needs confirming. It is free, and there is no purchase required.",
   },
   {
-    q: "Does this cover PPF too?",
-    a: "Yes. EPF is most of what we see, but we also close or withdraw PPF accounts, including ones that went irregular after you became an NRI, which is when they stop earning. PPF usually involves the bank or post office that holds the account, and we handle that part.",
+    q: "When do the 24 to 48 hours start?",
+    a: "When we have the records needed for review. On WhatsApp we first tell you which records those are, usually your passbook and service history. If a record has to be obtained first, for example because the mobile registered with EPFO has lapsed, the 24 to 48 hours start once it is in.",
   },
   {
-    q: "Do I need an Indian bank account?",
-    a: "EPFO pays only into an Indian resident or NRO account, not an NRE one and not abroad. If you don't have one that works, the audit tells you, and we help you set it up.",
+    q: "Do I need a membership for the audit?",
+    a: "No. The audit is free for anyone, and asking for one does not start any paid work.",
   },
   {
-    q: "What if my case can't be fixed?",
-    a: "Then the audit tells you so, before you commit to anything. The audit is free, and we would rather say a case can't be won than take it on and leave you waiting.",
+    q: "What if I want Niro to handle the case?",
+    a: `Paid help is through Niro Lite: ${NIRO_LITE.price} paid once for 20 tasks, valid for 12 months. There is no separate PF-only purchase. A PF case uses 3 or 6 tasks, depending on how complex it is, and the specialist's fee is included for most cases. The rare case that can run to five months is quoted separately. We tell you all of this before you buy.`,
+  },
+  {
+    q: "Do you handle PPF too?",
+    a: "Yes. EPF is most of what we see, but the audit also covers PPF accounts, including ones opened before you became an NRI. PPF usually involves the bank or post office that holds the account, and the audit sets out what that branch needs.",
+  },
+  {
+    q: "Do I have to share my UAN password or OTPs?",
+    a: "No. You log in to the EPFO portal yourself and send us the records we ask for, or we guide you through getting them. When a step needs a one-time code, you enter it yourself. Your passwords and OTPs are never shared with Niro, and we never ask for bank PINs, card details, net-banking or UPI logins.",
+  },
+  {
+    q: "What if it isn't clear yet whether the money can be accessed?",
+    a: "Then the audit says what is known, what is not, and which record or confirmation would settle it. You decide what to do next, with no obligation, and we don't start paid work on a case we can't yet assess.",
   },
 ];
 
 export default function PfMoneyPage() {
   return (
     <>
-      <Nav cta="Get a free audit" ctaHref="#audit" />
+      <Nav cta="Get my free PF audit" ctaHref="#audit" />
       <main className="pf">
-        {/* ----------------------------------------------------- hero */}
+        {/* ------------------------------------------- 1. hero + deliverables */}
         <section className="pf-hero">
           <div className="pf-jaali" aria-hidden="true" />
           <div className="pf-wrap pf-hero-grid">
             <div>
-              <Eyebrow>For Indians abroad &middot; EPF and PPF</Eyebrow>
-              <h1 className="pf-h1">
-                Your PF money in India may have stopped earning.
-              </h1>
-              <p className="pf-lead">
-                Once you move abroad, an EPF account can go inoperative and earn
-                nothing. What it does earn after you stop working is taxed. All
-                the while, the rest of your portfolio keeps compounding.
+              <Eyebrow>For Indians abroad</Eyebrow>
+              <h1 className="pf-h1">Left PF money behind when you moved abroad?</h1>
+              <p className="pf-lead pf-lead-strong">
+                Find out what&rsquo;s needed to access it, with a free PF audit in
+                24 to 48 hours.
               </p>
               <p className="pf-lead">
-                Niro gets it out for you, with minutes of effort at your end.
+                We review your account, identify any blockers and explain the
+                steps to take. If you choose Niro to handle the follow-ups, you
+                can continue through Niro Lite.
               </p>
-              <a href="#audit" className="btn btn-primary btn-lg">
-                Get a free PF audit
-              </a>
+              <PfLink href="#audit" kind="cta" placement="hero" className="btn btn-primary btn-lg pf-hero-btn">
+                Get my free PF audit
+              </PfLink>
+              <p className="pf-support">
+                Free diagnosis. No purchase required. Delivered within 24 to 48
+                hours of receiving the records needed for review.
+              </p>
             </div>
-            <div className="pf-card pf-idle">
-              <div className="pf-card-label">What parked PF money earns</div>
-              <ul>
-                {IDLE.map((r) => (
-                  <li key={r.label}>
-                    <span>{r.label}</span>
-                    <b>{r.value}</b>
-                  </li>
+            <div className="pf-card pf-answers">
+              <h2 className="pf-answers-h">Your free audit answers</h2>
+              <ol>
+                {ANSWERS.map((a) => (
+                  <li key={a}>{a}</li>
                 ))}
-              </ul>
-              <p className="pf-note">
-                EPF stays live in some cases until you turn 58. The free audit
-                tells you which applies to yours.
+              </ol>
+              <p className="pf-answers-foot">
+                A clear action plan, delivered on WhatsApp within 24 to 48 hours
+                of receiving the required records.
               </p>
             </div>
           </div>
         </section>
 
-        {/* ----------------------------------------------------- why stuck */}
+        {/* ------------------------------------------- 2. obstacles + delegation */}
         <section className="pf-sec pf-inset">
           <div className="pf-wrap">
             <Eyebrow>Why it stays stuck</Eyebrow>
@@ -193,40 +207,25 @@ export default function PfMoneyPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* ----------------------------------------------------- numbers */}
-        <section className="pf-sec pf-dark" data-theme="dark">
-          <div className="pf-wrap">
-            <Eyebrow>You are not the only one</Eyebrow>
-            <h2 className="pf-h2">A lot of money is parked this way.</h2>
-            <div className="pf-stats">
-              {STATS.map((s) => (
-                <div key={s.value} className="pf-stat">
-                  <div className="pf-stat-v">{s.value}</div>
-                  <div className="pf-stat-l">{s.label}</div>
-                  <div className="pf-stat-s">{s.source}</div>
-                </div>
-              ))}
-            </div>
             <p className="pf-fine">
-              These are all-India figures. Nobody publishes a split for NRIs,
-              who are among the least able to fix an account from abroad.
+              You are not alone: &#8377;9,330 crore sat in inoperative EPF
+              accounts on 31 March 2026, according to the government&rsquo;s
+              reply in Parliament (
+              <a href="https://www.outlookmoney.com/personal-finance/lic-unclaimed-funds-cross-rs-7300-crore-epfo-inoperative-accounts-at-rs-9330-crore" target="_blank" rel="noopener noreferrer">
+                Outlook Money
+              </a>
+              ), and about 1 in 5 EPF claims filed in 2024-25 was rejected,
+              according to EPFO&rsquo;s annual report (
+              <a href="https://www.businesstoday.in/personal-finance/news/story/epfos-instant-pf-withdrawal-promise-has-a-catch-one-in-five-claims-still-gets-rejected-541466-2026-07-07" target="_blank" rel="noopener noreferrer">
+                Business Today
+              </a>
+              ). Both are all-India figures.
             </p>
-          </div>
-        </section>
 
-        {/* ----------------------------------------------------- how */}
-        <section className="pf-sec">
-          <div className="pf-wrap">
-            <Eyebrow>How Niro does it</Eyebrow>
-            <h2 className="pf-h2">Minutes of your time. Weeks of ours.</h2>
-            <p className="pf-p">
-              Cases are worked by our resolution partner, who has supported more
-              than 10,000 families with stuck provident fund and other claims.
-              Niro runs everything you see, on one WhatsApp thread.
-            </p>
+            <h3 className="pf-h3">
+              You provide the records and approvals. Niro coordinates the
+              paperwork and follow-ups.
+            </h3>
             <div className="pf-split">
               <div className="pf-card">
                 <div className="pf-card-label">What you do</div>
@@ -240,9 +239,9 @@ export default function PfMoneyPage() {
                 </ul>
               </div>
               <div className="pf-card">
-                <div className="pf-card-label">What we do</div>
+                <div className="pf-card-label">What Niro does</div>
                 <ul className="pf-list">
-                  {US.map((t) => (
+                  {NIRO.map((t) => (
                     <li key={t}>
                       <Icon name="check" size={15} />
                       <span>{t}</span>
@@ -251,73 +250,134 @@ export default function PfMoneyPage() {
                 </ul>
               </div>
             </div>
+          </div>
+        </section>
 
-            <div className="pf-beyond">
-              <h3>PF is one of 50+ things Niro handles for Indians abroad.</h3>
-              <p>
-                The same WhatsApp thread, for you and for your parents in India.
-              </p>
-              <ul>
-                {BEYOND.map((b) => (
-                  <li key={b.t}>
-                    <Icon name={b.icon} size={16} />
-                    <span>{b.t}</span>
+        {/* ------------------------------------------- 3. audit preview */}
+        <section className="pf-sec">
+          <div className="pf-wrap pf-narrow">
+            <Eyebrow>What you receive</Eyebrow>
+            <h2 className="pf-h2">An action plan, not a status update.</h2>
+            <div className="pf-card pf-preview" aria-label="Example audit format">
+              <div className="pf-preview-top">
+                <span className="pf-card-label">Example audit format</span>
+                <span className="pf-preview-note">Headings shown; your audit fills them in</span>
+              </div>
+              <ol>
+                {PREVIEW.map((p) => (
+                  <li key={p.label}>
+                    <b>{p.label}</b>
+                    <span>{p.body}</span>
                   </li>
                 ))}
-              </ul>
-              <a href="/family-guide/" className="pf-beyond-link">
-                <span>
-                  See everything Niro does <span aria-hidden="true">&rarr;</span>
-                </span>
-              </a>
+              </ol>
+            </div>
+            <p className="pf-fine">
+              Not every account has a blocker, and some records take longer than
+              48 hours to obtain. The audit says which applies to yours.
+            </p>
+          </div>
+        </section>
+
+        {/* ------------------------------------------- 4. Kustodian */}
+        <section className="pf-sec pf-inset">
+          <div className="pf-wrap pf-narrow">
+            <Eyebrow>Our specialist partner</Eyebrow>
+            <h2 className="pf-h2">Specialist experience behind your PF case</h2>
+            <div className="pf-proof">
+              <p className="pf-proof-line">
+                2,000+ EPFO cases resolved by Kustodian, our specialist partner.
+              </p>
+              <p>
+                Kustodian brings the EPFO expertise. Niro coordinates your case
+                and keeps you informed on WhatsApp.
+              </p>
             </div>
           </div>
         </section>
 
-        {/* ----------------------------------------------------- steps + form */}
-        <section className="pf-sec pf-inset" id="audit">
-          <div className="pf-wrap pf-steps-grid">
-            <div>
-              <Eyebrow>How it works</Eyebrow>
-              <h2 className="pf-h2">A free audit first. Then almost free.</h2>
-              <ol className="pf-steps">
-                <li>
-                  <b>Free audit.</b> We look at your account and tell you what is
-                  wrong, how complex the case is and what it takes. No
-                  obligation.
-                </li>
-                <li>
-                  <b>Almost free as a Niro member.</b> Members have up to
-                  &#8377;4,500 of the partner&rsquo;s fee covered, which is most
-                  simpler cases. On{" "}
-                  <a href="/lite/">Niro Lite</a>, a case counts as 3 or 6 of your
-                  20 tasks. Hiring help yourself, a complex case can cost
-                  &#8377;10,000 to &#8377;20,000.
-                  {/* Said here, before the audit, so the price is never a
-                      surprise on the call that follows it. */}
-                  <span className="pf-price">
-                    Niro membership from {PLANS[1].price} a month, billed
-                    quarterly, or Niro Lite at {NIRO_LITE.price} for 20 tasks.
-                    Both cover far more than PF.
-                  </span>
-                </li>
-                <li>
-                  <b>We run it.</b> Simpler cases usually take three to eight
-                  weeks. You hear from us every week until the money is in your
-                  account. The rare case that runs to five months is quoted
-                  separately.
-                </li>
-              </ol>
+        {/* ------------------------------------------- 5. free vs paid */}
+        <section className="pf-sec">
+          <div className="pf-wrap">
+            <Eyebrow>How it works</Eyebrow>
+            <h2 className="pf-h2">Understand your case free. Decide about help afterwards.</h2>
+            <div className="pf-stages">
+              <div className="pf-card pf-stage pf-stage-free">
+                <div className="pf-card-label">Stage 1 &middot; Free</div>
+                <h3>Free audit</h3>
+                <p>
+                  Review, diagnosis and an action plan. Your free audit gives
+                  you the diagnosis and steps needed to access your PF money.
+                  There&rsquo;s no obligation to join.
+                </p>
+              </div>
+              <div className="pf-card pf-stage">
+                <div className="pf-card-label">Stage 2 &middot; Optional, paid</div>
+                <h3>Niro handles the execution</h3>
+                <p>
+                  The corrections, submissions and follow-ups you agree to, through
+                  Niro Lite: a one-time {NIRO_LITE.price} purchase for 20 tasks,
+                  valid for 12 months.
+                </p>
+              </div>
             </div>
+            <p className="pf-p pf-after">
+              Requesting an audit does not start paid work. Before you buy,
+              we&rsquo;ll explain how many tasks your PF case uses and any
+              additional specialist charges. A PF case usually uses 3 or 6 of
+              the 20 tasks, depending on how complex it is, with the
+              specialist&rsquo;s fee included; the rare case that can run to five
+              months is quoted separately.{" "}
+              <PfLink href="/lite/" kind="lite" placement="stages" className="pf-text-link">
+                How Niro Lite works
+              </PfLink>
+            </p>
+          </div>
+        </section>
+
+        {/* ------------------------------------------- 6. broader Lite value */}
+        <section className="pf-sec pf-inset">
+          <div className="pf-wrap">
+            <Eyebrow>Niro Lite</Eyebrow>
+            <h2 className="pf-h2">
+              Start with your PF. Hand over the other India tasks you keep
+              postponing.
+            </h2>
+            <p className="pf-p">
+              Use your remaining Lite tasks for things you or your family need
+              done in India.
+            </p>
+            <ul className="pf-uses">
+              {LITE_USES.map((u) => (
+                <li key={u.t} className="pf-card">
+                  <Icon name={u.icon} size={18} />
+                  <span>{u.t}</span>
+                </li>
+              ))}
+            </ul>
+            <PfLink href="/family-guide/" kind="guide" placement="lite_uses" className="pf-text-link pf-guide-link">
+              See what else Niro handles
+            </PfLink>
+          </div>
+        </section>
+
+        {/* ------------------------------------------- 7. intake */}
+        <section className="pf-sec" id="audit">
+          <div className="pf-wrap pf-form-wrap">
             <div className="pf-card pf-form-card">
-              <h3 className="pf-form-h">Get your free PF audit</h3>
+              <Eyebrow>Free PF audit</Eyebrow>
+              <h2 className="pf-form-h">Get your free PF audit</h2>
+              <p className="pf-form-sub">
+                Three quick questions, then continue on WhatsApp. No passwords,
+                OTPs or documents needed here.
+              </p>
               <PfAuditForm />
             </div>
           </div>
         </section>
 
-        {/* ----------------------------------------------------- faq */}
-        <section className="pf-sec">
+        {/* ------------------------------------------- 8. faq */}
+        <section className="pf-sec pf-inset">
           <div className="pf-wrap">
             <Eyebrow>Questions</Eyebrow>
             <h2 className="pf-h2">Before you start.</h2>
@@ -332,11 +392,27 @@ export default function PfMoneyPage() {
                 </details>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* ------------------------------------------- 9. final CTA */}
+        <section className="pf-sec pf-close">
+          <div className="pf-wrap">
+            <h2 className="pf-h2">Find out where your PF money stands.</h2>
+            <p className="pf-p">
+              Free, within 24 to 48 hours of receiving the records needed for
+              review.
+            </p>
+            <PfLink href="#audit" kind="cta" placement="final" className="btn btn-primary btn-lg">
+              Get my free PF audit
+            </PfLink>
             <p className="pf-fine pf-disclaimer">
               Niro is a family concierge service for Indians living abroad.
-              Nothing on this page is tax, legal or investment advice. Outcomes
-              and timelines depend on EPFO, your employer and your bank, which
-              we work with but do not control.
+              Kustodian is an independent company and Niro&rsquo;s EPFO
+              resolution partner; neither is affiliated with EPFO or the
+              Government of India. Nothing on this page is tax, legal or
+              investment advice. Outcomes and timelines depend on EPFO, your
+              former employer and your bank.
             </p>
           </div>
         </section>
