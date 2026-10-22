@@ -123,7 +123,15 @@
   display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
 }
 .pf-cats .pf-ico { width: 44px; height: 44px; }
-.pf-cats p { color: var(--text-muted) !important; }
+.pf-cats h3 { margin: 0; }
+/* on a phone, icon beside the title so six cards stay a short scroll */
+@media (max-width: 640px) {
+  .pf-cats { gap: 10px; }
+  .pf-cats .pf-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; }
+  .pf-cats .pf-ico { margin: 0; flex-shrink: 0; width: 40px; height: 40px; }
+  .pf-cats h3 { font-size: var(--text-base); }
+}
+.pf-guide-link { display: inline-flex; padding: 11px 0; margin-top: 12px; font-size: var(--text-sm); }
 
 /* the form */
 .pf-form-wrap { max-width: 560px; }
