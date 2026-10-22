@@ -27,8 +27,10 @@ import "./pf.css";
  * figures stay, each linked to the report it comes from; the interest-loss
  * and tax claims and the diaspora figure are gone.
  *
- * Credentials: members log in and enter OTPs themselves. Passwords and OTPs
- * for the PF case are never shared with Niro.
+ * Credentials, per the Niro x Kustodian external SOP (section 7): the member
+ * chooses between sharing the UAN login, sending the listed documents, or a
+ * video call on their own screen. Sharing the login is never required, and
+ * OTPs are always entered by the member.
  *
  * Lite task counts (3 or 6 tasks for a PF case, the specialist fee included,
  * the longest cases quoted separately) are the ones in NIRO_LITE_COUNTS in
@@ -79,7 +81,7 @@ const BLOCKERS: { icon: IconName; title: string; body: string }[] = [
 
 const YOU: string[] = [
   "Answer three questions below, then continue on WhatsApp.",
-  "Log in to the EPFO portal yourself and send the records we ask for, or let us guide you through getting them.",
+  "Share your UAN login, send the documents on our list, or walk us through your account on a video call: your choice.",
   "Enter one-time codes yourself, and approve each step before it is taken.",
 ];
 
@@ -116,14 +118,43 @@ const LITE_USES: { icon: IconName; t: string }[] = [
   { icon: "home", t: "Property paperwork or tenant coordination" },
 ];
 
-const FAQ: { q: string; a: string }[] = [
+/* The records the audit works from, as listed in the Niro x Kustodian
+   external SOP (EPFO case resolution, section 7, "Mandatory documents",
+   option 2: for a member not comfortable sharing credentials). */
+const DOCS_PASSBOOK: string[] = [
+  "Passbook profile details",
+  "Claims: settled, pending and rejected",
+  "Member-wise balance (passbook home page)",
+  "Passbook overview for each member ID",
+  "Yearly passbooks for each employer (a PDF per year and member ID)",
+  "Service history and service overview",
+];
+const DOCS_MEMBER: string[] = [
+  "Member profile details (View)",
+  "Service history (View)",
+  "UAN card (View)",
+  "KYC details (Manage)",
+  "Joint declaration (Manage)",
+  "Transfer claim status (Online services)",
+];
+const DOCS_ID: string[] = ["Aadhaar card", "PAN card", "A cancelled cheque"];
+
+const docList = (items: string[]) => (
+  <ul className="pf-faq-list">
+    {items.map((d) => (
+      <li key={d}>{d}</li>
+    ))}
+  </ul>
+);
+
+const FAQ: { q: string; a: React.ReactNode }[] = [
   {
     q: "What does the free audit include?",
     a: "A review of your PF records and a written action plan on WhatsApp: the current status of each account, anything blocking access to the money and the record that shows it, the steps and documents needed next, and anything that still needs confirming. It is free, and there is no purchase required.",
   },
   {
     q: "When do the 24 to 48 hours start?",
-    a: "When we have the records needed for review. On WhatsApp we first tell you which records those are, usually your passbook and service history. If a record has to be obtained first, for example because the mobile registered with EPFO has lapsed, the 24 to 48 hours start once it is in.",
+    a: "When we have what your case needs: your UAN login, the documents on our list, or a finished video call (see the question on passwords below). If a record has to be obtained first, for example because the mobile registered with EPFO has lapsed, the 24 to 48 hours start once it is in.",
   },
   {
     q: "Do I need a membership for the audit?",
@@ -139,7 +170,39 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Do I have to share my UAN password or OTPs?",
-    a: "No. You log in to the EPFO portal yourself and send us the records we ask for, or we guide you through getting them. When a step needs a one-time code, you enter it yourself. Your passwords and OTPs are never shared with Niro, and we never ask for bank PINs, card details, net-banking or UPI logins.",
+    a: (
+      <>
+        <span className="pf-faq-p">
+          No. There are three ways to give us what the audit needs, and you
+          choose:
+        </span>
+        <ol className="pf-faq-options">
+          <li>
+            <b>Share your UAN login,</b> along with a scanned Aadhaar card, PAN
+            card and a cancelled cheque. It is used only for your case, and you
+            can change the password as soon as the audit is done.
+          </li>
+          <li>
+            <b>Send documents instead.</b> You log in yourself and send us:
+            <span className="pf-faq-sub">From the EPFO passbook portal</span>
+            {docList(DOCS_PASSBOOK)}
+            <span className="pf-faq-sub">From the EPFO member portal</span>
+            {docList(DOCS_MEMBER)}
+            <span className="pf-faq-sub">For identity checks, scanned copies of</span>
+            {docList(DOCS_ID)}
+          </li>
+          <li>
+            <b>A video call.</b> You log in on your own phone or laptop and share
+            your screen, and we go through the account with you. No password
+            changes hands.
+          </li>
+        </ol>
+        <span className="pf-faq-p">
+          Whichever you pick, you enter any one-time code yourself, and we never
+          ask for bank PINs, card details, net-banking or UPI logins.
+        </span>
+      </>
+    ),
   },
   {
     q: "What if it isn't clear yet whether the money can be accessed?",
@@ -388,7 +451,7 @@ export default function PfMoneyPage() {
                     <span>{f.q}</span>
                     <span className="pf-plus" aria-hidden="true" />
                   </summary>
-                  <p>{f.a}</p>
+                  <div className="pf-faq-a">{f.a}</div>
                 </details>
               ))}
             </div>
