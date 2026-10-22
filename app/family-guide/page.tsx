@@ -369,9 +369,11 @@ export default function FamilyGuidePage() {
                 <p>{COVERAGE_NOTE.excludes}</p>
                 <p style={{ marginTop: 12 }}>
                   On Niro Lite, a visit counts as two tasks (three for a long
-                  one, like a hospital day), finding a tenant or a buyer as up
-                  to five, and a property registration as up to six. We tell
-                  you the number before we start.
+                  one, like a hospital day), recovering EPF money as three or
+                  six depending on the case, with the specialist partner&rsquo;s
+                  fee included, finding a tenant or a buyer as up to five, and
+                  a property registration as up to six. We tell you the number
+                  before we start.
                 </p>
                 <p style={{ marginTop: 12 }}>
                   <b>{COVERAGE_NOTE.promise}</b>

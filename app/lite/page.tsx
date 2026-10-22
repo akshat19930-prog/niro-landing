@@ -77,7 +77,7 @@ export default function TasksPackPage() {
         <h2>How tasks are counted</h2>
         <p>
           A task is one thing you want done, run to completion, not one phone
-          call. Chasing an EPF claim through four follow-ups is one task, not
+          call. Chasing a refund through four follow-ups is one task, not
           four. A few things are really a bundle of tasks, and count as more.
         </p>
         <table className="pack-counts">
@@ -94,6 +94,13 @@ export default function TasksPackPage() {
           Before we start anything that counts as more than one, we tell you
           the number and you decide. The count never changes afterwards: if a
           visit overruns, that is on us.
+        </p>
+        <p>
+          EPF recovery is worked with a specialist partner, and the 3 or 6
+          tasks include their fee, so there is nothing extra to pay. Which one
+          applies is clear after a first look at your case, and we tell you
+          before any work starts. The rare case that runs longer, up to five
+          months, is quoted separately.
         </p>
 
         <p>

@@ -463,7 +463,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "On Niro Lite, how is a task counted?",
-    a: "A task is one thing you want done, run to completion, not one phone call: a bill corrected, a cab booked, an EPF claim chased through four follow-ups is one task. A few things are really a bundle of tasks and count as more. A Niro Visit of up to four hours counts as 2, a long visit like a hospital day or a registration as 3, finding a tenant or a buyer or seller for something as up to 5, and a property registration from start to finish as up to 6. Before we start anything that counts as more than one, we tell you the number and you decide. The count never changes afterwards. The membership has no cap on tasks, so none of this applies there.",
+    a: "A task is one thing you want done, run to completion, not one phone call: a bill corrected, a cab booked, a refund chased through four follow-ups is one task. A few things are really a bundle of tasks and count as more. A Niro Visit of up to four hours counts as 2, a long visit like a hospital day or a registration as 3, recovering EPF money as 3 or 6 depending on how complex the case is, finding a tenant or a buyer or seller for something as up to 5, and a property registration from start to finish as up to 6. EPF cases are worked with a specialist partner, and the 3 or 6 tasks include their fee, so there is nothing extra to pay; which one applies is clear after a first look at the case. Before we start anything that counts as more than one, we tell you the number and you decide. The count never changes afterwards. The membership has no cap on tasks, so none of this applies there.",
   },
 ];
 
@@ -590,9 +590,13 @@ export const NIRO_LITE: Plan = {
  *  becomes "so what stops you calling everything six tasks". The count is
  *  told before the work starts and never changes afterwards. */
 export const NIRO_LITE_COUNTS: { what: string; count: string }[] = [
-  { what: "Most tasks: a bill corrected, a cab booked, a claim chased through four follow-ups", count: "1 task" },
+  { what: "Most tasks: a bill corrected, a cab booked, a refund chased through four follow-ups", count: "1 task" },
   { what: "A Niro Visit, up to four hours", count: "2 tasks" },
   { what: "A long visit: a hospital day, a registration, a visa centre", count: "3 tasks" },
+  // EPFO cases are worked with a specialist partner, whose fee is set by
+  // the case's tier after a first look. The count includes that fee, so the
+  // member pays nothing on top. The longest tier is quoted separately.
+  { what: "Recovering EPF money, depending on how complex the case is", count: "3 or 6 tasks" },
   { what: "Finding a tenant, or a buyer or seller for something (a car, a property, anything else)", count: "Up to 5 tasks" },
   { what: "Property registration, start to finish", count: "Up to 6 tasks" },
 ];
