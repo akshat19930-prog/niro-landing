@@ -1,6 +1,6 @@
-// Renders public/media/chat-pain.mp4 frame by frame against the local static build (npx serve out -l 4321).
+// Renders public/media/chat-pain-2.mp4 frame by frame against the local static build (npx serve out -l 4321).
 // Usage: node design/hero-clip-render.mjs <dir with tools/package.json> [stills], then encode the frames with:
-// ffmpeg -framerate 30 -i frames/f%04d.png -c:v libx264 -profile:v high -level:v 3.1 -pix_fmt yuv420p -crf 28 -preset veryslow -tune stillimage -g 90 -movflags +faststart -an chat-pain.mp4
+// ffmpeg -framerate 30 -i frames/f%04d.png -c:v libx264 -profile:v high -level:v 3.1 -pix_fmt yuv420p -crf 28 -preset veryslow -tune stillimage -g 90 -movflags +faststart -an chat-pain-2.mp4
 import { createRequire } from "module";
 import fs from "fs";
 const SCR = process.argv[2];
@@ -26,7 +26,7 @@ const SCREENS = [
     len: 4.0,
   },
   {
-    title: "Niro · Amma", sub: "Amma&rsquo;s 1:1 chat with Niro", chip: "Friday",
+    title: "Niro · Ankush&rsquo;s Mom", sub: "Niro, Ankush&rsquo;s Mom", chip: "Friday",
     bubbles: [
       { kind: "niro", html: "Namaste Aunty! How is the knee pain this week, on a scale of 10? 10 being the worst.", time: "09:00", at: 0 },
       { kind: "amma", html: "8. 3 din se kaafi badha hua hai. Yoga bhi chal raha hai, par phir bhi.", time: "09:14", at: 1.3 },
@@ -110,7 +110,7 @@ await p.evaluate((css, screens) => {
     const bub = sc.bubbles.map((x, j) => {
       const k = s.bubbles[j];
       if (k <= 0) return "";
-      const name = x.kind === "niro" ? "<i>Kunal <em>from Niro</em></i>" : x.kind === "amma" ? "<i>Amma</i>" : "";
+      const name = x.kind === "niro" ? "<i>Niro</i>" : x.kind === "amma" ? "<i>Amma</i>" : "";
       return `<div class="b ${x.kind}" style="opacity:${k};transform:translateY(${(1 - k) * 14}px)">${name}${x.html}<span class="tm">${x.time}</span></div>`;
     }).join("");
     v.innerHTML = `<div class="bg"></div><div class="top"><div class="av">N</div><div class="who"><b>${sc.title}</b><span>${sc.sub}</span></div><div class="ph"></div></div><div class="screen"><div class="chip">${sc.chip}</div>${bub}</div><div class="veil" style="opacity:${(1 - s.vis) * 0.85}"></div>`;

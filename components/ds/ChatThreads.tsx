@@ -68,7 +68,7 @@ export function ChatThreads() {
             <p className="nchat-b nchat-me">{t.me}</p>
             {t.system && <p className="nchat-b nchat-sys">{t.system}</p>}
             <p className="nchat-b nchat-niro">
-              <i>Kunal from Niro</i>
+              <i>Niro</i>
               {t.niro}
             </p>
           </div>
