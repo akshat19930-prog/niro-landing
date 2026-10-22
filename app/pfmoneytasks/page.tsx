@@ -332,9 +332,9 @@ export default function PfMoneyPage() {
               Niro handles 50+ types of tasks for NRIs and their families, all
               over WhatsApp.
             </p>
-            {/* The home page's six categories, in its order, with the same
-                first line. No expand control here: this is context, not a
-                catalogue to browse. */}
+            {/* The home page's six categories, in its order, titles only: one
+                example task under each read as if that were all we do. No
+                expand control; the full catalogue is one link away. */}
             <ul className="pf-cats">
               {GUIDE_SCOPE.map((c) => (
                 <li key={c.title} className="pf-card">
@@ -342,10 +342,12 @@ export default function PfMoneyPage() {
                     <Icon name={c.icon} size={22} />
                   </span>
                   <h3>{c.title}</h3>
-                  <p>{c.items[0]?.t}</p>
                 </li>
               ))}
             </ul>
+            <PfLink href="/family-guide/" kind="guide" placement="about_niro" className="pf-text-link pf-guide-link">
+              See all 50+ tasks in the family guide
+            </PfLink>
           </div>
         </section>
 
