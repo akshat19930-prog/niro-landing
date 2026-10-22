@@ -65,10 +65,6 @@
   mask-image: linear-gradient(180deg, transparent, black 30%, black 70%, transparent);
   -webkit-mask-image: linear-gradient(180deg, transparent, black 30%, black 70%, transparent);
 }
-.pf-hero-grid {
-  display: grid; gap: 40px; align-items: center;
-  grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr));
-}
 .pf-hero-btn { margin-top: 12px; }
 .pf-support { font-size: var(--text-sm); line-height: 1.55; color: var(--text-muted); margin: 14px 0 0; max-width: 460px; }
 
@@ -92,31 +88,6 @@
   background: var(--brand-soft); color: var(--brand);
 }
 
-/* what the audit answers, beside the hero */
-.pf-answers { border-color: var(--accent); box-shadow: var(--shadow-2); }
-.pf-answers-h {
-  font-family: var(--font-display); font-size: var(--text-xl); font-weight: 500;
-  color: var(--text-strong); margin: 0 0 14px; line-height: 1.25;
-}
-.pf-answers ol { list-style: none; margin: 0; padding: 0; counter-reset: pfa; }
-.pf-answers li {
-  position: relative; counter-increment: pfa; padding: 12px 0 12px 40px;
-  border-top: 1px solid var(--border);
-  font-size: var(--text-base); line-height: 1.45; color: var(--text-strong);
-}
-.pf-answers li:first-child { border-top: none; }
-.pf-answers li::before {
-  content: counter(pfa); position: absolute; left: 0; top: 11px;
-  width: 26px; height: 26px; border-radius: 50%;
-  background: var(--brand-soft); color: var(--brand);
-  display: flex; align-items: center; justify-content: center;
-  font-size: var(--text-sm); font-weight: 600;
-}
-.pf-answers-foot {
-  margin: 12px 0 0 !important; padding-top: 14px; border-top: 1px solid var(--border);
-  font-size: var(--text-sm) !important; color: var(--text-muted) !important;
-}
-
 .pf-grid {
   display: grid; gap: 16px;
   grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
@@ -130,27 +101,6 @@
 .pf-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .pf-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9375rem; line-height: 1.5; color: var(--text-body); }
 .pf-list svg { color: var(--brand); flex-shrink: 0; margin-top: 3px; }
-
-/* the example audit format */
-.pf-preview { padding: 0; overflow: hidden; }
-.pf-preview-top {
-  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px;
-  padding: 16px var(--space-5); background: var(--bg-inset); border-bottom: 1px solid var(--border);
-}
-.pf-preview-top .pf-card-label { margin: 0; }
-.pf-preview-note { font-size: var(--text-xs); color: var(--text-muted); }
-.pf-preview ol { list-style: none; margin: 0; padding: 0; counter-reset: pfp; }
-.pf-preview li {
-  counter-increment: pfp; display: grid; grid-template-columns: 28px 1fr; gap: 2px 12px;
-  padding: 16px var(--space-5); border-top: 1px solid var(--border);
-}
-.pf-preview li:first-child { border-top: none; }
-.pf-preview li::before {
-  content: counter(pfp); grid-row: span 2;
-  font-family: var(--font-display); font-size: var(--text-lg); color: var(--accent-strong); line-height: 1.2;
-}
-.pf-preview b { font-size: var(--text-base); font-weight: 600; color: var(--text-strong); }
-.pf-preview span { font-size: 0.9375rem; line-height: 1.55; color: var(--text-body); }
 
 /* Kustodian */
 .pf-proof { border-left: 3px solid var(--accent); padding: 4px 0 4px 20px; }
@@ -166,19 +116,14 @@
   grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
 }
 .pf-stage-free { border-color: var(--brand); box-shadow: var(--shadow-2); }
-.pf-after { margin-top: 20px; max-width: 720px; }
 
-/* what remaining Lite tasks can do */
-.pf-uses {
-  list-style: none; margin: 0 0 8px; padding: 0;
-  display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+/* about Niro: the home page's six categories, read-only */
+.pf-cats {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
 }
-.pf-uses li {
-  display: flex; gap: 12px; align-items: center; padding: 16px 18px;
-  font-size: var(--text-base); line-height: 1.4; color: var(--text-strong); box-shadow: none;
-}
-.pf-uses li svg { color: var(--brand); flex-shrink: 0; }
-.pf-guide-link { display: inline-flex; padding: 11px 0; font-size: var(--text-sm); }
+.pf-cats .pf-ico { width: 44px; height: 44px; }
+.pf-cats p { color: var(--text-muted) !important; }
 
 /* the form */
 .pf-form-wrap { max-width: 560px; }
