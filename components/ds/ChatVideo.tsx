@@ -5,6 +5,12 @@ import { useEffect, useRef } from "react";
 /**
  * Looping WhatsApp-chat demo video (muted autoplay, no controls).
  *
+ * The clip tells one story, the pain checker, across three screens: Ankush
+ * sets it up, Niro checks in with his mother on Friday, and Niro comes back
+ * with physio booked for his approval. It is rendered from HTML at 760x1080,
+ * 13.4s at 1x, the same rhythm as the clip it replaced. New file names on
+ * purpose, so no cached copy of the old clip outlives the change.
+ *
  * iOS Safari is fussy about autoplay: the muted *attribute* in the SSR HTML
  * isn't always enough, so on mount we set the muted *property* and call play()
  * explicitly, and - if iOS still blocks it (e.g. Low Power Mode) - retry on the
@@ -12,11 +18,11 @@ import { useEffect, useRef } from "react";
  * video. Poster shows instantly; aspect-ratio reserves the box to avoid shift.
  */
 export function ChatVideo({
-  src = "/media/chat.mp4",
-  poster = "/media/chat-poster.webp",
+  src = "/media/chat-pain.mp4",
+  poster = "/media/chat-pain-poster.webp",
   aspect = "760 / 1080",
   maxWidth = 380,
-  ariaLabel = "A Niro WhatsApp thread cycling three requests - filing an India tax return, booking home physio for a parent, and renewing a pension life certificate - each confirmed done by Niro.",
+  ariaLabel = "A Niro WhatsApp story: Ankush sets a Friday pain checker for his mother's knee, Niro asks her on Friday and she reports 8 out of 10, and Niro books three physio sessions for next week, which Ankush approves.",
   playbackRate = 1,
 }: {
   src?: string;
@@ -42,7 +48,7 @@ export function ChatVideo({
 
     const tryPlay = () => {
       // With preload="none" nothing is fetched until we ask; kick the download
-      // here (post-hydration) so the 285KB clip never competes with the HTML,
+      // here (post-hydration) so the 345KB clip never competes with the HTML,
       // pixel, and critical JS during the first-paint window.
       if (v.preload === "none" || v.networkState === v.NETWORK_EMPTY) v.load();
       v.playbackRate = playbackRate;
