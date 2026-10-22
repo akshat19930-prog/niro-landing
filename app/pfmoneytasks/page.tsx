@@ -3,7 +3,7 @@ import { Nav } from "@/components/ds/Nav";
 import { Footer } from "@/components/ds/Footer";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
-import { NIRO_LITE } from "@/lib/content";
+import { NIRO_LITE, GUIDE_SCOPE } from "@/lib/content";
 import { PfAuditForm } from "./PfAuditForm";
 import { PfLink } from "./PfLink";
 import "./pf.css";
@@ -13,7 +13,8 @@ import "./pf.css";
  * (mostly 30 to 40, Gulf and other served markets; North America is out of
  * the ad targeting but not out of the form).
  *
- * One offer, in two stages, kept visibly apart:
+ * The first fold sells the outcome (the money back, minutes of your effort
+ * instead of weeks), not the process. One offer, in two stages:
  *  1. The free audit: review, diagnosis, action plan. No purchase needed.
  *     Delivered within 24 to 48 hours of receiving the records it needs.
  *  2. Optional paid execution, through Niro Lite only ($300 once, 20 tasks,
@@ -50,12 +51,6 @@ export const metadata: Metadata = {
   },
 };
 
-const ANSWERS: string[] = [
-  "What is the current status of your PF account?",
-  "Is anything blocking access to the money?",
-  "What steps and documents are needed next?",
-];
-
 const BLOCKERS: { icon: IconName; title: string; body: string }[] = [
   {
     icon: "phone",
@@ -90,32 +85,6 @@ const NIRO: string[] = [
   "Coordinate corrections and submissions with our specialist partner.",
   "Follow up with EPFO, your former employer and your bank.",
   "Keep you updated on WhatsApp at every stage.",
-];
-
-const PREVIEW: { label: string; body: string }[] = [
-  {
-    label: "Account status",
-    body: "Which accounts sit under your UAN, and whether each one is active, settled or inoperative.",
-  },
-  {
-    label: "Findings and supporting records",
-    body: "Anything that would hold a claim, with the record that shows it: a missing exit date, a mismatch, an earlier rejection.",
-  },
-  {
-    label: "Steps and documents required",
-    body: "What to correct or file, in order, and which documents each step needs.",
-  },
-  {
-    label: "Anything still needing confirmation",
-    body: "What the records could not settle yet, and what would confirm it.",
-  },
-];
-
-const LITE_USES: { icon: IconName; t: string }[] = [
-  { icon: "wallet", t: "Bank KYC or a dormant account" },
-  { icon: "file-text", t: "Aadhaar or other document updates" },
-  { icon: "wrench", t: "Repairs or household help for parents" },
-  { icon: "home", t: "Property paperwork or tenant coordination" },
 ];
 
 /* The records the audit works from, as listed in the Niro x Kustodian
@@ -215,40 +184,26 @@ export default function PfMoneyPage() {
     <>
       <Nav cta="Get my free PF audit" ctaHref="#audit" />
       <main className="pf">
-        {/* ------------------------------------------- 1. hero + deliverables */}
+        {/* ------------------------------------------- 1. hero: the outcome */}
         <section className="pf-hero">
           <div className="pf-jaali" aria-hidden="true" />
-          <div className="pf-wrap pf-hero-grid">
+          <div className="pf-wrap pf-narrow">
             <div>
               <Eyebrow>For Indians abroad</Eyebrow>
               <h1 className="pf-h1">Left PF money behind when you moved abroad?</h1>
               <p className="pf-lead pf-lead-strong">
-                Find out what&rsquo;s needed to access it, with a free PF audit in
-                24 to 48 hours.
+                Retrieve money from your dormant EPF/PF accounts, with minutes
+                of effort instead of weeks.
               </p>
               <p className="pf-lead">
-                We review your account, identify any blockers and explain the
-                steps to take. If you choose Niro to handle the follow-ups, you
-                can continue through Niro Lite.
+                Get a free account audit report, including the exact steps
+                needed to access the funds, within 24 to 48 hours.
               </p>
               <PfLink href="#audit" kind="cta" placement="hero" className="btn btn-primary btn-lg pf-hero-btn">
                 Get my free PF audit
               </PfLink>
               <p className="pf-support">
-                Free diagnosis. No purchase required. Delivered within 24 to 48
-                hours of receiving the records needed for review.
-              </p>
-            </div>
-            <div className="pf-card pf-answers">
-              <h2 className="pf-answers-h">Your free audit answers</h2>
-              <ol>
-                {ANSWERS.map((a) => (
-                  <li key={a}>{a}</li>
-                ))}
-              </ol>
-              <p className="pf-answers-foot">
-                A clear action plan, delivered on WhatsApp within 24 to 48 hours
-                of receiving the required records.
+                Free. No purchase required.
               </p>
             </div>
           </div>
@@ -316,32 +271,6 @@ export default function PfMoneyPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------- 3. audit preview */}
-        <section className="pf-sec">
-          <div className="pf-wrap pf-narrow">
-            <Eyebrow>What you receive</Eyebrow>
-            <h2 className="pf-h2">An action plan, not a status update.</h2>
-            <div className="pf-card pf-preview" aria-label="Example audit format">
-              <div className="pf-preview-top">
-                <span className="pf-card-label">Example audit format</span>
-                <span className="pf-preview-note">Headings shown; your audit fills them in</span>
-              </div>
-              <ol>
-                {PREVIEW.map((p) => (
-                  <li key={p.label}>
-                    <b>{p.label}</b>
-                    <span>{p.body}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-            <p className="pf-fine">
-              Not every account has a blocker, and some records take longer than
-              48 hours to obtain. The audit says which applies to yours.
-            </p>
-          </div>
-        </section>
-
         {/* ------------------------------------------- 4. Kustodian */}
         <section className="pf-sec pf-inset">
           <div className="pf-wrap pf-narrow">
@@ -363,64 +292,60 @@ export default function PfMoneyPage() {
         <section className="pf-sec">
           <div className="pf-wrap">
             <Eyebrow>How it works</Eyebrow>
-            <h2 className="pf-h2">Understand your case free. Decide about help afterwards.</h2>
+            <h2 className="pf-h2">
+              Let Niro do the weeks of chasing, until the money hits your
+              account.
+            </h2>
             <div className="pf-stages">
               <div className="pf-card pf-stage pf-stage-free">
                 <div className="pf-card-label">Stage 1 &middot; Free</div>
                 <h3>Free audit</h3>
                 <p>
-                  Review, diagnosis and an action plan. Your free audit gives
-                  you the diagnosis and steps needed to access your PF money.
-                  There&rsquo;s no obligation to join.
+                  The exact steps to access your money. Free, with no
+                  obligation.
                 </p>
               </div>
               <div className="pf-card pf-stage">
-                <div className="pf-card-label">Stage 2 &middot; Optional, paid</div>
-                <h3>Niro handles the execution</h3>
+                <div className="pf-card-label">Stage 2 &middot; With Niro Lite</div>
+                <h3>Niro handles the weeks of effort, until the money hits your account</h3>
                 <p>
-                  The corrections, submissions and follow-ups you agree to, through
-                  Niro Lite: a one-time {NIRO_LITE.price} purchase for 20 tasks,
-                  valid for 12 months.
+                  Sign up for{" "}
+                  <PfLink href="/lite/" kind="lite" placement="stages" className="pf-text-link">
+                    Niro Lite
+                  </PfLink>{" "}
+                  to get this done, along with 50+ other kinds of tasks.
                 </p>
               </div>
             </div>
-            <p className="pf-p pf-after">
-              Requesting an audit does not start paid work. Before you buy,
-              we&rsquo;ll explain how many tasks your PF case uses and any
-              additional specialist charges. A PF case usually uses 3 or 6 of
-              the 20 tasks, depending on how complex it is, with the
-              specialist&rsquo;s fee included; the rare case that can run to five
-              months is quoted separately.{" "}
-              <PfLink href="/lite/" kind="lite" placement="stages" className="pf-text-link">
-                How Niro Lite works
-              </PfLink>
-            </p>
           </div>
         </section>
 
-        {/* ------------------------------------------- 6. broader Lite value */}
+        {/* ------------------------------------------- 6. about Niro */}
         <section className="pf-sec pf-inset">
           <div className="pf-wrap">
-            <Eyebrow>Niro Lite</Eyebrow>
+            <Eyebrow>About Niro</Eyebrow>
             <h2 className="pf-h2">
-              Start with your PF. Hand over the other India tasks you keep
-              postponing.
+              Niro is a family assistant, purpose-built for Indians living
+              abroad.
             </h2>
             <p className="pf-p">
-              Use your remaining Lite tasks for things you or your family need
-              done in India.
+              Niro handles 50+ types of tasks for NRIs and their families, all
+              over WhatsApp.
             </p>
-            <ul className="pf-uses">
-              {LITE_USES.map((u) => (
-                <li key={u.t} className="pf-card">
-                  <Icon name={u.icon} size={18} />
-                  <span>{u.t}</span>
+            {/* The home page's six categories, in its order, with the same
+                first line. No expand control here: this is context, not a
+                catalogue to browse. */}
+            <ul className="pf-cats">
+              {GUIDE_SCOPE.map((c) => (
+                <li key={c.title} className="pf-card">
+                  <span className="pf-ico">
+                    <Icon name={c.icon} size={22} />
+                  </span>
+                  <h3>{c.title}</h3>
+                  <p>{c.items[0]?.t}</p>
                 </li>
               ))}
             </ul>
-            <PfLink href="/family-guide/" kind="guide" placement="lite_uses" className="pf-text-link pf-guide-link">
-              See what else Niro handles
-            </PfLink>
           </div>
         </section>
 
@@ -461,13 +386,13 @@ export default function PfMoneyPage() {
         {/* ------------------------------------------- 9. final CTA */}
         <section className="pf-sec pf-close">
           <div className="pf-wrap">
-            <h2 className="pf-h2">Find out where your PF money stands.</h2>
+            <h2 className="pf-h2">Your family&rsquo;s personal assistant in India.</h2>
             <p className="pf-p">
-              Free, within 24 to 48 hours of receiving the records needed for
-              review.
+              Errands, bills, appointments and emergencies for your parents, and
+              your own India paperwork too. All over WhatsApp.
             </p>
-            <PfLink href="#audit" kind="cta" placement="final" className="btn btn-primary btn-lg">
-              Get my free PF audit
+            <PfLink href="/" kind="guide" placement="final_about" className="btn btn-primary btn-lg">
+              Know more about Niro
             </PfLink>
             <p className="pf-fine pf-disclaimer">
               Niro is a family concierge service for Indians living abroad.
