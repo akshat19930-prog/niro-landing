@@ -26,26 +26,44 @@ import { ASSISTANT_WHATSAPP } from "@/lib/config";
  * validates, banks the row with keepalive, and only then lets the link go.
  * A visitor who never presses send in WhatsApp is still a lead we can call.
  *
- * The three questions mirror the PF research sheet (which account, stuck or
- * not tried, rough size), so the audit starts already knowing them. They
- * travel in the row's task text and in the WhatsApp message itself.
+ * Three questions (account, claim stage, rough balance), each with a
+ * "not sure", then name and WhatsApp number. Nothing sensitive is asked here:
+ * no UAN, no password, no OTP, no documents. Other India needs are found
+ * later, in the WhatsApp thread, not on this form.
+ *
+ * Analytics: pf_audit_handoff fires only for a valid request that opens
+ * WhatsApp. It is a handoff, not a completed audit. No phone number and no
+ * account answer goes to analytics; they live in the lead row only.
  */
 
-const DIALS = ["+1", "+971", "+966", "+974", "+965", "+968", "+973", "+44", "+353", "+49", "+31", "+41", "+61", "+64", "+65", "+852", "+91"];
+/** Country codes, Gulf first because that is where the campaign runs. North
+ *  America stays in the list: the ads exclude it, but a visitor from there
+ *  must still be able to give a number we can message. Each code carries the
+ *  example shown as the placeholder, so the hint always matches the code. */
+const DIALS: { code: string; short: string; example: string }[] = [
+  { code: "+971", short: "UAE", example: "50 123 4567" },
+  { code: "+966", short: "SA", example: "50 123 4567" },
+  { code: "+974", short: "QA", example: "3312 3456" },
+  { code: "+965", short: "KW", example: "5012 3456" },
+  { code: "+968", short: "OM", example: "9212 3456" },
+  { code: "+973", short: "BH", example: "3612 3456" },
+  { code: "+44", short: "UK", example: "7400 123456" },
+  { code: "+65", short: "SG", example: "8123 4567" },
+  { code: "+61", short: "AU", example: "412 345 678" },
+  { code: "+64", short: "NZ", example: "21 123 4567" },
+  { code: "+852", short: "HK", example: "5123 4567" },
+  { code: "+49", short: "DE", example: "151 2345678" },
+  { code: "+353", short: "IE", example: "85 123 4567" },
+  { code: "+31", short: "NL", example: "6 1234 5678" },
+  { code: "+41", short: "CH", example: "78 123 45 67" },
+  { code: "+1", short: "US/CA", example: "415 555 0134" },
+  { code: "+91", short: "IN", example: "98765 43210" },
+];
+const DEFAULT_DIAL = "+971";
 
 const ACCOUNT = ["EPF", "PPF", "Both", "Not sure"];
-const STATUS = ["Tried, it's stuck", "Haven't tried yet", "Not sure"];
+const STAGE = ["Haven't tried yet", "Tried, it's stuck or rejected", "Not sure"];
 const AMOUNT = ["Under ₹2 lakh", "₹2 lakh or more", "Not sure"];
-/* Optional, several allowed. Plants that Niro does more than PF, and hands
-   sales a specific opener. Written to the row's tasks column. */
-const ELSE = [
-  "Parents' health and appointments",
-  "Bank or tax paperwork",
-  "Property or tenants",
-  "Home help and repairs",
-  "Travel and visas",
-];
-const NOTHING_ELSE = "Nothing else right now";
 
 function Choice({
   legend,
@@ -69,7 +87,7 @@ function Choice({
             role="radio"
             aria-checked={value === o}
             className={"pf-chip" + (value === o ? " on" : "")}
-            onClick={() => onChange(o)}
+            onClick={() => onChange(value === o ? "" : o)}
           >
             {o}
           </button>
@@ -81,50 +99,49 @@ function Choice({
 
 export function PfAuditForm() {
   const [name, setName] = useState("");
-  const [dial, setDial] = useState("+1");
+  const [dial, setDial] = useState(DEFAULT_DIAL);
   const [phone, setPhone] = useState("");
   const [account, setAccount] = useState("");
-  const [status, setStatus] = useState("");
+  const [stage, setStage] = useState("");
   const [amount, setAmount] = useState("");
-  const [also, setAlso] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [sent, setSent] = useState(false);
   const [eventId] = useState(() => newEventId());
 
   // This page is reached from ads and links, not through the home page, so
-  // it does its own attribution capture: the row has to carry the UTM.
+  // it does its own attribution capture: the row has to carry the UTM. The
+  // country code follows the existing time-zone guess (dialCode), and stays
+  // on the Gulf default when the guess is not one of the listed codes.
   useEffect(() => {
     captureUtm();
     captureAttribution();
     startSession();
     const guess = dialCode();
-    if (guess && DIALS.includes(guess)) setDial(guess);
+    if (guess && DIALS.some((d) => d.code === guess)) setDial(guess);
   }, []);
 
   const isId = looksLikeWhatsAppId(phone);
+  const example = DIALS.find((d) => d.code === dial)?.example || "50 123 4567";
   const summary = [
     account && `Account: ${account}`,
-    status && `Status: ${status}`,
-    amount && `Amount: ${amount}`,
-    also.length > 0 && !also.includes(NOTHING_ELSE) && `Also pending: ${also.join(", ")}`,
+    stage && `Stage: ${stage}`,
+    amount && `Balance: ${amount}`,
   ]
     .filter(Boolean)
     .join(". ");
   const message =
     "Hi Niro, I'd like a free PF audit." + (summary ? `\n${summary}.` : "");
-  // The assistant line, not sales: the audit is task work the assistant
-  // scopes, the same as a first trial task. Sales joins once there is a
-  // membership or Lite conversation to have.
+  // The assistant line: the audit is task work the assistant scopes.
   const href = `https://wa.me/${ASSISTANT_WHATSAPP}?text=${encodeURIComponent(message)}`;
 
   function onClick(e: React.MouseEvent<HTMLAnchorElement>) {
-    const full = isId ? phone.trim() : `${dial} ${phone.trim()}`;
-    const { value, error: phoneErr } = validateContact(phone.trim() ? full : "");
     if (name.trim().length < 2) {
       e.preventDefault();
       setError("Please tell us your name.");
       return;
     }
+    const full = isId ? phone.trim() : `${dial} ${phone.trim()}`;
+    const { value, error: phoneErr } = validateContact(phone.trim() ? full : "");
     if (!value) {
       e.preventDefault();
       setError(phoneErr || "Please enter your WhatsApp number.");
@@ -143,19 +160,14 @@ export function PfAuditForm() {
       phone: value,
       name: name.trim(),
       intent: "pf_audit",
-      ...(also.length ? { tasks: also } : {}),
       taskText: "Free PF audit" + (summary ? `: ${summary}` : ""),
       taskHandoff: "assistant",
       page: "/pfmoneytasks/",
       consent: WHATSAPP_CONSENT_VERSION,
       consentAt: new Date().toISOString(),
     });
-    logEvent("pf_audit_requested", {
-      account: account || "",
-      status: status || "",
-      amount: amount || "",
-      also: also.join("|"),
-    });
+    // A handoff to WhatsApp, not a completed audit. Nothing personal.
+    logEvent("pf_audit_handoff", { placement: "audit_form" });
     track("Lead", { content_name: "pf_audit" }, eventId);
     trackCustom("StartedConversation", { route: "whatsapp", placement: "pf_audit" });
     setSent(true);
@@ -164,36 +176,8 @@ export function PfAuditForm() {
   return (
     <div className="pf-form">
       <Choice legend="Which account?" options={ACCOUNT} value={account} onChange={setAccount} />
-      <Choice legend="Where are you with it?" options={STATUS} value={status} onChange={setStatus} />
+      <Choice legend="Where is your claim?" options={STAGE} value={stage} onChange={setStage} />
       <Choice legend="Roughly how much is in it?" options={AMOUNT} value={amount} onChange={setAmount} />
-
-      <fieldset className="pf-choice">
-        <legend>
-          Anything else pending in India? <span className="pf-opt">Optional</span>
-        </legend>
-        <div className="pf-chips">
-          {[...ELSE, NOTHING_ELSE].map((o) => {
-            const on = also.includes(o);
-            return (
-              <button
-                type="button"
-                key={o}
-                aria-pressed={on}
-                className={"pf-chip" + (on ? " on" : "")}
-                onClick={() =>
-                  setAlso((cur) => {
-                    if (o === NOTHING_ELSE) return on ? [] : [NOTHING_ELSE];
-                    const rest = cur.filter((x) => x !== NOTHING_ELSE);
-                    return on ? rest.filter((x) => x !== o) : [...rest, o];
-                  })
-                }
-              >
-                {o}
-              </button>
-            );
-          })}
-        </div>
-      </fieldset>
 
       <div className="pf-field">
         <label htmlFor="pf-name">Your name</label>
@@ -216,8 +200,8 @@ export function PfAuditForm() {
             onChange={(e) => setDial(e.target.value)}
           >
             {DIALS.map((d) => (
-              <option key={d} value={d}>
-                {d}
+              <option key={d.code} value={d.code}>
+                {d.code} {d.short}
               </option>
             ))}
           </select>
@@ -226,7 +210,7 @@ export function PfAuditForm() {
             type="tel"
             inputMode="tel"
             autoComplete="tel-national"
-            placeholder="415 555 0134"
+            placeholder={example}
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
@@ -246,18 +230,19 @@ export function PfAuditForm() {
         className="btn btn-primary btn-lg btn-full"
         onClick={onClick}
       >
-        Get my free audit
+        Start my free audit on WhatsApp
         <Icon name="message-circle" size={17} />
       </a>
       <p className="pf-fine">
-        Opens WhatsApp with your answers already written in. We reply on
-        WhatsApp and never call you unprompted.
+        Continue on WhatsApp with your answers ready to send. We&rsquo;ll
+        confirm the records needed and when to expect your audit. We never call
+        you unprompted.
       </p>
       {sent && (
         <p className="pf-sent" role="status">
-          Thanks. If WhatsApp didn&rsquo;t open,{" "}
+          If WhatsApp didn&rsquo;t open,{" "}
           <a href={href} target="_blank" rel="noopener noreferrer">
-            tap here to send your request
+            tap here to continue
           </a>
           .
         </p>
