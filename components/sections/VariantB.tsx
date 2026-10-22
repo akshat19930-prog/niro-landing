@@ -674,7 +674,7 @@ const MAIN_FAQ_ITEMS = FAQ.map((f) => {
               them. Access is scoped to the task and logged.
             </li>
             <li>
-              <b>We never ask for passwords, PINs or net-banking logins.</b> Some
+              <b>We never ask for bank PINs, card details or net-banking logins.</b> Some
               tasks need a one-time code to finish. When one does, we tell you what
               we are about to do, ask you at that moment, and use it only for that
               task. Say no and we find another route.

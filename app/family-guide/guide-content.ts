@@ -57,5 +57,5 @@ export const GUIDE_ON_FILE: string[] = [
   "Every request becomes a tracked task with an owner and a due date, so nothing depends on anyone's memory.",
   "An encrypted document vault, hosted in India, for policies, prescriptions, property papers and IDs. Shared only as you and your parents agree.",
   "A signed, dated, scope-limited authorisation, so we can represent your parents where a task needs it. They can revoke it in a sentence.",
-  "We never ask for passwords, PINs, net-banking or UPI logins. For some tasks an OTP is needed; we say so each time, and only for that step.",
+  "We never ask for bank PINs, card details, net-banking or UPI logins. For some tasks an OTP is needed; we say so each time, and only for that step.",
 ];

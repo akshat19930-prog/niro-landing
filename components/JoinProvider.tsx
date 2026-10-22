@@ -92,7 +92,7 @@ export function validateEmail(raw: string): { email?: string; error?: string } {
 /** Bump this whenever the opt-in wording on the phone screen changes, so a row
  *  says which sentence that lead actually agreed to rather than whichever one
  *  is live today. */
-const WHATSAPP_CONSENT_VERSION = "whatsapp-2026-09-30";
+export const WHATSAPP_CONSENT_VERSION = "whatsapp-2026-09-30";
 
 /**
  * Tie this visitor's PostHog session to their row in the leads sheet. The row
@@ -116,7 +116,9 @@ function linkLeadToPostHog(eventId: string, hasPhone: boolean) {
   }
 }
 
-async function submitSignup(payload: {
+/** Exported for standalone lead forms (e.g. /pfmoneytasks) so every page
+ *  writes the same row shape, with the same eventId the Pixel event carries. */
+export async function submitSignup(payload: {
   email: string;
   eventId: string;
   arm: PricingArm;

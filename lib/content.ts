@@ -97,7 +97,7 @@ export const TRUST_ITEMS: TrustItem[] = [
     text: "Verified Niro Assistants",
     sub: "Introduced by photo before day one",
   },
-  { icon: "lock", text: "We never ask for passwords", sub: "Not your net-banking login, not your PINs" },
+  { icon: "lock", text: "We never ask for net-banking logins", sub: "Not your bank PINs, not your card details" },
   { icon: "map-pin", text: "We turn up in person", sub: "Hospital, office or their front door" },
   {
     icon: "camera",
@@ -443,7 +443,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "Is my family's data safe with Niro?",
-    a: "Yes, and here is how we are building it rather than how we are describing it. You keep control: we periodically tell you exactly what data we hold on your family, you can delete all of it in one click, and leaving Niro erases your records permanently within 30 days. Documents live in a secure vault, encrypted in transit and at rest, inaccessible to our staff without an open task that requires them - access is scoped to the task and logged. We never ask for your passwords, PINs or net-banking logins; where a task genuinely needs a one-time code we tell you what we are about to do, ask you at that moment, and use it only for that task. We operate under India's DPDP Act and are building to GDPR-aligned practices for members abroad. Your data is never sold. Questions? hello@tellniro.com reaches the founders.",
+    a: "Yes, and here is how we are building it rather than how we are describing it. You keep control: we periodically tell you exactly what data we hold on your family, you can delete all of it in one click, and leaving Niro erases your records permanently within 30 days. Documents live in a secure vault, encrypted in transit and at rest, inaccessible to our staff without an open task that requires them - access is scoped to the task and logged. We never ask for your bank PINs, card details or net-banking logins; where a task genuinely needs a one-time code we tell you what we are about to do, ask you at that moment, and use it only for that task. We operate under India's DPDP Act and are building to GDPR-aligned practices for members abroad. Your data is never sold. Questions? hello@tellniro.com reaches the founders.",
   },
   {
     q: "How fast is the emergency response, really?",
@@ -811,7 +811,7 @@ export const GULF_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "How do you keep my family's information safe?",
-    a: "We never ask for your passwords or net-banking logins. Where a task genuinely needs a one-time code, we tell you what we are doing first and use it only for that task. Everything is encrypted, and your records are deleted within 30 days if you leave.",
+    a: "We never ask for your bank PINs or net-banking logins. Where a task genuinely needs a one-time code, we tell you what we are doing first and use it only for that task. Everything is encrypted, and your records are deleted within 30 days if you leave.",
   },
 ];
 
@@ -1157,7 +1157,7 @@ export const US_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "What will you ask my family for, and what will you never ask for?",
-    a: "We never ask for passwords, PINs or net-banking logins. Some tasks need a one-time code to complete - an EPFO release, a portal correction - and for those we explain what we are doing, ask at that moment, and use the code only for that task. Your parents never have to decide alone: you set in advance what needs your approval first.",
+    a: "We never ask for bank PINs, card details or net-banking logins. Some tasks need a one-time code to complete - an EPFO release, a portal correction - and for those we explain what we are doing, ask at that moment, and use the code only for that task. Your parents never have to decide alone: you set in advance what needs your approval first.",
   },
 ];
 
@@ -1841,7 +1841,7 @@ export const GUIDE_VISIT_DETAILS: { title: string; icon: IconName; points: strin
       "We don\u2019t do repairs ourselves. We find the right person and watch the job.",
       "No medical, legal, tax or property-valuation advice.",
       "No personal care: bathing, feeding, lifting, giving medicines or nursing.",
-      "Assistants never take cash from your parents for their time, never take anything from vendors, and never hold cards or passwords.",
+      "Assistants never take cash from your parents for their time, never take anything from vendors, and never hold cards or PINs.",
     ],
   },
 ];
@@ -1872,7 +1872,7 @@ export const GUIDE_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Is my family’s data safe with Niro?",
-    a: "We never ask for passwords, PINs, net-banking or UPI logins, or access to your parents’ email and messages. Anyone asking for those in our name isn’t us. What we hold instead is a signed, dated, scope-limited authorisation your parents can revoke in a sentence, and an encrypted document vault hosted in India.",
+    a: "We never ask for bank PINs, card details, net-banking or UPI logins, or access to your parents’ email and messages. Anyone asking for those in our name isn’t us. What we hold instead is a signed, dated, scope-limited authorisation your parents can revoke in a sentence, and an encrypted document vault hosted in India.",
   },
 ];
 

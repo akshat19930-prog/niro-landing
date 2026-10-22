@@ -1,0 +1,187 @@
+/* =====================================================================
+   /pfmoneytasks. Scoped to this route by import. Same register as the home
+   page: ivory hero on the jaali, inset bands, one dark band for the numbers,
+   display serif headings. Every value is a token from app/tokens.css.
+   ===================================================================== */
+
+.pf { background: var(--bg-page); }
+.pf-wrap { max-width: var(--container); margin: 0 auto; position: relative; }
+.pf-sec { padding: 64px var(--gutter); }
+.pf-inset { background: var(--bg-inset); }
+.pf-sec[id] { scroll-margin-top: 72px; }
+
+.pf-h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+  font-weight: 500;
+  margin: 12px 0 16px;
+  text-wrap: balance;
+}
+.pf-h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+  font-weight: 500;
+  margin: 14px 0 24px;
+  text-wrap: balance;
+}
+.pf-lead, .pf-p {
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+  max-width: 540px;
+  margin: 0 0 12px;
+}
+.pf-lead:last-of-type { margin-bottom: 24px; }
+.pf-p { margin-bottom: 24px; }
+.pf-fine { font-size: var(--text-sm); line-height: 1.6; color: var(--text-muted); margin: 22px 0 0; max-width: 640px; }
+.pf-note { font-size: var(--text-sm); line-height: 1.55; color: var(--text-muted); margin: 14px 0 0; }
+
+/* hero */
+.pf-hero { position: relative; overflow: hidden; padding: 32px var(--gutter) 48px; }
+.pf-jaali {
+  position: absolute; inset: 0; background-image: var(--jaali); background-size: 72px; opacity: 0.6;
+  mask-image: linear-gradient(180deg, transparent, black 30%, black 70%, transparent);
+  -webkit-mask-image: linear-gradient(180deg, transparent, black 30%, black 70%, transparent);
+}
+.pf-hero-grid {
+  display: grid; gap: 40px; align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr));
+}
+
+/* cards */
+.pf-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-5);
+}
+.pf-card h3 { font-size: var(--text-lg); font-weight: 600; color: var(--text-strong); line-height: 1.3; margin: 0 0 6px; }
+.pf-card p { margin: 0; font-size: 0.9375rem; line-height: 1.55; color: var(--text-body); }
+.pf-card-label {
+  font-size: var(--text-xs); font-weight: 700; letter-spacing: var(--tracking-wide);
+  text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;
+}
+.pf-ico {
+  width: 44px; height: 44px; border-radius: 12px; margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--brand-soft); color: var(--brand);
+}
+
+.pf-idle { border-color: var(--accent); box-shadow: var(--shadow-2); }
+.pf-idle ul { list-style: none; margin: 0; padding: 0; }
+.pf-idle li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  padding: 12px 0; border-top: 1px solid var(--border);
+  font-size: 0.9375rem; line-height: 1.4; color: var(--text-body);
+}
+.pf-idle li:first-child { border-top: none; padding-top: 0; }
+.pf-idle li b {
+  font-family: var(--font-display); font-size: var(--text-lg); font-weight: 500;
+  color: var(--text-strong); white-space: nowrap;
+}
+
+.pf-grid {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+}
+
+/* the numbers band, same register as the home page emergency story */
+.pf-dark {
+  background: radial-gradient(120% 80% at 80% 0%, #12281f 0%, var(--forest-950) 55%, #060f0b 100%);
+}
+.pf-stats {
+  display: grid; gap: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+}
+.pf-stat-v {
+  font-family: var(--font-display); font-size: clamp(2.6rem, 9vw, 3.4rem); line-height: 1;
+  letter-spacing: var(--tracking-tight); color: var(--gold-300);
+}
+.pf-stat-l { font-size: var(--text-md); color: var(--text-strong); margin: 10px 0 6px; line-height: 1.4; }
+.pf-stat-s { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.5; }
+
+/* how */
+.pf-split {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+}
+.pf-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.pf-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9375rem; line-height: 1.5; color: var(--text-body); }
+.pf-list svg { color: var(--brand); flex-shrink: 0; margin-top: 3px; }
+
+/* steps + form */
+.pf-steps-grid {
+  display: grid; gap: 36px; align-items: start;
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+}
+.pf-steps { list-style: none; margin: 0; padding: 0; counter-reset: pfs; }
+.pf-steps li {
+  position: relative; padding: 0 0 22px 48px; counter-increment: pfs;
+  font-size: 0.9375rem; line-height: 1.6; color: var(--text-body);
+}
+.pf-steps li::before {
+  content: counter(pfs); position: absolute; left: 0; top: 0;
+  width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border-strong);
+  background: var(--surface-card); color: var(--accent-strong);
+  display: flex; align-items: center; justify-content: center; font-size: var(--text-sm); font-weight: 600;
+}
+.pf-steps li::after {
+  content: ""; position: absolute; left: 15px; top: 34px; bottom: 4px; width: 1px; background: var(--border-strong);
+}
+.pf-steps li:last-child { padding-bottom: 0; }
+.pf-steps li:last-child::after { display: none; }
+.pf-steps b { color: var(--text-strong); font-weight: 600; }
+.pf-steps a { color: var(--brand); text-decoration: underline; text-underline-offset: 3px; }
+
+.pf-form-card { box-shadow: var(--shadow-2); }
+.pf-form-h { font-family: var(--font-display); font-size: var(--text-xl) !important; font-weight: 500 !important; margin: 0 0 16px !important; }
+.pf-form { display: flex; flex-direction: column; gap: 16px; }
+.pf-choice { border: none; margin: 0; padding: 0; min-width: 0; }
+.pf-choice legend, .pf-field label {
+  display: block; padding: 0; font-size: var(--text-sm); font-weight: 600;
+  color: var(--text-strong); margin-bottom: 8px;
+}
+.pf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.pf-chip {
+  min-height: 40px; padding: 8px 14px; border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong); background: var(--surface-card);
+  font-family: var(--font-sans); font-size: var(--text-sm); font-weight: 500;
+  color: var(--text-strong); cursor: pointer;
+}
+.pf-chip.on { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+.pf-chip:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.pf-error { color: var(--danger); font-size: var(--text-sm); margin: 0; }
+.pf-form .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.pf-form .pf-fine { margin: 0; font-size: var(--text-xs); text-align: center; }
+.pf-sent { margin: 0; font-size: var(--text-sm); color: var(--text-body); text-align: center; }
+.pf-sent a { color: var(--brand); text-decoration: underline; }
+
+/* faq, same register as the family guide's */
+.pf-faq { border-top: 1px solid var(--border); max-width: 760px; }
+.pf-faq details { border-bottom: 1px solid var(--border); }
+.pf-faq summary {
+  list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 16px;
+  padding: 18px 0; font-weight: 600; color: var(--text-strong); font-size: var(--text-base); line-height: 1.4;
+}
+.pf-faq summary::-webkit-details-marker { display: none; }
+.pf-faq summary:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.pf-plus { position: relative; width: 14px; height: 14px; flex-shrink: 0; margin-top: 4px; }
+.pf-plus::before, .pf-plus::after {
+  content: ""; position: absolute; left: 0; top: 6px; width: 14px; height: 2px; border-radius: 1px;
+  background: var(--accent); transition: transform 0.25s ease;
+}
+.pf-plus::after { transform: rotate(90deg); }
+.pf-faq details[open] .pf-plus::after { transform: rotate(0deg); }
+.pf-faq p { margin: 0 0 18px; font-size: 0.9375rem; line-height: 1.65; color: var(--text-body); max-width: 680px; }
+.pf-disclaimer { font-size: var(--text-xs); margin-top: 40px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-plus::before, .pf-plus::after { transition: none; }
+}
