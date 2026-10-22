@@ -1556,6 +1556,7 @@ export const GUIDE_CATEGORIES: GuideCategory[] = [
     icon: "file-text",
     preview: "EPFO, pension certificates, Aadhaar/PAN, tax paperwork",
     core: [
+      "Close & retrieve funds from dormant EPFO/PF account.",
       "Investigate EPFO claim issues and manage the next steps end to end.",
       "Help with pension life certificates and document updates.",
       "Manage India tax paperwork end to end, with the relevant professional.",
@@ -1698,10 +1699,18 @@ const SCOPE_FRAME: Record<string, { title: string; intro: string; extras: GuideI
 
 /** Tags and links the list pages show on particular lines, matched on how the
  *  line begins so a small rewording elsewhere in it does not drop them. */
-const SCOPE_DECOR: { starts: string; tag?: string; href?: string; hrefLabel?: string }[] = [
+const SCOPE_DECOR: { starts: string; tag?: string; href?: string; hrefLabel?: string; guide?: boolean }[] = [
+  { starts: "Close & retrieve funds from dormant EPFO/PF account", href: "/pfmoneytasks/", hrefLabel: "Learn more", guide: true },
   { starts: "Reliable emergency response with Niro Assure", tag: "Bengaluru", href: "/niro-assure/", hrefLabel: "Learn more" },
   { starts: "Tatkal bookings", tag: "Best effort" },
 ];
+
+/** The "Learn more" links the family guide's catalogue shows too. Opt-in per
+ *  line (guide: true), so adding a link for the home page does not quietly
+ *  change the guide. */
+export const GUIDE_LINKS: { starts: string; href: string; label: string }[] = SCOPE_DECOR.filter(
+  (d) => d.guide && d.href
+).map((d) => ({ starts: d.starts, href: d.href as string, label: d.hrefLabel || "Learn more" }));
 
 export const GUIDE_SCOPE: {
   title: string;

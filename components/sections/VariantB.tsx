@@ -331,7 +331,19 @@ function UseCasesB() {
                       {scope.items.slice(0, 1).map((it) => (
                         <li key={it.t}>
                           <Icon name="check" size={14} />
-                          <span>{it.t}</span>
+                          <span>
+                            {it.t}
+                            {it.href && (
+                              // stopPropagation: the card is a toggle.
+                              <a
+                                href={it.href}
+                                className="uc-more"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                {it.hrefLabel || "Learn more"}
+                              </a>
+                            )}
+                          </span>
                         </li>
                       ))}
                     </ul>
