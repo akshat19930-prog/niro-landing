@@ -16,7 +16,7 @@ import { startSession, logEvent, dialCode } from "@/lib/track";
 import { readPageArm } from "@/lib/abtest";
 import { getLpVariant } from "@/lib/variant";
 import { validateContact, looksLikeWhatsAppId } from "@/lib/cities";
-import { SALES_WHATSAPP } from "@/lib/config";
+import { ASSISTANT_WHATSAPP } from "@/lib/config";
 
 /**
  * The free PF audit request on /pfmoneytasks.
@@ -112,7 +112,10 @@ export function PfAuditForm() {
     .join(". ");
   const message =
     "Hi Niro, I'd like a free PF audit." + (summary ? `\n${summary}.` : "");
-  const href = `https://wa.me/${SALES_WHATSAPP}?text=${encodeURIComponent(message)}`;
+  // The assistant line, not sales: the audit is task work the assistant
+  // scopes, the same as a first trial task. Sales joins once there is a
+  // membership or Lite conversation to have.
+  const href = `https://wa.me/${ASSISTANT_WHATSAPP}?text=${encodeURIComponent(message)}`;
 
   function onClick(e: React.MouseEvent<HTMLAnchorElement>) {
     const full = isId ? phone.trim() : `${dial} ${phone.trim()}`;
@@ -142,7 +145,7 @@ export function PfAuditForm() {
       intent: "pf_audit",
       ...(also.length ? { tasks: also } : {}),
       taskText: "Free PF audit" + (summary ? `: ${summary}` : ""),
-      taskHandoff: "membership",
+      taskHandoff: "assistant",
       page: "/pfmoneytasks/",
       consent: WHATSAPP_CONSENT_VERSION,
       consentAt: new Date().toISOString(),
