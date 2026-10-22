@@ -16,6 +16,7 @@ import {
   SERVICE_CITIES,
   SHARE_CARD,
   GUIDE_CATEGORIES,
+  GUIDE_LINKS,
 } from "@/lib/content";
 import {
   GUIDE_FOLLOW_THROUGH,
@@ -119,12 +120,22 @@ export default function FamilyGuidePage() {
                   </summary>
                   <div className="fg-cat-body">
                     <ul className="fg-list">
-                      {c.core.map((t) => (
-                        <li key={t}>
-                          <Icon name="check" size={15} />
-                          <span>{t}</span>
-                        </li>
-                      ))}
+                      {c.core.map((t) => {
+                        const link = GUIDE_LINKS.find((l) => t.startsWith(l.starts));
+                        return (
+                          <li key={t}>
+                            <Icon name="check" size={15} />
+                            <span>
+                              {t}
+                              {link && (
+                                <a href={link.href} className="uc-more">
+                                  {link.label}
+                                </a>
+                              )}
+                            </span>
+                          </li>
+                        );
+                      })}
                     </ul>
 
                     {c.more.length > 0 && (
