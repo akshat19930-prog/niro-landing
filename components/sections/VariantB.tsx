@@ -15,7 +15,7 @@ import { StickyCta } from "@/components/sections/StickyCta";
 import { PRIMARY_CTA } from "@/lib/config";
 import { Faq } from "@/components/sections/Faq";
 import {
-  PLANS, MEMBERSHIP_FEATURES, MEMBER_STORIES, FREE_TASKS, NIRO_LITE, NIRO_LITE_EXCLUDES,
+  PLANS, MEMBERSHIP_HALF_PRICE, MEMBERSHIP_FEATURES, MEMBER_STORIES, FREE_TASKS, NIRO_LITE, NIRO_LITE_EXCLUDES,
   GUARANTEE, FAQ, GUIDE_SCOPE,
   ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, type ArmCopy,
 } from "@/lib/content";
@@ -613,7 +613,7 @@ function PricingB({ c }: { c: ArmCopy }) {
               <span className="tier-per">{PLANS[1].per}</span>
             </div>
             <div className="tier-alt">
-              Billed quarterly, $250 every three months. Or pay <b>{PLANS[0].price}</b> per month.
+              Billed quarterly, $250 every three months. Or <b>{MEMBERSHIP_HALF_PRICE}</b> for six months, or <b>{PLANS[0].price}</b> per month.
             </div>
             <p className="tier-for">Everything Niro does, continuously, with no cap on tasks.</p>
             <ul className="tier-list">
@@ -623,6 +623,15 @@ function PricingB({ c }: { c: ArmCopy }) {
             </ul>
           </div>
         </div>
+
+        {/* Under both cards rather than on either, so neither reads as the
+            better buy. The monthly plan carries no PF credit, which the
+            sentence states by naming the three that do. */}
+        <p className="tier-note">
+          Niro Lite and the 3- and 6-month memberships each include a PF
+          Recovery Credit towards EPFO casework.{" "}
+          <a href="/pfmoneytasks/#pricing">How it works &rarr;</a>
+        </p>
 
         {/* Directly above the CTA, so it is the last thing read before the tap.
             The objection it answers is risk, not price, and risk is what stops
