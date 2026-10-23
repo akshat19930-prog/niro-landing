@@ -27,12 +27,13 @@ export default function TermsPage() {
 
         <h2>Membership, billing and renewal</h2>
         <p>
-          Niro is sold as a membership, at one of two prices:{" "}
-          <strong>US $99 per month</strong>, billed monthly, or{" "}
+          Niro is sold as a membership, at one of three prices:{" "}
+          <strong>US $99 per month</strong>, billed monthly;{" "}
           <strong>US $83 per month billed quarterly</strong>, charged as US $250
-          every three months. Both renew at the same rate, charged to the card
-          you have on file, until you cancel. The quarterly rate is not an
-          introductory price and does not change after the first quarter. We
+          every three months; or <strong>US $479 every six months</strong>.
+          Each renews at the same rate, charged to the card you have on file,
+          until you cancel. The quarterly and six-month rates are not
+          introductory prices and do not change after the first period. We
           send you a reminder{" "}
           <strong>seven days before every renewal</strong> so no charge is a
           surprise.
@@ -58,6 +59,23 @@ export default function TermsPage() {
           The guarantee covers your membership fee. Third-party costs we have
           already paid on your behalf with your approval, described below, are
           not part of that fee and are not refundable once spent.
+        </p>
+
+        <h2>PF Recovery Credit</h2>
+        <p>
+          The quarterly membership, the six-month membership and Niro Lite each
+          include a <strong>PF Recovery Credit</strong>: ₹5,000, ₹15,000 and
+          ₹6,000 respectively. It is applied to our specialist partner&rsquo;s
+          fee for EPFO and PF casework. On a membership the credit is renewed
+          with each paid period; on Niro Lite it counts as 4 of the
+          pack&rsquo;s 20 tasks. The monthly membership does not include a PF
+          Recovery Credit.
+        </p>
+        <p>
+          The partner&rsquo;s fee depends on the case and is confirmed after a
+          free audit, before any paid work starts. Any part of it above the
+          credit is billed to you at the partner&rsquo;s exact cost, with no
+          markup, and charged only once the funds are recovered.
         </p>
 
         <h2>What your membership fee covers</h2>

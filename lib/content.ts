@@ -463,7 +463,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "On Niro Lite, how is a task counted?",
-    a: "A task is one thing you want done, run to completion, not one phone call: a bill corrected, a cab booked, a refund chased through four follow-ups is one task. A few things are really a bundle of tasks and count as more. A Niro Visit of up to four hours counts as 2, a long visit like a hospital day or a registration as 3, recovering EPF money as 3 or 6 depending on how complex the case is, finding a tenant or a buyer or seller for something as up to 5, and a property registration from start to finish as up to 6. EPF cases are worked with a specialist partner, and the 3 or 6 tasks include their fee, so there is nothing extra to pay; which one applies is clear after a first look at the case. Before we start anything that counts as more than one, we tell you the number and you decide. The count never changes afterwards. The membership has no cap on tasks, so none of this applies there.",
+    a: "A task is one thing you want done, run to completion, not one phone call: a bill corrected, a cab booked, a refund chased through four follow-ups is one task. A few things are really a bundle of tasks and count as more. A Niro Visit of up to four hours counts as 2, a long visit like a hospital day or a registration as 3, recovering EPF money as 4, finding a tenant or a buyer or seller for something as up to 5, and a property registration from start to finish as up to 6. The 4 tasks for EPF carry a ₹6,000 PF Recovery Credit towards our specialist partner's fee; anything above it is the partner's exact cost, with no markup, charged only once your money is recovered. Before we start anything that counts as more than one, we tell you the number and you decide. The count never changes afterwards. The membership has no cap on tasks, so none of this applies there.",
   },
 ];
 
@@ -593,10 +593,10 @@ export const NIRO_LITE_COUNTS: { what: string; count: string }[] = [
   { what: "Most tasks: a bill corrected, a cab booked, a refund chased through four follow-ups", count: "1 task" },
   { what: "A Niro Visit, up to four hours", count: "2 tasks" },
   { what: "A long visit: a hospital day, a registration, a visa centre", count: "3 tasks" },
-  // EPFO cases are worked with a specialist partner, whose fee is set by
-  // the case's tier after a first look. The count includes that fee, so the
-  // member pays nothing on top. The longest tier is quoted separately.
-  { what: "Recovering EPF money, depending on how complex the case is", count: "3 or 6 tasks" },
+  // EPFO cases are worked with a specialist partner. Per the PF credit sheet
+  // (Oct 2026) Lite's ₹6,000 PF Recovery Credit is counted as 4 tasks, and
+  // the fee above it is passed through at cost (PF_CREDIT below).
+  { what: "Recovering EPF money, with a ₹6,000 PF Recovery Credit towards the specialist's fee", count: "4 tasks" },
   { what: "Finding a tenant, or a buyer or seller for something (a car, a property, anything else)", count: "Up to 5 tasks" },
   { what: "Property registration, start to finish", count: "Up to 6 tasks" },
 ];
@@ -608,6 +608,49 @@ export const NIRO_LITE_COUNTS: { what: string; count: string }[] = [
 export const NIRO_LITE_EXCLUDES: string[] = [
   "Niro Assure emergency response",
   "A dedicated family manager, or a second family group",
+];
+
+/** The six-month membership: the same membership, $479 every six months,
+ *  renewing at $479 (founders, 23 Oct 2026). Shown as a pack price, never as
+ *  its monthly equivalent, and named in the membership card's billing line,
+ *  not as a third card: like quarterly vs monthly it is a payment choice, not
+ *  a product choice. Not in PLANS, so the sign-up flows are untouched. */
+export const MEMBERSHIP_HALF_PRICE = "$479";
+
+/**
+ * The PF Recovery Credit, per the founders' PF credit sheet (23 Oct 2026).
+ *
+ * Every pack except the monthly membership carries a credit towards the
+ * specialist partner's fee for EPFO and PF casework. The fee itself is set
+ * per case (how many separate issues, how complex each one is), confirmed
+ * after the free audit, and runs from a few thousand rupees to about ₹65,000.
+ * Above the credit, the member pays the partner's exact cost with no markup,
+ * charged only once the money is recovered. On a membership the credit comes
+ * back with every renewal; on Lite it is counted as 4 of the 20 tasks.
+ *
+ * Rupee figures at ₹95 to the dollar, shown on /pfmoneytasks only. No pack
+ * is styled as preferred here either: the sales sheet's "Best value" badge
+ * stays off the site.
+ */
+export const PF_CREDIT: {
+  id: string;
+  name: string;
+  price: string;
+  inr: string;
+  credit: string;
+  note: string;
+}[] = [
+  { id: "quarter", name: "3-month membership", price: "$250", inr: "₹23,750", credit: "₹5,000", note: "Plus unlimited tasks for 3 months" },
+  { id: "lite", name: "Niro Lite", price: NIRO_LITE.price, inr: "₹28,500", credit: "₹6,000", note: "Counted as 4 of the pack's 20 tasks" },
+  { id: "half", name: "6-month membership", price: MEMBERSHIP_HALF_PRICE, inr: "₹45,505", credit: "₹15,000", note: "Plus unlimited tasks for 6 months" },
+];
+
+/** Worked examples from the same sheet: the case fee, and what is left to pay
+ *  on each pack, in PF_CREDIT order. */
+export const PF_CREDIT_EXAMPLES: { name: string; what: string; fee: string; pay: string[] }[] = [
+  { name: "Simple", what: "one fix", fee: "₹4,000", pay: ["Covered", "Covered", "Covered"] },
+  { name: "Standard", what: "a couple of fixes", fee: "₹16,000", pay: ["₹11,000", "₹10,000", "₹1,000"] },
+  { name: "Complex", what: "six tangled issues", fee: "₹64,000", pay: ["₹59,000", "₹58,000", "₹49,000"] },
 ];
 
 /** The two public SKUs. NIRO_LITE is deliberately NOT here - it lives only on

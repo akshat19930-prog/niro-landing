@@ -2010,6 +2010,15 @@
 }
 .tier-x::before { transform: rotate(45deg); }
 .tier-x::after { transform: rotate(-45deg); }
+.tier-note {
+  margin: 0 auto 18px;
+  max-width: 560px;
+  text-align: center;
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+.tier-note a { color: var(--brand); font-weight: 600; white-space: nowrap; }
 .tier-more {
   display: inline-block;
   margin-top: 16px;

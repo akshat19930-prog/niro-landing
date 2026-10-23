@@ -95,12 +95,21 @@ export default function TasksPackPage() {
           the number and you decide. The count never changes afterwards: if a
           visit overruns, that is on us.
         </p>
+        <h2>EPF recovery</h2>
         <p>
-          EPF recovery is worked with a specialist partner, and the 3 or 6
-          tasks include their fee, so there is nothing extra to pay. Which one
-          applies is clear after a first look at your case, and we tell you
-          before any work starts. The rare case that runs longer, up to five
-          months, is quoted separately.
+          EPF recovery is worked with our specialist partner, Kustodian. The
+          pack includes a <strong>₹6,000 PF Recovery Credit</strong> towards
+          their fee, counted as 4 of your 20 tasks, so 16 are left for
+          everything else.
+        </p>
+        <p>
+          There is no flat fee for EPF recovery, here or anywhere: the fee
+          depends on how many separate issues need fixing and how complex each
+          one is. It is confirmed after a free audit, before any work starts.
+          If it comes to more than ₹6,000, you pay the difference at the
+          partner&rsquo;s exact cost, with no markup, and only once your money
+          is recovered.{" "}
+          <a href="/pfmoneytasks/#pricing">See worked examples</a>.
         </p>
 
         <p>
