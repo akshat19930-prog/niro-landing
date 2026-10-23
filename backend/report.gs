@@ -19,9 +19,13 @@
  *      rate, Avg session duration, Get beta access clicked, Phone number
  *      entered, Phone entered / visitors %, All details submitted, Cost per
  *      lead, Spend, Meta CPM, Link CTR.
- *   2. A conversion table, read from the leadStatus column of the sign-ups
+ *   2. What leads ask for, last 7 days (backend/intent.gs): the join form's
+ *      four routing answers, and the first-task drop-down picks, each beside
+ *      the previous 7 days. Replaced the free-first-task table and the
+ *      positioning A/B table (test closed, 23 Oct 2026).
+ *   3. A conversion table, read from the leadStatus column of the sign-ups
  *      sheet: leads today, since launch, overall, then the lifecycle stages.
- *   3. Meta ads console: cost per lead by market (US, Gulf, rest of world)
+ *   4. Meta ads console: cost per lead by market (US, Gulf, rest of world)
  *      and cost per visitor by ad set.
  *
  * SEGMENTATION
@@ -48,16 +52,11 @@ var CONFIG = {
   REPORT_TITLE: "Niro POC",
   // Bump on every paste. The report prints this, so "which version is actually
   // deployed" is answerable from the email instead of by guesswork.
-  BUILD: "2026-10-05a",
+  BUILD: "2026-10-23a",
 
   // Launch. The running window starts here, so the report never mixes POC
   // numbers with smoke-test numbers in one column.
   LAUNCH_DATE: "2026-09-25",
-  // The day the first-task flow replaced the categories question on the last
-  // step of the join form. Before this date no row can carry a taskHandoff, so
-  // folding that history in would drag the rate toward zero for reasons that
-  // have nothing to do with how the flow performs.
-  TRIAL_START: "2026-10-05",
   REPORT_EVERY_HOURS: 3,            // 8 reports a day, round the clock
   RUNNING_DAYS: 30,                 // L30D once 30 days have passed; shorter until then
 
@@ -89,18 +88,6 @@ var CONFIG = {
   // entirely - no spend, no leads, no attribution. Used to exclude the Hindi
   // ad-set variants. Set to null to keep everything.
   EXCLUDE_ADSET: /hindi/i,
-
-  // ---- Positioning A/B (Oct 2026): arm A is tellniro.com, arm B2 is /start.
-  // Spend is attributed to an arm by CAMPAIGN NAME, so these must match what
-  // the campaigns are actually called in Ads Manager. Everything that matches
-  // neither is left out of the comparison rather than guessed at.
-  ARM_CAMPAIGN: {
-    A:  /pos[_\s-]*test[_\s-]*a\b/i,
-    B2: /pos[_\s-]*test[_\s-]*b/i
-  },
-  // The answer to "How do you see yourself using Niro?" that counts as CWP:
-  // the family using Niro directly, rather than the member relaying for them.
-  CWP_ANSWER: /using\s+niro\s+directly/i,
 
   // The three report markets, in display order. Meta spend/CPM/CTR/leads are
   // attributed by EXACT campaign name (`campaigns`) - ad-set names collide
@@ -241,8 +228,6 @@ function fetchMeta_() {
     var adsets = {};          // id -> { name, market, spend, impr, clicks, leads, lpv }
     var marketDate = {};      // marketKey -> { date -> {spend, impr, clicks} }
     var totalSpend = 0, unmappedSpend = 0;
-    // Positioning A/B spend, keyed off the campaign name.
-    var armSpend = { A: 0, B2: 0, unmatched: 0 };
 
     rows.forEach(function (r) {
       var id = String(r.adset_id || r.adset_name || "?");
@@ -276,12 +261,9 @@ function fetchMeta_() {
         unmappedSpend += spend;
       }
 
-      if (CONFIG.ARM_CAMPAIGN.A.test(campaign)) armSpend.A += spend;
-      else if (CONFIG.ARM_CAMPAIGN.B2.test(campaign)) armSpend.B2 += spend;
-      else armSpend.unmatched += spend;
     });
     return { adsets: adsets, marketDate: marketDate, totalSpend: totalSpend,
-             unmappedSpend: unmappedSpend, armSpend: armSpend };
+             unmappedSpend: unmappedSpend };
   } catch (err) {
     return { error: String(err) };
   }
@@ -472,8 +454,8 @@ function buildModel_(data, meta) {
       : ("Since launch (" + runDates.length + "d)"),
     smokeLabel: "Smoke test",
     conv: conversionStats_(data.signups, CONFIG.LAUNCH_DATE, todayStr),
-    trial: trialStats_(data.signups, runDates, todayStr),
-    arms: armStats_(data.signups, data.events, meta),
+    // intent.gs: the join form's routing answers and first-task picks, L7D.
+    intent: intentStats_(data.signups, todayStr),
     adsets: adsets,
     realLeads: realLeadsByMarket_(data.signups, runDates),
     metaSpendByMarket: (function () {
@@ -659,101 +641,6 @@ function stageOf_(status) {
   return "";
 }
 
-/* =====================================================================
-   POSITIONING A/B: arm A (/) vs arm B2 (/start), since the test began.
-   -----------------------------------------------------------------------
-   Arm B2 sells Niro as the NRI's own 1:1 assistant, so they can start
-   without asking their parents for sign-off. Arm A is the family-group
-   pitch. Price, offer and scope are identical, so anything that differs
-   below is the positioning and not the product.
-
-   Rows are counted ONLY where lpVariant is explicitly "A" or "B2". Blank
-   means the row predates the test, and folding that history into arm A
-   would bury the comparison under months of traffic the test never ran.
-   ===================================================================== */
-function armStats_(signups, events, meta) {
-  var ARMS = ["A", "B2"];
-  var out = {};
-  ARMS.forEach(function (a) {
-    out[a] = {
-      sessions: 0, bounce: 0, leads: 0, cpl: 0, spend: 0,
-      phoneSessions: 0, p2v: 0, serviceable: 0,
-      cwp: 0, cwpPct: 0, cwpDropped: 0, cwpDropPct: 0, answered: 0,
-      freeSigned: 0, freeTrialPct: 0, paid: 0, subPct: 0
-    };
-  });
-
-  // ---- sessions and bounce, from the events tab
-  var expo = { A: {}, B2: {} }, engaged = { A: {}, B2: {} }, phone = { A: {}, B2: {} };
-  (events || []).forEach(function (e) {
-    var arm = String(e.lpVariant || "").trim();
-    if (arm !== "A" && arm !== "B2") return;
-    var sid = String(e.sid || ""), ev = String(e.event || "");
-    if (!sid) return;
-    if (ev === "exposure") expo[arm][sid] = 1;
-    // Same engagement rule as the market funnel above, so the two bounce
-    // numbers in this email mean the same thing.
-    else if (ev === "join_initiated" || ev === "scroll_50" ||
-             ev === "reached_pricing" || ev === "whatsapp_click") engaged[arm][sid] = 1;
-    else if (ev === "phone_captured" || ev === "phone_added" || ev === "lead_captured") {
-      phone[arm][sid] = 1;
-      engaged[arm][sid] = 1;
-    }
-    else if (ev === "session_end" && num_(e.engaged) === 1) engaged[arm][sid] = 1;
-  });
-  ARMS.forEach(function (a) {
-    var o = out[a];
-    o.sessions = Object.keys(expo[a]).length;
-    var eng = 0;
-    Object.keys(expo[a]).forEach(function (sid) { if (engaged[a][sid]) eng++; });
-    o.bounce = o.sessions ? (1 - eng / o.sessions) * 100 : 0;
-    o.phoneSessions = Object.keys(phone[a]).length;
-    o.p2v = o.sessions ? (o.phoneSessions / o.sessions * 100) : 0;
-  });
-
-  // ---- leads and everything read off the lead row
-  var seen = {};
-  (signups || []).forEach(function (sg) {
-    var arm = String(sg.lpVariant || "").trim();
-    if (arm !== "A" && arm !== "B2") return;
-    var k = leadKey_(sg);
-    if (!k || seen[k]) return;
-    seen[k] = 1;
-    // A lead is someone we can actually contact, which means a phone number.
-    if (String(sg.phone || "").replace(/[^\d]/g, "").length < 8) return;
-    var o = out[arm];
-    o.leads++;
-    // Serviceable: cityServed carries the canonical launch city when we cover
-    // the family's city, and is blank when we do not.
-    if (String(sg.cityServed || "").trim()) o.serviceable++;
-    // CWP: they expect the family to use Niro directly, rather than relaying
-    // through them. The segment arm B2 is trying to grow.
-    var who = String(sg.whoFor || "").trim();
-    if (who) o.answered++;
-    var isCwp = who && CONFIG.CWP_ANSWER.test(who);
-    if (isCwp) o.cwp++;
-    var st = stageOf_(sg.leadStatus);
-    if (isCwp && st === "dropped") o.cwpDropped++;
-    if (st === "freeSigned" || st === "freeDone" || st === "paid") o.freeSigned++;
-    if (st === "paid") o.paid++;
-  });
-
-  var armSpend = (meta && meta.armSpend) || { A: 0, B2: 0, unmatched: 0 };
-  ARMS.forEach(function (a) {
-    var o = out[a];
-    o.spend = armSpend[a] || 0;
-    o.cpl = o.leads ? o.spend / o.leads : 0;
-    o.cwpPct = o.answered ? (o.cwp / o.answered * 100) : 0;
-    o.cwpDropPct = o.cwp ? (o.cwpDropped / o.cwp * 100) : 0;
-    // Free trial counts anyone who got at least as far as signing up for the
-    // free task, so a lead who has already paid is not missing from it.
-    o.freeTrialPct = o.leads ? (o.freeSigned / o.leads * 100) : 0;
-    o.subPct = o.leads ? (o.paid / o.leads * 100) : 0;
-  });
-  out.unmatchedSpend = armSpend.unmatched || 0;
-  return out;
-}
-
 /** The conversion table. Counts unique leads, not sheet rows. */
 function conversionStats_(signups, launchDate, todayStr) {
   var seen = {}, out = {
@@ -781,81 +668,6 @@ function conversionStats_(signups, launchDate, todayStr) {
 }
 
 
-
-/* =====================================================================
-   FREE FIRST TASK: did the lead start one, on the day they signed up?
-   -----------------------------------------------------------------------
-   The headline number here is "task started", read from the taskHandoff
-   column, which the page writes at the moment the lead taps through to
-   WhatsApp. That makes it automatic, and same-session for everyone except
-   a visitor who comes back on a later day and enriches their own row - so
-   it reads as a day-0 rate in practice without anyone having to maintain
-   it by hand.
-
-   It deliberately does NOT use leadStatus for this. leadStatus is the
-   right column for where a lead ENDED UP, but it carries no timestamp:
-   the sheet records that a lead is "engaged", never when they became so.
-   A true 24-hour rate cannot be computed from it, and a rate that silently
-   means "at some point since" would be worse than not having one.
-   So leadStatus gets its own row below, honestly labelled.
-
-   The gap between "named a task" and "started one" is the useful list:
-   those leads told us what they wanted and then did not press send.
-   ===================================================================== */
-function trialStats_(signups, runDates, todayStr) {
-  var w = { today: blankTrial_(), run: blankTrial_(), since: blankTrial_() };
-  var inRun = {};
-  runDates.forEach(function (d) { inRun[d] = 1; });
-  var byTask = {}, seen = {};
-
-  signups.forEach(function (s) {
-    var k = leadKey_(s);
-    if (!k || seen[k]) return;
-    seen[k] = 1;
-    var raw = (s.date !== "" && s.date != null) ? s.date : s.timestamp;
-    var d = dateStr_(raw);
-    if (d < CONFIG.TRIAL_START) return;
-
-    var handoff = String(s.taskHandoff || "").trim().toLowerCase();
-    var label = String(s.tasks || "").trim();
-    var text = String(s.taskText || "").trim();
-    var named = !!(label || text);
-    var st = stageOf_(s.leadStatus);
-
-    var buckets = [w.since];
-    if (inRun[d]) buckets.push(w.run);
-    if (d === todayStr) buckets.push(w.today);
-
-    buckets.forEach(function (b) {
-      b.leads++;
-      if (handoff === "assistant") { b.started++; b.assistant++; }
-      else if (handoff === "membership") { b.started++; b.membership++; }
-      else if (named) b.namedOnly++;
-      else b.silent++;
-      // Anything past first contact. stageOf_ returns "" for both a blank
-      // status and a bare "contacted", since neither is a LEAD_STAGES match,
-      // so a truthy stage IS the "anything except contacted" test. Note that
-      // "dropped off" counts here: they did reply before going cold.
-      if (st) b.beyondContact++;
-    });
-
-    if (label) byTask[label] = (byTask[label] || 0) + 1;
-    else if (text) byTask["(their own words)"] = (byTask["(their own words)"] || 0) + 1;
-  });
-
-  var top = Object.keys(byTask).map(function (t) {
-    return { label: t, n: byTask[t] };
-  }).sort(function (a, b) { return b.n - a.n; });
-
-  return { today: w.today, run: w.run, since: w.since, top: top };
-}
-
-function blankTrial_() {
-  return {
-    leads: 0, started: 0, assistant: 0, membership: 0,
-    namedOnly: 0, silent: 0, beyondContact: 0
-  };
-}
 
 /** Split dual-side events into the two price arms and return the funnel for
  *  each, plus whether any arm was tagged at all (older data has none). */
@@ -1161,167 +973,12 @@ function renderConversionTable_(m) {
 }
 
 
-/** Free first task: the day-0 rate, and the gap between naming a task and
- *  actually sending it. Three windows, because a daily number on 8-10 leads
- *  is noisy enough that the running total has to sit next to it. */
-function renderTrialTable_(m) {
-  var t = m.trial, h = [];
-  h.push('<h3 style="font-size:14px;margin:22px 0 6px">Free first task ' +
-    '<span style="font-weight:400;color:#5b6b60">(since ' + CONFIG.TRIAL_START + ')</span></h3>');
-
-  if (!t.since.leads) {
-    h.push('<p style="color:#5b6b60;margin:0;font-size:12.5px">' +
-      'No leads yet since the first-task flow went live.</p>');
-    return h.join("");
-  }
-
-  h.push('<table style="border-collapse:collapse;width:100%"><tr>');
-  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;font:12.5px/1.4 -apple-system;color:#5b6b60"></th>');
-  h.push(th_("Today")); h.push(th_(m.runLabel)); h.push(th_("Since live"));
-  h.push('</tr>');
-
-  function row(label, pick, asPct, emphasis) {
-    var cells = ["today", "run", "since"].map(function (k) {
-      var w = t[k], n = pick(w);
-      if (!asPct) return td_(n, "text-align:right;font-weight:" + (emphasis ? "600" : "400"));
-      if (!w.leads) return na_dash_();
-      return td_(n + ' <span style="color:#5b6b60">(' + pct_(n / w.leads * 100) + ')</span>',
-        "text-align:right;font-weight:" + (emphasis ? "600" : "400"));
-    });
-    return "<tr>" + labelTd_(label) + cells.join("") + "</tr>";
-  }
-
-  h.push(row("Leads", function (w) { return w.leads; }, false, true));
-  h.push(row("Task started", function (w) { return w.started; }, true, true));
-  h.push(row("&nbsp;&nbsp;to the assistant", function (w) { return w.assistant; }, true));
-  h.push(row("&nbsp;&nbsp;to sales (membership)", function (w) { return w.membership; }, true));
-  h.push(row("Named a task, never sent it", function (w) { return w.namedOnly; }, true));
-  h.push(row("Left without naming one", function (w) { return w.silent; }, true));
-  h.push(row("Past first contact (leadStatus)", function (w) { return w.beyondContact; }, true));
-  h.push('</table>');
-
-  h.push('<p style="color:#5b6b60;margin:6px 0 0;font-size:12px">' +
-    '<b>Task started</b> is written by the page the moment a lead taps through to WhatsApp, ' +
-    'so it needs nobody to maintain it and is same-session for everyone except a visitor who ' +
-    'returns on a later day: read it as the day-0 rate. ' +
-    '<b>Named a task, never sent it</b> is the follow-up list worth working: they told us what ' +
-    'they wanted and then stopped. ' +
-    '<b>Past first contact</b> comes from leadStatus, which carries no timestamp, so it is ' +
-    '"at some point since", not within 24 hours.</p>');
-
-  if (t.top.length) {
-    h.push('<p style="margin:10px 0 4px;font-size:12.5px;color:#5b6b60"><b>Most asked for</b></p>');
-    h.push('<table style="border-collapse:collapse;width:100%">');
-    t.top.slice(0, 8).forEach(function (x) {
-      h.push("<tr>" + labelTd_(esc_(x.label)) +
-        td_(x.n, "text-align:right") +
-        td_(pct_(x.n / t.since.leads * 100), "text-align:right;color:#5b6b60") + "</tr>");
-    });
-    h.push('</table>');
-  }
-  return h.join("");
-}
-
-/** A "no data" cell for the trial table's percentage columns. */
-function na_dash_() { return td_(na_(), "text-align:right"); }
-
 /** The task label is a sheet value, and sales can edit that column by hand, so
  *  it is escaped before it goes into the email's HTML. Every other value in
  *  this report is a number or a string we generated. */
 function esc_(v) {
   return String(v == null ? "" : v)
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-
-/** Arm A vs arm B2, since the positioning test began. Till-date, not windowed:
- *  the test needs a cumulative read, and the stages below move slowly. */
-function renderArmTable_(m) {
-  var a = m.arms.A, b = m.arms.B2, h = [];
-  var live = a.sessions + b.sessions > 0;
-
-  h.push('<h2 style="font-size:16px;margin:30px 0 4px;padding-top:16px;' +
-    'border-top:2px solid #e6e2d6">Positioning A/B ' +
-    '<span style="font-weight:400;color:#5b6b60">(till date)</span></h2>');
-  h.push('<p style="color:#5b6b60;margin:0 0 10px;font-size:12.5px">' +
-    '<b>A</b> = tellniro.com, the family-group pitch. ' +
-    '<b>B2</b> = tellniro.com/start, Niro as your own 1:1 assistant. ' +
-    'Same price, same offer, same scope.</p>');
-
-  if (!live) {
-    h.push('<p style="background:#FBEEC8;border:1px solid #E4C97A;border-radius:6px;' +
-      'padding:8px 12px;color:#7a5b12">No tagged traffic yet. Rows only count once ' +
-      'lpVariant is set, which starts with the first visit after the arms went live.</p>');
-    return h.join("");
-  }
-
-  h.push('<table style="border-collapse:collapse;width:100%"><tr>');
-  h.push('<th style="padding:6px 9px;border-bottom:2px solid #ddd;text-align:left;' +
-    'font:12.5px/1.4 -apple-system;color:#5b6b60">Metric</th>');
-  h.push(th_("A &middot; control"));
-  h.push(th_("B2 &middot; /start", "background:#f6f4ee;color:#1a2b22"));
-  h.push(th_("Diff", "color:#5b6b60"));
-  h.push('</tr>');
-
-  // `better` says which direction is good, so the diff is coloured honestly:
-  // 1 = higher is better, -1 = lower is better, 0 = no judgement.
-  function row(label, av, bv, fmt, better, rawA, rawB) {
-    var diff = "";
-    if (better !== 0 && rawA != null && rawB != null) {
-      var d = rawB - rawA;
-      if (Math.abs(d) > 0.0001) {
-        var good = (better > 0) ? (d > 0) : (d < 0);
-        // Sign outside the formatter, so money reads "-$100" and not "$-100".
-        var sign = d > 0 ? "+" : "-";
-        diff = '<span style="color:' + (good ? "#1f7a4d" : "#b4432c") + '">' +
-          sign + fmt(Math.abs(d)) + "</span>";
-      } else {
-        diff = '<span style="color:#9AA79E">same</span>';
-      }
-    }
-    return "<tr>" + labelTd_(label) +
-      td_(av, "text-align:right;color:#3a4a40") +
-      td_(bv, "text-align:right;font-weight:600;background:#f6f4ee") +
-      td_(diff || na_(), "text-align:right;font-size:12px") + "</tr>";
-  }
-  function n_(x) { return String(Math.round(x)); }
-  function p_(x) { return pct_(x); }
-
-  h.push(row("Sessions", a.sessions, b.sessions, n_, 1, a.sessions, b.sessions));
-  h.push(row("Bounce rate", pct_(a.bounce), pct_(b.bounce), p_, -1, a.bounce, b.bounce));
-  h.push(row("Leads", a.leads, b.leads, n_, 1, a.leads, b.leads));
-  h.push(row("Cost per lead",
-    a.cpl ? money_(a.cpl) : na_(), b.cpl ? money_(b.cpl) : na_(),
-    money_, -1,
-    (a.cpl && b.cpl) ? a.cpl : null, (a.cpl && b.cpl) ? b.cpl : null));
-  h.push(row("Phone entered / visitors %", pct_(a.p2v), pct_(b.p2v), p_, 1, a.p2v, b.p2v));
-  h.push(row("Serviceable leads", a.serviceable, b.serviceable, n_, 1, a.serviceable, b.serviceable));
-  h.push(row("% CWP", pct_(a.cwpPct), pct_(b.cwpPct), p_, 1, a.cwpPct, b.cwpPct));
-  h.push(row("&#8627; % CWP drop-offs", pct_(a.cwpDropPct), pct_(b.cwpDropPct), p_, -1,
-    a.cwpDropPct, b.cwpDropPct));
-  h.push(row("Lead to free trial %", pct_(a.freeTrialPct), pct_(b.freeTrialPct), p_, 1,
-    a.freeTrialPct, b.freeTrialPct));
-  h.push(row("Lead to subscription %", pct_(a.subPct), pct_(b.subPct), p_, 1, a.subPct, b.subPct));
-  h.push('</table>');
-
-  var notes = [];
-  notes.push('<b>CWP</b> is the share of leads who answered "How do you see yourself ' +
-    'using Niro?" with the family using Niro directly, out of those who answered at ' +
-    'all (A ' + a.cwp + '/' + a.answered + ', B2 ' + b.cwp + '/' + b.answered + '). ' +
-    'Its drop-off line is how many of that group sales then lost.');
-  notes.push('<b>Serviceable</b> means we cover the family\'s city.');
-  notes.push('<b>Leads</b> counts unique people we hold a phone number for, so it ' +
-    'agrees with the conversion table above.');
-  notes.push('Free trial and subscription come from the leadStatus column, so they ' +
-    'are only as current as sales keeps it.');
-  if (m.arms.unmatchedSpend > 0) {
-    notes.push('<b style="color:#b4432c">' + money_(m.arms.unmatchedSpend) + ' of spend ' +
-      'matched neither arm</b> and is excluded from cost per lead. Check the campaign ' +
-      'names against CONFIG.ARM_CAMPAIGN.');
-  }
-  notes.push('Rows count only where lpVariant is set, so traffic from before the test ' +
-    'is not folded into arm A.');
-  h.push('<p style="color:#5b6b60;margin:6px 0 0;font-size:12px">' + notes.join(" ") + '</p>');
-  return h.join("");
 }
 
 function marketLabelFor_(key) {
@@ -1348,9 +1005,8 @@ function renderHtml_(m) {
 
   // ---- Block 1: the rolled-up funnel, then where those leads got to ----
   h.push(renderRollupTable_(m));
-  h.push(renderTrialTable_(m));
+  h.push(renderIntentTable_(m));
   h.push(renderConversionTable_(m));
-  h.push(renderArmTable_(m));
 
   // ---- Block 4: Meta ads console (2 tables across all ad sets) ----
   h.push('<h2 style="font-size:16px;margin:30px 0 4px;padding-top:16px;border-top:2px solid #e6e2d6">Meta ads - all ad sets</h2>');
