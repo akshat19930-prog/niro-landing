@@ -90,8 +90,8 @@ const AUDIT_TELLS: { icon: IconName; title: string; body: string }[] = [
 ];
 
 const YOU: string[] = [
-  "Answer three questions below, then continue on WhatsApp.",
-  "Share your UAN login, send the documents on our list, or walk us through your account on a video call: your choice.",
+  "Answer two quick questions below, then continue on WhatsApp.",
+  "Walk us through your account on a guided screen-sharing call, or log in yourself and share the records we request.",
   "Enter one-time codes yourself, and approve each step before it is taken.",
 ];
 
@@ -138,7 +138,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: "When do the 24 to 48 hours start?",
-    a: "When we have what your case needs: your UAN login, the documents on our list, or a finished video call (see the question on passwords below). If a record has to be obtained first, for example because the mobile registered with EPFO has lapsed, the 24 to 48 hours start once it is in.",
+    a: "When we have what your case needs: a finished screen-sharing call, the records on our list, or, if you choose, your UAN login (see the question on passwords below). If a record has to be obtained first, for example because the mobile registered with EPFO has lapsed, the 24 to 48 hours start once it is in.",
   },
   {
     q: "Do I need a membership for the audit?",
@@ -158,9 +158,11 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
           There is no flat fee for PF recovery. The fee depends on how many
           separate issues your case has and how complex each one is, and a full
           case runs from a few thousand rupees up to about ₹65,000. You get the
-          exact quote after your free audit, before you pay anything. Anything
-          above the credit is the partner&rsquo;s exact cost, with no markup,
-          charged only once your money is recovered. A few examples:
+          exact quote after your free audit, before you pay anything. Your
+          total is the pack price plus any specialist fee above the credit,
+          which is the partner&rsquo;s exact cost, with no markup, charged
+          only once your money is recovered. Specialist fee left after the
+          credit, a few examples:
         </span>
         <ul className="pf-faq-list">
           {PF_CREDIT_EXAMPLES.map((e) => (
@@ -168,7 +170,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
               <b>{e.name}</b> ({e.what}), fee {e.fee}:{" "}
               {PF_CREDIT.map((p, i) => {
                 const v = e.pay[i];
-                return `${p.id === "lite" ? "Lite" : p.name.replace(" membership", "")} ${v === "Covered" ? "covered" : `+${v}`}`;
+                return `${p.id === "lite" ? "Lite" : p.name.replace(" membership", "")} ${v === "Covered" ? "fully covered" : `+${v}`}`;
               }).join(", ")}
               .
             </li>
@@ -186,17 +188,17 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
     a: (
       <>
         <span className="pf-faq-p">
-          No. There are three ways to give us what the audit needs, and you
-          choose:
+          No. You stay in control of your login, and you choose how we see
+          your records:
         </span>
         <ol className="pf-faq-options">
           <li>
-            <b>Share your UAN login,</b> along with a scanned Aadhaar card, PAN
-            card and a cancelled cheque. It is used only for your case, and you
-            can change the password as soon as the audit is done.
+            <b>A guided screen-sharing call.</b> You log in on your own phone or
+            laptop and share your screen, and we go through the account with
+            you. No password changes hands.
           </li>
           <li>
-            <b>Send documents instead.</b> You log in yourself and send us:
+            <b>Share the records yourself.</b> You log in and send us:
             <span className="pf-faq-sub">From the EPFO passbook portal</span>
             {docList(DOCS_PASSBOOK)}
             <span className="pf-faq-sub">From the EPFO member portal</span>
@@ -205,9 +207,9 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
             {docList(DOCS_ID)}
           </li>
           <li>
-            <b>A video call.</b> You log in on your own phone or laptop and share
-            your screen, and we go through the account with you. No password
-            changes hands.
+            <b>Optional: share your UAN login,</b> with a scanned Aadhaar card,
+            PAN card and a cancelled cheque. Used only for your case; change the
+            password once the audit is done.
           </li>
         </ol>
         <span className="pf-faq-p">
@@ -273,6 +275,14 @@ export default function PfMoneyPage() {
                 </li>
               ))}
             </ul>
+            {/* Why audit first. Deliberately no partner statistic: the partner
+                is unnamed and its figures are not confirmed for publication. */}
+            <div className="pf-why">
+              <b>A withdrawal request is often only the last step.</b>{" "}
+              PF withdrawal can get held up by records that need correcting
+              first. Your free audit identifies what needs fixing and the steps
+              needed to move forward.
+            </div>
           </div>
         </section>
 
@@ -346,7 +356,7 @@ export default function PfMoneyPage() {
             <div className="pf-proof">
               <p className="pf-proof-line">
                 Our specialist partner has resolved 2,000+ EPFO cases. Niro
-                runs yours and keeps you posted on WhatsApp.
+                coordinates your case and keeps you updated on WhatsApp.
               </p>
             </div>
           </div>
@@ -356,7 +366,7 @@ export default function PfMoneyPage() {
         <section className="pf-sec">
           <div className="pf-wrap">
             <Eyebrow>How it works</Eyebrow>
-            <h2 className="pf-h2">Let Niro do the chasing, until the money arrives.</h2>
+            <h2 className="pf-h2">Let Niro handle the paperwork and follow-ups.</h2>
             <div className="pf-stages">
               <div className="pf-card pf-stage pf-stage-free">
                 <div className="pf-card-label">Stage 1 &middot; Free</div>
@@ -368,14 +378,14 @@ export default function PfMoneyPage() {
               </div>
               <div className="pf-card pf-stage">
                 <div className="pf-card-label">Stage 2 &middot; With a Niro pack</div>
-                <h3>Niro gets your money out</h3>
+                <h3>Niro manages your recovery case</h3>
                 <p>
                   Your pack&rsquo;s{" "}
                   <PfLink href="#pricing" kind="lite" placement="stages" className="pf-text-link">
                     PF Recovery Credit
                   </PfLink>{" "}
-                  goes towards the fee. Recovery usually takes weeks to a few
-                  months, set by EPFO.
+                  goes towards the specialist fee. Recovery usually takes weeks
+                  to a few months, depending on your records and EPFO.
                 </p>
               </div>
             </div>
@@ -421,17 +431,21 @@ export default function PfMoneyPage() {
           <div className="pf-wrap pf-pricing">
             <Eyebrow>Pricing</Eyebrow>
             <h2 className="pf-h2">One membership. Or just the tasks you need.</h2>
+            <p className="pf-p pf-p-wide">
+              The audit is free. If you want Niro to manage recovery, you&rsquo;ll
+              need a Niro pack.
+            </p>
             <PricingTiers
               membershipFeatures={MEMBERSHIP_FEATURES}
               liteLead="Includes a ₹6,000 PF Recovery Credit (counts as 4 of your 20 tasks)"
               memberLead="Includes a PF Recovery Credit: ₹5,000 on the 3-month plan, ₹15,000 on 6 months, renewed each time"
             />
             <p className="pf-p pf-p-wide pf-recovery-cost">
-              <b>What you&rsquo;ll pay for recovery:</b> simple cases, like a
-              KYC or exit-date fix, are often fully covered by the credit.
-              Bigger cases cost more. You get the exact quote after your free
-              audit, before you pay anything, and anything above the credit is
-              charged at our partner&rsquo;s cost, only once your money arrives.
+              <b>Your total price</b> is the Niro pack price plus any specialist
+              fee remaining after your PF Recovery Credit, charged at our
+              partner&rsquo;s cost once your money arrives. Your audit will show
+              the breakdown before you buy. For some simple cases, the credit
+              covers the full specialist fee; the pack price still applies.
             </p>
             <PfLink href="#audit" kind="cta" placement="pricing" className="pf-text-link">
               Start with the free audit
@@ -446,8 +460,9 @@ export default function PfMoneyPage() {
               <Eyebrow>Free PF audit</Eyebrow>
               <h2 className="pf-form-h">Get your free PF audit</h2>
               <p className="pf-form-sub">
-                Three quick questions, then continue on WhatsApp. No passwords,
-                OTPs or documents needed here.
+                Answer two quick questions, add your contact details, then
+                continue on WhatsApp. No passwords, OTPs or documents needed
+                here.
               </p>
               <PfAuditForm />
             </div>

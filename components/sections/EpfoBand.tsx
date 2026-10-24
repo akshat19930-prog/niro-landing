@@ -103,9 +103,9 @@ export function EpfoBand() {
             <Eyebrow>Free PF audit</Eyebrow>
             <h2 className="pf-form-h">Let&rsquo;s start with a free audit</h2>
             <p className="pf-form-sub">
-              Three quick questions, then continue on WhatsApp. Your audit
-              report, with the exact steps to get your money out, arrives
-              within 24 to 48 hours of receiving the records it needs.
+              Answer two quick questions, add your contact details, then
+              continue on WhatsApp. No passwords, OTPs or documents needed
+              here.
             </p>
             <PfAuditForm page="/" placement="home_epfo" guessDial />
           </Card>

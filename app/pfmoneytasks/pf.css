@@ -85,6 +85,14 @@
   .pf-tells .pf-ico { margin: 0; flex-shrink: 0; width: 40px; height: 40px; }
 }
 
+/* why audit first: a quiet callout under the audit cards */
+.pf-why {
+  margin-top: 16px; max-width: 760px;
+  border-left: 3px solid var(--accent); padding: 4px 0 4px 16px;
+  font-size: var(--text-sm); line-height: 1.6; color: var(--text-body);
+}
+.pf-why b { color: var(--text-strong); font-weight: 600; }
+
 /* cards */
 .pf-card {
   background: var(--surface-card);
