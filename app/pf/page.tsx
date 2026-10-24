@@ -123,7 +123,7 @@ const DOCS_MEMBER: string[] = [
   "Joint declaration (Manage)",
   "Transfer claim status (Online services)",
 ];
-const DOCS_ID: string[] = ["Aadhaar card", "PAN card", "A cancelled cheque"];
+const DOCS_ID: string[] = ["Aadhaar card", "PAN card"];
 
 const docList = (items: string[]) => (
   <ul className="pf-faq-list">
@@ -209,9 +209,9 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
             {docList(DOCS_ID)}
           </li>
           <li>
-            <b>Optional: share your UAN login,</b> with a scanned Aadhaar card,
-            PAN card and a cancelled cheque. Used only for your case; change the
-            password once the audit is done.
+            <b>Optional: share your UAN login,</b> with a scanned Aadhaar card
+            and PAN card. Used only for your case; change the password once the
+            audit is done.
           </li>
         </ol>
         <span className="pf-faq-p">
