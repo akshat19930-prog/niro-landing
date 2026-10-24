@@ -105,7 +105,7 @@ export function EpfoBand() {
             <p className="pf-form-sub">
               Three quick questions, then continue on WhatsApp. Your audit
               report, with the exact steps to get your money out, arrives
-              within 24 to 48 hours.
+              within 24 to 48 hours of receiving the records it needs.
             </p>
             <PfAuditForm page="/" placement="home_epfo" />
           </Card>

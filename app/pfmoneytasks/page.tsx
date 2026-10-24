@@ -3,7 +3,8 @@ import { Nav } from "@/components/ds/Nav";
 import { Footer } from "@/components/ds/Footer";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
-import { NIRO_LITE, GUIDE_SCOPE, PF_CREDIT, PF_CREDIT_EXAMPLES, MEMBERSHIP_HALF_PRICE } from "@/lib/content";
+import { NIRO_LITE, GUIDE_SCOPE, PF_CREDIT, PF_CREDIT_EXAMPLES, MEMBERSHIP_HALF_PRICE, MEMBERSHIP_FEATURES } from "@/lib/content";
+import { PricingTiers } from "@/components/sections/PricingTiers";
 import { PfAuditForm } from "./PfAuditForm";
 import { PfLink } from "./PfLink";
 import "./pf.css";
@@ -13,8 +14,11 @@ import "./pf.css";
  * (mostly 30 to 40, Gulf and other served markets; North America is out of
  * the ad targeting but not out of the form).
  *
- * The first fold sells the outcome (the money back, minutes of your effort
- * instead of weeks), not the process. One offer, in two stages:
+ * The first fold sells the free audit: what is blocking access and what it
+ * will take to recover it, then introduces Niro in one line. The audit's
+ * turnaround (24 to 48 hours of receiving the records) and the recovery's
+ * (weeks to a few months, set by EPFO) are stated separately, never blurred.
+ * One offer, in two stages:
  *  1. The free audit: review, diagnosis, action plan. No purchase needed.
  *     Delivered within 24 to 48 hours of receiving the records it needs.
  *  2. Optional paid execution, through any Niro pack that carries a PF
@@ -24,9 +28,9 @@ import "./pf.css";
  *     partner's exact cost, charged once the money is recovered. The monthly
  *     membership carries no credit and is not pitched here.
  *
- * Proof: Kustodian's own record, 2,000+ EPFO cases resolved, attributed to
- * Kustodian, confirmed by the founders and with Kustodian's OK to be named
- * (Oct 2026). It is not Niro's case count, not
+ * Proof: the specialist partner's own record, 2,000+ EPFO cases resolved,
+ * confirmed by the founders. The partner is not named on the page (founders,
+ * 24 Oct 2026), only described as our specialist partner. It is not Niro's case count, not
  * an NRI-only figure, and implies no success rate or timeline. Two national
  * figures stay, each linked to the report it comes from; the interest-loss
  * and tax claims and the diaspora figure are gone.
@@ -42,12 +46,12 @@ import "./pf.css";
 export const metadata: Metadata = {
   title: "Free PF audit for Indians abroad - Niro",
   description:
-    "Left PF money behind when you moved abroad? Get a free audit of your EPF or PPF in 24 to 48 hours: the status, any blockers, and the steps to access it.",
+    "Left PF money behind when you moved abroad? Get a free audit of your EPF or PPF within 24 to 48 hours of receiving your records: what is blocking access, and what it will take to recover it.",
   alternates: { canonical: "https://tellniro.com/pfmoneytasks/" },
   openGraph: {
     title: "Left PF money behind when you moved abroad?",
     description:
-      "A free PF audit in 24 to 48 hours: what is blocking your money, and the steps to access it.",
+      "A free PF audit within 24 to 48 hours of receiving your records: what is blocking your money, and what it will take to recover it.",
     type: "website",
     url: "https://tellniro.com/pfmoneytasks/",
   },
@@ -74,6 +78,15 @@ const BLOCKERS: { icon: IconName; title: string; body: string }[] = [
     title: "Rejections without a clear reason",
     body: "A rejected claim comes with a short code, not an explanation. Working out what it means, and what to file next, is most of the follow-up.",
   },
+];
+
+/* What the free audit tells you. Describes the deliverable, not a result:
+   no sample report, no customer case, no outcome. */
+const AUDIT_TELLS: { icon: IconName; title: string; body: string }[] = [
+  { icon: "lock", title: "What’s holding things up", body: "Issues identified and anything still needing verification." },
+  { icon: "file-text", title: "What needs to happen next", body: "Steps, documents and approvals required." },
+  { icon: "user-check", title: "What Niro would handle", body: "Work we can coordinate and what needs your involvement." },
+  { icon: "wallet", title: "What it would cost", body: "A case-specific quote and applicable Niro pack credit if you want us to handle the case." },
 ];
 
 const YOU: string[] = [
@@ -133,7 +146,36 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: "What if I want Niro to handle the case?",
-    a: `Choose a Niro pack: Niro Lite (${NIRO_LITE.price} once, 20 tasks over 12 months), or a 3-month ($250) or 6-month (${MEMBERSHIP_HALF_PRICE}) membership. Each includes a PF Recovery Credit towards the specialist's fee: ₹6,000, ₹5,000 or ₹15,000. The fee depends on your case and is confirmed after the free audit, before you buy. Anything above the credit is the partner's exact cost, with no markup, charged only once your money is recovered.`,
+    a: (
+      <>
+        <span className="pf-faq-p">
+          Choose a Niro pack: Niro Lite ({NIRO_LITE.price} once, 20 tasks over
+          12 months), or a 3-month ($250) or 6-month ({MEMBERSHIP_HALF_PRICE})
+          membership. Each includes a PF Recovery Credit towards the
+          specialist&rsquo;s fee: ₹6,000, ₹5,000 or ₹15,000.
+        </span>
+        <span className="pf-faq-p">
+          There is no flat fee for PF recovery. The fee depends on how many
+          separate issues your case has and how complex each one is, and a full
+          case runs from a few thousand rupees up to about ₹65,000. You get the
+          exact quote after your free audit, before you pay anything. Anything
+          above the credit is the partner&rsquo;s exact cost, with no markup,
+          charged only once your money is recovered. A few examples:
+        </span>
+        <ul className="pf-faq-list">
+          {PF_CREDIT_EXAMPLES.map((e) => (
+            <li key={e.name}>
+              <b>{e.name}</b> ({e.what}), fee {e.fee}:{" "}
+              {PF_CREDIT.map((p, i) => {
+                const v = e.pay[i];
+                return `${p.id === "lite" ? "Lite" : p.name.replace(" membership", "")} ${v === "Covered" ? "covered" : `+${v}`}`;
+              }).join(", ")}
+              .
+            </li>
+          ))}
+        </ul>
+      </>
+    ),
   },
   {
     q: "Do you handle PPF too?",
@@ -191,23 +233,46 @@ export default function PfMoneyPage() {
           <div className="pf-jaali" aria-hidden="true" />
           <div className="pf-wrap pf-narrow">
             <div>
-              <Eyebrow>For Indians abroad</Eyebrow>
+              <Eyebrow>For Indians living abroad</Eyebrow>
               <h1 className="pf-h1">Left PF money behind when you moved abroad?</h1>
               <p className="pf-lead pf-lead-strong">
-                Retrieve money from your dormant EPF/PF accounts, with minutes
-                of effort instead of weeks.
+                Find out what&rsquo;s blocking access and what it will take to
+                recover it, with a free PF audit.
               </p>
-              <p className="pf-lead">
-                Get a free account audit report, including the exact steps
-                needed to access the funds, within 24 to 48 hours.
+              <p className="pf-lead pf-intro">
+                <b>Niro</b> is your personal assistant in India. We coordinate
+                the paperwork and follow-ups for your PF, and everyday tasks for
+                you and your family.
               </p>
               <PfLink href="#audit" kind="cta" placement="hero" className="btn btn-primary btn-lg pf-hero-btn">
                 Get my free PF audit
               </PfLink>
               <p className="pf-support">
-                Free. No purchase required.
+                Free. No purchase required. Audit delivered within 24 to 48
+                hours of receiving the required records.
               </p>
             </div>
+          </div>
+        </section>
+
+        {/* ------------------------------------------- 1b. what the audit tells you */}
+        <section className="pf-sec pf-sec-tight">
+          <div className="pf-wrap">
+            <Eyebrow>Free PF audit</Eyebrow>
+            <h2 className="pf-h2">What your free audit tells you</h2>
+            <ul className="pf-tells">
+              {AUDIT_TELLS.map((t) => (
+                <li key={t.title} className="pf-card">
+                  <span className="pf-ico">
+                    <Icon name={t.icon} size={20} />
+                  </span>
+                  <div>
+                    <h3>{t.title}</h3>
+                    <p>{t.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
@@ -273,18 +338,18 @@ export default function PfMoneyPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------- 4. Kustodian */}
+        {/* ------------------------------------------- 4. specialist partner (unnamed on the page) */}
         <section className="pf-sec pf-inset">
           <div className="pf-wrap pf-narrow">
             <Eyebrow>Our specialist partner</Eyebrow>
             <h2 className="pf-h2">Specialist experience behind your PF case</h2>
             <div className="pf-proof">
               <p className="pf-proof-line">
-                2,000+ EPFO cases resolved by Kustodian, our specialist partner.
+                2,000+ EPFO cases resolved by our specialist partner.
               </p>
               <p>
-                Kustodian brings the EPFO expertise. Niro coordinates your case
-                and keeps you informed on WhatsApp.
+                Our partner brings the EPFO expertise. Niro coordinates your
+                case and keeps you informed on WhatsApp.
               </p>
             </div>
           </div>
@@ -303,8 +368,9 @@ export default function PfMoneyPage() {
                 <div className="pf-card-label">Stage 1 &middot; Free</div>
                 <h3>Free audit</h3>
                 <p>
-                  The exact steps to access your money. Free, with no
-                  obligation.
+                  What&rsquo;s blocking access and the steps to recover it,
+                  within 24 to 48 hours of receiving the required records.
+                  Free, with no obligation.
                 </p>
               </div>
               <div className="pf-card pf-stage">
@@ -316,89 +382,11 @@ export default function PfMoneyPage() {
                     PF Recovery Credit
                   </PfLink>{" "}
                   towards the fee, along with 50+ other kinds of tasks.
+                  Recovery itself depends on EPFO, your former employer and
+                  your bank, and usually takes weeks to a few months. Your
+                  audit sets out what to expect for your case.
                 </p>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ------------------------------------------- 5b. pricing */}
-        {/* From the founders' PF credit sheet. Three equal cards, no "best
-            value" badge: no pack is styled as preferred on this site. */}
-        <section className="pf-sec" id="pricing">
-          <div className="pf-wrap">
-            <Eyebrow>Pricing</Eyebrow>
-            <h2 className="pf-h2">How your PF recovery is priced.</h2>
-            <p className="pf-p pf-p-wide">
-              Every Niro pack includes a PF Recovery Credit. We cover the EPFO
-              recovery fee up to that amount. Anything above it is billed at
-              our partner&rsquo;s exact cost, with no markup, and charged only
-              once your money is recovered.
-            </p>
-            <div className="pf-packs">
-              {PF_CREDIT.map((p) => (
-                <div key={p.id} className="pf-card pf-pack">
-                  <h3>{p.name}</h3>
-                  <div className="pf-pack-price">
-                    {p.price} <span>/ {p.inr}</span>
-                  </div>
-                  <div className="pf-card-label">PF Recovery Credit</div>
-                  <div className="pf-pack-credit">{p.credit}</div>
-                  <p>{p.note}</p>
-                </div>
-              ))}
-            </div>
-            <p className="pf-fine">
-              On a membership, the credit comes back each time it renews.{" "}
-              <PfLink href="/lite/" kind="lite" placement="pricing" className="pf-text-link">
-                How Niro Lite works
-              </PfLink>
-            </p>
-
-            <h3 className="pf-h3">Why there is no flat fee</h3>
-            <p className="pf-p pf-p-wide">
-              PF specialists in India, ours included, price each case on how
-              many separate issues need fixing and how complex each one is. A
-              single KYC or exit-date correction is quick and inexpensive. A
-              missing pension record, an untraceable old account, or anything
-              that needs visits to an EPFO office and chasing past employers
-              takes weeks of work on the ground. So your fee is confirmed only
-              after your free audit. A full case runs from a few thousand
-              rupees up to about ₹65,000.
-            </p>
-
-            <p className="pf-table-cap">What you&rsquo;d pay on top of the credit, a few examples</p>
-            <div className="pf-table-wrap">
-              <table className="pf-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Your case</th>
-                    <th scope="col">Fee</th>
-                    {PF_CREDIT.map((p) => (
-                      <th key={p.id} scope="col">
-                        {p.id === "lite" ? "Lite" : p.name.replace(" membership", "")}
-                        <span>{p.credit}</span>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {PF_CREDIT_EXAMPLES.map((e) => (
-                    <tr key={e.name}>
-                      <th scope="row">
-                        {e.name}
-                        <span>{e.what}</span>
-                      </th>
-                      <td>{e.fee}</td>
-                      {e.pay.map((v, i) => (
-                        <td key={i} className={v === "Covered" ? "pf-covered" : undefined}>
-                          {v === "Covered" ? v : `+${v}`}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
             </div>
           </div>
         </section>
@@ -430,6 +418,32 @@ export default function PfMoneyPage() {
             </ul>
             <PfLink href="/family-guide/" kind="guide" placement="about_niro" className="pf-text-link pf-guide-link">
               See Niro&rsquo;s 50+ tasks catalogue
+            </PfLink>
+          </div>
+        </section>
+
+        {/* ------------------------------------------- 5b. pricing */}
+        {/* The home page's two tiers (PricingTiers), with the PF Recovery
+            Credit as each card's first line. The detailed fee examples live
+            in the paid-help FAQ answer. */}
+        <section className="pf-sec" id="pricing">
+          <div className="pf-wrap pf-pricing">
+            <Eyebrow>Pricing</Eyebrow>
+            <h2 className="pf-h2">One membership. Or just the tasks you need.</h2>
+            <PricingTiers
+              membershipFeatures={MEMBERSHIP_FEATURES}
+              liteLead="Includes a ₹6,000 PF Recovery Credit (counts as 4 of your 20 tasks)"
+              memberLead="Includes a PF Recovery Credit: ₹5,000 on the 3-month plan, ₹15,000 on 6 months, renewed each time"
+            />
+            <p className="pf-p pf-p-wide pf-recovery-cost">
+              <b>What you&rsquo;ll pay for recovery:</b> simple cases, like a
+              KYC or exit-date fix, are often fully covered by the credit.
+              Bigger cases cost more. You get the exact quote after your free
+              audit, before you pay anything, and anything above the credit is
+              charged at our partner&rsquo;s cost, only once your money arrives.
+            </p>
+            <PfLink href="#audit" kind="cta" placement="pricing" className="pf-text-link">
+              Start with the free audit
             </PfLink>
           </div>
         </section>
@@ -481,9 +495,9 @@ export default function PfMoneyPage() {
             </PfLink>
             <p className="pf-fine pf-disclaimer">
               Niro is a family concierge service for Indians living abroad.
-              Kustodian is an independent company and Niro&rsquo;s EPFO
-              resolution partner; neither is affiliated with EPFO or the
-              Government of India. Nothing on this page is tax, legal or
+              Our EPFO resolution partner is an independent company. Neither
+              Niro nor the partner is affiliated with EPFO or the Government of
+              India. Nothing on this page is tax, legal or
               investment advice. Outcomes and timelines depend on EPFO, your
               former employer and your bank.
             </p>

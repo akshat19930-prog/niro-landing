@@ -10,13 +10,14 @@ import { logEvent } from "@/lib/track";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { VoiceStream } from "@/components/ds/VoiceStream";
 import { EpfoBand } from "@/components/sections/EpfoBand";
+import { PricingTiers } from "@/components/sections/PricingTiers";
 import { ChatVideo } from "@/components/ds/ChatVideo";
 import { ChatThreads } from "@/components/ds/ChatThreads";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { PRIMARY_CTA } from "@/lib/config";
 import { Faq } from "@/components/sections/Faq";
 import {
-  PLANS, MEMBERSHIP_HALF_PRICE, MEMBERSHIP_FEATURES, MEMBER_STORIES, FREE_TASKS, NIRO_LITE, NIRO_LITE_EXCLUDES,
+  MEMBER_STORIES, FREE_TASKS,
   GUARANTEE, FAQ, GUIDE_SCOPE,
   ARM_COPY, B2_QUOTES, B2_FAQ_EXTRA, B2_FAQ_FIRST_ANSWER, type ArmCopy,
 } from "@/lib/content";
@@ -565,65 +566,7 @@ function PricingB({ c }: { c: ArmCopy }) {
           One membership. Or just the tasks you need.
         </h2>
 
-        {/* Two TIERS, not three cards.
-            Monthly and quarterly are nested inside the membership because they
-            are a payment choice, not a product choice: presenting them as two
-            equal cards spent the whole visual budget on the smaller decision,
-            and the one that matters now is membership vs pack. Neither billing
-            option is styled as preferred, neither tier carries a badge, and
-            the two cards match, which is the standing rule: same service,
-            two ways to pay for it. */}
-        <div className="tier-pair">
-          {/* Lite sits first: on a phone the cards stack, and the pack is the
-              one most price-objectors are looking for. */}
-          <div className="tier tier-lite">
-            <div className="tier-head">
-              <span className="tier-name">{NIRO_LITE.name}</span>
-            </div>
-            <div className="tier-price">
-              <span className="tier-num">{NIRO_LITE.price}</span>
-              <span className="tier-per">{NIRO_LITE.per}</span>
-            </div>
-            <div className="tier-alt">Paid once. Nothing recurring.</div>
-            <p className="tier-for">{NIRO_LITE.sub}.</p>
-            <ul className="tier-list">
-              {NIRO_LITE.features.map((f) => (
-                <li key={f}><Icon name="check-circle" size={16} /><span>{f}</span></li>
-              ))}
-              {NIRO_LITE_EXCLUDES.map((f) => (
-                <li key={f} className="tier-no"><span className="tier-x" aria-hidden="true" />
-                  <span>{f}</span></li>
-              ))}
-            </ul>
-            {/* A text link, not a button: the section keeps one primary action,
-                and that stays the free task. This is for someone who wants to
-                read how the pack works before deciding. */}
-            <a className="tier-more" href="/lite/">
-              How Niro Lite works &rarr;
-            </a>
-          </div>
-
-          <div className="tier">
-            <div className="tier-head">
-              <span className="tier-name">Membership</span>
-            </div>
-            {/* The quarterly rate is the headline; the monthly figure is the
-                alternative, not the anchor. */}
-            <div className="tier-price">
-              <span className="tier-num">{PLANS[1].price}</span>
-              <span className="tier-per">{PLANS[1].per}</span>
-            </div>
-            <div className="tier-alt">
-              Billed quarterly, $250 every three months. Or <b>{MEMBERSHIP_HALF_PRICE}</b> for six months, or <b>{PLANS[0].price}</b> per month.
-            </div>
-            <p className="tier-for">Everything Niro does, continuously, with no cap on tasks.</p>
-            <ul className="tier-list">
-              {c.membershipFeatures.map((f) => (
-                <li key={f}><Icon name="check-circle" size={16} /><span>{f}</span></li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <PricingTiers membershipFeatures={c.membershipFeatures} />
 
         {/* Under both cards rather than on either, so neither reads as the
             better buy. The monthly plan carries no PF credit, which the

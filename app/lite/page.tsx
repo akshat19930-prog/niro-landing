@@ -97,8 +97,8 @@ export default function TasksPackPage() {
         </p>
         <h2>EPF recovery</h2>
         <p>
-          EPF recovery is worked with our specialist partner, Kustodian. The
-          pack includes a <strong>₹6,000 PF Recovery Credit</strong> towards
+          EPF recovery is worked with our specialist partner. The pack
+          includes a <strong>₹6,000 PF Recovery Credit</strong> towards
           their fee, counted as 4 of your 20 tasks, so 16 are left for
           everything else.
         </p>
