@@ -67,7 +67,7 @@ export function EpfoBand() {
                 setOpen(true);
               }}
             >
-              Get my PF sorted
+              Get my free PF audit
             </button>
             <a
               className="epfo-more"
