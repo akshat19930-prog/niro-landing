@@ -345,11 +345,8 @@ export default function PfMoneyPage() {
             <h2 className="pf-h2">Specialist experience behind your PF case</h2>
             <div className="pf-proof">
               <p className="pf-proof-line">
-                2,000+ EPFO cases resolved by our specialist partner.
-              </p>
-              <p>
-                Our partner brings the EPFO expertise. Niro coordinates your
-                case and keeps you informed on WhatsApp.
+                Our specialist partner has resolved 2,000+ EPFO cases. Niro
+                runs yours and keeps you posted on WhatsApp.
               </p>
             </div>
           </div>
@@ -359,32 +356,26 @@ export default function PfMoneyPage() {
         <section className="pf-sec">
           <div className="pf-wrap">
             <Eyebrow>How it works</Eyebrow>
-            <h2 className="pf-h2">
-              Let Niro do the weeks of chasing, until the money hits your
-              account.
-            </h2>
+            <h2 className="pf-h2">Let Niro do the chasing, until the money arrives.</h2>
             <div className="pf-stages">
               <div className="pf-card pf-stage pf-stage-free">
                 <div className="pf-card-label">Stage 1 &middot; Free</div>
                 <h3>Free audit</h3>
                 <p>
-                  What&rsquo;s blocking access and the steps to recover it,
-                  within 24 to 48 hours of receiving the required records.
-                  Free, with no obligation.
+                  What&rsquo;s blocking access and how to fix it, within 24 to
+                  48 hours of getting your records.
                 </p>
               </div>
               <div className="pf-card pf-stage">
                 <div className="pf-card-label">Stage 2 &middot; With a Niro pack</div>
-                <h3>Niro handles the weeks of effort, until the money hits your account</h3>
+                <h3>Niro gets your money out</h3>
                 <p>
-                  Each pack includes a{" "}
+                  Your pack&rsquo;s{" "}
                   <PfLink href="#pricing" kind="lite" placement="stages" className="pf-text-link">
                     PF Recovery Credit
                   </PfLink>{" "}
-                  towards the fee, along with 50+ other kinds of tasks.
-                  Recovery itself depends on EPFO, your former employer and
-                  your bank, and usually takes weeks to a few months. Your
-                  audit sets out what to expect for your case.
+                  goes towards the fee. Recovery usually takes weeks to a few
+                  months, set by EPFO.
                 </p>
               </div>
             </div>
