@@ -67,7 +67,7 @@ export function EpfoBand() {
                 setOpen(true);
               }}
             >
-              Get my EPF sorted with Niro
+              Get my PF sorted
             </button>
             <a
               className="epfo-more"
