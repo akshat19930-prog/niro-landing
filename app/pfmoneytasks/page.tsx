@@ -13,8 +13,11 @@ import "./pf.css";
  * (mostly 30 to 40, Gulf and other served markets; North America is out of
  * the ad targeting but not out of the form).
  *
- * The first fold sells the outcome (the money back, minutes of your effort
- * instead of weeks), not the process. One offer, in two stages:
+ * The first fold sells the free audit: what is blocking access and what it
+ * will take to recover it, then introduces Niro in one line. The audit's
+ * turnaround (24 to 48 hours of receiving the records) and the recovery's
+ * (weeks to a few months, set by EPFO) are stated separately, never blurred.
+ * One offer, in two stages:
  *  1. The free audit: review, diagnosis, action plan. No purchase needed.
  *     Delivered within 24 to 48 hours of receiving the records it needs.
  *  2. Optional paid execution, through any Niro pack that carries a PF
@@ -24,9 +27,9 @@ import "./pf.css";
  *     partner's exact cost, charged once the money is recovered. The monthly
  *     membership carries no credit and is not pitched here.
  *
- * Proof: Kustodian's own record, 2,000+ EPFO cases resolved, attributed to
- * Kustodian, confirmed by the founders and with Kustodian's OK to be named
- * (Oct 2026). It is not Niro's case count, not
+ * Proof: the specialist partner's own record, 2,000+ EPFO cases resolved,
+ * confirmed by the founders. The partner is not named on the page (founders,
+ * 24 Oct 2026), only described as our specialist partner. It is not Niro's case count, not
  * an NRI-only figure, and implies no success rate or timeline. Two national
  * figures stay, each linked to the report it comes from; the interest-loss
  * and tax claims and the diaspora figure are gone.
@@ -42,12 +45,12 @@ import "./pf.css";
 export const metadata: Metadata = {
   title: "Free PF audit for Indians abroad - Niro",
   description:
-    "Left PF money behind when you moved abroad? Get a free audit of your EPF or PPF in 24 to 48 hours: the status, any blockers, and the steps to access it.",
+    "Left PF money behind when you moved abroad? Get a free audit of your EPF or PPF within 24 to 48 hours of receiving your records: what is blocking access, and what it will take to recover it.",
   alternates: { canonical: "https://tellniro.com/pfmoneytasks/" },
   openGraph: {
     title: "Left PF money behind when you moved abroad?",
     description:
-      "A free PF audit in 24 to 48 hours: what is blocking your money, and the steps to access it.",
+      "A free PF audit within 24 to 48 hours of receiving your records: what is blocking your money, and what it will take to recover it.",
     type: "website",
     url: "https://tellniro.com/pfmoneytasks/",
   },
@@ -74,6 +77,15 @@ const BLOCKERS: { icon: IconName; title: string; body: string }[] = [
     title: "Rejections without a clear reason",
     body: "A rejected claim comes with a short code, not an explanation. Working out what it means, and what to file next, is most of the follow-up.",
   },
+];
+
+/* What the free audit tells you. Describes the deliverable, not a result:
+   no sample report, no customer case, no outcome. */
+const AUDIT_TELLS: { icon: IconName; title: string; body: string }[] = [
+  { icon: "lock", title: "What’s holding things up", body: "Issues identified and anything still needing verification." },
+  { icon: "file-text", title: "What needs to happen next", body: "Steps, documents and approvals required." },
+  { icon: "user-check", title: "What Niro would handle", body: "Work we can coordinate and what needs your involvement." },
+  { icon: "wallet", title: "What it would cost", body: "A case-specific quote and applicable Niro pack credit if you want us to handle the case." },
 ];
 
 const YOU: string[] = [
@@ -191,23 +203,46 @@ export default function PfMoneyPage() {
           <div className="pf-jaali" aria-hidden="true" />
           <div className="pf-wrap pf-narrow">
             <div>
-              <Eyebrow>For Indians abroad</Eyebrow>
+              <Eyebrow>For Indians living abroad</Eyebrow>
               <h1 className="pf-h1">Left PF money behind when you moved abroad?</h1>
               <p className="pf-lead pf-lead-strong">
-                Retrieve money from your dormant EPF/PF accounts, with minutes
-                of effort instead of weeks.
+                Find out what&rsquo;s blocking access and what it will take to
+                recover it, with a free PF audit.
               </p>
-              <p className="pf-lead">
-                Get a free account audit report, including the exact steps
-                needed to access the funds, within 24 to 48 hours.
+              <p className="pf-lead pf-intro">
+                <b>Niro</b> is your personal assistant in India. We coordinate
+                the paperwork and follow-ups for your PF, and everyday tasks for
+                you and your family.
               </p>
               <PfLink href="#audit" kind="cta" placement="hero" className="btn btn-primary btn-lg pf-hero-btn">
                 Get my free PF audit
               </PfLink>
               <p className="pf-support">
-                Free. No purchase required.
+                Free. No purchase required. Audit delivered within 24 to 48
+                hours of receiving the required records.
               </p>
             </div>
+          </div>
+        </section>
+
+        {/* ------------------------------------------- 1b. what the audit tells you */}
+        <section className="pf-sec pf-sec-tight">
+          <div className="pf-wrap">
+            <Eyebrow>Free PF audit</Eyebrow>
+            <h2 className="pf-h2">What your free audit tells you</h2>
+            <ul className="pf-tells">
+              {AUDIT_TELLS.map((t) => (
+                <li key={t.title} className="pf-card">
+                  <span className="pf-ico">
+                    <Icon name={t.icon} size={20} />
+                  </span>
+                  <div>
+                    <h3>{t.title}</h3>
+                    <p>{t.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
 
@@ -273,18 +308,18 @@ export default function PfMoneyPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------- 4. Kustodian */}
+        {/* ------------------------------------------- 4. specialist partner (unnamed on the page) */}
         <section className="pf-sec pf-inset">
           <div className="pf-wrap pf-narrow">
             <Eyebrow>Our specialist partner</Eyebrow>
             <h2 className="pf-h2">Specialist experience behind your PF case</h2>
             <div className="pf-proof">
               <p className="pf-proof-line">
-                2,000+ EPFO cases resolved by Kustodian, our specialist partner.
+                2,000+ EPFO cases resolved by our specialist partner.
               </p>
               <p>
-                Kustodian brings the EPFO expertise. Niro coordinates your case
-                and keeps you informed on WhatsApp.
+                Our partner brings the EPFO expertise. Niro coordinates your
+                case and keeps you informed on WhatsApp.
               </p>
             </div>
           </div>
@@ -303,8 +338,9 @@ export default function PfMoneyPage() {
                 <div className="pf-card-label">Stage 1 &middot; Free</div>
                 <h3>Free audit</h3>
                 <p>
-                  The exact steps to access your money. Free, with no
-                  obligation.
+                  What&rsquo;s blocking access and the steps to recover it,
+                  within 24 to 48 hours of receiving the required records.
+                  Free, with no obligation.
                 </p>
               </div>
               <div className="pf-card pf-stage">
@@ -316,9 +352,43 @@ export default function PfMoneyPage() {
                     PF Recovery Credit
                   </PfLink>{" "}
                   towards the fee, along with 50+ other kinds of tasks.
+                  Recovery itself depends on EPFO, your former employer and
+                  your bank, and usually takes weeks to a few months. Your
+                  audit sets out what to expect for your case.
                 </p>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* ------------------------------------------- 6. about Niro */}
+        <section className="pf-sec pf-inset">
+          <div className="pf-wrap">
+            <Eyebrow>About Niro</Eyebrow>
+            <h2 className="pf-h2">
+              Niro is a family assistant, purpose-built for Indians living
+              abroad.
+            </h2>
+            <p className="pf-p">
+              Niro handles 50+ types of tasks for NRIs and their families, all
+              over WhatsApp.
+            </p>
+            {/* The home page's six categories, in its order, titles only: one
+                example task under each read as if that were all we do. No
+                expand control; the full catalogue is one link away. */}
+            <ul className="pf-cats">
+              {GUIDE_SCOPE.map((c) => (
+                <li key={c.title} className="pf-card">
+                  <span className="pf-ico">
+                    <Icon name={c.icon} size={22} />
+                  </span>
+                  <h3>{c.title}</h3>
+                </li>
+              ))}
+            </ul>
+            <PfLink href="/family-guide/" kind="guide" placement="about_niro" className="pf-text-link pf-guide-link">
+              See Niro&rsquo;s 50+ tasks catalogue
+            </PfLink>
           </div>
         </section>
 
@@ -403,37 +473,6 @@ export default function PfMoneyPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------- 6. about Niro */}
-        <section className="pf-sec pf-inset">
-          <div className="pf-wrap">
-            <Eyebrow>About Niro</Eyebrow>
-            <h2 className="pf-h2">
-              Niro is a family assistant, purpose-built for Indians living
-              abroad.
-            </h2>
-            <p className="pf-p">
-              Niro handles 50+ types of tasks for NRIs and their families, all
-              over WhatsApp.
-            </p>
-            {/* The home page's six categories, in its order, titles only: one
-                example task under each read as if that were all we do. No
-                expand control; the full catalogue is one link away. */}
-            <ul className="pf-cats">
-              {GUIDE_SCOPE.map((c) => (
-                <li key={c.title} className="pf-card">
-                  <span className="pf-ico">
-                    <Icon name={c.icon} size={22} />
-                  </span>
-                  <h3>{c.title}</h3>
-                </li>
-              ))}
-            </ul>
-            <PfLink href="/family-guide/" kind="guide" placement="about_niro" className="pf-text-link pf-guide-link">
-              See Niro&rsquo;s 50+ tasks catalogue
-            </PfLink>
-          </div>
-        </section>
-
         {/* ------------------------------------------- 7. intake */}
         <section className="pf-sec" id="audit">
           <div className="pf-wrap pf-form-wrap">
@@ -481,9 +520,9 @@ export default function PfMoneyPage() {
             </PfLink>
             <p className="pf-fine pf-disclaimer">
               Niro is a family concierge service for Indians living abroad.
-              Kustodian is an independent company and Niro&rsquo;s EPFO
-              resolution partner; neither is affiliated with EPFO or the
-              Government of India. Nothing on this page is tax, legal or
+              Our EPFO resolution partner is an independent company. Neither
+              Niro nor the partner is affiliated with EPFO or the Government of
+              India. Nothing on this page is tax, legal or
               investment advice. Outcomes and timelines depend on EPFO, your
               former employer and your bank.
             </p>

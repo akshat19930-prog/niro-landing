@@ -68,6 +68,23 @@
 .pf-hero-btn { margin-top: 12px; }
 .pf-support { font-size: var(--text-sm); line-height: 1.55; color: var(--text-muted); margin: 14px 0 0; max-width: 460px; }
 
+.pf-intro b { color: var(--text-strong); font-weight: 600; }
+.pf-sec-tight { padding-top: 48px; padding-bottom: 48px; }
+
+/* what the free audit tells you: four compact cards */
+.pf-tells {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+}
+.pf-tells .pf-card { display: flex; flex-direction: column; }
+.pf-tells h3 { font-size: var(--text-base) !important; }
+@media (max-width: 520px) {
+  .pf-tells { gap: 10px; }
+  .pf-tells .pf-card { flex-direction: row; gap: 14px; padding: 14px 16px; }
+  .pf-tells .pf-ico { margin: 0; flex-shrink: 0; width: 40px; height: 40px; }
+}
+
 /* cards */
 .pf-card {
   background: var(--surface-card);
