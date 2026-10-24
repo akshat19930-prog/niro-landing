@@ -19,6 +19,9 @@
  *      rate, Avg session duration, Get beta access clicked, Phone number
  *      entered, Phone entered / visitors %, All details submitted, Cost per
  *      lead, Spend, Meta CPM, Link CTR.
+ *   1b. The EPFO campaign table (backend/epfo.gs): /pf sessions, audit
+ *      leads (with the home EPF section as a sub-row), the two-step form,
+ *      WhatsApp handoff, audit method, and spend from campaigns named PF.
  *   2. What leads ask for, last 7 days (backend/intent.gs): the join form's
  *      four routing answers, and the first-task drop-down picks, each beside
  *      the previous 7 days. Replaced the free-first-task table and the
@@ -456,6 +459,8 @@ function buildModel_(data, meta) {
     conv: conversionStats_(data.signups, CONFIG.LAUNCH_DATE, todayStr),
     // intent.gs: the join form's routing answers and first-task picks, L7D.
     intent: intentStats_(data.signups, todayStr),
+    // epfo.gs: the EPFO campaign table (sessions, leads, form, spend).
+    epfo: epfoStats_(data, todayStr),
     adsets: adsets,
     realLeads: realLeadsByMarket_(data.signups, runDates),
     metaSpendByMarket: (function () {
@@ -1005,6 +1010,7 @@ function renderHtml_(m) {
 
   // ---- Block 1: the rolled-up funnel, then where those leads got to ----
   h.push(renderRollupTable_(m));
+  h.push(renderEpfoTable_(m));
   h.push(renderIntentTable_(m));
   h.push(renderConversionTable_(m));
 
