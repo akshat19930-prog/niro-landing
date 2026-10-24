@@ -425,9 +425,9 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
     // FAQ is declared above it in this file. Keep the two in step BY HAND: it
     // already drifted once, in Oct 2026, when three cities were added here and
     // not there. The order matches SERVICE_CITIES: the six launch cities, then
-    // the six added in Oct 2026 by size.
+    // the ones added in Oct 2026 by size.
     q: "Which cities is Niro serviceable in today?",
-    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Ahmedabad, Indore, Gwalior, Aligarh, Ajmer and Kozhikode. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Ahmedabad, Indore, Visakhapatnam, Gwalior, Aligarh, Ajmer and Kozhikode. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
   },
   {
     q: "How are Niro Assistants vetted and verified?",
@@ -711,10 +711,11 @@ export const GUARANTEE = {
 export type ServiceCity = { name: string; includes?: string[] };
 
 /** Small counts spelled out, so prose reads "our eleven launch cities" rather
- *  than "our 11 launch cities". Falls back to the digits past twelve. */
+ *  than "our 11 launch cities". Falls back to the digits past twenty. */
 export function spellCount(n: number): string {
   return ["zero","one","two","three","four","five","six","seven","eight","nine",
-          "ten","eleven","twelve"][n] || String(n);
+          "ten","eleven","twelve","thirteen","fourteen","fifteen","sixteen",
+          "seventeen","eighteen","nineteen","twenty"][n] || String(n);
 }
 
 export const SERVICE_CITIES: ServiceCity[] = [
@@ -740,6 +741,8 @@ export const SERVICE_CITIES: ServiceCity[] = [
   // new total or the prose turns into digits.
   { name: "Ahmedabad" },
   { name: "Indore" },
+  // Added 24 Oct 2026.
+  { name: "Visakhapatnam" },
   { name: "Gwalior" },
   { name: "Aligarh" },
   { name: "Ajmer" },
