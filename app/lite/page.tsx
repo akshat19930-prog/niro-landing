@@ -109,7 +109,7 @@ export default function TasksPackPage() {
           If it comes to more than ₹6,000, you pay the difference at the
           partner&rsquo;s exact cost, with no markup, and only once your money
           is recovered.{" "}
-          <a href="/pfmoneytasks/#pricing">See worked examples</a>.
+          <a href="/pf/#pricing">See worked examples</a>.
         </p>
 
         <p>

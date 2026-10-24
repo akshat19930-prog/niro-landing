@@ -66,7 +66,7 @@ export const SUPPORT_WHATSAPP =
  *
  * Used in three places, all of them task handoffs: the last step of the join
  * modal, the task cards on /firsttrialtask, and the free PF audit on
- * /pfmoneytasks. Every other WhatsApp link on the site goes to SALES_WHATSAPP.
+ * /pf. Every other WhatsApp link on the site goes to SALES_WHATSAPP.
  *
  * The split exists because these two conversations are different jobs. Sales
  * sells a membership; the assistant delivers a task and sets its scope. It

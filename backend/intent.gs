@@ -58,7 +58,7 @@ function intentStats_(signups, todayStr) {
     seen[k] = 1;
 
     // Only the four routing answers count. The column also carries other
-    // values (pf_audit from /pfmoneytasks, older channel tags), and those
+    // values (pf_audit from /pf, older channel tags), and those
     // leads never saw this question.
     var intent = String(s.intent || "").trim().toLowerCase();
     if (out.intent[win].hasOwnProperty(intent)) {

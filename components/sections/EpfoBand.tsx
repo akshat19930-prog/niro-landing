@@ -5,8 +5,8 @@ import { Card } from "@/components/ds/Card";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon } from "@/components/ds/Icon";
 import { logEvent } from "@/lib/track";
-import { PfAuditForm } from "@/app/pfmoneytasks/PfAuditForm";
-import "@/app/pfmoneytasks/pf.css";
+import { PfAuditForm } from "@/app/pf/PfAuditForm";
+import "@/app/pf/pf.css";
 
 /**
  * The home page's EPFO band, just above pricing (Oct 2026).
@@ -14,12 +14,12 @@ import "@/app/pfmoneytasks/pf.css";
  * Small on purpose: the home page sells family care, and this is a door for
  * the visitor who also has PF money stuck in India, not a second pitch. It
  * sits above pricing, and sells the relief (no office visits, no portals),
- * leaving the PF Recovery Credit to the pricing note and /pfmoneytasks.
+ * leaving the PF Recovery Credit to the pricing note and /pf.
  *
  * Two actions, one primary. The button opens the free PF audit form from
- * /pfmoneytasks in a dialog, so the lead is written to the sheet (intent
+ * /pf in a dialog, so the lead is written to the sheet (intent
  * pf_audit, page "/") and handed to the assistant line without leaving the
- * page. "Know more" goes to /pfmoneytasks for the full story.
+ * page. "Know more" goes to /pf for the full story.
  *
  * Analytics: pf_cta_click with placement home_epfo_open (dialog opened) or
  * home_epfo_more (went to the PF page); the form itself logs
@@ -71,8 +71,8 @@ export function EpfoBand() {
             </button>
             <a
               className="epfo-more"
-              href="/pfmoneytasks/"
-              onClick={() => logEvent("pf_cta_click", { placement: "home_epfo_more", href: "/pfmoneytasks/" })}
+              href="/pf/"
+              onClick={() => logEvent("pf_cta_click", { placement: "home_epfo_more", href: "/pf/" })}
             >
               Know more &rarr;
             </a>

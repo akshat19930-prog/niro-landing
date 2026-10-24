@@ -116,7 +116,7 @@ function linkLeadToPostHog(eventId: string, hasPhone: boolean) {
   }
 }
 
-/** Exported for standalone lead forms (e.g. /pfmoneytasks) so every page
+/** Exported for standalone lead forms (e.g. /pf) so every page
  *  writes the same row shape, with the same eventId the Pixel event carries. */
 export async function submitSignup(payload: {
   email: string;

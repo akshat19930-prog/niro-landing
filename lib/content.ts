@@ -628,7 +628,7 @@ export const MEMBERSHIP_HALF_PRICE = "$479";
  * charged only once the money is recovered. On a membership the credit comes
  * back with every renewal; on Lite it is counted as 4 of the 20 tasks.
  *
- * Rupee figures at ₹95 to the dollar, shown on /pfmoneytasks only. No pack
+ * Rupee figures at ₹95 to the dollar, shown on /pf only. No pack
  * is styled as preferred here either: the sales sheet's "Best value" badge
  * stays off the site.
  */
@@ -1722,7 +1722,7 @@ const SCOPE_FRAME: Record<string, { title: string; intro: string; extras: GuideI
 /** Tags and links the list pages show on particular lines, matched on how the
  *  line begins so a small rewording elsewhere in it does not drop them. */
 const SCOPE_DECOR: { starts: string; tag?: string; href?: string; hrefLabel?: string; guide?: boolean }[] = [
-  { starts: "Close & retrieve funds from dormant EPFO/PF account", href: "/pfmoneytasks/", hrefLabel: "Learn more", guide: true },
+  { starts: "Close & retrieve funds from dormant EPFO/PF account", href: "/pf/", hrefLabel: "Learn more", guide: true },
   { starts: "Reliable emergency response with Niro Assure", tag: "Bengaluru", href: "/niro-assure/", hrefLabel: "Learn more" },
 ];
 
