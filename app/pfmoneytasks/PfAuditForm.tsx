@@ -40,6 +40,10 @@ import {
  * backend/pf_audit.gs writes to their own columns, and as one readable line
  * in taskText, so they reach the sheet even before that backend file is live.
  *
+ * "Finish" opens a WhatsApp chat with the assistant, the answers pre-filled,
+ * so the lead starts the conversation; the confirmation keeps a fallback
+ * link and says we will message them if they do not.
+ *
  * Analytics: signup_step1_completed, signup_audit_method_selected (with the
  * method), signup_step2_completed. pf_audit_handoff keeps its old meaning:
  * the lead opened WhatsApp. No name, number or UAN goes to analytics.
@@ -177,7 +181,6 @@ export function PfAuditForm({
   // step 2
   const [s2, setS2] = useState<Step2>({ amount: "", sim: "", hasUan: "", uan: "", method: "" });
   const [errs, setErrs] = useState<Step2Errors>({});
-  const [summary, setSummary] = useState("");
 
   const [eventId] = useState(() => newEventId());
   const step2Heading = useRef<HTMLHeadingElement>(null);
@@ -259,61 +262,64 @@ export function PfAuditForm({
     if (k === "method") logEvent("signup_audit_method_selected", { placement, method: v as AuditMethod });
   }
 
-  async function submitStep2(e: React.FormEvent) {
-    e.preventDefault();
-    if (saving || !lead) return;
+  // The WhatsApp message carries the step-2 answers once they are complete,
+  // so the assistant can start the audit without re-asking.
+  const complete = Object.keys(validateStep2(s2)).length === 0;
+  const fields = complete ? step2Fields(s2) : null;
+  const line = fields ? summaryLine(fields) : "";
+  const message = `Hi Niro, I'd like a free EPF audit.${line ? `\n${line}.` : ""}`;
+  const waHref = `https://wa.me/${ASSISTANT_WHATSAPP}?text=${encodeURIComponent(message)}`;
+
+  /**
+   * "Finish" IS the WhatsApp link, like the original form's button. Its click
+   * handler checks the answers and, if they are complete, saves them with a
+   * keepalive POST and then lets the link open WhatsApp in the same tap.
+   * Opening WhatsApp after awaiting the save would lose the tap's user
+   * activation, and iOS Safari then blocks the new tab. The lead is still
+   * written before the handoff: the POST is sent before the link navigates,
+   * and keepalive carries it even if the page is backgrounded.
+   */
+  function finish(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (!lead) { e.preventDefault(); return; }
     const found = validateStep2(s2);
     setErrs(found);
-    if (Object.keys(found).length) {
+    if (Object.keys(found).length || !fields) {
+      e.preventDefault();
       const first = (["amount", "sim", "hasUan", "uan", "method"] as const).find((k) => found[k]);
       document.getElementById(`pf-${first}-label`)?.scrollIntoView({ block: "center", behavior: "smooth" });
       if (first === "uan") document.getElementById("pf-uan")?.focus();
       return;
     }
-    const f = step2Fields(s2);
-    const line = summaryLine(f);
-    setSummary(line);
-    setSaving(true);
-    const save = submitSignup({
+    void submitSignup({
       ...base(lead),
       taskText: `Free EPF audit: ${line}`,
+      taskHandoff: "assistant",
       signup_step: 2,
-      ...f,
+      ...fields,
     });
-    await Promise.race([save, new Promise((r) => setTimeout(r, SAVE_WAIT_MS))]);
-    setSaving(false);
     logEvent("signup_step2_completed", {
       placement,
-      method: f.audit_method,
-      needs_recovery_help: f.needs_recovery_help,
+      method: fields.audit_method,
+      needs_recovery_help: fields.needs_recovery_help,
     });
+    logEvent("pf_audit_handoff", { placement });
+    trackCustom("StartedConversation", { route: "whatsapp", placement: "pf_audit" });
     setStep(3);
   }
-
-  const message = `Hi Niro, I'd like a free EPF audit.${summary ? `\n${summary}.` : ""}`;
-  const waHref = `https://wa.me/${ASSISTANT_WHATSAPP}?text=${encodeURIComponent(message)}`;
 
   if (step === 3) {
     return (
       <div className="pf-form pf-done">
         <span className="pf-done-ico" aria-hidden="true"><Icon name="check" size={22} /></span>
         <p className="pf-done-h" ref={doneRef} tabIndex={-1}>
-          You&rsquo;re in. We&rsquo;ll message you on WhatsApp shortly to run your free audit.
+          You&rsquo;re in. Send the message in WhatsApp to start your free EPF audit.
         </p>
         <p className="pf-sent">
-          Rather start now?{" "}
-          <a
-            href={waHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => {
-              void submitSignup({ ...base(lead!), taskHandoff: "assistant" });
-              logEvent("pf_audit_handoff", { placement });
-              trackCustom("StartedConversation", { route: "whatsapp", placement: "pf_audit" });
-            }}
-          >
-            Message us on WhatsApp
+          WhatsApp didn&rsquo;t open?{" "}
+          <a href={waHref} target="_blank" rel="noopener noreferrer">
+            Tap here to continue
           </a>
+          . Or wait, and we&rsquo;ll message you shortly.
         </p>
       </div>
     );
@@ -321,7 +327,7 @@ export function PfAuditForm({
 
   if (step === 2) {
     return (
-      <form className="pf-form" onSubmit={submitStep2} noValidate>
+      <div className="pf-form">
         <div className="pf-steps" aria-hidden="true">Step 2 of 2</div>
         <h3 className="pf-step-h" ref={step2Heading} tabIndex={-1}>A few quick things</h3>
 
@@ -388,10 +394,18 @@ export function PfAuditForm({
           variant="cards"
         />
 
-        <button type="submit" className="btn btn-primary btn-lg btn-full" disabled={saving} aria-busy={saving}>
-          {saving ? "Saving…" : "Finish"}
-        </button>
-      </form>
+        <a
+          href={waHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-primary btn-lg btn-full"
+          onClick={finish}
+        >
+          Finish
+          <Icon name="message-circle" size={17} />
+        </a>
+        <p className="pf-fine">Finishing opens WhatsApp with your answers, ready to send.</p>
+      </div>
     );
   }
 
