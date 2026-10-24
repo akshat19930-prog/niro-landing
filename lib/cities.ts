@@ -34,6 +34,10 @@ const ALIASES: Record<string, string[]> = {
   Indore: ["indore", "indaur"],
   Aligarh: ["aligarh", "aligadh", "alighar"],
   Kozhikode: ["kozhikode", "calicut", "kozhikkode"],
+  Visakhapatnam: [
+    "visakhapatnam", "vishakhapatnam", "visakapatnam", "vishakapatnam",
+    "vizag", "vishakhapatanam", "waltair",
+  ],
   Kolkata: [
     "kolkata", "calcutta", "howrah", "salt lake", "saltlake", "bidhannagar",
     "new town", "newtown", "rajarhat", "behala", "ballygunge", "kolkata west bengal",
