@@ -26,14 +26,16 @@ import { ASSISTANT_WHATSAPP } from "@/lib/config";
  * validates, banks the row with keepalive, and only then lets the link go.
  * A visitor who never presses send in WhatsApp is still a lead we can call.
  *
- * Three questions (account, claim stage, rough balance), each with a
- * "not sure", then name and WhatsApp number. Nothing sensitive is asked here:
+ * Two questions (claim stage, rough balance), each with a "not sure", then
+ * name and WhatsApp number. Account type (EPF or PPF) was dropped from the
+ * form (Oct 2026) and is asked in the WhatsApp intake, so nothing here
+ * records or assumes it. Nothing sensitive is asked here:
  * no UAN, no password, no OTP, no documents. Other India needs are found
  * later, in the WhatsApp thread, not on this form.
  *
  * Analytics: pf_audit_handoff fires only for a valid request that opens
  * WhatsApp. It is a handoff, not a completed audit. No phone number and no
- * account answer goes to analytics; they live in the lead row only.
+ * form answer goes to analytics; they live in the lead row only.
  */
 
 /** Country codes, Gulf first because that is where the campaign runs. North
@@ -61,7 +63,6 @@ const DIALS: { code: string; short: string; example: string }[] = [
 ];
 const DEFAULT_DIAL = "+971";
 
-const ACCOUNT = ["EPF", "PPF", "Both", "Not sure"];
 const STAGE = ["Haven't tried yet", "Tried, it's stuck or rejected", "Not sure"];
 const AMOUNT = ["Under ₹2 lakh", "₹2 lakh or more", "Not sure"];
 
@@ -110,7 +111,6 @@ export function PfAuditForm({
   const [name, setName] = useState("");
   const [dial, setDial] = useState(DEFAULT_DIAL);
   const [phone, setPhone] = useState("");
-  const [account, setAccount] = useState("");
   const [stage, setStage] = useState("");
   const [amount, setAmount] = useState("");
   const [error, setError] = useState("");
@@ -133,7 +133,6 @@ export function PfAuditForm({
   const isId = looksLikeWhatsAppId(phone);
   const example = DIALS.find((d) => d.code === dial)?.example || "50 123 4567";
   const summary = [
-    account && `Account: ${account}`,
     stage && `Stage: ${stage}`,
     amount && `Balance: ${amount}`,
   ]
@@ -185,7 +184,6 @@ export function PfAuditForm({
 
   return (
     <div className="pf-form">
-      <Choice legend="Which account?" options={ACCOUNT} value={account} onChange={setAccount} />
       <Choice legend="Where is your claim?" options={STAGE} value={stage} onChange={setStage} />
       <Choice legend="Roughly how much is in it?" options={AMOUNT} value={amount} onChange={setAmount} />
 
