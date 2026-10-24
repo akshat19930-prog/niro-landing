@@ -79,6 +79,11 @@ const PH_FORWARD: Record<string, true> = {
   // completed audit), and interest in the paid plan (not a purchase).
   pf_cta_click: true,
   pf_audit_handoff: true,
+  // The two-step free PF audit form: the drop-off between steps, and which
+  // audit method people choose. No name, number or UAN rides on these.
+  signup_step1_completed: true,
+  signup_step2_completed: true,
+  signup_audit_method_selected: true,
   pf_lite_interest: true,
 };
 

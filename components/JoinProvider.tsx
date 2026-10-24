@@ -158,6 +158,18 @@ export async function submitSignup(payload: {
   /** Landing-page arm for the positioning test: "A" (/) or "B2" (/start).
    *  Sales reads this off the lead row to pick the right pitch. */
   lpVariant?: string;
+  /** The two-step free PF audit form (Oct 2026). signup_step is 1 when only
+   *  name and number are in, 2 once the rest is answered, so a drop-off
+   *  between steps is one filter on the sheet. The rest are the routing
+   *  flags backend/pf_audit.gs writes to their own columns; the Apps Script
+   *  ignores them until that file is pasted in. */
+  signup_step?: 1 | 2;
+  amount_bucket?: string;
+  india_sim_active?: "yes" | "no" | "not_sure";
+  has_uan?: boolean;
+  uan?: string | null;
+  audit_method?: "screenshots" | "readonly_credentials" | "video_call";
+  needs_recovery_help?: boolean;
 }): Promise<SignupResult> {
   const fallback: SignupResult = {
     position: FALLBACK_WAITLIST_POSITION,
