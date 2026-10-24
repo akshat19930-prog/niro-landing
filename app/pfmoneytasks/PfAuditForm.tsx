@@ -245,7 +245,7 @@ export function PfAuditForm({
     setLead(l);
     setSaving(true);
     // Persist BEFORE moving on: a lead who stops here is still reachable.
-    const save = submitSignup({ ...base(l), taskText: "Free PF audit: started (step 1 of 2)", signup_step: 1 });
+    const save = submitSignup({ ...base(l), taskText: "Free EPF audit: started (step 1 of 2)", signup_step: 1 });
     await Promise.race([save, new Promise((r) => setTimeout(r, SAVE_WAIT_MS))]);
     setSaving(false);
     logEvent("signup_step1_completed", { placement, form: "pf_audit" });
@@ -276,7 +276,7 @@ export function PfAuditForm({
     setSaving(true);
     const save = submitSignup({
       ...base(lead),
-      taskText: `Free PF audit: ${line}`,
+      taskText: `Free EPF audit: ${line}`,
       signup_step: 2,
       ...f,
     });
@@ -290,7 +290,7 @@ export function PfAuditForm({
     setStep(3);
   }
 
-  const message = `Hi Niro, I'd like a free PF audit.${summary ? `\n${summary}.` : ""}`;
+  const message = `Hi Niro, I'd like a free EPF audit.${summary ? `\n${summary}.` : ""}`;
   const waHref = `https://wa.me/${ASSISTANT_WHATSAPP}?text=${encodeURIComponent(message)}`;
 
   if (step === 3) {

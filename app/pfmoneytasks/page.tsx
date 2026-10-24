@@ -457,8 +457,8 @@ export default function PfMoneyPage() {
         <section className="pf-sec" id="audit">
           <div className="pf-wrap pf-form-wrap">
             <div className="pf-card pf-form-card">
-              <Eyebrow>Free PF audit</Eyebrow>
-              <h2 className="pf-form-h">Get your free PF audit</h2>
+              <Eyebrow>Free EPF audit</Eyebrow>
+              <h2 className="pf-form-h">Get your free EPF audit</h2>
               <p className="pf-form-sub">
                 Your name and WhatsApp number first, then a few quick taps. No
                 passwords, OTPs or documents needed here.

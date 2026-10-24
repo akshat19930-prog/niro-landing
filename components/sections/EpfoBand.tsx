@@ -84,7 +84,7 @@ export function EpfoBand() {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Free PF audit"
+          aria-label="Free EPF audit"
           className="epfo-overlay"
           onClick={(e) => {
             if (e.target === e.currentTarget) setOpen(false);
@@ -100,7 +100,7 @@ export function EpfoBand() {
             >
               <Icon name="x" size={18} />
             </button>
-            <Eyebrow>Free PF audit</Eyebrow>
+            <Eyebrow>Free EPF audit</Eyebrow>
             <h2 className="pf-form-h">Let&rsquo;s start with a free audit</h2>
             <p className="pf-form-sub">
               Your name and WhatsApp number first, then a few quick taps. No
