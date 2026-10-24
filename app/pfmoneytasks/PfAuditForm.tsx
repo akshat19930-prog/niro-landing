@@ -20,7 +20,7 @@ import { ASSISTANT_WHATSAPP } from "@/lib/config";
 import {
   AMOUNT_OPTIONS, SIM_OPTIONS, UAN_OPTIONS, METHOD_OPTIONS,
   type Step2, type Step2Errors, type AuditMethod,
-  nameError, uanError, validateStep2, toE164, step2Fields, summaryLine,
+  nameError, uanError, validateStep2, toE164, step2Fields, summaryLine, whatsappMessage,
 } from "./auditForm";
 
 /**
@@ -79,10 +79,6 @@ const DIALS: { code: string; short: string; example: string }[] = [
   { code: "+91", short: "IN", example: "98765 43210" },
 ];
 const DEFAULT_DIAL = "+971";
-
-/** How long step 1 waits for the sheet before moving on anyway. The POST is
- *  keepalive, so it still lands if the page moves on first. */
-const SAVE_WAIT_MS = 4000;
 
 /**
  * A single-select group with radio semantics: one tab stop (the selected
@@ -168,7 +164,6 @@ export function PfAuditForm({
   guessDial = false,
 }: { page?: string; placement?: string; guessDial?: boolean } = {}) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [saving, setSaving] = useState(false);
 
   // step 1
   const [name, setName] = useState("");
@@ -235,9 +230,8 @@ export function PfAuditForm({
     };
   }
 
-  async function submitStep1(e: React.FormEvent) {
+  function submitStep1(e: React.FormEvent) {
     e.preventDefault();
-    if (saving) return;
     const nErr = nameError(name);
     const p = checkPhone();
     setNameErr(nErr);
@@ -246,11 +240,12 @@ export function PfAuditForm({
 
     const l = { name: name.trim(), phone: p.e164 };
     setLead(l);
-    setSaving(true);
-    // Persist BEFORE moving on: a lead who stops here is still reachable.
-    const save = submitSignup({ ...base(l), taskText: "Free EPF audit: started (step 1 of 2)", signup_step: 1 });
-    await Promise.race([save, new Promise((r) => setTimeout(r, SAVE_WAIT_MS))]);
-    setSaving(false);
+    // The save is SENT before step 2 appears, but not waited for. Waiting
+    // meant a 2 to 4 second pause on every submit: the Apps Script round trip
+    // alone is 1.3 to 1.7s, and a write adds the lock and a full-tab scan for
+    // the eventId. The POST is keepalive, so it completes even if the page is
+    // closed, and step 2 re-sends name and number in case it never landed.
+    void submitSignup({ ...base(l), taskText: "Free EPF audit: started (step 1 of 2)", signup_step: 1 });
     logEvent("signup_step1_completed", { placement, form: "pf_audit" });
     track("Lead", { content_name: "pf_audit" }, eventId);
     setStep(2);
@@ -267,7 +262,7 @@ export function PfAuditForm({
   const complete = Object.keys(validateStep2(s2)).length === 0;
   const fields = complete ? step2Fields(s2) : null;
   const line = fields ? summaryLine(fields) : "";
-  const message = `Hi Niro, I'd like a free EPF audit.${line ? `\n${line}.` : ""}`;
+  const message = whatsappMessage(lead?.name || "", fields);
   const waHref = `https://wa.me/${ASSISTANT_WHATSAPP}?text=${encodeURIComponent(message)}`;
 
   /**
@@ -304,6 +299,8 @@ export function PfAuditForm({
     });
     logEvent("pf_audit_handoff", { placement });
     trackCustom("StartedConversation", { route: "whatsapp", placement: "pf_audit" });
+    // Tells the page's floating CTA there is nothing left to ask.
+    window.dispatchEvent(new Event("pf-audit-done"));
     setStep(3);
   }
 
@@ -463,8 +460,8 @@ export function PfAuditForm({
         {phoneErr && <p className="pf-error" id="pf-phone-err" role="alert">{phoneErr}</p>}
       </div>
 
-      <button type="submit" className="btn btn-primary btn-lg btn-full" disabled={saving} aria-busy={saving}>
-        {saving ? "Saving…" : "Start my free EPF audit"}
+      <button type="submit" className="btn btn-primary btn-lg btn-full">
+        Start my free EPF audit
       </button>
       <p className="pf-fine">
         We&rsquo;ll only use this to run your audit on WhatsApp. No passwords,

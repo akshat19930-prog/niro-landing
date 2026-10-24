@@ -20,6 +20,7 @@ export function Nav({
   homeHref = "/",
   ctaPosition,
   dark = false,
+  mobileCta,
 }: {
   cta?: string;
   ctaHref?: string;
@@ -29,6 +30,10 @@ export function Nav({
   /** Optional CTA-position tag for analytics (e.g. "nav"). */
   ctaPosition?: string;
   dark?: boolean;
+  /** A different link for phones, where a page's own floating bottom CTA
+   *  already carries the main action (e.g. /pfmoneytasks). Desktop keeps
+   *  `cta`. Both clicks are logged with their label. */
+  mobileCta?: { label: string; href: string };
 }) {
   return (
     <header
@@ -56,10 +61,21 @@ export function Nav({
         <a href={homeHref} aria-label="Niro - home" style={{ display: "inline-flex" }}>
           <Wordmark dark={dark} />
         </a>
+        {mobileCta && (
+          <a
+            href={mobileCta.href}
+            className="nav-cta nav-cta-mobile"
+            onClick={() =>
+              logEvent("nav_cta_click", { href: mobileCta.href, label: mobileCta.label })
+            }
+          >
+            {mobileCta.label}
+          </a>
+        )}
         {ctaHref ? (
           <a
             href={ctaHref}
-            className="nav-cta"
+            className={"nav-cta" + (mobileCta ? " nav-cta-desktop" : "")}
             onClick={() =>
               logEvent("nav_cta_click", { href: ctaHref, label: cta })
             }

@@ -117,6 +117,33 @@ const METHOD_SHORT: Record<AuditMethod, string> = {
 };
 const SIM_SHORT: Record<SimActive, string> = { yes: "active", no: "inactive", not_sure: "not sure" };
 
+const METHOD_LONG: Record<AuditMethod, string> = {
+  screenshots: "I'll share screenshots",
+  readonly_credentials: "Read-only access for a short while",
+  video_call: "Guided 15-min video call",
+};
+const SIM_LONG: Record<SimActive, string> = { yes: "Active", no: "Not active", not_sure: "Not sure" };
+
+/**
+ * The WhatsApp message the lead sends, with line breaks and WhatsApp's own
+ * *bold*, so the assistant reads it at a glance. The routing flag
+ * (needs_recovery_help) is internal and stays out of it; it is in the sheet.
+ */
+export function whatsappMessage(name: string, f: ReturnType<typeof step2Fields> | null): string {
+  const first = name.trim().split(/\s+/)[0];
+  const hello = first ? `Hi Niro, I'm ${first}. I'd like a free EPF audit.` : "Hi Niro, I'd like a free EPF audit.";
+  if (!f) return hello;
+  return [
+    hello,
+    "",
+    "*My details*",
+    `\u2022 EPF balance: ${f.amount_bucket === "Not sure" ? "Not sure" : `roughly ${f.amount_bucket}`}`,
+    `\u2022 Indian number linked to EPF: ${SIM_LONG[f.india_sim_active]}`,
+    `\u2022 UAN: ${f.has_uan ? (f.uan || "I have it") : "I don't have it"}`,
+    `\u2022 Audit: ${METHOD_LONG[f.audit_method]}`,
+  ].join("\n");
+}
+
 /** One readable line for the sheet's taskText column and the WhatsApp
  *  prefill. It carries the step-2 answers even before the backend has the
  *  dedicated columns, so nothing is lost in between. */
