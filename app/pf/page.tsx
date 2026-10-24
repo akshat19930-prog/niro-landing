@@ -128,7 +128,7 @@ const DOCS_ID: string[] = ["Aadhaar card", "PAN card"];
 /** The how-to video for downloading the records above (YouTube, unlisted).
  *  A plain link, not an embed, so the FAQ loads nothing until someone taps.
  *  Empty hides the link. */
-const DOCS_VIDEO_URL = "";
+const DOCS_VIDEO_URL = "https://youtu.be/vZh5KKmlfZw";
 
 const docList = (items: string[]) => (
   <ul className="pf-faq-list">
