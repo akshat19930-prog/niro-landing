@@ -2029,3 +2029,71 @@
   border-bottom: 1.5px solid var(--brand-soft);
   padding-bottom: 2px;
 }
+
+/* ---- Home: EPFO band, just above pricing ----------------------------------
+   Small by design: one card, the PF Recovery Credit as the hook, one button
+   and a text link. Same surface, radius and shadow as the pricing tiers. */
+.epfo { padding: 56px var(--gutter) 0; }
+.epfo-card {
+  max-width: var(--container-narrow);
+  margin: 0 auto;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-1);
+  padding: var(--space-5);
+}
+.epfo-ico {
+  flex-shrink: 0;
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--brand-soft); color: var(--brand);
+}
+.epfo-h {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--text-strong);
+  margin: 8px 0 8px;
+  text-wrap: balance;
+}
+.epfo-p {
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+  margin: 0 0 16px;
+  max-width: 560px;
+}
+.epfo-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; }
+.epfo-more {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--brand);
+  text-decoration: none;
+  border-bottom: 1.5px solid var(--brand-soft);
+  padding-bottom: 2px;
+}
+.epfo-more:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 4px; }
+@media (max-width: 520px) {
+  .epfo { padding-top: 40px; }
+  .epfo-ico { display: none; }
+}
+.epfo-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(12, 31, 24, 0.55);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 20px var(--gutter); overflow-y: auto;
+}
+.epfo-close {
+  position: absolute; top: 12px; right: 12px;
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: none; background: transparent; color: var(--text-muted); cursor: pointer;
+}
+.epfo-close:hover { background: var(--bg-inset); }
+.epfo-close:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }

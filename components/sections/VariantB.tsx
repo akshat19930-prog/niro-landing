@@ -9,6 +9,7 @@ import { Icon, type IconName } from "@/components/ds/Icon";
 import { logEvent } from "@/lib/track";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { VoiceStream } from "@/components/ds/VoiceStream";
+import { EpfoBand } from "@/components/sections/EpfoBand";
 import { ChatVideo } from "@/components/ds/ChatVideo";
 import { ChatThreads } from "@/components/ds/ChatThreads";
 import { StickyCta } from "@/components/sections/StickyCta";
@@ -784,6 +785,7 @@ export function VariantB({ arm = "A" }: { arm?: LpVariant } = {}) {
         <UseCasesB />
         <StoriesB />
         <TrustB c={c} />
+        <EpfoBand />
         <PricingB c={c} />
         <ParentsB c={c} />
         <Faq items={faqItems} showAsk={false} />
