@@ -7,6 +7,7 @@ import { NIRO_LITE, GUIDE_SCOPE, PF_CREDIT, PF_CREDIT_EXAMPLES, MEMBERSHIP_HALF_
 import { PricingTiers } from "@/components/sections/PricingTiers";
 import { PfAuditForm } from "./PfAuditForm";
 import { PfLink } from "./PfLink";
+import { PfStickyCta } from "./PfStickyCta";
 import "./pf.css";
 
 /**
@@ -228,7 +229,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
 export default function PfMoneyPage() {
   return (
     <>
-      <Nav cta="Get my free PF audit" ctaHref="#audit" />
+      <Nav cta="Get my free PF audit" ctaHref="#audit" mobileCta={{ label: "What Niro does", href: "#about" }} />
       <main className="pf">
         {/* ------------------------------------------- 1. hero: the outcome */}
         <section className="pf-hero">
@@ -393,7 +394,7 @@ export default function PfMoneyPage() {
         </section>
 
         {/* ------------------------------------------- 6. about Niro */}
-        <section className="pf-sec pf-inset">
+        <section className="pf-sec pf-inset" id="about">
           <div className="pf-wrap">
             <Eyebrow>About Niro</Eyebrow>
             <h2 className="pf-h2">
@@ -509,6 +510,7 @@ export default function PfMoneyPage() {
           </div>
         </section>
       </main>
+      <PfStickyCta />
       <Footer />
     </>
   );

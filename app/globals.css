@@ -327,6 +327,13 @@
     transform: var(--lift);
   }
 
+/* Nav: a page can show a different header link on phones (Nav mobileCta). */
+.nav-cta-mobile { display: none !important; }
+@media (max-width: 640px) {
+  .nav-cta-mobile { display: inline-flex !important; }
+  .nav-cta-desktop { display: none !important; }
+}
+
 /* ---- Sticky mobile CTA - narrow viewports only ---- */
 .sticky-cta {
   display: block;
