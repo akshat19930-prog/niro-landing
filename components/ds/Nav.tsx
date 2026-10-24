@@ -31,7 +31,7 @@ export function Nav({
   ctaPosition?: string;
   dark?: boolean;
   /** A different link for phones, where a page's own floating bottom CTA
-   *  already carries the main action (e.g. /pfmoneytasks). Desktop keeps
+   *  already carries the main action (e.g. /pf). Desktop keeps
    *  `cta`. Both clicks are logged with their label. */
   mobileCta?: { label: string; href: string };
 }) {

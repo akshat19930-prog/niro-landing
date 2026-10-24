@@ -11,7 +11,8 @@ import { PfStickyCta } from "./PfStickyCta";
 import "./pf.css";
 
 /**
- * /pfmoneytasks - the free PF audit, for a campaign aimed at Indians abroad
+ * /pf - the free PF audit (moved from /pf on 24 Oct 2026; the old
+ * path, /epf and /pfmoney redirect here from public/), for a campaign aimed at Indians abroad
  * (mostly 30 to 40, Gulf and other served markets; North America is out of
  * the ad targeting but not out of the form).
  *
@@ -48,13 +49,13 @@ export const metadata: Metadata = {
   title: "Free PF audit for Indians abroad - Niro",
   description:
     "Left PF money behind when you moved abroad? Get a free audit of your EPF or PPF within 24 to 48 hours of receiving your records: what is blocking access, and what it will take to recover it.",
-  alternates: { canonical: "https://tellniro.com/pfmoneytasks/" },
+  alternates: { canonical: "https://tellniro.com/pf/" },
   openGraph: {
     title: "Left PF money behind when you moved abroad?",
     description:
       "A free PF audit within 24 to 48 hours of receiving your records: what is blocking your money, and what it will take to recover it.",
     type: "website",
-    url: "https://tellniro.com/pfmoneytasks/",
+    url: "https://tellniro.com/pf/",
   },
 };
 

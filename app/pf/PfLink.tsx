@@ -3,7 +3,7 @@
 import { logEvent } from "@/lib/track";
 
 /**
- * An in-page link on /pfmoneytasks that says which kind of interest it is.
+ * An in-page link on /pf that says which kind of interest it is.
  *
  * Three kinds, kept apart on purpose so a click is never read as more than it
  * is: "cta" scrolls to the audit form (pf_cta_click), "lite" opens the Niro

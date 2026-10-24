@@ -574,7 +574,7 @@ function PricingB({ c }: { c: ArmCopy }) {
         <p className="tier-note">
           Niro Lite and the 3- and 6-month memberships each include a PF
           Recovery Credit towards EPFO casework.{" "}
-          <a href="/pfmoneytasks/#pricing">How it works &rarr;</a>
+          <a href="/pf/#pricing">How it works &rarr;</a>
         </p>
 
         {/* Directly above the CTA, so it is the last thing read before the tap.

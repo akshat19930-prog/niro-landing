@@ -5,7 +5,7 @@ import {
 
 /**
  * The two pricing tiers, Niro Lite and the membership, shared by the home page
- * and /pfmoneytasks so both show one pricing story.
+ * and /pf so both show one pricing story.
  *
  * Two TIERS, not three cards. Monthly, quarterly and six-monthly are nested
  * inside the membership because they are a payment choice, not a product
@@ -13,7 +13,7 @@ import {
  * same service, two ways to pay for it.
  *
  * `liteLead` / `memberLead` put one highlighted line at the top of each card's
- * list. /pfmoneytasks uses it for the PF Recovery Credit; the home page leaves
+ * list. /pf uses it for the PF Recovery Credit; the home page leaves
  * it out.
  */
 export function PricingTiers({

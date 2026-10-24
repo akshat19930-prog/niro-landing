@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { logEvent } from "@/lib/track";
 
 /**
- * The floating "Get my free EPF audit" bar on phones (/pfmoneytasks).
+ * The floating "Get my free EPF audit" bar on phones (/pf).
  *
  * Phones only (the .sticky-cta rule hides it above 640px), and only when it
  * helps:

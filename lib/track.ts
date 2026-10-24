@@ -74,7 +74,7 @@ const PH_FORWARD: Record<string, true> = {
   // to move, so it belongs where the funnel is, not only in the sheet.
   freetask_handoff: true,
   membership_click: true,
-  // /pfmoneytasks (Oct 2026), three kinds kept apart: a click on an in-page
+  // /pf (Oct 2026), three kinds kept apart: a click on an in-page
   // CTA, a valid audit request that opens WhatsApp (a handoff, not a
   // completed audit), and interest in the paid plan (not a purchase).
   pf_cta_click: true,

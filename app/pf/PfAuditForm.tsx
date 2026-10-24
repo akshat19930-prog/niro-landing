@@ -159,7 +159,7 @@ function RadioGroup<T extends string>({
 }
 
 export function PfAuditForm({
-  page = "/pfmoneytasks/",
+  page = "/pf/",
   placement = "audit_form",
   guessDial = false,
 }: { page?: string; placement?: string; guessDial?: boolean } = {}) {
