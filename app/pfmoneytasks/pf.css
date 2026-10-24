@@ -174,7 +174,7 @@
 .pf-form-sub { margin: 0 0 20px !important; color: var(--text-muted) !important; font-size: var(--text-sm) !important; }
 .pf-form { display: flex; flex-direction: column; gap: 18px; }
 .pf-choice { border: none; margin: 0; padding: 0; min-width: 0; }
-.pf-choice legend, .pf-field label {
+.pf-field label {
   display: block; padding: 0; font-size: var(--text-sm); font-weight: 600;
   color: var(--text-strong); margin-bottom: 8px;
 }
@@ -188,6 +188,37 @@
 .pf-chip.on { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
 .pf-chip:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 .pf-error { color: var(--danger); font-size: var(--text-sm); margin: 0; }
+/* two-step form (Oct 2026) */
+.pf-steps { font-size: var(--text-xs); font-weight: 700; letter-spacing: var(--tracking-wide); text-transform: uppercase; color: var(--text-muted); margin-bottom: -10px; }
+.pf-step-h { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 500; color: var(--text-strong); margin: 0; outline: none; }
+.pf-q { font-size: var(--text-sm); font-weight: 600; color: var(--text-strong); margin-bottom: 4px; line-height: 1.4; }
+.pf-form .pf-help { font-size: var(--text-xs); line-height: 1.5; color: var(--text-muted); margin: 0 0 10px; }
+.pf-form .pf-error { font-size: var(--text-sm); color: var(--danger); }
+.pf-choice .pf-error { margin-top: 6px; }
+.pf-reveal { margin-top: 12px; }
+.pf-opt { font-weight: 400; color: var(--text-muted); }
+.pf-methods { display: flex; flex-direction: column; gap: 8px; }
+.pf-method {
+  display: flex; flex-direction: column; gap: 3px; text-align: left; width: 100%;
+  padding: 12px 14px; border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong); background: var(--surface-card);
+  font-family: var(--font-sans); cursor: pointer;
+}
+.pf-method.on { background: var(--brand-soft); border-color: var(--brand); }
+.pf-method:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.pf-method-t { font-size: var(--text-sm); font-weight: 600; color: var(--text-strong); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pf-method-sub { font-size: var(--text-xs); line-height: 1.5; color: var(--text-muted); }
+.pf-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: var(--tracking-wide); text-transform: uppercase;
+  color: var(--brand); background: var(--brand-soft); border-radius: var(--radius-pill); padding: 2px 8px;
+}
+.pf-method.on .pf-badge { background: var(--surface-card); }
+.pf-done { align-items: center; text-align: center; padding: 8px 0; }
+.pf-done-ico {
+  width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: var(--brand-soft); color: var(--brand);
+}
+.pf-form .pf-done-h { font-size: var(--text-md); font-weight: 600; color: var(--text-strong); line-height: 1.45; margin: 0; outline: none; max-width: 380px; }
 .pf-form .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
 .pf-form .pf-fine { margin: 0; font-size: var(--text-xs); text-align: center; }
 .pf-sent { margin: 0; font-size: var(--text-sm); color: var(--text-body); text-align: center; }

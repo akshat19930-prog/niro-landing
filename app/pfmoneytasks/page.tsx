@@ -90,7 +90,7 @@ const AUDIT_TELLS: { icon: IconName; title: string; body: string }[] = [
 ];
 
 const YOU: string[] = [
-  "Answer two quick questions below, then continue on WhatsApp.",
+  "Leave your name and WhatsApp number, then answer a few quick taps.",
   "Walk us through your account on a guided screen-sharing call, or log in yourself and share the records we request.",
   "Enter one-time codes yourself, and approve each step before it is taken.",
 ];
@@ -460,9 +460,8 @@ export default function PfMoneyPage() {
               <Eyebrow>Free PF audit</Eyebrow>
               <h2 className="pf-form-h">Get your free PF audit</h2>
               <p className="pf-form-sub">
-                Answer two quick questions, add your contact details, then
-                continue on WhatsApp. No passwords, OTPs or documents needed
-                here.
+                Your name and WhatsApp number first, then a few quick taps. No
+                passwords, OTPs or documents needed here.
               </p>
               <PfAuditForm />
             </div>

@@ -103,9 +103,8 @@ export function EpfoBand() {
             <Eyebrow>Free PF audit</Eyebrow>
             <h2 className="pf-form-h">Let&rsquo;s start with a free audit</h2>
             <p className="pf-form-sub">
-              Answer two quick questions, add your contact details, then
-              continue on WhatsApp. No passwords, OTPs or documents needed
-              here.
+              Your name and WhatsApp number first, then a few quick taps. No
+              passwords, OTPs or documents needed here.
             </p>
             <PfAuditForm page="/" placement="home_epfo" guessDial />
           </Card>

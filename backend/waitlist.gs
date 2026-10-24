@@ -193,6 +193,10 @@ function doPost(e) {
       if (intent) sheet.getRange(rowIndex, C_INTENT).setValue(intent);
     }
 
+    // The free PF audit form's step-2 fields, written by header name
+    // (backend/pf_audit.gs). A new row is the sheet's last row here.
+    writeAuditFields_(sheet, rowIndex === -1 ? sheet.getLastRow() : rowIndex, data);
+
     return json_({ position: position, referralCode: referralCode });
   } catch (err) {
     return json_({ error: String(err) });
