@@ -13,8 +13,8 @@ import "@/app/pfmoneytasks/pf.css";
  *
  * Small on purpose: the home page sells family care, and this is a door for
  * the visitor who also has PF money stuck in India, not a second pitch. It
- * sits above pricing so the PF Recovery Credit is the last thing read before
- * the price.
+ * sits above pricing, and sells the relief (no office visits, no portals),
+ * leaving the PF Recovery Credit to the pricing note and /pfmoneytasks.
  *
  * Two actions, one primary. The button opens the free PF audit form from
  * /pfmoneytasks in a dialog, so the lead is written to the sheet (intent
@@ -55,8 +55,8 @@ export function EpfoBand() {
           <h2 className="epfo-h">Left PF money behind when you moved abroad?</h2>
           <p className="epfo-p">
             ₹9,330 crore sits in inoperative EPF accounts. Some of it may be
-            yours. Niro gets it out, and every Niro pack includes a PF Recovery
-            Credit of up to ₹15,000.
+            yours. Niro gets it out for you: no office visits, and no logging
+            in to frustrating portals again and again.
           </p>
           <div className="epfo-actions">
             <button
