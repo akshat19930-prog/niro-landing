@@ -98,11 +98,15 @@ function Choice({
 }
 
 /** `page` and `placement` say where the form was filled in: the PF page by
- *  default, or the home page's EPFO band, which opens this form in a dialog. */
+ *  default, or the home page's EPFO band, which opens this form in a dialog.
+ *  `guessDial` swaps the UAE default for the visitor's time-zone guess. The
+ *  PF page leaves it off (its campaign runs in the Gulf, so +971 is always
+ *  the starting code); the home page, mostly North American, turns it on. */
 export function PfAuditForm({
   page = "/pfmoneytasks/",
   placement = "audit_form",
-}: { page?: string; placement?: string } = {}) {
+  guessDial = false,
+}: { page?: string; placement?: string; guessDial?: boolean } = {}) {
   const [name, setName] = useState("");
   const [dial, setDial] = useState(DEFAULT_DIAL);
   const [phone, setPhone] = useState("");
@@ -114,16 +118,17 @@ export function PfAuditForm({
   const [eventId] = useState(() => newEventId());
 
   // This page is reached from ads and links, not through the home page, so
-  // it does its own attribution capture: the row has to carry the UTM. The
-  // country code follows the existing time-zone guess (dialCode), and stays
-  // on the Gulf default when the guess is not one of the listed codes.
+  // it does its own attribution capture: the row has to carry the UTM. With
+  // guessDial the country code follows the time-zone guess (dialCode), and
+  // stays on the UAE default when the guess is not one of the listed codes.
   useEffect(() => {
     captureUtm();
     captureAttribution();
     startSession();
+    if (!guessDial) return;
     const guess = dialCode();
     if (guess && DIALS.some((d) => d.code === guess)) setDial(guess);
-  }, []);
+  }, [guessDial]);
 
   const isId = looksLikeWhatsAppId(phone);
   const example = DIALS.find((d) => d.code === dial)?.example || "50 123 4567";

@@ -107,7 +107,7 @@ export function EpfoBand() {
               report, with the exact steps to get your money out, arrives
               within 24 to 48 hours of receiving the records it needs.
             </p>
-            <PfAuditForm page="/" placement="home_epfo" />
+            <PfAuditForm page="/" placement="home_epfo" guessDial />
           </Card>
         </div>
       )}
