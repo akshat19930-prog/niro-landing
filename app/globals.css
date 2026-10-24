@@ -1990,6 +1990,12 @@
 /* The excluded lines carry a muted cross rather than a red one: this is the
    honest shape of the cheaper tier, not a warning. */
 .tier-no { color: var(--text-muted) !important; }
+/* A highlighted first line (the PF Recovery Credit on /pfmoneytasks). */
+.tier-lead {
+  font-weight: 600; color: var(--text-strong) !important;
+  background: var(--brand-soft); border-radius: var(--radius-md);
+  padding: 8px 10px; margin: 0 -2px;
+}
 .tier-x {
   position: relative;
   width: 16px;

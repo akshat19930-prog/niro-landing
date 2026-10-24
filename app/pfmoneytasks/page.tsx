@@ -3,7 +3,8 @@ import { Nav } from "@/components/ds/Nav";
 import { Footer } from "@/components/ds/Footer";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
-import { NIRO_LITE, GUIDE_SCOPE, PF_CREDIT, PF_CREDIT_EXAMPLES, MEMBERSHIP_HALF_PRICE } from "@/lib/content";
+import { NIRO_LITE, GUIDE_SCOPE, PF_CREDIT, PF_CREDIT_EXAMPLES, MEMBERSHIP_HALF_PRICE, MEMBERSHIP_FEATURES } from "@/lib/content";
+import { PricingTiers } from "@/components/sections/PricingTiers";
 import { PfAuditForm } from "./PfAuditForm";
 import { PfLink } from "./PfLink";
 import "./pf.css";
@@ -145,7 +146,36 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: "What if I want Niro to handle the case?",
-    a: `Choose a Niro pack: Niro Lite (${NIRO_LITE.price} once, 20 tasks over 12 months), or a 3-month ($250) or 6-month (${MEMBERSHIP_HALF_PRICE}) membership. Each includes a PF Recovery Credit towards the specialist's fee: ₹6,000, ₹5,000 or ₹15,000. The fee depends on your case and is confirmed after the free audit, before you buy. Anything above the credit is the partner's exact cost, with no markup, charged only once your money is recovered.`,
+    a: (
+      <>
+        <span className="pf-faq-p">
+          Choose a Niro pack: Niro Lite ({NIRO_LITE.price} once, 20 tasks over
+          12 months), or a 3-month ($250) or 6-month ({MEMBERSHIP_HALF_PRICE})
+          membership. Each includes a PF Recovery Credit towards the
+          specialist&rsquo;s fee: ₹6,000, ₹5,000 or ₹15,000.
+        </span>
+        <span className="pf-faq-p">
+          There is no flat fee for PF recovery. The fee depends on how many
+          separate issues your case has and how complex each one is, and a full
+          case runs from a few thousand rupees up to about ₹65,000. You get the
+          exact quote after your free audit, before you pay anything. Anything
+          above the credit is the partner&rsquo;s exact cost, with no markup,
+          charged only once your money is recovered. A few examples:
+        </span>
+        <ul className="pf-faq-list">
+          {PF_CREDIT_EXAMPLES.map((e) => (
+            <li key={e.name}>
+              <b>{e.name}</b> ({e.what}), fee {e.fee}:{" "}
+              {PF_CREDIT.map((p, i) => {
+                const v = e.pay[i];
+                return `${p.id === "lite" ? "Lite" : p.name.replace(" membership", "")} ${v === "Covered" ? "covered" : `+${v}`}`;
+              }).join(", ")}
+              .
+            </li>
+          ))}
+        </ul>
+      </>
+    ),
   },
   {
     q: "Do you handle PPF too?",
@@ -393,83 +423,28 @@ export default function PfMoneyPage() {
         </section>
 
         {/* ------------------------------------------- 5b. pricing */}
-        {/* From the founders' PF credit sheet. Three equal cards, no "best
-            value" badge: no pack is styled as preferred on this site. */}
+        {/* The home page's two tiers (PricingTiers), with the PF Recovery
+            Credit as each card's first line. The detailed fee examples live
+            in the paid-help FAQ answer. */}
         <section className="pf-sec" id="pricing">
-          <div className="pf-wrap">
+          <div className="pf-wrap pf-pricing">
             <Eyebrow>Pricing</Eyebrow>
-            <h2 className="pf-h2">How your PF recovery is priced.</h2>
-            <p className="pf-p pf-p-wide">
-              Every Niro pack includes a PF Recovery Credit. We cover the EPFO
-              recovery fee up to that amount. Anything above it is billed at
-              our partner&rsquo;s exact cost, with no markup, and charged only
-              once your money is recovered.
+            <h2 className="pf-h2">One membership. Or just the tasks you need.</h2>
+            <PricingTiers
+              membershipFeatures={MEMBERSHIP_FEATURES}
+              liteLead="Includes a ₹6,000 PF Recovery Credit (counts as 4 of your 20 tasks)"
+              memberLead="Includes a PF Recovery Credit: ₹5,000 on the 3-month plan, ₹15,000 on 6 months, renewed each time"
+            />
+            <p className="pf-p pf-p-wide pf-recovery-cost">
+              <b>What you&rsquo;ll pay for recovery:</b> simple cases, like a
+              KYC or exit-date fix, are often fully covered by the credit.
+              Bigger cases cost more. You get the exact quote after your free
+              audit, before you pay anything, and anything above the credit is
+              charged at our partner&rsquo;s cost, only once your money arrives.
             </p>
-            <div className="pf-packs">
-              {PF_CREDIT.map((p) => (
-                <div key={p.id} className="pf-card pf-pack">
-                  <h3>{p.name}</h3>
-                  <div className="pf-pack-price">
-                    {p.price} <span>/ {p.inr}</span>
-                  </div>
-                  <div className="pf-card-label">PF Recovery Credit</div>
-                  <div className="pf-pack-credit">{p.credit}</div>
-                  <p>{p.note}</p>
-                </div>
-              ))}
-            </div>
-            <p className="pf-fine">
-              On a membership, the credit comes back each time it renews.{" "}
-              <PfLink href="/lite/" kind="lite" placement="pricing" className="pf-text-link">
-                How Niro Lite works
-              </PfLink>
-            </p>
-
-            <h3 className="pf-h3">Why there is no flat fee</h3>
-            <p className="pf-p pf-p-wide">
-              PF specialists in India, ours included, price each case on how
-              many separate issues need fixing and how complex each one is. A
-              single KYC or exit-date correction is quick and inexpensive. A
-              missing pension record, an untraceable old account, or anything
-              that needs visits to an EPFO office and chasing past employers
-              takes weeks of work on the ground. So your fee is confirmed only
-              after your free audit. A full case runs from a few thousand
-              rupees up to about ₹65,000.
-            </p>
-
-            <p className="pf-table-cap">What you&rsquo;d pay on top of the credit, a few examples</p>
-            <div className="pf-table-wrap">
-              <table className="pf-table">
-                <thead>
-                  <tr>
-                    <th scope="col">Your case</th>
-                    <th scope="col">Fee</th>
-                    {PF_CREDIT.map((p) => (
-                      <th key={p.id} scope="col">
-                        {p.id === "lite" ? "Lite" : p.name.replace(" membership", "")}
-                        <span>{p.credit}</span>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {PF_CREDIT_EXAMPLES.map((e) => (
-                    <tr key={e.name}>
-                      <th scope="row">
-                        {e.name}
-                        <span>{e.what}</span>
-                      </th>
-                      <td>{e.fee}</td>
-                      {e.pay.map((v, i) => (
-                        <td key={i} className={v === "Covered" ? "pf-covered" : undefined}>
-                          {v === "Covered" ? v : `+${v}`}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <PfLink href="#audit" kind="cta" placement="pricing" className="pf-text-link">
+              Start with the free audit
+            </PfLink>
           </div>
         </section>
 
