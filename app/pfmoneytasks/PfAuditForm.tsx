@@ -97,7 +97,12 @@ function Choice({
   );
 }
 
-export function PfAuditForm() {
+/** `page` and `placement` say where the form was filled in: the PF page by
+ *  default, or the home page's EPFO band, which opens this form in a dialog. */
+export function PfAuditForm({
+  page = "/pfmoneytasks/",
+  placement = "audit_form",
+}: { page?: string; placement?: string } = {}) {
   const [name, setName] = useState("");
   const [dial, setDial] = useState(DEFAULT_DIAL);
   const [phone, setPhone] = useState("");
@@ -162,12 +167,12 @@ export function PfAuditForm() {
       intent: "pf_audit",
       taskText: "Free PF audit" + (summary ? `: ${summary}` : ""),
       taskHandoff: "assistant",
-      page: "/pfmoneytasks/",
+      page,
       consent: WHATSAPP_CONSENT_VERSION,
       consentAt: new Date().toISOString(),
     });
     // A handoff to WhatsApp, not a completed audit. Nothing personal.
-    logEvent("pf_audit_handoff", { placement: "audit_form" });
+    logEvent("pf_audit_handoff", { placement });
     track("Lead", { content_name: "pf_audit" }, eventId);
     trackCustom("StartedConversation", { route: "whatsapp", placement: "pf_audit" });
     setSent(true);
