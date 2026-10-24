@@ -125,6 +125,11 @@ const DOCS_MEMBER: string[] = [
 ];
 const DOCS_ID: string[] = ["Aadhaar card", "PAN card"];
 
+/** The how-to video for downloading the records above (YouTube, unlisted).
+ *  A plain link, not an embed, so the FAQ loads nothing until someone taps.
+ *  Empty hides the link. */
+const DOCS_VIDEO_URL = "";
+
 const docList = (items: string[]) => (
   <ul className="pf-faq-list">
     {items.map((d) => (
@@ -134,17 +139,57 @@ const docList = (items: string[]) => (
 );
 
 const FAQ: { q: string; a: React.ReactNode }[] = [
+  // Ordered by what stops people first (Oct 2026): sharing the login is the
+  // hesitation leads actually voiced, then whether it is really free, what
+  // they get, what paid help costs, the unclear case, and PPF last.
   {
-    q: "What does the free audit include?",
-    a: "A review of your PF records and a written action plan on WhatsApp: the current status of each account, anything blocking access to the money and the record that shows it, the steps and documents needed next, and anything that still needs confirming. It is free, and there is no purchase required.",
-  },
-  {
-    q: "When do the 24 to 48 hours start?",
-    a: "When we have what your case needs: a finished screen-sharing call, the records on our list, or, if you choose, your UAN login (see the question on passwords below). If a record has to be obtained first, for example because the mobile registered with EPFO has lapsed, the 24 to 48 hours start once it is in.",
+    q: "Do I have to share my UAN password or OTPs?",
+    a: (
+      <>
+        <span className="pf-faq-p">
+          No. You stay in control of your login, and you choose how we see
+          your records:
+        </span>
+        <ol className="pf-faq-options">
+          <li>
+            <b>A guided screen-sharing call.</b> You log in on your own phone or
+            laptop and share your screen, and we go through the account with
+            you. No password changes hands.
+          </li>
+          <li>
+            <b>Share the records yourself.</b> You log in and send us:
+            {DOCS_VIDEO_URL && (
+              <a className="pf-video-link" href={DOCS_VIDEO_URL} target="_blank" rel="noopener noreferrer">
+                &#9654; Watch how to download these
+              </a>
+            )}
+            <span className="pf-faq-sub">From the EPFO passbook portal</span>
+            {docList(DOCS_PASSBOOK)}
+            <span className="pf-faq-sub">From the EPFO member portal</span>
+            {docList(DOCS_MEMBER)}
+            <span className="pf-faq-sub">For identity checks, scanned copies of</span>
+            {docList(DOCS_ID)}
+          </li>
+          <li>
+            <b>Optional: share your UAN login,</b> with a scanned Aadhaar card
+            and PAN card. Used only for your case; change the password once the
+            audit is done.
+          </li>
+        </ol>
+        <span className="pf-faq-p">
+          Whichever you pick, you enter any one-time code yourself, and we never
+          ask for bank PINs, card details, net-banking or UPI logins.
+        </span>
+      </>
+    ),
   },
   {
     q: "Do I need a membership for the audit?",
     a: "No. The audit is free for anyone, and asking for one does not start any paid work.",
+  },
+  {
+    q: "What does the free audit include?",
+    a: "A review of your PF records and a written action plan on WhatsApp: the current status of each account, anything blocking access to the money and the record that shows it, the steps and documents needed next, and anything that still needs confirming. It is free, and there is no purchase required.",
   },
   {
     q: "What if I want Niro to handle the case?",
@@ -182,48 +227,12 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
     ),
   },
   {
-    q: "Do you handle PPF too?",
-    a: "Yes. EPF is most of what we see, but the audit also covers PPF accounts, including ones opened before you became an NRI. PPF usually involves the bank or post office that holds the account, and the audit sets out what that branch needs.",
-  },
-  {
-    q: "Do I have to share my UAN password or OTPs?",
-    a: (
-      <>
-        <span className="pf-faq-p">
-          No. You stay in control of your login, and you choose how we see
-          your records:
-        </span>
-        <ol className="pf-faq-options">
-          <li>
-            <b>A guided screen-sharing call.</b> You log in on your own phone or
-            laptop and share your screen, and we go through the account with
-            you. No password changes hands.
-          </li>
-          <li>
-            <b>Share the records yourself.</b> You log in and send us:
-            <span className="pf-faq-sub">From the EPFO passbook portal</span>
-            {docList(DOCS_PASSBOOK)}
-            <span className="pf-faq-sub">From the EPFO member portal</span>
-            {docList(DOCS_MEMBER)}
-            <span className="pf-faq-sub">For identity checks, scanned copies of</span>
-            {docList(DOCS_ID)}
-          </li>
-          <li>
-            <b>Optional: share your UAN login,</b> with a scanned Aadhaar card
-            and PAN card. Used only for your case; change the password once the
-            audit is done.
-          </li>
-        </ol>
-        <span className="pf-faq-p">
-          Whichever you pick, you enter any one-time code yourself, and we never
-          ask for bank PINs, card details, net-banking or UPI logins.
-        </span>
-      </>
-    ),
-  },
-  {
     q: "What if it isn't clear yet whether the money can be accessed?",
     a: "Then the audit says what is known, what is not, and which record or confirmation would settle it. You decide what to do next, with no obligation, and we don't start paid work on a case we can't yet assess.",
+  },
+  {
+    q: "Do you handle PPF too?",
+    a: "Yes. EPF is most of what we see, but the audit also covers PPF accounts, including ones opened before you became an NRI. PPF usually involves the bank or post office that holds the account, and the audit sets out what that branch needs.",
   },
 ];
 
