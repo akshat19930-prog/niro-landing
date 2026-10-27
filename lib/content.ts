@@ -1345,14 +1345,17 @@ export const FREE_TASKS: FreeTask[] = [
   },
   {
     id: "epf",
-    label: "Recover or close my PPF/EPF account",
-    waText: "recovering or closing my PPF/EPF account",
-    prompt: "Recovering or closing? And the UAN, if you have it.",
+    label: "Recover funds or close my EPFO account",
+    waText: "recovering funds from or closing my EPFO account",
+    prompt: "Recovering funds or closing? And the UAN, if you have it.",
   },
   {
-    id: "physio",
-    label: "Find an at-home physio for my family",
-    waText: "finding an at-home physio for my family",
+    // Oct 2026: one free session we arrange and pay for, replacing "find an
+    // at-home physio". New id, because a shortlist and a free session are
+    // different offers and the sheet must not read them as one.
+    id: "physio_session",
+    label: "Facilitate a free at-home, reliable physio session for family",
+    waText: "a free at-home physio session for my family",
     prompt: "Which area or pin code?",
   },
   {
@@ -1380,10 +1383,11 @@ export const FREE_TASKS: FreeTask[] = [
     prompt: "Which route, and the dates? Say if the dates are flexible.",
   },
   {
-    id: "courier",
-    label: "Send something between India and me, either way",
-    waText: "sending something between India and me",
-    prompt: "What is it, which way is it going, and the city at each end?",
+    // Oct 2026, replacing "Send something between India and me".
+    id: "purifier",
+    label: "Air purifiers: Get it installed or filters checked & changed",
+    waText: "getting an air purifier installed, or its filters checked and changed",
+    prompt: "Installing a new one, or checking the filters? The brand and model, and which area or pin code?",
   },
 ];
 
@@ -1427,14 +1431,13 @@ export const SORT_OUT_WHO: string[] = [
  */
 /**
  * The routing question on the form's second step, used when TRIAL_FIRST is
- * off. One tap, four answers, in this order on purpose: the three conversation
- * routes first and the trial last, because the trial is being throttled and
- * the first option on a list is the one people pick when they are unsure.
+ * off. One tap, four answers: the two questions first, then the free task,
+ * then membership last (Oct 2026). The first option on a list is the one
+ * people pick when they are unsure, so a question stays at the top.
  *
- * The trial option is worded as having a task, not as wanting to try. Of the
- * 20 free tasks started in October, 17 stalled, and the ones that finished
- * belonged to people with something real to do. "Want to try" selects for the
- * curious; "something specific" selects for the people trials work for.
+ * The trial option was "I have something specific that needs doing" until
+ * late Oct 2026, worded to select for people with a real task. It now names
+ * the free task outright, as a way to try Niro first.
  *
  * `wa` is the message the lead sends, in their voice, when the route is a
  * conversation. The id goes to the sheet and to PostHog as `intent`.
@@ -1459,16 +1462,16 @@ export const INTENT_OPTIONS: IntentOption[] = [
     wa: "Hi Niro, I'd like to understand the pricing and plans.",
   },
   {
+    id: "task",
+    label: "I want to try Niro first using a free task",
+    route: "trial",
+    wa: "",
+  },
+  {
     id: "membership",
     label: "I'm ready to start a membership",
     route: "sales",
     wa: "Hi Niro, I'd like to start a membership.",
-  },
-  {
-    id: "task",
-    label: "I have something specific that needs doing",
-    route: "trial",
-    wa: "",
   },
 ];
 
