@@ -93,7 +93,7 @@ export const ASSISTANT_WHATSAPP =
  */
 export const TRIAL_FIRST = false;
 
-/** Whether "I have something specific that needs doing" is offered at all
+/** Whether the free-task option ("I want to try Niro first using a free task") is offered at all
  *  under the routed funnel. Off = no new trials start from the form, without
  *  changing anything else about it. */
 export const TRIALS_OPEN = true;

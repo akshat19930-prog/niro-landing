@@ -28,8 +28,8 @@
 var INTENT_LABELS = [
   { id: "how", label: "I want to understand how Niro works" },
   { id: "pricing", label: "I want to understand pricing and plans" },
-  { id: "membership", label: "I'm ready to start a membership" },
-  { id: "task", label: "I have something specific that needs doing" }
+  { id: "task", label: "I want to try Niro first using a free task" },
+  { id: "membership", label: "I'm ready to start a membership" }
 ];
 
 function intentStats_(signups, todayStr) {
