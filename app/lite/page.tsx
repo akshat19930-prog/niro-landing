@@ -53,8 +53,8 @@ export default function TasksPackPage() {
             ))}
           </ul>
           {/* The exclusions sit on the card, not in prose further down, because
-              this is the moment someone decides. Assure and Visits are the two
-              people assume are in it. */}
+              this is the moment someone decides. Assure is the one people
+              assume is in it. Visits are on the card as charged per visit. */}
           <p className="pack-excl-label">Not included</p>
           <ul className="pack-features pack-excludes">
             {NIRO_LITE_EXCLUDES.map((f) => (
@@ -94,6 +94,13 @@ export default function TasksPackPage() {
           Before we start anything that counts as more than one, we tell you
           the number and you decide. The count never changes afterwards: if a
           visit overruns, that is on us.
+        </p>
+        <p>
+          A Niro Visit is charged on top of its task count: $40 for up to four
+          hours, $60 for up to a full day. It is billed at the end of the
+          month, together with any costs we paid on your behalf with your
+          approval. If your family needs someone there most months, the
+          membership includes a visit every month and works out cheaper.
         </p>
         <h2>EPF recovery</h2>
         <p>
