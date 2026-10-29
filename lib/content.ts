@@ -463,7 +463,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "On Niro Lite, how is a task counted?",
-    a: "A task is one thing you want done, run to completion, not one phone call: a bill corrected, a cab booked, a refund chased through four follow-ups is one task. A few things are really a bundle of tasks and count as more. A Niro Visit of up to four hours counts as 2, a long visit like a hospital day or a registration as 3, recovering EPF money as 4, finding a tenant or a buyer or seller for something as up to 5, and a property registration from start to finish as up to 6. The 4 tasks for EPF carry a ₹6,000 PF Recovery Credit towards our specialist partner's fee; anything above it is the partner's exact cost, with no markup, charged only once your money is recovered. Before we start anything that counts as more than one, we tell you the number and you decide. The count never changes afterwards. The membership has no cap on tasks, so none of this applies there.",
+    a: "A task is one thing you want done, run to completion, not one phone call: a bill corrected, a cab booked, a refund chased through four follow-ups is one task. A few things are really a bundle of tasks and count as more. A Niro Visit of up to four hours counts as 1 task plus $40, a full-day visit like a hospital day or a registration as 2 tasks plus $60, recovering EPF money as 4, finding a tenant or a buyer or seller for something as up to 5, and a property registration from start to finish as up to 6. The 4 tasks for EPF carry a ₹6,000 PF Recovery Credit towards our specialist partner's fee; anything above it is the partner's exact cost, with no markup, charged only once your money is recovered. Before we start anything that counts as more than one, we tell you the number and you decide. The count never changes afterwards. The membership has no cap on tasks, so none of this applies there.",
   },
 ];
 
@@ -577,10 +577,13 @@ export const NIRO_LITE: Plan = {
     "20 tasks, used any time in 12 months",
     "The same WhatsApp chat, the same vetted Niro Assistants",
     "A task is one thing run to completion. Bigger jobs count as more, agreed before we start",
-    // A tick, not a cross: Visits are in the pack, paid for in tasks. Listing
-    // them as excluded read as "no one will come to the door", which is the
-    // opposite of what the pack offers.
-    "Niro Visits included, at 2 tasks each",
+    // A tick, not a cross: Lite members can book a Visit. Listing Visits as
+    // excluded read as "no one will come to the door". Since 29 Oct 2026 a
+    // Lite visit is priced per visit on top of its task count (the rates are
+    // in NIRO_LITE_COUNTS), priced so that a family needing a visit most
+    // months is better off on the membership. The dollar figure stays off
+    // the card so a small number never sits beside the pack price.
+    "Niro Visits on request, charged per visit",
   ],
   highlight: false,
 };
@@ -591,8 +594,8 @@ export const NIRO_LITE: Plan = {
  *  told before the work starts and never changes afterwards. */
 export const NIRO_LITE_COUNTS: { what: string; count: string }[] = [
   { what: "Most tasks: a bill corrected, a cab booked, a refund chased through four follow-ups", count: "1 task" },
-  { what: "A Niro Visit, up to four hours", count: "2 tasks" },
-  { what: "A long visit: a hospital day, a registration, a visa centre", count: "3 tasks" },
+  { what: "A Niro Visit, up to four hours", count: "1 task + $40" },
+  { what: "A full-day visit: a hospital day, a registration, a visa centre", count: "2 tasks + $60" },
   // EPFO cases are worked with a specialist partner. Per the PF credit sheet
   // (Oct 2026) Lite's ₹6,000 PF Recovery Credit is counted as 4 tasks, and
   // the fee above it is passed through at cost (PF_CREDIT below).

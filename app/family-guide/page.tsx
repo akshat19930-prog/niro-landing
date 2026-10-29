@@ -379,11 +379,12 @@ export default function FamilyGuidePage() {
                 <div className="fg-card-label">Charged separately</div>
                 <p>{COVERAGE_NOTE.excludes}</p>
                 <p style={{ marginTop: 12 }}>
-                  On Niro Lite, a visit counts as two tasks (three for a long
-                  one, like a hospital day), recovering EPF money as three or
-                  six depending on the case, with the specialist partner&rsquo;s
-                  fee included, finding a tenant or a buyer as up to five, and
-                  a property registration as up to six. We tell you the number
+                  On Niro Lite, a visit counts as one task plus $40 for up to
+                  four hours (two tasks plus $60 for a full day, like a
+                  hospital day), recovering EPF money as four, with a ₹6,000
+                  PF Recovery Credit towards the specialist partner&rsquo;s
+                  fee, finding a tenant or a buyer as up to five, and a
+                  property registration as up to six. We tell you the number
                   before we start.
                 </p>
                 <p style={{ marginTop: 12 }}>

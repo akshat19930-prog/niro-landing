@@ -78,6 +78,17 @@ export default function TermsPage() {
           markup, and charged only once the funds are recovered.
         </p>
 
+        <h2>Niro Visits on Niro Lite</h2>
+        <p>
+          On Niro Lite, a Niro Visit counts towards the pack&rsquo;s tasks and
+          is also charged per visit: one task and{" "}
+          <strong>US $40</strong> for a visit of up to four hours, or two tasks
+          and <strong>US $60</strong> for a visit of up to a full day. Visit
+          charges are billed monthly, together with any third-party costs you
+          approved. On a membership, one visit of up to four hours each month
+          is included and further visits in the same month are US $15 each.
+        </p>
+
         <h2>What your membership fee covers</h2>
         <p>
           Your fee covers Niro&rsquo;s own time - the calls, the chasing, the
