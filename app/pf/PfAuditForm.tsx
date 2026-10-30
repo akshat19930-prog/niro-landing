@@ -203,7 +203,10 @@ export function PfAuditForm({
   const example = DIALS.find((d) => d.code === dial)?.example || "50 123 4567";
 
   function checkPhone(): { e164?: string; error?: string } {
-    const full = isId ? phone.trim() : `${dial} ${phone.trim()}`;
+    // A number that arrives with its own code (phone autofill often fills
+    // "+971 50 ..." here) is taken as typed, not prefixed with the picker's.
+    const own = /^(\+|00)/.test(phone.trim());
+    const full = isId || own ? phone.trim() : `${dial} ${phone.trim()}`;
     const { value, isId: id, error } = validateContact(phone.trim() ? full : "");
     if (!value) return { error: error || "Please enter your WhatsApp number." };
     return { e164: toE164(value, !!id) };
@@ -446,7 +449,7 @@ export function PfAuditForm({
             id="pf-phone"
             type="tel"
             inputMode="tel"
-            autoComplete="tel-national"
+            autoComplete="tel"
             placeholder={example}
             value={phone}
             required
