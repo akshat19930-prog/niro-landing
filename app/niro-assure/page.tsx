@@ -15,7 +15,7 @@ import { EMERGENCY_SLA, EMERGENCY_STEPS, SERVICE_CITIES, spellCount } from "@/li
  * Two deliberate restraints:
  *  - The times are scoped to the launch cities, stated on the page. An SLA that
  *    silently implies national coverage is worse than no SLA.
- *  - "Median arrival", not "guaranteed arrival", for the 20-minute figure. We
+ *  - "Median arrival", not "guaranteed arrival", for the 20 to 25 minute figure. We
  *    control the call pickup and the dispatch; we do not control traffic.
  */
 export const metadata: Metadata = {
@@ -68,9 +68,13 @@ export default function EmergencyPage() {
 
         <h2>Who actually turns up</h2>
         <p>
-          The ambulance comes from our partner - a fleet of equipped ambulances
-          with paramedics on board. The person who meets your parents at the
-          hospital is a{" "}
+          The ambulance comes from our partner, Medulance, which sends one of
+          three types depending on the case: Advanced Life Support (ALS),
+          Basic Life Support (BLS) or Patient Transport (PT). The vehicle and
+          crew are chosen by the patient&rsquo;s condition, mobility and the
+          help needed. ALS units are equipped for critical care; BLS and PT
+          units have a trained driver and attendants rather than ALS
+          paramedics. The person who meets your parents at the hospital is a{" "}
           <strong>Niro Assistant on our own payroll</strong>, background-checked
           and introduced to your family by name and photo before anything ever
           happens. You are not being handed to a marketplace at the worst moment
