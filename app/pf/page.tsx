@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ProofVideo } from "@/components/ds/ProofVideo";
 import { Nav } from "@/components/ds/Nav";
 import { Footer } from "@/components/ds/Footer";
 import { Eyebrow } from "@/components/ds/Eyebrow";
@@ -428,6 +429,9 @@ export default function PfMoneyPage() {
                 </li>
               ))}
             </ul>
+            <div className="pf-diaries">
+              <ProofVideo placement="pf_about" caption="Beyond EPFO: real tasks we have done for NRI families." />
+            </div>
             <PfLink href="/family-guide/" kind="guide" placement="about_niro" className="pf-text-link pf-guide-link">
               See Niro&rsquo;s 50+ tasks catalogue
             </PfLink>
