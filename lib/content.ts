@@ -447,7 +447,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "How fast is the emergency response, really?",
-    a: "We answer the emergency line in 45 seconds - a person, not a menu. Our ambulance partner dispatches the nearest equipped ambulance within 5 minutes, and median arrival across our launch cities is 20 minutes. A Niro Assistant meets your parents at the hospital, carries their medical history and insurance details, and handles admission. Most of that speed comes from work done before anything happens: on your onboarding call we record their history, medication, blood group, insurance and preferred hospital, and write down your family's protocol. In an emergency we execute that document - we don't improvise. If we miss our own numbers, we tell you in writing the same day.",
+    a: "We answer the emergency line in 45 seconds - a person, not a menu. Our ambulance partner dispatches the nearest ambulance within 5 minutes, and median arrival across our launch cities is 20 to 25 minutes. In Bengaluru, a Niro Assistant can also meet your parents at the hospital, carry their medical history and insurance details, and handle admission. Most of that speed comes from work done before anything happens: on your onboarding call we record their history, medication, blood group, insurance and preferred hospital, and write down your family's protocol. In an emergency we execute that document - we don't improvise. If we miss our own numbers, we tell you in writing the same day.",
   },
   {
     q: "Who actually does the work - humans or AI?",
@@ -765,12 +765,16 @@ export const EMERGENCY_SLA: { value: string; label: string; detail: string }[] =
   {
     value: "5 min",
     label: "Ambulance dispatched",
-    detail: "Our ambulance partner dispatches the nearest equipped ambulance to your parents' address.",
+    detail: "Our ambulance partner dispatches the nearest ambulance to your parents' address.",
   },
   {
-    value: "20 min",
+    // 20-25 minutes from 30 Oct 2026 (founders), replacing the flat 20.
+    // "With a paramedic on board" came off with it: only ALS units carry ALS
+    // paramedics; BLS and patient-transport units run with a driver and
+    // attendants, and the partner picks the vehicle by the case.
+    value: "20-25 min",
     label: "Ambulance arrives",
-    detail: "Median arrival across our launch cities, with a paramedic on board.",
+    detail: "Median arrival across our launch cities.",
   },
 ];
 

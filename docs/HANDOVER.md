@@ -259,7 +259,7 @@ not just the change. `git log --oneline` then `git show <sha>` beats asking.
    stored for auto-debit before promising monthly billing.
 4. **Three live claims need an owner**: the monthly free Niro visit, the data
    commitments in the FAQ (one-click deletion, periodic disclosure,
-   task-scoped logged access), and the 20-minute ambulance median.
+   task-scoped logged access), and the 20 to 25 minute ambulance median.
 5. **`CLAUDE.md` describes the page's rules for AI coding agents.** It was
    rewritten at handover to match reality - keep it that way, or the next agent
    will confidently build the wrong thing.
