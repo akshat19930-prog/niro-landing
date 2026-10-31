@@ -38,6 +38,15 @@ export function ChatVideo({
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
+    // Hero A/B "none" version (components/HeroInit.tsx): the clip is hidden,
+    // so stop its download. The autoplay attribute makes browsers start
+    // fetching at parse time whatever preload says; dropping src and calling
+    // load() cancels that fetch.
+    if (document.documentElement.getAttribute("data-hero") === "none" && v.closest(".hero-video")) {
+      v.removeAttribute("src");
+      v.load();
+      return;
+    }
     // Properties (not just attributes) - required for iOS autoplay.
     v.muted = true;
     v.defaultMuted = true;
@@ -47,9 +56,10 @@ export function ChatVideo({
     v.playbackRate = playbackRate;
 
     const tryPlay = () => {
-      // With preload="none" nothing is fetched until we ask; kick the download
-      // here (post-hydration) so the 345KB clip never competes with the HTML,
-      // pixel, and critical JS during the first-paint window.
+      // preload="none" is meant to hold the download until here, though the
+      // autoplay attribute makes most browsers start fetching at parse time
+      // anyway (measured Nov 2026: tens of KB before hydration). Kick it
+      // explicitly in case the browser did wait.
       if (v.preload === "none" || v.networkState === v.NETWORK_EMPTY) v.load();
       v.playbackRate = playbackRate;
       const p = v.play();

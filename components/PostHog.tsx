@@ -9,6 +9,8 @@ import { POSTHOG_KEY, POSTHOG_HOST } from "@/lib/config";
  * replay so the email field is never recorded; anonymous events don't create
  * person profiles (cost + privacy). The pricing arm + pitch are registered as
  * super-properties from JoinProvider so heatmaps/funnels can be split by cell.
+ * The hero A/B version (components/HeroInit.tsx) is registered here as
+ * hero_arm, so every PostHog event, page views included, carries it.
  */
 export function PostHog() {
   if (!POSTHOG_KEY) return null;
@@ -25,7 +27,7 @@ export function PostHog() {
           enable_heatmaps:true,
           person_profiles:'identified_only',
           session_recording:{ maskAllInputs:true },
-          loaded:function(ph){try{var m=document.cookie.match(/(?:^|;\\s*)niro_pg=(control|reposition)/);ph.register({page_arm:m?m[1]:'control'});}catch(e){}}
+          loaded:function(ph){try{var m=document.cookie.match(/(?:^|;\\s*)niro_pg=(control|reposition)/);ph.register({page_arm:m?m[1]:'control'});if(window.__niroHero){ph.register({hero_arm:window.__niroHero});}}catch(e){}}
         });
       `}
     </Script>

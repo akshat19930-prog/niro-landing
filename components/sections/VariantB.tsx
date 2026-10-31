@@ -162,7 +162,9 @@ function HeroB({ c, arm }: { c: ArmCopy; arm: LpVariant }) {
             </div>
           )}
         </div>
-        <div style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
+        {/* hero-video: the hero A/B's CSS gate (components/HeroInit.tsx). On
+            arm A only; /start's chat threads are not part of the test. */}
+        <div className={arm === "B2" ? undefined : "hero-video"} style={{ justifySelf: "center", width: "100%", maxWidth: 360 }}>
           {/* 0.65x: each screen of the pain-checker story holds about 6 to 8s
               instead of 4 to 5. At full speed it changed faster than people
               could read it. */}
