@@ -360,14 +360,14 @@ export default function PfMoneyPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------- 4. specialist partner (unnamed on the page) */}
+        {/* ------------------------------------------- 4. specialist partner (named here only; the reviews stay generic) */}
         <section className="pf-sec pf-inset">
           <div className="pf-wrap pf-narrow">
             <Eyebrow>Our specialist partner</Eyebrow>
             <h2 className="pf-h2">Specialist experience behind your PF case</h2>
             <div className="pf-proof">
               <p className="pf-proof-line">
-                Our specialist partner has resolved 2,000+ EPFO cases. Niro
+                Our specialist partner Kustodian has resolved 2,000+ EPFO cases. Niro
                 coordinates your case and keeps you updated on WhatsApp.
               </p>
             </div>
@@ -383,10 +383,14 @@ export default function PfMoneyPage() {
                   <blockquote>&ldquo;{r.headline}&rdquo;</blockquote>
                   <p>{r.body}</p>
                   <figcaption>
+                    {/* No photo, no stand-in face: the reviewer's initial instead. */}
                     <span
-                      className="story-face"
-                      style={{ backgroundImage: `url("${r.photo}"), linear-gradient(150deg,#EAD9B8,#C9986A)` }}
-                    />
+                      className="story-face pf-review-initial"
+                      style={r.photo ? { backgroundImage: `url("${r.photo}"), linear-gradient(150deg,#EAD9B8,#C9986A)` } : undefined}
+                      aria-hidden="true"
+                    >
+                      {r.photo ? null : r.name[0]}
+                    </span>
                     <span>
                       <b>{r.name}</b>
                       <span>{r.location}</span>
