@@ -9,6 +9,7 @@
 /* a narrower measure for reading, on the same left edge as every section */
 .pf-narrow > * { max-width: 760px; }
 .pf-sec { padding: 64px var(--gutter); }
+@media (max-width: 520px) { .pf-sec { padding-top: 48px; padding-bottom: 48px; } }
 .pf-inset { background: var(--bg-inset); }
 .pf-sec[id] { scroll-margin-top: 72px; }
 
@@ -30,16 +31,6 @@
   color: var(--text-strong);
   font-weight: 500;
   margin: 14px 0 24px;
-  text-wrap: balance;
-}
-.pf-h3 {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 500;
-  line-height: 1.3;
-  color: var(--text-strong);
-  margin: 40px 0 16px;
-  max-width: 680px;
   text-wrap: balance;
 }
 .pf-lead, .pf-p {
@@ -117,15 +108,18 @@
   display: grid; gap: 16px;
   grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
 }
-
-/* you / Niro */
-.pf-split {
-  display: grid; gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+/* on a phone, the blockers sit as compact rows, like the audit cards */
+@media (max-width: 520px) {
+  .pf-grid { gap: 10px; }
+  .pf-grid .pf-card { display: grid; grid-template-columns: 40px 1fr; column-gap: 14px; padding: 14px 16px; }
+  .pf-grid .pf-ico { margin: 0; width: 40px; height: 40px; grid-row: span 2; }
+  .pf-grid h3 { font-size: var(--text-base); }
 }
-.pf-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-.pf-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 0.9375rem; line-height: 1.5; color: var(--text-body); }
-.pf-list svg { color: var(--brand); flex-shrink: 0; margin-top: 3px; }
+
+/* you / Niro, as two lines under How it works */
+.pf-roles { margin-top: 20px; }
+.pf-roles p { margin: 0; }
+.pf-roles p + p { margin-top: 6px; }
 
 /* Kustodian */
 .pf-proof { border-left: 3px solid var(--accent); padding: 4px 0 4px 20px; }
