@@ -235,6 +235,23 @@ Change these only deliberately - each one cost a test or an interview to learn.
 **The fuller record is `git log`.** Commit messages here carry the *reasoning*,
 not just the change. `git log --oneline` then `git show <sha>` beats asking.
 
+### Running test: hero video (from 1 Nov 2026)
+
+- **What:** the home hero with the WhatsApp chat clip (`video`) vs without
+  any visual (`none`), 50/50. Assigned by `components/HeroInit.tsx` before
+  first paint, home page and arm A only, frozen in the `niro_hero` cookie for
+  90 days. `?hero=video` / `?hero=none` pins a version for QA.
+- **Where to read it:** PostHog, every event carries `hero_arm`. Compare per
+  visitor: started a conversation (`join_initiated` or `whatsapp_click`),
+  hero CTA clicks (`waitlist_click_hero`), and leads (`lead_submitted`) as a
+  guardrail. The events sheet gets a `heroArm` column once the updated
+  `backend/waitlist.gs` is pasted into Apps Script.
+- **Do not judge it on scroll depth or sections reached:** `none` is shorter
+  above the fold, so its visitors reach the next section mechanically sooner.
+- **Ending it:** keep the winner by deleting `HeroInit` from `app/layout.tsx`
+  and either the `.hero-video` gate in `globals.css` (keep the clip) or the
+  clip itself (drop it).
+
 ---
 
 ## 7. Known gaps, as of handover
