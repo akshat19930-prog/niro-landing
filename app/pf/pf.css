@@ -273,3 +273,9 @@
 }
 .pf-sticky.on { transform: none; }
 @media (prefers-reduced-motion: reduce) { .pf-sticky { transition: none; } }
+
+/* Partner reviews: the home page's story cards, with a smaller quote, since
+   these run longer than the home headlines. */
+.pf-reviews { margin-top: 28px; }
+.pf-reviews .story-card blockquote { font-size: var(--text-md); line-height: 1.4; }
+.pf-reviews-note { margin-top: 14px; }

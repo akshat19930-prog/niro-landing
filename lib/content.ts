@@ -648,6 +648,39 @@ export const PF_CREDIT: {
   { id: "half", name: "6-month membership", price: MEMBERSHIP_HALF_PRICE, inr: "₹45,505", credit: "₹15,000", note: "Plus unlimited tasks for 6 months" },
 ];
 
+/** Reviews of our specialist partner's EPFO work, from the reviewers' own
+ *  LinkedIn posts (Oct 2026, shared with permission). The partner stays
+ *  unnamed on the page, so its name is replaced with "[our partner]"; quotes
+ *  are otherwise verbatim, trimmed at sentence edges, with Anuj's bulleted
+ *  list run into one sentence and its long dash made a comma. First name and
+ *  location only, no link to the post. Sources, for anyone checking:
+ *   Kavitha  linkedin.com/feed/update/urn:li:activity:7361287509399519232
+ *   Manish   linkedin.com/posts/manishm345_..._activity-7292293993827090432
+ *   Anuj     linkedin.com/posts/anuj-parekh-29479237_..._activity-7316739169769160704 */
+export const PF_PARTNER_REVIEWS: { name: string; location: string; photo: string; headline: string; body: string }[] = [
+  {
+    name: "Kavitha",
+    location: "Singapore",
+    photo: "/media/pf-reviews/kavitha.jpg",
+    headline: "After 20+ months of effort, 2 rejections and a few setbacks, I was finally able to resolve my EPFO case with the support of [our partner].",
+    body: "They patiently understood the situation, guided me through the steps/process at various employers, and provided timely reminders to keep things moving.",
+  },
+  {
+    name: "Manish",
+    location: "Bangalore",
+    photo: "/media/pf-reviews/manish.jpg",
+    headline: "I had almost given up on recovering my Provident Fund (PF) money in India, which had been blocked for years\u2026",
+    body: "Being on the ground in India, [our partner] handled all the complexities efficiently, saving me the time and mental bandwidth I didn’t have while being abroad.",
+  },
+  {
+    name: "Anuj",
+    location: "Mumbai",
+    photo: "/media/pf-reviews/anuj.jpg",
+    headline: "What felt like a dead end was turned around thanks to [our partner].",
+    body: "They guided me through every step, represented me in communication with the trust, and got it all done, without a single in-person visit, in just 3 weeks.",
+  },
+];
+
 /** Worked examples from the same sheet: the case fee, and what is left to pay
  *  on each pack, in PF_CREDIT order. */
 export const PF_CREDIT_EXAMPLES: { name: string; what: string; fee: string; pay: string[] }[] = [
