@@ -4,7 +4,7 @@ import { Nav } from "@/components/ds/Nav";
 import { Footer } from "@/components/ds/Footer";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
-import { NIRO_LITE, GUIDE_SCOPE, PF_CREDIT, PF_CREDIT_EXAMPLES, MEMBERSHIP_HALF_PRICE, MEMBERSHIP_FEATURES } from "@/lib/content";
+import { NIRO_LITE, GUIDE_SCOPE, PF_CREDIT, PF_CREDIT_EXAMPLES, PF_PARTNER_REVIEWS, MEMBERSHIP_HALF_PRICE, MEMBERSHIP_FEATURES } from "@/lib/content";
 import { PricingTiers } from "@/components/sections/PricingTiers";
 import { PfAuditForm } from "./PfAuditForm";
 import { PfLink } from "./PfLink";
@@ -360,17 +360,49 @@ export default function PfMoneyPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------- 4. specialist partner (unnamed on the page) */}
+        {/* ------------------------------------------- 4. specialist partner (named here only; the reviews stay generic) */}
         <section className="pf-sec pf-inset">
           <div className="pf-wrap pf-narrow">
             <Eyebrow>Our specialist partner</Eyebrow>
             <h2 className="pf-h2">Specialist experience behind your PF case</h2>
             <div className="pf-proof">
               <p className="pf-proof-line">
-                Our specialist partner has resolved 2,000+ EPFO cases. Niro
+                Our specialist partner Kustodian has resolved 2,000+ EPFO cases. Niro
                 coordinates your case and keeps you updated on WhatsApp.
               </p>
             </div>
+          </div>
+          {/* Outside pf-narrow, so the three cards get the full width. The
+              quotes are the reviewers' own LinkedIn posts (sources in
+              lib/content PF_PARTNER_REVIEWS); the note under them says whose
+              work they review, so none reads as a review of Niro. */}
+          <div className="pf-wrap">
+            <div className="story-grid pf-reviews">
+              {PF_PARTNER_REVIEWS.map((r) => (
+                <figure key={r.name} className="story-card">
+                  <blockquote>&ldquo;{r.headline}&rdquo;</blockquote>
+                  <p>{r.body}</p>
+                  <figcaption>
+                    {/* No photo, no stand-in face: the reviewer's initial instead. */}
+                    <span
+                      className="story-face pf-review-initial"
+                      style={r.photo ? { backgroundImage: `url("${r.photo}"), linear-gradient(150deg,#EAD9B8,#C9986A)` } : undefined}
+                      aria-hidden="true"
+                    >
+                      {r.photo ? null : r.name[0]}
+                    </span>
+                    <span>
+                      <b>{r.name}</b>
+                      <span>{r.location}</span>
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+            <p className="pf-fine pf-reviews-note">
+              Shared with permission: reviews of our specialist partner&rsquo;s
+              EPFO work, from the reviewers&rsquo; own posts, lightly trimmed.
+            </p>
           </div>
         </section>
 

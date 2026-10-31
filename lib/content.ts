@@ -648,6 +648,41 @@ export const PF_CREDIT: {
   { id: "half", name: "6-month membership", price: MEMBERSHIP_HALF_PRICE, inr: "₹45,505", credit: "₹15,000", note: "Plus unlimited tasks for 6 months" },
 ];
 
+/** Reviews of our specialist partner's EPFO work, from the reviewers' own
+ *  LinkedIn posts (Oct 2026, shared with permission). The reviews never name
+ *  the partner: its name becomes "these guys", generic on purpose; the
+ *  section around them names it once. Otherwise verbatim from the full posts,
+ *  trimmed at sentence edges with "\u2026" where text is cut, and a long dash
+ *  made a comma. First name and location only, no link, no reaction counts.
+ *  Vikas has no photo we can use, so his card shows an initial. Sources:
+ *   Kavitha  linkedin.com/feed/update/urn:li:activity:7361287509399519232
+ *   Vikas    LinkedIn, shared via the partner co-founder's feed (no URL kept)
+ *   Manish   linkedin.com/posts/manishm345_..._activity-7292293993827090432
+ *  Manish's post says he was abroad; the partner's site lists him in
+ *  Bangalore, so his card describes the case, not a city. */
+export const PF_PARTNER_REVIEWS: { name: string; location: string; photo?: string; headline: string; body: string }[] = [
+  {
+    name: "Kavitha",
+    location: "Singapore",
+    photo: "/media/pf-reviews/kavitha.jpg",
+    headline: "After 20+ months of effort, 2 rejections and a few setbacks, I was finally able to resolve my EPFO case with the support of these guys.",
+    body: "They patiently understood the situation, guided me through the steps/process at various employers, and provided timely reminders to keep things moving.",
+  },
+  {
+    name: "Vikas",
+    location: "Worked in the US",
+    headline: "Having worked abroad in the US when UAN was introduced in India, my legacy pre-UAN PF account remained unlinked.",
+    body: "Over the years, multiple attempts to merge it with my active UAN failed, and I had accepted that those funds were lost to administrative red tape. \u2026 To top it off, they spotted an anomaly where interest had stopped accruing, raised an additional grievance, and secured a recalculated payout that was substantially higher than expected.",
+  },
+  {
+    name: "Manish",
+    location: "Recovered his PF from abroad",
+    photo: "/media/pf-reviews/manish.jpg",
+    headline: "I had almost given up on recovering my Provident Fund (PF) money in India, which had been blocked for years\u2026",
+    body: "Being on the ground in India, these guys handled all the complexities efficiently, saving me the time and mental bandwidth I didn\u2019t have while being abroad.",
+  },
+];
+
 /** Worked examples from the same sheet: the case fee, and what is left to pay
  *  on each pack, in PF_CREDIT order. */
 export const PF_CREDIT_EXAMPLES: { name: string; what: string; fee: string; pay: string[] }[] = [
