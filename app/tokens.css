@@ -127,6 +127,9 @@
   --shadow-3: 0 6px 14px rgba(25, 26, 22, 0.08), 0 20px 44px rgba(25, 26, 22, 0.1);
   --shadow-brand: 0 10px 30px rgba(30, 69, 54, 0.22);
   --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  /* Over video frames, which are graded to true black: an ink scrim reads
+     as a grey band against them. */
+  --scrim-video: rgba(0, 0, 0, 0.85);
 
   /* ---- Motion (calm; no bounce/overshoot) ---- */
   --dur-fast: 160ms;

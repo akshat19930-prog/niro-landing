@@ -2127,9 +2127,10 @@
 .proof-media, .proof-poster img { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
 .proof-poster { all: unset; position: absolute; inset: 0; cursor: pointer; display: block; }
 .proof-poster:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+/* Below the poster's photo rather than over the faces in it. */
 .proof-play {
-  position: absolute; top: 50%; left: 50%;
-  width: 64px; height: 64px; margin: -32px 0 0 -32px;
+  position: absolute; top: 77%; left: 50%;
+  width: 56px; height: 56px; margin: -28px 0 0 -28px;
   border-radius: var(--radius-pill);
   background: var(--surface-card); color: var(--brand);
   display: grid; place-items: center;
@@ -2140,8 +2141,8 @@
 @media (prefers-reduced-motion: no-preference) { .proof-play { transition: transform 0.15s ease; } }
 .proof-tag {
   position: absolute; left: 0; right: 0; bottom: 0;
-  padding: 40px 18px 18px;
-  background: linear-gradient(to top, color-mix(in srgb, var(--ink-900) 85%, transparent), transparent);
+  padding: 40px 18px 16px;
+  background: linear-gradient(to top, var(--scrim-video), transparent);
   color: var(--ivory);
   line-height: 1.3;
 }
