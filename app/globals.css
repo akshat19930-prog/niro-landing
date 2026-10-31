@@ -2110,3 +2110,75 @@
 }
 .epfo-close:hover { background: var(--bg-inset); }
 .epfo-close:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+
+/* ---------------------------------------------------------- proof video */
+/* Niro Diaries (components/ds/ProofVideo.tsx): a 9:16 poster that becomes
+   the player on tap, or the same player in a dialog from a text link. */
+.proof-video { margin: 0; width: 100%; max-width: 250px; }
+@media (min-width: 900px) { .proof-video { max-width: 280px; } }
+.proof-frame {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--ink-900);
+  box-shadow: var(--shadow-3);
+}
+.proof-media, .proof-poster img { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; object-fit: cover; }
+.proof-poster { all: unset; position: absolute; inset: 0; cursor: pointer; display: block; }
+.proof-poster:focus-visible { outline: 3px solid var(--accent); outline-offset: -3px; }
+/* Below the poster's photo rather than over the faces in it. */
+.proof-play {
+  position: absolute; top: 77%; left: 50%;
+  width: 56px; height: 56px; margin: -28px 0 0 -28px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-card); color: var(--brand);
+  display: grid; place-items: center;
+  box-shadow: var(--shadow-3);
+}
+.proof-play svg { margin-left: 3px; }
+.proof-poster:hover .proof-play { transform: scale(1.06); }
+@media (prefers-reduced-motion: no-preference) { .proof-play { transition: transform 0.15s ease; } }
+.proof-tag {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 40px 18px 16px;
+  background: linear-gradient(to top, var(--scrim-video), transparent);
+  color: var(--ivory);
+  line-height: 1.3;
+}
+.proof-tag b { display: block; font-family: var(--font-display); font-size: var(--text-lg); font-weight: 500; }
+.proof-tag span { font-size: var(--text-sm); opacity: 0.85; }
+.proof-video figcaption { margin-top: 12px; font-size: var(--text-sm); color: var(--text-muted); text-align: center; }
+
+/* Home "Real families": the video beside the four quotes on desktop, above
+   them on a phone. */
+.stories-with-video { display: grid; gap: 24px; justify-items: center; }
+@media (min-width: 900px) {
+  .stories-with-video { grid-template-columns: 280px 1fr; align-items: start; justify-items: stretch; }
+  .stories-with-video .story-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Pricing: a quiet text link, so "Try Niro now" stays the one action. */
+.proof-link {
+  all: unset; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 18px;
+  font-size: var(--text-sm); font-weight: 600; color: var(--brand);
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.proof-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius-xs); }
+.proof-dialog {
+  border: 0; padding: 0; background: transparent; overflow: visible;
+  width: min(360px, calc(100vw - 32px));
+}
+.proof-dialog::backdrop { background: color-mix(in srgb, var(--ink-900) 80%, transparent); }
+.proof-close {
+  all: unset; cursor: pointer;
+  position: absolute; top: -44px; right: 0;
+  width: 36px; height: 36px; border-radius: var(--radius-pill);
+  display: grid; place-items: center;
+  background: var(--surface-card); color: var(--text-strong); font-size: 24px; line-height: 1;
+}
+
+/* /pf About Niro: the video under the categories, before the catalogue link. */
+.pf-diaries { display: flex; justify-content: center; margin: 28px 0 8px; }

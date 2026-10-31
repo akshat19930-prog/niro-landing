@@ -12,6 +12,7 @@ import { VoiceStream } from "@/components/ds/VoiceStream";
 import { EpfoBand } from "@/components/sections/EpfoBand";
 import { PricingTiers } from "@/components/sections/PricingTiers";
 import { ChatVideo } from "@/components/ds/ChatVideo";
+import { ProofVideo, ProofVideoLink } from "@/components/ds/ProofVideo";
 import { ChatThreads } from "@/components/ds/ChatThreads";
 import { StickyCta } from "@/components/sections/StickyCta";
 import { PRIMARY_CTA } from "@/lib/config";
@@ -421,6 +422,8 @@ function StoriesB() {
         <h2 style={{ ...h2Style, margin: "14px 0 28px", maxWidth: 760 }}>
           Real people. Real things they stopped having to chase.
         </h2>
+        <div className="stories-with-video">
+        <ProofVideo placement="home_stories" caption="Real tasks we have done, with real photos." />
         <div className="story-grid">
           {MEMBER_STORIES.map((s) => (
             <figure key={s.name} className="story-card">
@@ -445,6 +448,7 @@ function StoriesB() {
               </figcaption>
             </figure>
           ))}
+        </div>
         </div>
       </div>
     </section>
@@ -597,6 +601,9 @@ function PricingB({ c }: { c: ArmCopy }) {
             align="center"
             marginTop={14}
           />
+          <div>
+            <ProofVideoLink placement="pricing">Not sure yet? Watch 90 seconds of real tasks</ProofVideoLink>
+          </div>
         </div>
       </div>
     </section>
