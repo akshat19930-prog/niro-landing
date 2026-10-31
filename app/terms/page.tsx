@@ -86,7 +86,8 @@ export default function TermsPage() {
           and <strong>US $60</strong> for a visit of up to a full day (up to 8-10 hours). Visit
           charges are billed monthly, together with any third-party costs you
           approved. On a membership, one visit of up to four hours each month
-          is included, and any on-demand visit beyond it is US $15 per visit.
+          is included, and any on-demand visit beyond it is US $15 per visit of
+          up to four hours.
         </p>
 
         <h2>What your membership fee covers</h2>
