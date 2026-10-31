@@ -97,7 +97,7 @@ export default function TasksPackPage() {
         </p>
         <p>
           A Niro Visit is charged on top of its task count: $40 for up to four
-          hours, $60 for up to a full day. It is billed at the end of the
+          hours, $60 for up to a full day (up to 8-10 hours). It is billed at the end of the
           month, together with any costs we paid on your behalf with your
           approval. If your family needs someone there most months, the
           membership includes a visit every month and works out cheaper.

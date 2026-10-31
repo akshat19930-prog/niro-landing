@@ -12,7 +12,7 @@ export default function TermsPage() {
     <PageShell>
       <article className="prose">
         <h1>Terms of Use</h1>
-        <p className="updated">Last updated: 24 September 2026</p>
+        <p className="updated">Last updated: 31 October 2026</p>
 
         <p>
           These Terms of Use (&ldquo;Terms&rdquo;) govern your use of tellniro.com
@@ -83,10 +83,10 @@ export default function TermsPage() {
           On Niro Lite, a Niro Visit counts towards the pack&rsquo;s tasks and
           is also charged per visit: one task and{" "}
           <strong>US $40</strong> for a visit of up to four hours, or two tasks
-          and <strong>US $60</strong> for a visit of up to a full day. Visit
+          and <strong>US $60</strong> for a visit of up to a full day (up to 8-10 hours). Visit
           charges are billed monthly, together with any third-party costs you
           approved. On a membership, one visit of up to four hours each month
-          is included and further visits in the same month are US $15 each.
+          is included, and any on-demand visit beyond it is US $15 per visit.
         </p>
 
         <h2>What your membership fee covers</h2>

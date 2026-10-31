@@ -439,7 +439,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "What does the membership include, and what is billed separately?",
-    a: "The membership covers Niro's time - the calls, the portals, the chasing, the coordination - with no cap on how many tasks you send us. It includes one booked on-demand Niro visit of four hours or less each month, your family WhatsApp group, and Niro Assure emergency response. What it doesn't cover is anyone else's costs. Vendor charges and anything ordered through us are billed at exactly what they cost, with no commission added. So are government and legal fees. Additional Niro visits in the same month are $15 per four hours. We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
+    a: "The membership covers Niro's time - the calls, the portals, the chasing, the coordination - with no cap on how many tasks you send us. It includes one booked on-demand Niro visit of four hours or less each month, your family WhatsApp group, and Niro Assure emergency response. What it doesn't cover is anyone else's costs. Vendor charges and anything ordered through us are billed at exactly what they cost, with no commission added. So are government and legal fees. Any on-demand visit beyond the one a month is $15 per visit. We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
   },
   {
     q: "Is my family's data safe with Niro?",
@@ -463,7 +463,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "On Niro Lite, how is a task counted?",
-    a: "A task is one thing you want done, run to completion, not one phone call: a bill corrected, a cab booked, a refund chased through four follow-ups is one task. A few things are really a bundle of tasks and count as more. A Niro Visit of up to four hours counts as 1 task plus $40, a full-day visit like a hospital day or a registration as 2 tasks plus $60, recovering EPF money as 4, finding a tenant or a buyer or seller for something as up to 5, and a property registration from start to finish as up to 6. The 4 tasks for EPF carry a ₹6,000 PF Recovery Credit towards our specialist partner's fee; anything above it is the partner's exact cost, with no markup, charged only once your money is recovered. Before we start anything that counts as more than one, we tell you the number and you decide. The count never changes afterwards. The membership has no cap on tasks, so none of this applies there.",
+    a: "A task is one thing you want done, run to completion, not one phone call: a bill corrected, a cab booked, a refund chased through four follow-ups is one task. A few things are really a bundle of tasks and count as more. A Niro Visit of up to four hours counts as 1 task plus $40, a full-day visit (up to 8-10 hours) like a hospital day or a registration as 2 tasks plus $60, recovering EPF money as 4, finding a tenant or a buyer or seller for something as up to 5, and a property registration from start to finish as up to 6. The 4 tasks for EPF carry a ₹6,000 PF Recovery Credit towards our specialist partner's fee; anything above it is the partner's exact cost, with no markup, charged only once your money is recovered. Before we start anything that counts as more than one, we tell you the number and you decide. The count never changes afterwards. The membership has no cap on tasks, so none of this applies there.",
   },
 ];
 
@@ -495,7 +495,7 @@ export const MEMBERSHIP_FEATURES: string[] = [
   "Unlimited tasks for you or your family",
   "WhatsApp group chat for tasks",
   "Niro assured emergency response",
-  "One free booked on-demand Niro visit",
+  "One free on-demand Niro visit a month, then $15 per visit",
   "Create up to 2 groups",
   "Request a pause, say when the family is travelling",
 ];
@@ -595,7 +595,7 @@ export const NIRO_LITE: Plan = {
 export const NIRO_LITE_COUNTS: { what: string; count: string }[] = [
   { what: "Most tasks: a bill corrected, a cab booked, a refund chased through four follow-ups", count: "1 task" },
   { what: "A Niro Visit, up to four hours", count: "1 task + $40" },
-  { what: "A full-day visit: a hospital day, a registration, a visa centre", count: "2 tasks + $60" },
+  { what: "A full-day visit (up to 8-10 hours): a hospital day, a registration, a visa centre", count: "2 tasks + $60" },
   // EPFO cases are worked with a specialist partner. Per the PF credit sheet
   // (Oct 2026) Lite's ₹6,000 PF Recovery Credit is counted as 4 tasks, and
   // the fee above it is passed through at cost (PF_CREDIT below).
@@ -674,7 +674,7 @@ export const COVERAGE_NOTE = {
   covers:
     "Niro's time - the calls, the chasing, the coordination - and one booked on-demand Niro assistant visit of four hours or less.",
   excludes:
-    "Vendor charges and the cost of any product or service ordered through Niro, at cost and with no commission added. Government and legal fees. Additional Niro visits in the same month, at $15 per four hours.",
+    "Vendor charges and the cost of any product or service ordered through Niro, at cost and with no commission added. Government and legal fees. On-demand Niro visits beyond the one a month, at $15 per visit.",
   promise: "We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
 };
 
@@ -1792,12 +1792,12 @@ export const GUIDE_ASSURE: { title: string; body: string; tag?: string }[] = [
 ];
 
 /* Niro Visits, as the guide tells it. One visit a month is in the membership;
-   extra visits are a flat $15 per four hours. The per-purpose rate card from
+   any visit beyond it is a flat $15 per visit. The per-purpose rate card from
    the Visits ops doc is deliberately NOT here, and neither are its service
    targets: the site makes no written guarantees. */
 export const GUIDE_VISIT_PRICE = {
   included: "One visit a month, up to four hours, is part of your membership.",
-  extra: "Extra visits are chargeable at $15 per visit.",
+  extra: "Any on-demand visit beyond the one a month is $15 per visit.",
 };
 
 export const GUIDE_VISIT_MONTHLY: string[] = [
@@ -1904,7 +1904,7 @@ export const GUIDE_STEPS: { title: string; body: string }[] = [
 export const GUIDE_FAQ: { q: string; a: string }[] = [
   {
     q: "What does the membership include, and what doesn’t it?",
-    a: "Niro’s time: the calls, the portals, the chasing and the coordination, with no cap on how many tasks you send us. It also includes one booked Niro visit of up to four hours a month. It doesn’t cover third-party costs, like the plumber, the ambulance, the lab, government fees or the appliance itself. You see those before they’re incurred, and they’re billed at actuals with the invoice attached. We add no margin and take no vendor commission. Extra visits in the same month are $15 per four hours.",
+    a: "Niro’s time: the calls, the portals, the chasing and the coordination, with no cap on how many tasks you send us. It also includes one booked Niro visit of up to four hours a month. It doesn’t cover third-party costs, like the plumber, the ambulance, the lab, government fees or the appliance itself. You see those before they’re incurred, and they’re billed at actuals with the invoice attached. We add no margin and take no vendor commission. Any on-demand visit beyond the one a month is $15 per visit.",
   },
   {
     q: "Who actually does the work: people or AI?",
@@ -2008,7 +2008,7 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
       "All of it solved with one WhatsApp message, or a voice note in the language they actually speak.",
     ],
     visitsTrustBody:
-      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a second opinion from a specialist who doesn't consult online, a visa appointment, a government office task or a home repair vendor chore. Booked, on demand.",
+      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a second opinion from a specialist who doesn't consult online, a visa appointment, a government office task or a home repair vendor chore. Booked, on demand: one visit a month is in the membership, and any visit beyond it is $15.",
     membershipFeatures: MEMBERSHIP_FEATURES,
   },
 
@@ -2049,12 +2049,12 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
     familyHeading: ARM_COPY_A_FAMILY.heading,
     familyBody: ARM_COPY_A_FAMILY.body,
     visitsTrustBody:
-      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a second opinion from a specialist who doesn't consult online, a visa appointment, a government office task or a home repair vendor chore. Monthly, or booked on demand.",
+      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a second opinion from a specialist who doesn't consult online, a visa appointment, a government office task or a home repair vendor chore. Monthly, or booked on demand: one visit a month is in the membership, and any visit beyond it is $15.",
     membershipFeatures: [
       "Unlimited tasks for you or your family",
       "24x7 1:1 WhatsApp assistant",
       "Niro assured emergency response",
-      "One free booked on-demand Niro visit",
+      "One free on-demand Niro visit a month, then $15 per visit",
       "Optional family group chats - up to 2 groups",
     ],
   },
