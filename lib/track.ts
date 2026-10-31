@@ -19,7 +19,7 @@ import {
   getStoredUtm,
 } from "./analytics";
 import { readPageArm } from "./abtest";
-import { getLpVariant } from "./variant";
+import { getLpVariant, getHeroArm } from "./variant";
 
 declare global {
   interface Window {
@@ -195,6 +195,8 @@ export function logEvent(event: string, extra?: Record<string, unknown>): void {
     // Which landing page sold them: A (/) or B2 (/start). On every beacon, so
     // the funnel can be cut by arm without joining back to the lead row.
     lp_variant: getLpVariant(),
+    // Hero video A/B version, blank outside the test (lib/variant getHeroArm).
+    heroArm: getHeroArm(),
     pitch,
     sid: getSessionId(),
     ts: Date.now(),

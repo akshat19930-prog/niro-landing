@@ -4,6 +4,7 @@ import { Newsreader, Hanken_Grotesk } from "next/font/google";
 import { MetaPixel } from "@/components/MetaPixel";
 import { PostHog } from "@/components/PostHog";
 import { VariantInit } from "@/components/VariantInit";
+import { HeroInit } from "@/components/HeroInit";
 import "./globals.css";
 
 /**
@@ -54,6 +55,8 @@ export default function RootLayout({
         {/* Before the pixel, which fires PageView at parse time: that event
             has to carry the arm or the test's top-of-funnel number is blind. */}
         <VariantInit />
+        {/* After VariantInit: the hero test only enrols arm A visitors. */}
+        <HeroInit />
         <MetaPixel />
         <PostHog />
         {children}

@@ -2111,6 +2111,10 @@
 .epfo-close:hover { background: var(--bg-inset); }
 .epfo-close:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
 
+/* Hero video A/B (components/HeroInit.tsx): the "none" version drops the
+   chat clip. Set before first paint, so nothing flashes or shifts. */
+html[data-hero="none"] .hero-video { display: none; }
+
 /* ---------------------------------------------------------- proof video */
 /* Niro Diaries (components/ds/ProofVideo.tsx): a 9:16 poster that becomes
    the player on tap, or the same player in a dialog from a text link. */

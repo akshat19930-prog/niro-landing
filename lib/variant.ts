@@ -16,6 +16,7 @@ export type LpVariant = "A" | "B2";
 declare global {
   interface Window {
     __niroLp?: string;
+    __niroHero?: string;
   }
 }
 
@@ -25,6 +26,14 @@ declare global {
  * path. "A" during SSR, which is correct: the static export of / is arm A, and
  * /start overrides on the client the moment the script runs.
  */
+/** The hero video A/B version (components/HeroInit.tsx): "video", "none", or
+ *  "" for a visitor not in the test (B2, or never on the home page). */
+export function getHeroArm(): "video" | "none" | "" {
+  if (typeof window === "undefined") return "";
+  const v = window.__niroHero;
+  return v === "video" || v === "none" ? v : "";
+}
+
 export function getLpVariant(): LpVariant {
   if (typeof window === "undefined") return "A";
   const fromScript = window.__niroLp;

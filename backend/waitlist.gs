@@ -41,7 +41,9 @@ var EVENTS_HEADER = ["timestamp", "date", "event", "arm", "pitch", "sid", "durat
   // beacon, so sessions and bounce rate can be split by arm without joining
   // back to the leads tab. The header is widened in place below, so an existing
   // events sheet gains the column and older rows simply stay blank there.
-  "lpVariant"];
+  "lpVariant",
+  // Hero video A/B (Nov 2026): "video", "none", or blank outside the test.
+  "heroArm"];
 
 // ---- Entry points -----------------------------------------------------------
 function doPost(e) {
@@ -505,7 +507,8 @@ function logEventRow_(data) {
       // Which WhatsApp entry point was clicked (pricing / faq / footer). Blank
       // for every other event.
       String(data.placement || ""),
-      String(data.lp_variant || "")
+      String(data.lp_variant || ""),
+      String(data.heroArm || "")
     ]);
     return json_({ ok: true });
   } catch (err) {
