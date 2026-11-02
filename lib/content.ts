@@ -427,7 +427,7 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
     // not there. The order matches SERVICE_CITIES: the six launch cities, then
     // the ones added in Oct 2026 by size.
     q: "Which cities is Niro serviceable in today?",
-    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Ahmedabad, Indore, Visakhapatnam, Gwalior, Aligarh, Ajmer and Kozhikode. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
+    a: "Bengaluru, Delhi NCR, Mumbai, Hyderabad, Chennai, Kolkata, Ahmedabad, Lucknow, Indore, Visakhapatnam, Rajkot, Gwalior, Aligarh, Ajmer and Kozhikode. These are the cities where our assistants are on the ground and where our emergency response times hold. If your family is somewhere else, join anyway and tell us their city. We open new cities where our members' families already are, so your answer genuinely moves yours up the list - and we'll message you the week we get there.",
   },
   {
     q: "How are Niro Assistants vetted and verified?",
@@ -769,9 +769,12 @@ export const SERVICE_CITIES: ServiceCity[] = [
   // waitlist a city the page says we serve, and spellCount() has to know the
   // new total or the prose turns into digits.
   { name: "Ahmedabad" },
+  // Lucknow and Rajkot added 2 Nov 2026, placed by size.
+  { name: "Lucknow" },
   { name: "Indore" },
   // Added 24 Oct 2026.
   { name: "Visakhapatnam" },
+  { name: "Rajkot" },
   { name: "Gwalior" },
   { name: "Aligarh" },
   { name: "Ajmer" },

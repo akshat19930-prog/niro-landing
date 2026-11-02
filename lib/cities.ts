@@ -32,6 +32,8 @@ const ALIASES: Record<string, string[]> = {
   // claiming it would be the false positive this matcher exists to avoid.
   Ahmedabad: ["ahmedabad", "amdavad", "ahmadabad", "ahemdabad"],
   Indore: ["indore", "indaur"],
+  Lucknow: ["lucknow", "lko", "lakhnau", "lucknow uttar pradesh", "gomti nagar", "gomtinagar"],
+  Rajkot: ["rajkot", "rajkot gujarat"],
   Aligarh: ["aligarh", "aligadh", "alighar"],
   Kozhikode: ["kozhikode", "calicut", "kozhikkode"],
   Visakhapatnam: [
