@@ -47,8 +47,9 @@ export default function AboutPage() {
       <article className="prose">
         <h1>The people behind Niro</h1>
         <p>
-          Two second-time founders who spent years managing a household 8,000 km
-          away - and built the person we wished we&apos;d had.
+          Two second-time founders who built a solution for their own
+          households, and realised more than 50L Indians globally needed
+          exactly this.
         </p>
 
         <div className="founder-grid">
