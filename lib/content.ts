@@ -1283,10 +1283,49 @@ export const ROLES: Role[] = [
       "The judgement to chase something until it is finished, and to escalate before it is too late",
     ],
   },
+  // Zone ops (Nov 2026): the same job as the Bengaluru assistant role, one per
+  // city, so each of the three biggest non-Bengaluru cities has someone of
+  // our own on the ground.
+  {
+    title: "Zone Operations - Mumbai",
+    location: "Mumbai",
+    type: "Full-time",
+    blurb:
+      "You run Niro in Mumbai: you are the person our members' parents in the city actually meet. You run their tasks to completion - the hospital visit, the stuck EPFO claim, the plumber who said he would come on Tuesday - and you close each one with proof.",
+    looking: [
+      "Patience and warmth with older parents - this is the part we test hardest",
+      "Fluent in English and Hindi; Marathi is a real advantage",
+      "The judgement to chase something until it is finished, and to escalate before it is too late",
+    ],
+  },
+  {
+    title: "Zone Operations - Delhi NCR",
+    location: "Delhi NCR",
+    type: "Full-time",
+    blurb:
+      "You run Niro in Delhi NCR: you are the person our members' parents in the city actually meet. You run their tasks to completion - the hospital visit, the stuck EPFO claim, the plumber who said he would come on Tuesday - and you close each one with proof.",
+    looking: [
+      "Patience and warmth with older parents - this is the part we test hardest",
+      "Fluent in English and Hindi; a third Indian language is a real advantage",
+      "The judgement to chase something until it is finished, and to escalate before it is too late",
+    ],
+  },
+  {
+    title: "Zone Operations - Kolkata",
+    location: "Kolkata",
+    type: "Full-time",
+    blurb:
+      "You run Niro in Kolkata: you are the person our members' parents in the city actually meet. You run their tasks to completion - the hospital visit, the stuck EPFO claim, the plumber who said he would come on Tuesday - and you close each one with proof.",
+    looking: [
+      "Patience and warmth with older parents - this is the part we test hardest",
+      "Fluent in English and Hindi; Bengali is a real advantage",
+      "The judgement to chase something until it is finished, and to escalate before it is too late",
+    ],
+  },
 ];
 
 export const CAREERS_INTRO =
-  "Niro is a small team in Bengaluru building an assistant service for families split between India and everywhere else. Everyone who works with our members' parents is on our payroll - we do not forward your family's requests to a marketplace, which is why this page exists at all.";
+  "Niro is a small team, based in Bengaluru, building an assistant service for families split between India and everywhere else. Everyone who works with our members' parents is on our payroll - we do not forward your family's requests to a marketplace, which is why this page exists at all.";
 
 /* =====================================================================
    PHONE-FIRST QUALIFIERS (main page)

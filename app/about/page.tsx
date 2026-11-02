@@ -30,6 +30,15 @@ const FOUNDERS: Founder[] = [
     bio: "12 years building consumer startups across fintech (VP, Growth at AngelOne) and ecommerce. Second-time founder - exited his last company to Angel One.",
     linkedin: "https://www.linkedin.com/in/paarthdhar/",
   },
+  {
+    // Not a founder: the card grid is shared, the role line says what he is.
+    // Bio from IntelloHire's own site (about page + homepage), Nov 2026.
+    name: "Harshit Aggarwal",
+    photo: "/people/harshit.jpg",
+    role: "Tech consultant",
+    bio: "Founder and CTO of IntelloHire, which builds recruitment software that lets staffing agencies engage candidates over WhatsApp and voice. Advises Niro on technology.",
+    linkedin: "https://www.linkedin.com/in/harshit-aggarwal-5605a81a9/",
+  },
 ];
 
 export default function AboutPage() {
