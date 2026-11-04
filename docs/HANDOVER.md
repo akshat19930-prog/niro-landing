@@ -25,7 +25,7 @@ happens on a hosted checkout link that sales sends in the thread after a call.
 | `/niro-assure/` | Emergency response protocol, with the published SLA. Renamed from `/niro-assured/` (Sept 2026); that old path is a redirect stub, like `/emergency/`. |
 | `/what-we-do/` | The full India scope as a grid. Has an OG image, so it previews as a card when pasted into WhatsApp. |
 | `/careers/` | Open roles. A trust asset as much as a hiring one - see §6. |
-| `/lite/` | **Unlisted.** The $270/yr 15-task pack, for sales to share on a call. Obscure, not secret. |
+| `/lite/` | **Retired 4 Nov 2026.** Redirects to the home page pricing. Niro Lite is no longer sold. |
 | `/terms/`, `/privacy/`, `/about/` | Legal and team. |
 | `/emergency/` | A noindex redirect stub to `/niro-assure/`. The old URL shipped to production, so it cannot just 404. |
 | `/gulf/`, `/us/`, `/us-v2/` | **Retired 26 Sept 2026.** noindex redirect stubs to `/`, like `/emergency/`. The pages live in git history and `UsPage.tsx` / `GulfPage.tsx` are still in the repo, unmounted. |
@@ -206,9 +206,11 @@ Change these only deliberately - each one cost a test or an interview to learn.
 - **Trust is the constraint, not price.** Across a $149-vs-$99 test, a plan
   question, and eleven WhatsApp conversations, price never showed up as the
   blocker. Below ~$50/month actively *destroys* credibility - six research
-  respondents said so unprompted. That is why `/lite` is off-menu.
-- **Neither SKU is styled as preferred.** They are the same service at two
-  prices; nudging someone onto a term they did not want is a churn problem.
+  respondents said so unprompted. That is why the headline is $49, never lower.
+- **One membership, two ways to pay** (4 Nov 2026). $49 a month billed $147
+  every 3 months is the headline; $65 month to month is named on the same card.
+  Niro Lite and the six-month plan were retired to make the choice simple, and
+  no visit is included: visits are $25 for up to four hours, booked on demand.
 - **The city field is a checker, not a gate.** Out-of-area leads are captured
   and waitlisted by city - that list decides which city opens next. Hiding the
   city list behind the form would be a dark pattern on a trust-led product.
@@ -275,7 +277,7 @@ not just the change. `git log --oneline` then `git show <sha>` beats asking.
 3. **Payment rails are not live.** Recurring cross-border card billing from an
    India entity is the open question - verify a foreign-issued card can be
    stored for auto-debit before promising monthly billing.
-4. **Three live claims need an owner**: the monthly free Niro visit, the data
+4. **Two live claims need an owner**: the data
    commitments in the FAQ (one-click deletion, periodic disclosure,
    task-scoped logged access), and the 20 to 25 minute ambulance median.
 5. **`CLAUDE.md` describes the page's rules for AI coding agents.** It was

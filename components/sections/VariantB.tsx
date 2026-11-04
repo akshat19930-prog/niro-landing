@@ -554,12 +554,9 @@ function TrustB({ c }: { c: ArmCopy }) {
 /**
  * Pricing.
  *
- * Both SKUs carry an identical feature list, so showing that list twice made
- * the section look like a comparison when there is nothing to compare. The
- * benefits move into a single shared grid underneath, and the two prices sit
- * above it as equal options - no dark card, no "most families" badge. Nothing
- * on the page should push someone toward a term length; we would rather they
- * pick the one they actually want and stay.
+ * One membership since 4 Nov 2026: $49 a month billed $147 every 3 months as
+ * the headline, $65 month to month named in the same card (PricingTiers).
+ * Niro Lite and the six-month plan are retired.
  *
  * No guarantee band: the site makes no written guarantees (Paarth, Sept 2026).
  */
@@ -569,17 +566,17 @@ function PricingB({ c }: { c: ArmCopy }) {
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 26px", textAlign: "center" }}>
-          One membership. Or just the tasks you need.
+          One membership. No cap on tasks.
         </h2>
 
         <PricingTiers membershipFeatures={c.membershipFeatures} />
 
-        {/* Under both cards rather than on either, so neither reads as the
-            better buy. The monthly plan carries no PF credit, which the
-            sentence states by naming the three that do. */}
+        {/* Under the card rather than in its list, so the list stays about the
+            service. Month to month carries no PF credit, which the sentence
+            states by naming the payment that does. */}
         <p className="tier-note">
-          Niro Lite and the 3- and 6-month memberships each include a PF
-          Recovery Credit towards EPFO casework.{" "}
+          Paying every 3 months includes a ₹5,000 PF Recovery Credit towards
+          EPFO casework.{" "}
           <a href="/pf/#pricing">How it works &rarr;</a>
         </p>
 

@@ -258,7 +258,7 @@ export default function FamilyGuidePage() {
             </p>
 
             <div className="fg-card fg-included">
-              <div className="fg-card-label">In your membership</div>
+              <div className="fg-card-label">A home visit</div>
               <div className="fg-included-t">{GUIDE_VISIT_PRICE.included}</div>
               <ul className="fg-list">
                 {GUIDE_VISIT_MONTHLY.map((t) => (
@@ -378,15 +378,6 @@ export default function FamilyGuidePage() {
               <div className="fg-card">
                 <div className="fg-card-label">Charged separately</div>
                 <p>{COVERAGE_NOTE.excludes}</p>
-                <p style={{ marginTop: 12 }}>
-                  On Niro Lite, a visit counts as one task plus $40 for up to
-                  four hours (two tasks plus $60 for a full day of up to 8-10 hours,
-                  like a hospital day), recovering EPF money as four, with a ₹6,000
-                  PF Recovery Credit towards the specialist partner&rsquo;s
-                  fee, finding a tenant or a buyer as up to five, and a
-                  property registration as up to six. We tell you the number
-                  before we start.
-                </p>
                 <p style={{ marginTop: 12 }}>
                   <b>{COVERAGE_NOTE.promise}</b>
                 </p>

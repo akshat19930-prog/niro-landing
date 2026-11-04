@@ -12,7 +12,7 @@ export default function TermsPage() {
     <PageShell>
       <article className="prose">
         <h1>Terms of Use</h1>
-        <p className="updated">Last updated: 31 October 2026</p>
+        <p className="updated">Last updated: 4 November 2026</p>
 
         <p>
           These Terms of Use (&ldquo;Terms&rdquo;) govern your use of tellniro.com
@@ -27,13 +27,14 @@ export default function TermsPage() {
 
         <h2>Membership, billing and renewal</h2>
         <p>
-          Niro is sold as a membership, at one of three prices:{" "}
-          <strong>US $99 per month</strong>, billed monthly;{" "}
-          <strong>US $83 per month billed quarterly</strong>, charged as US $250
-          every three months; or <strong>US $479 every six months</strong>.
-          Each renews at the same rate, charged to the card you have on file,
-          until you cancel. The quarterly and six-month rates are not
-          introductory prices and do not change after the first period. We
+          Niro is sold as one membership, paid in one of two ways:{" "}
+          <strong>US $49 per month billed quarterly</strong>, charged as US $147
+          every three months; or <strong>US $65 per month</strong>, billed
+          monthly. Each renews at the same rate, charged to the card you have on
+          file, until you cancel. The quarterly rate is not an introductory
+          price and does not change after the first period. Members who joined
+          at an earlier price move to these prices at their next renewal, and
+          we tell you before that happens. We
           send you a reminder{" "}
           <strong>seven days before every renewal</strong> so no charge is a
           surprise.
@@ -63,13 +64,13 @@ export default function TermsPage() {
 
         <h2>PF Recovery Credit</h2>
         <p>
-          The quarterly membership, the six-month membership and Niro Lite each
-          include a <strong>PF Recovery Credit</strong>: ₹5,000, ₹15,000 and
-          ₹6,000 respectively. It is applied to our specialist partner&rsquo;s
-          fee for EPFO and PF casework. On a membership the credit is renewed
-          with each paid period; on Niro Lite it counts as 4 of the
-          pack&rsquo;s 20 tasks. The monthly membership does not include a PF
-          Recovery Credit.
+          The membership paid quarterly includes a{" "}
+          <strong>PF Recovery Credit</strong> of ₹5,000, applied to our
+          specialist partner&rsquo;s fee for EPFO and PF casework and renewed
+          with each paid quarter. The membership paid monthly does not include
+          a PF Recovery Credit. Credits already issued with the six-month
+          membership or Niro Lite, both no longer sold, stay valid for the
+          period they were bought for.
         </p>
         <p>
           The partner&rsquo;s fee depends on the case and is confirmed after a
@@ -78,23 +79,20 @@ export default function TermsPage() {
           markup, and charged only once the funds are recovered.
         </p>
 
-        <h2>Niro Visits on Niro Lite</h2>
+        <h2>Niro Visits</h2>
         <p>
-          On Niro Lite, a Niro Visit counts towards the pack&rsquo;s tasks and
-          is also charged per visit: one task and{" "}
-          <strong>US $40</strong> for a visit of up to four hours, or two tasks
-          and <strong>US $60</strong> for a visit of up to a full day (up to 8-10 hours). Visit
-          charges are billed monthly, together with any third-party costs you
-          approved. On a membership, one visit of up to four hours each month
-          is included, and any on-demand visit beyond it is US $15 per visit of
-          up to four hours.
+          Niro Visits are booked on demand and are not included in the
+          membership fee. Each visit is charged at{" "}
+          <strong>US $25 per visit of up to four hours</strong>; a longer visit
+          is quoted before it is booked. Visit charges are billed monthly,
+          together with any third-party costs you approved.
         </p>
 
         <h2>What your membership fee covers</h2>
         <p>
           Your fee covers Niro&rsquo;s own time - the calls, the chasing, the
-          coordination, and a Niro Assistant on the ground - with no cap on the
-          number of tasks. It does <strong>not</strong> cover third-party costs
+          coordination - with no cap on the number of tasks. Niro Visits are
+          charged separately, as set out above. It does <strong>not</strong> cover third-party costs
           incurred on your behalf, which are billed to you at actual cost: lab
           charges, ambulance fees, government and legal fees, vendor and
           contractor payments, and cab fares among them. We will always tell you

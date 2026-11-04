@@ -43,10 +43,14 @@ backend, deploys, and the decisions that look arbitrary but are not.
   only, and anything that moves money still needs a code on the member's
   phone. The keepable claim is bank PINs, card details, net-banking and UPI
   logins.
-- **Never state a price below ~$50/month anywhere prominent.** Six research
-  respondents said a sub-$50 price made them distrust the service. This is why
-  `/lite` is unlisted.
-- **Neither SKU is styled as preferred** - same service, two prices.
+- **Never state a price below $49/month anywhere.** Six research respondents
+  said a sub-$50 price made them distrust the service. $49 (billed $147 every
+  3 months) is the headline and sits at that floor.
+- **One membership, two ways to pay** (since 4 Nov 2026): $49 a month billed
+  $147 every 3 months is the headline price, and $65 month to month is named
+  beside it on the same card. Niro Lite and the six-month plan are retired;
+  `/lite` redirects to pricing. Visits are not included: $25 per visit of up to
+  four hours, booked on demand.
 - **Do not name the household limit as a restriction.** "Create up to 2 groups"
   reads as an allowance; "only 2 groups" creates the objection.
 - Emergency SLA numbers stay scoped to the six launch cities, on the page.
