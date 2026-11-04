@@ -27,12 +27,13 @@ export default function TermsPage() {
 
         <h2>Membership, billing and renewal</h2>
         <p>
-          Niro is sold as one membership, paid in one of two ways:{" "}
+          Niro is sold as one membership, paid in one of three ways:{" "}
           <strong>US $49 per month billed quarterly</strong>, charged as US $147
-          every three months; or <strong>US $65 per month</strong>, billed
-          monthly. Each renews at the same rate, charged to the card you have on
-          file, until you cancel. The quarterly rate is not an introductory
-          price and does not change after the first period. Members who joined
+          every three months; <strong>US $65 per month</strong>, billed
+          monthly; or <strong>US $270 every six months</strong>. Each renews at
+          the same rate, charged to the card you have on file, until you
+          cancel. The quarterly and six-month rates are not introductory prices
+          and do not change after the first period. Members who joined
           at an earlier price move to these prices at their next renewal, and
           we tell you before that happens. We
           send you a reminder{" "}
@@ -64,14 +65,14 @@ export default function TermsPage() {
 
         <h2>PF Recovery Credit</h2>
         <p>
-          The membership paid quarterly includes a one-time{" "}
-          <strong>PF Recovery Credit</strong> of ₹5,000 as a welcome benefit,
-          and Niro Lite includes one of ₹6,000, counted as 4 of the
-          pack&rsquo;s 20 tasks. The credit is applied to our specialist
-          partner&rsquo;s fee for EPFO and PF casework. The membership paid
-          monthly does not include a PF Recovery Credit. Credits already issued
-          with the six-month membership, which is no longer sold, stay valid
-          for the period it was bought for.
+          The membership paid quarterly, the six-month membership and Niro
+          Lite each include a one-time <strong>PF Recovery Credit</strong> as a
+          welcome benefit: ₹5,000, ₹8,550 and ₹6,000 respectively. On Niro Lite
+          it counts as 4 of the pack&rsquo;s 20 tasks. The credit is applied to
+          our specialist partner&rsquo;s fee for EPFO and PF casework. The
+          membership paid monthly does not include a PF Recovery Credit.
+          Credits already issued with earlier plans stay valid for the period
+          they were bought for.
         </p>
         <p>
           The partner&rsquo;s fee depends on the case and is confirmed after a

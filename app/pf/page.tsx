@@ -4,7 +4,7 @@ import { Nav } from "@/components/ds/Nav";
 import { Footer } from "@/components/ds/Footer";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
-import { GUIDE_SCOPE, PF_CREDIT, PF_CREDIT_EXAMPLES, PF_PARTNER_REVIEWS, MEMBERSHIP_FEATURES, MEMBERSHIP_QUARTER, PRICE_QUARTER_TOTAL } from "@/lib/content";
+import { GUIDE_SCOPE, PF_CREDIT, PF_CREDIT_EXAMPLES, PF_PARTNER_REVIEWS, MEMBERSHIP_FEATURES, MEMBERSHIP_HALF_PRICE, NIRO_LITE, PRICE_QUARTER_TOTAL } from "@/lib/content";
 import { PricingTiers } from "@/components/sections/PricingTiers";
 import { PfAuditForm } from "./PfAuditForm";
 import { PfLink } from "./PfLink";
@@ -24,14 +24,14 @@ import "./pf.css";
  * One offer, in two stages:
  *  1. The free audit: review, diagnosis, action plan. No purchase needed.
  *     Delivered within 24 to 48 hours of receiving the records it needs.
- *  2. Optional paid execution, through the Niro membership paid every 3
- *     months, which carries a one-time ₹5,000 PF Recovery Credit as a welcome
- *     benefit (PF_CREDIT in lib/content.ts). Niro Lite (unlisted, /lite
- *     only) and the retired six-month plan are not pitched here. The credit
- *     goes towards the
- *     specialist's fee; anything above it is the partner's exact cost,
- *     charged once the money is recovered. Month to month carries no credit
- *     and is not pitched here.
+ *  2. Optional paid execution, through any Niro pack that carries a PF
+ *     Recovery Credit as a one-time welcome benefit: Niro Lite, or the
+ *     membership paid for 3 or 6 months (PF_CREDIT in lib/content.ts,
+ *     founders, 4 Nov 2026). The credit goes towards the specialist's fee;
+ *     anything above it is the partner's exact cost, charged once the money
+ *     is recovered. Month to month carries no credit and is not pitched here.
+ *     The six-month pack ($270) is shown as a pack price only, never per
+ *     month, because it works out below the $49 floor.
  *
  * Proof: the specialist partner's own record, 2,000+ EPFO cases resolved,
  * confirmed by the founders, and two NRI reviews of its work. Since 31 Oct
@@ -90,7 +90,7 @@ const AUDIT_TELLS: { icon: IconName; title: string; body: string }[] = [
   { icon: "lock", title: "What’s holding things up", body: "Issues found, and what still needs checking." },
   { icon: "file-text", title: "What needs to happen next", body: "Steps, documents and approvals required." },
   { icon: "user-check", title: "What Niro would handle", body: "What we coordinate, and what needs you." },
-  { icon: "wallet", title: "What it would cost", body: "A quote for your case, and the credit that applies." },
+  { icon: "wallet", title: "What it would cost", body: "A quote for your case, and the pack credit that applies." },
 ];
 
 /* The records the audit works from, as listed in the Niro x Kustodian
@@ -185,16 +185,17 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
     a: (
       <>
         <span className="pf-faq-p">
-          Join the Niro membership, paid every 3 months ({MEMBERSHIP_QUARTER.price}
-          a month, billed {PRICE_QUARTER_TOTAL}). It includes a ₹5,000 PF
-          Recovery Credit towards the specialist&rsquo;s fee, as a welcome
-          benefit.
+          Choose a Niro pack: Niro Lite ({NIRO_LITE.price} once, 20 tasks over
+          12 months), or the Niro membership for 3 months ({PRICE_QUARTER_TOTAL})
+          or 6 months ({MEMBERSHIP_HALF_PRICE}). Each includes a PF Recovery
+          Credit towards the specialist&rsquo;s fee as a welcome benefit:
+          ₹6,000, ₹5,000 or ₹8,550.
         </span>
         <span className="pf-faq-p">
           There is no flat fee: it depends on how many issues your case has and
           how complex each is, from a few thousand rupees to about ₹65,000 for a
           full case. You get the exact quote after your free audit, before you
-          pay anything. You pay the membership plus any specialist fee above
+          pay anything. You pay the pack price plus any specialist fee above
           the credit, at the partner&rsquo;s exact cost with no markup, charged
           only once your money is recovered. Fee left after the credit, for
           example:
@@ -205,7 +206,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
               <b>{e.name}</b> ({e.what}), fee {e.fee}:{" "}
               {PF_CREDIT.map((p, i) => {
                 const v = e.pay[i];
-                return v === "Covered" ? "fully covered by the credit" : `${v} left after the credit`;
+                return `${p.id === "lite" ? "Lite" : p.name.replace(" membership", "")} ${v === "Covered" ? "fully covered" : `+${v}`}`;
               }).join(", ")}
               .
             </li>
@@ -376,10 +377,10 @@ export default function PfMoneyPage() {
                 </p>
               </div>
               <div className="pf-card pf-stage">
-                <div className="pf-card-label">Stage 2 &middot; With a Niro membership</div>
+                <div className="pf-card-label">Stage 2 &middot; With a Niro pack</div>
                 <h3>Niro manages your recovery case</h3>
                 <p>
-                  Your membership&rsquo;s{" "}
+                  Your pack&rsquo;s{" "}
                   <PfLink href="#pricing" kind="lite" placement="stages" className="pf-text-link">
                     PF Recovery Credit
                   </PfLink>{" "}
@@ -430,23 +431,26 @@ export default function PfMoneyPage() {
         </section>
 
         {/* ------------------------------------------- 5b. pricing */}
-        {/* The home page's membership card (PricingTiers), with the PF
-            Recovery Credit as its first line. The detailed fee examples live
-            in the paid-help FAQ answer. */}
+        {/* The membership card from the home page plus the Niro Lite card
+            (PricingTiers withPacks), with the PF Recovery Credit as each
+            card's first line. The detailed fee examples live in the paid-help
+            FAQ answer. */}
         <section className="pf-sec pf-inset" id="pricing" data-screen-label="PF pricing">
           <div className="pf-wrap pf-pricing">
             <Eyebrow>Pricing</Eyebrow>
-            <h2 className="pf-h2">One membership. No cap on tasks.</h2>
+            <h2 className="pf-h2">One membership. Or just the tasks you need.</h2>
             <p className="pf-p pf-p-wide">
-              The audit is free. For Niro to manage recovery, you&rsquo;ll need the
-              Niro membership, paid every 3 months.
+              The audit is free. For Niro to manage recovery, you&rsquo;ll need a
+              Niro pack.
             </p>
             <PricingTiers
               membershipFeatures={MEMBERSHIP_FEATURES}
-              memberLead="Paid every 3 months, it includes a ₹5,000 PF Recovery Credit as a welcome benefit"
+              withPacks
+              liteLead="Includes a ₹6,000 PF Recovery Credit (counts as 4 of your 20 tasks)"
+              memberLead="Includes a PF Recovery Credit as a welcome benefit: ₹5,000 with 3 months, ₹8,550 with 6 months"
             />
             <p className="pf-p pf-p-wide pf-recovery-cost">
-              <b>Your total</b> is the membership, plus any specialist fee above
+              <b>Your total</b> is the pack price, plus any specialist fee above
               your PF Recovery Credit, at our partner&rsquo;s cost once your
               money arrives. Your audit shows the breakdown before you buy. In
               some simple cases the credit covers the whole fee.

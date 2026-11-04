@@ -612,13 +612,20 @@ export const NIRO_LITE_EXCLUDES: string[] = [
 /** Price strings used in running copy, so a price change is one edit. */
 export const PRICE_QUARTER_TOTAL = "$147";
 
+/** The six-month pack: $270 for six months of the membership (founders,
+ *  4 Nov 2026). Offered on /pf only, for its PF Recovery Credit. Always shown
+ *  as the pack price, never as the $45 a month it works out at: nothing on the
+ *  site goes below $49 a month. */
+export const MEMBERSHIP_HALF_PRICE = "$270";
+
 /**
- * The PF Recovery Credit, as /pf shows it. Since 4 Nov 2026 /pf offers one
- * thing: the membership paid every 3 months, with a ₹5,000 credit towards the
- * specialist partner's fee for EPFO and PF casework as a one-time welcome
- * benefit, not renewed. (Niro Lite's ₹6,000 credit lives on /lite only; the
- * six-month plan is retired.) The credit is mentioned on /pf only, not on the
- * home page, until the PF campaign resumes. The fee itself is set per case (how many separate
+ * The PF Recovery Credit, as /pf shows it (founders, 4 Nov 2026). Three packs
+ * carry one, each a one-time welcome benefit towards the specialist partner's
+ * fee for EPFO and PF casework: the membership paid every 3 months (₹5,000),
+ * Niro Lite (₹6,000, counted as 4 of its 20 tasks) and the six-month pack
+ * (₹8,550, which is $90 at ₹95 to the dollar). Month to month carries none.
+ * The credit and the two extra packs are on /pf only, not on the home page,
+ * until the PF campaign resumes. The fee itself is set per case (how many separate
  * issues, how complex each one is), confirmed after the free audit, and runs
  * from a few thousand rupees to about ₹65,000. Above the credit, the member
  * pays the partner's exact cost with no markup, charged only once the money
@@ -635,6 +642,8 @@ export const PF_CREDIT: {
   note: string;
 }[] = [
   { id: "quarter", name: "3-month membership", price: PRICE_QUARTER_TOTAL, inr: "₹13,965", credit: "₹5,000", note: "Plus unlimited tasks for 3 months" },
+  { id: "lite", name: "Niro Lite", price: NIRO_LITE.price, inr: "₹28,500", credit: "₹6,000", note: "Counted as 4 of the pack's 20 tasks" },
+  { id: "half", name: "6-month membership", price: MEMBERSHIP_HALF_PRICE, inr: "₹25,650", credit: "₹8,550", note: "Plus unlimited tasks for 6 months" },
 ];
 
 /** Reviews of our specialist partner's EPFO work, from the reviewers' own
@@ -664,11 +673,11 @@ export const PF_PARTNER_REVIEWS: { name: string; location: string; photo?: strin
 ];
 
 /** Worked examples from the founders' PF credit sheet: the case fee, and
- *  what is left to pay after the ₹5,000 credit, in PF_CREDIT order. */
+ *  what is left to pay after each pack's credit, in PF_CREDIT order. */
 export const PF_CREDIT_EXAMPLES: { name: string; what: string; fee: string; pay: string[] }[] = [
-  { name: "Simple", what: "one fix", fee: "₹4,000", pay: ["Covered"] },
-  { name: "Standard", what: "a couple of fixes", fee: "₹16,000", pay: ["₹11,000"] },
-  { name: "Complex", what: "six tangled issues", fee: "₹64,000", pay: ["₹59,000"] },
+  { name: "Simple", what: "one fix", fee: "₹4,000", pay: ["Covered", "Covered", "Covered"] },
+  { name: "Standard", what: "a couple of fixes", fee: "₹16,000", pay: ["₹11,000", "₹10,000", "₹7,450"] },
+  { name: "Complex", what: "six tangled issues", fee: "₹64,000", pay: ["₹59,000", "₹58,000", "₹55,450"] },
 ];
 
 /** The one public membership, in display order: the 3-month rate is the

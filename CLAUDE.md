@@ -48,11 +48,14 @@ backend, deploys, and the decisions that look arbitrary but are not.
   3 months) is the headline and sits at that floor.
 - **One membership, two ways to pay** (since 4 Nov 2026): $49 a month billed
   $147 every 3 months is the headline price, and $65 month to month is named
-  beside it on the same card. The six-month plan is retired. Niro Lite is off
-  the pricing card but `/lite` stays live and unlisted, for sales to share.
+  beside it on the same card. Niro Lite is off the home page card but `/lite`
+  stays live and unlisted, for sales to share.
   Visits are not included: from $25 per visit, booked on demand ($25 covers up
   to four hours; the card line says "from $25 per visit"). The PF Recovery
-  Credit is a one-time welcome benefit, mentioned on `/pf` only.
+  Credit is a one-time welcome benefit, mentioned on `/pf` only. `/pf` also
+  shows the Lite card ($300, ₹6,000 credit) and a six-month pack ($270, ₹8,550
+  credit): the six-month pack is only ever shown as its pack price, never as
+  the $45 a month it works out at.
 - **Do not name the household limit as a restriction.** "Create up to 2 groups"
   reads as an allowance; "only 2 groups" creates the objection.
 - Emergency SLA numbers stay scoped to the six launch cities, on the page.

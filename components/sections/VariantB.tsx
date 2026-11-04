@@ -556,9 +556,8 @@ function TrustB({ c }: { c: ArmCopy }) {
  *
  * One membership since 4 Nov 2026: $49 a month billed $147 every 3 months as
  * the headline, $65 month to month named in the same card (PricingTiers).
- * Niro Lite is off the page (unlisted, /lite only) and the six-month plan is
- * retired. The PF Recovery Credit is not mentioned here: it lives on /pf
- * only until the PF campaign resumes.
+ * Niro Lite and the six-month pack are off this page (they are on /pf, with
+ * the PF Recovery Credit, until the PF campaign resumes).
  *
  * No guarantee band: the site makes no written guarantees (Paarth, Sept 2026).
  */
