@@ -439,11 +439,11 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
   },
   {
     q: "What does the membership include, and what is billed separately?",
-    a: "The membership covers Niro's time - the calls, the portals, the chasing, the coordination - with no cap on how many tasks you send us. It includes one booked on-demand Niro visit of four hours or less each month, your family WhatsApp group, and Niro Assure emergency response. What it doesn't cover is anyone else's costs. Vendor charges and anything ordered through us are billed at exactly what they cost, with no commission added. So are government and legal fees. Any on-demand visit beyond the one a month is $15 per visit of up to four hours. We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
+    a: "The membership covers Niro's time - the calls, the portals, the chasing, the coordination - with no cap on how many tasks you send us. It includes your family WhatsApp group and Niro Assure emergency response. What it doesn't cover is anyone else's costs. Vendor charges and anything ordered through us are billed at exactly what they cost, with no commission added. So are government and legal fees. Niro Visits are booked when you need one, at $25 per visit of up to four hours. We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
   },
   {
     q: "Is my family's data safe with Niro?",
-    a: "Yes, and here is how we are building it rather than how we are describing it. You keep control: we periodically tell you exactly what data we hold on your family, you can delete all of it in one click, and leaving Niro erases your records permanently within 30 days. Documents live in a secure vault, encrypted in transit and at rest, inaccessible to our staff without an open task that requires them - access is scoped to the task and logged. We never ask for your bank PINs, card details or net-banking logins; where a task genuinely needs a one-time code we tell you what we are about to do, ask you at that moment, and use it only for that task. We operate under India's DPDP Act and are building to GDPR-aligned practices for members abroad. Your data is never sold. Questions? hello@tellniro.com reaches the founders.",
+    a: "Yes, and here is how we are building it rather than how we are describing it. You keep control: we periodically tell you exactly what data we hold on your family, you can delete all of it in one click, and leaving Niro erases your records permanently within 30 days. Documents live in a secure vault, encrypted in transit and at rest, inaccessible to our staff without an open task that requires them - access is scoped to the task and logged. We never ask your parents for bank PINs, card details, net-banking or UPI logins; where a task genuinely needs a one-time code we tell you what we are about to do, ask you at that moment, and use it only for that task. We operate under India's DPDP Act and are building to GDPR-aligned practices for members abroad. Your data is never sold. Questions? hello@tellniro.com reaches the founders.",
   },
   {
     q: "How fast is the emergency response, really?",
@@ -461,10 +461,6 @@ export const FAQ: { q: string; a: string; special?: boolean }[] = [
     q: "How many people can I add, and how many groups can I create?",
     a: "You can add up to 5 family members including yourself to a family group - your parents, a sibling, anyone who needs to be able to ask. You also get a private 1:1 chat with Niro for anything you'd rather keep between us. And you can create up to 2 groups, for two separate family locations - your parents in one city and your in-laws in another, say.",
   },
-  {
-    q: "On Niro Lite, how is a task counted?",
-    a: "A task is one thing you want done, run to completion, not one phone call: a bill corrected, a cab booked, a refund chased through four follow-ups is one task. A few things are really a bundle of tasks and count as more. A Niro Visit of up to four hours counts as 1 task plus $40, a full-day visit (up to 8-10 hours) like a hospital day or a registration as 2 tasks plus $60, recovering EPF money as 4, finding a tenant or a buyer or seller for something as up to 5, and a property registration from start to finish as up to 6. The 4 tasks for EPF carry a ₹6,000 PF Recovery Credit towards our specialist partner's fee; anything above it is the partner's exact cost, with no markup, charged only once your money is recovered. Before we start anything that counts as more than one, we tell you the number and you decide. The count never changes afterwards. The membership has no cap on tasks, so none of this applies there.",
-  },
 ];
 
 /* ---- Membership plans (shown inside the join flow after email) ---- */
@@ -481,65 +477,61 @@ export type Plan = {
 };
 
 /**
- * Shared by both SKUs. The two plans are the SAME PRODUCT at two prices, so
- * they carry an identical feature list on purpose - the repetition is what
- * makes "$83 vs $99, nothing else changes" unmistakable at a glance.
+ * The membership's feature list. Since 4 Nov 2026 the site sells ONE
+ * membership with two ways to pay for it (every 3 months, or month to month),
+ * so this list is shown once, on the single pricing card.
+ *
+ * No visit is included any more: visits are booked on demand at $25 per visit
+ * of up to four hours (founders, 4 Nov 2026). Visits can run longer, priced in
+ * multiples of that, which the site does not spell out; so the card line says
+ * "from $25 per visit", and the four-hour unit is stated in the FAQ and terms.
  *
  * "Create up to 2 groups" states the multi-household allowance on the page.
- * That supersedes the earlier decision to leave the unit undefined: read as a
- * positive allowance rather than a ceiling, it pre-empts the in-laws question
- * instead of provoking it, and it gives the later multi-household SKU a
- * boundary that already exists in the customer's mind.
+ * Read as a positive allowance rather than a ceiling, it pre-empts the in-laws
+ * question instead of provoking it.
  */
 export const MEMBERSHIP_FEATURES: string[] = [
   "Unlimited tasks for you or your family",
   "WhatsApp group chat for tasks",
   "Niro assured emergency response",
-  "One free on-demand Niro visit a month, then $15 per visit of up to four hours",
+  "On-demand Niro visits, from $25 per visit",
   "Create up to 2 groups",
   "Request a pause, say when the family is travelling",
 ];
 
 /**
- * The full membership, and the default. Stays first in PLANS so it sets the
- * anchor: the research is unambiguous that whoever anchors first sets the
- * price, and on mobile (~80% of traffic) the cards stack, so first == top.
+ * Month to month: $65 (founders, 4 Nov 2026). The alternative, named in the
+ * card's billing line, never the headline.
  */
 export const MEMBERSHIP_SINGLE: Plan = {
   id: "prime",
   name: "Monthly",
-  price: "$99",
+  price: "$65",
   per: "/month",
-  sub: "Your family, fully covered",
-  // Balances the two cards' heights against the quarter plan's longer lead.
-  // Without it the cheaper card is the taller one, which quietly hands the
-  // discount more visual weight than the anchor.
-  lead: "The full membership, month to month. No lock-in, cancel any time - your first task is free either way.",
+  sub: "Billed every month",
+  lead: "The membership, month to month. No lock-in, cancel any time.",
   features: MEMBERSHIP_FEATURES,
-  highlight: true,
-  badge: "Most families",
+  highlight: false,
 };
 
 /**
- * The quarterly membership: $83/month, charged $250 every three months, for as
- * long as the family stays. It is a standing rate, NOT a first-term discount
- * that reverts to $99 (Paarth, 26 Sept 2026) - so no copy anywhere may say
- * "then $99/month" or imply the quarter is a trial.
- *
- * Still displayed as a MONTHLY rate, which puts both SKUs on the same unit and
- * makes the saving legible without arithmetic. The $250 charge is now stated
- * too, because it recurs and the member should know what leaves their card.
- * Watch the collision on calls: $250 is also the off-menu Niro Lite year.
+ * Every 3 months: $49 a month, charged $147 every three months, for as long
+ * as the family stays (founders, 4 Nov 2026). This is the HEADLINE price on
+ * the page. It is a standing rate, not a first-term discount, so no copy may
+ * say "then $65/month" or imply the quarter is a trial. The $147 charge is
+ * always stated beside it, because it recurs and the member should know what
+ * leaves their card. $49 sits at the ~$50 floor the research set for a
+ * monthly figure; nothing on the site may be shown below it.
  */
 export const MEMBERSHIP_QUARTER: Plan = {
   id: "quarter",
-  name: "Quarterly",
-  price: "$83",
+  name: "Every 3 months",
+  price: "$49",
   per: "/month",
-  sub: "Save $16 a month, billed $250 every three months",
-  lead: "Exactly the same membership at a lower monthly rate, billed every three months for as long as you stay. Cancel any time and the next quarter is not charged.",
+  sub: "Billed $147 every 3 months",
+  lead: "The same membership, billed every three months for as long as you stay. Cancel any time and the next quarter is not charged.",
   features: MEMBERSHIP_FEATURES,
-  highlight: false,
+  highlight: true,
 };
 
 /**
@@ -558,6 +550,9 @@ export const MEMBERSHIP_QUARTER: Plan = {
  *    Niro-Assistant-on-the-ground version. It names the absence.
  * 3. It carries no badge and is not the dark card. Lite is the step down, not
  *    the recommendation.
+ *
+ * Off the pricing card since 4 Nov 2026 (one membership on the page), but
+ * still sold: /lite stays live and unlisted, for sales to share on a call.
  */
 export const NIRO_LITE: Plan = {
   id: "lite",
@@ -565,7 +560,8 @@ export const NIRO_LITE: Plan = {
   price: "$300",
   per: "for 20 tasks",
   sub: "For a few specific things, not ongoing care",
-  // Shown on the public pricing grid from Oct 2026, beside the membership.
+  // Shown on the public pricing grid in Oct 2026; unlisted again since
+  // 4 Nov 2026 (only /lite shows it).
   //
   // The headline is the PACK price. It is never shown as the $25 a month it
   // works out at, not even as a grey line: six research respondents said
@@ -613,27 +609,29 @@ export const NIRO_LITE_EXCLUDES: string[] = [
   "A dedicated family manager, or a second family group",
 ];
 
-/** The six-month membership: the same membership, $479 every six months,
- *  renewing at $479 (founders, 23 Oct 2026). Shown as a pack price, never as
- *  its monthly equivalent, and named in the membership card's billing line,
- *  not as a third card: like quarterly vs monthly it is a payment choice, not
- *  a product choice. Not in PLANS, so the sign-up flows are untouched. */
-export const MEMBERSHIP_HALF_PRICE = "$479";
+/** Price strings used in running copy, so a price change is one edit. */
+export const PRICE_QUARTER_TOTAL = "$147";
+
+/** The six-month pack: $270 for six months of the membership (founders,
+ *  4 Nov 2026). Offered on /pf only, for its PF Recovery Credit. Always shown
+ *  as the pack price, never as the $45 a month it works out at: nothing on the
+ *  site goes below $49 a month. */
+export const MEMBERSHIP_HALF_PRICE = "$270";
 
 /**
- * The PF Recovery Credit, per the founders' PF credit sheet (23 Oct 2026).
+ * The PF Recovery Credit, as /pf shows it (founders, 4 Nov 2026). Three packs
+ * carry one, each a one-time welcome benefit towards the specialist partner's
+ * fee for EPFO and PF casework: the membership paid every 3 months (₹5,000),
+ * Niro Lite (₹6,000, counted as 4 of its 20 tasks) and the six-month pack
+ * (₹8,550, which is $90 at ₹95 to the dollar). Month to month carries none.
+ * The credit and the two extra packs are on /pf only, not on the home page,
+ * until the PF campaign resumes. The fee itself is set per case (how many separate
+ * issues, how complex each one is), confirmed after the free audit, and runs
+ * from a few thousand rupees to about ₹65,000. Above the credit, the member
+ * pays the partner's exact cost with no markup, charged only once the money
+ * is recovered. Month to month carries no credit.
  *
- * Every pack except the monthly membership carries a credit towards the
- * specialist partner's fee for EPFO and PF casework. The fee itself is set
- * per case (how many separate issues, how complex each one is), confirmed
- * after the free audit, and runs from a few thousand rupees to about ₹65,000.
- * Above the credit, the member pays the partner's exact cost with no markup,
- * charged only once the money is recovered. On a membership the credit comes
- * back with every renewal; on Lite it is counted as 4 of the 20 tasks.
- *
- * Rupee figures at ₹95 to the dollar, shown on /pf only. No pack
- * is styled as preferred here either: the sales sheet's "Best value" badge
- * stays off the site.
+ * Rupee figures at ₹95 to the dollar, shown on /pf only.
  */
 export const PF_CREDIT: {
   id: string;
@@ -643,9 +641,9 @@ export const PF_CREDIT: {
   credit: string;
   note: string;
 }[] = [
-  { id: "quarter", name: "3-month membership", price: "$250", inr: "₹23,750", credit: "₹5,000", note: "Plus unlimited tasks for 3 months" },
+  { id: "quarter", name: "3-month membership", price: PRICE_QUARTER_TOTAL, inr: "₹13,965", credit: "₹5,000", note: "Plus unlimited tasks for 3 months" },
   { id: "lite", name: "Niro Lite", price: NIRO_LITE.price, inr: "₹28,500", credit: "₹6,000", note: "Counted as 4 of the pack's 20 tasks" },
-  { id: "half", name: "6-month membership", price: MEMBERSHIP_HALF_PRICE, inr: "₹45,505", credit: "₹15,000", note: "Plus unlimited tasks for 6 months" },
+  { id: "half", name: "6-month membership", price: MEMBERSHIP_HALF_PRICE, inr: "₹25,650", credit: "₹8,550", note: "Plus unlimited tasks for 6 months" },
 ];
 
 /** Reviews of our specialist partner's EPFO work, from the reviewers' own
@@ -674,17 +672,17 @@ export const PF_PARTNER_REVIEWS: { name: string; location: string; photo?: strin
   },
 ];
 
-/** Worked examples from the same sheet: the case fee, and what is left to pay
- *  on each pack, in PF_CREDIT order. */
+/** Worked examples from the founders' PF credit sheet: the case fee, and
+ *  what is left to pay after each pack's credit, in PF_CREDIT order. */
 export const PF_CREDIT_EXAMPLES: { name: string; what: string; fee: string; pay: string[] }[] = [
   { name: "Simple", what: "one fix", fee: "₹4,000", pay: ["Covered", "Covered", "Covered"] },
-  { name: "Standard", what: "a couple of fixes", fee: "₹16,000", pay: ["₹11,000", "₹10,000", "₹1,000"] },
-  { name: "Complex", what: "six tangled issues", fee: "₹64,000", pay: ["₹59,000", "₹58,000", "₹49,000"] },
+  { name: "Standard", what: "a couple of fixes", fee: "₹16,000", pay: ["₹11,000", "₹10,000", "₹7,450"] },
+  { name: "Complex", what: "six tangled issues", fee: "₹64,000", pay: ["₹59,000", "₹58,000", "₹55,450"] },
 ];
 
-/** The two public SKUs. NIRO_LITE is deliberately NOT here - it lives only on
- *  the unlisted /lite page, for the segment that refuses monthly billing. */
-export const PLANS: Plan[] = [MEMBERSHIP_SINGLE, MEMBERSHIP_QUARTER];
+/** The one public membership, in display order: the 3-month rate is the
+ *  headline, month to month the alternative. */
+export const PLANS: Plan[] = [MEMBERSHIP_QUARTER, MEMBERSHIP_SINGLE];
 
 /**
  * What the fee buys, and what it does not. Stated before payment rather than
@@ -692,15 +690,16 @@ export const PLANS: Plan[] = [MEMBERSHIP_SINGLE, MEMBERSHIP_QUARTER];
  * cost?" was a live question in the WhatsApp threads, and an unstated answer
  * becomes a refund request in week two.
  */
-/** Used by /lite only. The home page used to print this between the price and
- *  the CTA, where its one job was putting a list of exclusions in front of
- *  someone who had just decided to buy. The membership FAQ already answers the
- *  same question in prose, and /terms carries the binding version. */
+/** Used by the family guide only. The home page used to print this between
+ *  the price and the CTA, where its one job was putting a list of exclusions
+ *  in front of someone who had just decided to buy. The membership FAQ
+ *  already answers the same question in prose, and /terms carries the binding
+ *  version. */
 export const COVERAGE_NOTE = {
   covers:
-    "Niro's time - the calls, the chasing, the coordination - and one booked on-demand Niro assistant visit of four hours or less.",
+    "Niro's time - the calls, the chasing, the coordination - with no cap on how many tasks you send us.",
   excludes:
-    "Vendor charges and the cost of any product or service ordered through Niro, at cost and with no commission added. Government and legal fees. On-demand Niro visits beyond the one a month, at $15 per visit of up to four hours.",
+    "Vendor charges and the cost of any product or service ordered through Niro, at cost and with no commission added. Government and legal fees. On-demand Niro visits, at $25 per visit of up to four hours.",
   promise: "We tell you the cost and get your go-ahead before we spend a rupee on your behalf.",
 };
 
@@ -711,7 +710,7 @@ export const COVERAGE_NOTE = {
  *
  * It sits next to the CTA rather than in the small print because the research
  * is consistent that the bottleneck here is trust, not price: people are not
- * weighing $99 against a cheaper rival, they are weighing it against the risk
+ * weighing the price against a cheaper rival, they are weighing it against the risk
  * that nobody turns up. A refund promise answers that question directly, and
  * answering it is worth more at the moment of decision than it is buried on a
  * page nobody opens.
@@ -1476,8 +1475,8 @@ export const SORT_OUT_OPTIONS: string[] = [
 ];
 
 /** Who the membership is for. "My India needs" is the own-admin wedge - the
- *  segment that refused monthly billing and wanted a task pack instead, so a
- *  lead answering this way is the one to show Niro Lite on a call.
+ *  segment that refused monthly billing and wanted a task pack instead (Niro
+ *  Lite, unlisted since 4 Nov 2026, on /lite).
  *
  *  SUPERSEDED Oct 2026 by SORT_OUT_USAGE below, which asks the same thing with
  *  enough resolution to read the positioning test. Kept because rows written
@@ -1859,14 +1858,15 @@ export const GUIDE_ASSURE: { title: string; body: string; tag?: string }[] = [
   },
 ];
 
-/* Niro Visits, as the guide tells it. One visit a month is in the membership;
-   any visit beyond it is $15 per visit of up to four hours (a longer visit is
-   priced in multiples of that, which the site does not spell out). The
+/* Niro Visits, as the guide tells it. Since 4 Nov 2026 no visit is included:
+   every visit is booked on demand at $25 per visit of up to four hours (a
+   longer visit is priced in multiples of that, which the site does not spell
+   out). The
    per-purpose rate card from the Visits ops doc is deliberately NOT here, and
    neither are its service targets: the site makes no written guarantees. */
 export const GUIDE_VISIT_PRICE = {
-  included: "One visit a month, up to four hours, is part of your membership.",
-  extra: "Any on-demand visit beyond the one a month is $15 per visit of up to four hours.",
+  included: "Booked when you need one.",
+  extra: "Every visit is $25 for up to four hours, booked on demand.",
 };
 
 export const GUIDE_VISIT_MONTHLY: string[] = [
@@ -1973,7 +1973,7 @@ export const GUIDE_STEPS: { title: string; body: string }[] = [
 export const GUIDE_FAQ: { q: string; a: string }[] = [
   {
     q: "What does the membership include, and what doesn’t it?",
-    a: "Niro’s time: the calls, the portals, the chasing and the coordination, with no cap on how many tasks you send us. It also includes one booked Niro visit of up to four hours a month. It doesn’t cover third-party costs, like the plumber, the ambulance, the lab, government fees or the appliance itself. You see those before they’re incurred, and they’re billed at actuals with the invoice attached. We add no margin and take no vendor commission. Any on-demand visit beyond the one a month is $15 per visit of up to four hours.",
+    a: "Niro’s time: the calls, the portals, the chasing and the coordination, with no cap on how many tasks you send us. It doesn’t cover third-party costs, like the plumber, the ambulance, the lab, government fees or the appliance itself. You see those before they’re incurred, and they’re billed at actuals with the invoice attached. We add no margin and take no vendor commission. Niro Visits are booked on demand, at $25 per visit of up to four hours.",
   },
   {
     q: "Who actually does the work: people or AI?",
@@ -1981,7 +1981,7 @@ export const GUIDE_FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Is my family’s data safe with Niro?",
-    a: "We never ask for bank PINs, card details, net-banking or UPI logins, or access to your parents’ email and messages. Anyone asking for those in our name isn’t us. What we hold instead is a signed, dated, scope-limited authorisation your parents can revoke in a sentence, and an encrypted document vault hosted in India.",
+    a: "We never ask your parents for bank PINs, card details, net-banking or UPI logins, or for access to their email and messages. Anyone asking for those in our name isn’t us. What we hold instead is a signed, dated, scope-limited authorisation your parents can revoke in a sentence, and an encrypted document vault hosted in India.",
   },
 ];
 
@@ -2077,7 +2077,7 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
       "All of it solved with one WhatsApp message, or a voice note in the language they actually speak.",
     ],
     visitsTrustBody:
-      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a second opinion from a specialist who doesn't consult online, a visa appointment, a government office task or a home repair vendor chore. Booked, on demand: one visit a month is in the membership, and any visit beyond it is $15 for up to four hours.",
+      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a second opinion from a specialist who doesn't consult online, a visa appointment, a government office task or a home repair vendor chore. Booked on demand, at $25 per visit of up to four hours.",
     membershipFeatures: MEMBERSHIP_FEATURES,
   },
 
@@ -2090,12 +2090,12 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
     howHeading: "Your tasks. Your family’s tasks. Same Niro.",
     heroDescriptors: [
       "24x7 1:1 WhatsApp assistant",
-      "Monthly or on-demand Niro Visits",
+      "On-demand Niro Visits",
       "Emergency response",
       "Optional family group chat for tasks",
     ],
     howStep1Title: "You tell Niro, in your 1:1 chat",
-    howVisitsTitle: "Monthly Niro Visits, or booked on demand",
+    howVisitsTitle: "Niro Visits, booked on demand",
     howVisitsBullets: [
       "Accompanying for visa, passport and doctor appointments",
       "Accompanying for government paperwork",
@@ -2118,12 +2118,12 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
     familyHeading: ARM_COPY_A_FAMILY.heading,
     familyBody: ARM_COPY_A_FAMILY.body,
     visitsTrustBody:
-      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a second opinion from a specialist who doesn't consult online, a visa appointment, a government office task or a home repair vendor chore. Monthly, or booked on demand: one visit a month is in the membership, and any visit beyond it is $15 for up to four hours.",
+      "A Niro Assistant who shows up to support your family with anything: a doctor appointment, a second opinion from a specialist who doesn't consult online, a visa appointment, a government office task or a home repair vendor chore. Booked on demand, at $25 per visit of up to four hours.",
     membershipFeatures: [
       "Unlimited tasks for you or your family",
       "24x7 1:1 WhatsApp assistant",
       "Niro assured emergency response",
-      "One free on-demand Niro visit a month, then $15 per visit of up to four hours",
+      "On-demand Niro visits, from $25 per visit",
       "Optional family group chats - up to 2 groups",
     ],
   },

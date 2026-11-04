@@ -4,7 +4,7 @@ import { Nav } from "@/components/ds/Nav";
 import { Footer } from "@/components/ds/Footer";
 import { Eyebrow } from "@/components/ds/Eyebrow";
 import { Icon, type IconName } from "@/components/ds/Icon";
-import { NIRO_LITE, GUIDE_SCOPE, PF_CREDIT, PF_CREDIT_EXAMPLES, PF_PARTNER_REVIEWS, MEMBERSHIP_HALF_PRICE, MEMBERSHIP_FEATURES } from "@/lib/content";
+import { GUIDE_SCOPE, PF_CREDIT, PF_CREDIT_EXAMPLES, PF_PARTNER_REVIEWS, MEMBERSHIP_FEATURES, MEMBERSHIP_HALF_PRICE, NIRO_LITE, PRICE_QUARTER_TOTAL } from "@/lib/content";
 import { PricingTiers } from "@/components/sections/PricingTiers";
 import { PfAuditForm } from "./PfAuditForm";
 import { PfLink } from "./PfLink";
@@ -25,11 +25,13 @@ import "./pf.css";
  *  1. The free audit: review, diagnosis, action plan. No purchase needed.
  *     Delivered within 24 to 48 hours of receiving the records it needs.
  *  2. Optional paid execution, through any Niro pack that carries a PF
- *     Recovery Credit: Niro Lite, or the 3- or 6-month membership (PF_CREDIT
- *     in lib/content.ts, from the founders' credit sheet, Oct 2026). The
- *     credit goes towards the specialist's fee; anything above it is the
- *     partner's exact cost, charged once the money is recovered. The monthly
- *     membership carries no credit and is not pitched here.
+ *     Recovery Credit as a one-time welcome benefit: Niro Lite, or the
+ *     membership paid for 3 or 6 months (PF_CREDIT in lib/content.ts,
+ *     founders, 4 Nov 2026). The credit goes towards the specialist's fee;
+ *     anything above it is the partner's exact cost, charged once the money
+ *     is recovered. Month to month carries no credit and is not pitched here.
+ *     The six-month pack ($270) is shown as a pack price only, never per
+ *     month, because it works out below the $49 floor.
  *
  * Proof: the specialist partner's own record, 2,000+ EPFO cases resolved,
  * confirmed by the founders, and two NRI reviews of its work. Since 31 Oct
@@ -44,9 +46,6 @@ import "./pf.css";
  * chooses between sharing the UAN login, sending the listed documents, or a
  * video call on their own screen. Sharing the login is never required, and
  * OTPs are always entered by the member.
- *
- * On Lite the ₹6,000 credit counts as 4 tasks (NIRO_LITE_COUNTS), matching
- * /lite and the home page FAQ.
  */
 export const metadata: Metadata = {
   title: "Free PF audit for Indians abroad - Niro",
@@ -187,9 +186,10 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
       <>
         <span className="pf-faq-p">
           Choose a Niro pack: Niro Lite ({NIRO_LITE.price} once, 20 tasks over
-          12 months), or a 3-month ($250) or 6-month ({MEMBERSHIP_HALF_PRICE})
-          membership. Each includes a PF Recovery Credit towards the
-          specialist&rsquo;s fee: ₹6,000, ₹5,000 or ₹15,000.
+          12 months), or the Niro membership for 3 months ({PRICE_QUARTER_TOTAL})
+          or 6 months ({MEMBERSHIP_HALF_PRICE}). Each includes a PF Recovery
+          Credit towards the specialist&rsquo;s fee as a welcome benefit:
+          ₹6,000, ₹5,000 or ₹8,550.
         </span>
         <span className="pf-faq-p">
           There is no flat fee: it depends on how many issues your case has and
@@ -431,9 +431,10 @@ export default function PfMoneyPage() {
         </section>
 
         {/* ------------------------------------------- 5b. pricing */}
-        {/* The home page's two tiers (PricingTiers), with the PF Recovery
-            Credit as each card's first line. The detailed fee examples live
-            in the paid-help FAQ answer. */}
+        {/* The membership card from the home page plus the Niro Lite card
+            (PricingTiers withPacks), with the PF Recovery Credit as each
+            card's first line. The detailed fee examples live in the paid-help
+            FAQ answer. */}
         <section className="pf-sec pf-inset" id="pricing" data-screen-label="PF pricing">
           <div className="pf-wrap pf-pricing">
             <Eyebrow>Pricing</Eyebrow>
@@ -444,8 +445,9 @@ export default function PfMoneyPage() {
             </p>
             <PricingTiers
               membershipFeatures={MEMBERSHIP_FEATURES}
+              withPacks
               liteLead="Includes a ₹6,000 PF Recovery Credit (counts as 4 of your 20 tasks)"
-              memberLead="Includes a PF Recovery Credit: ₹5,000 on the 3-month plan, ₹15,000 on 6 months, renewed each time"
+              memberLead="Includes a PF Recovery Credit as a welcome benefit: ₹5,000 with 3 months, ₹8,550 with 6 months"
             />
             <p className="pf-p pf-p-wide pf-recovery-cost">
               <b>Your total</b> is the pack price, plus any specialist fee above

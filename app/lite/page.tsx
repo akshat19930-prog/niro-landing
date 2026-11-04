@@ -5,7 +5,8 @@ import { Icon } from "@/components/ds/Icon";
 import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
 
 /**
- * /lite - the detail page for Niro Lite, linked from the pricing section.
+ * /lite - the detail page for Niro Lite. Unlisted since 4 Nov 2026: the
+ * pricing card shows one membership, and sales share this page on calls.
  *
  * UNLISTED until Oct 2026, to keep a sub-$50 monthly figure off the page:
  * six research respondents said unprompted that such a price made them
@@ -100,7 +101,7 @@ export default function TasksPackPage() {
           hours, $60 for up to a full day (up to 8-10 hours). It is billed at the end of the
           month, together with any costs we paid on your behalf with your
           approval. If your family needs someone there most months, the
-          membership includes a visit every month and works out cheaper.
+          membership works out cheaper.
         </p>
         <h2>EPF recovery</h2>
         <p>

@@ -43,10 +43,19 @@ backend, deploys, and the decisions that look arbitrary but are not.
   only, and anything that moves money still needs a code on the member's
   phone. The keepable claim is bank PINs, card details, net-banking and UPI
   logins.
-- **Never state a price below ~$50/month anywhere prominent.** Six research
-  respondents said a sub-$50 price made them distrust the service. This is why
-  `/lite` is unlisted.
-- **Neither SKU is styled as preferred** - same service, two prices.
+- **Never state a price below $49/month anywhere.** Six research respondents
+  said a sub-$50 price made them distrust the service. $49 (billed $147 every
+  3 months) is the headline and sits at that floor.
+- **One membership, two ways to pay** (since 4 Nov 2026): $49 a month billed
+  $147 every 3 months is the headline price, and $65 month to month is named
+  beside it on the same card. Niro Lite is off the home page card but `/lite`
+  stays live and unlisted, for sales to share.
+  Visits are not included: from $25 per visit, booked on demand ($25 covers up
+  to four hours; the card line says "from $25 per visit"). The PF Recovery
+  Credit is a one-time welcome benefit, mentioned on `/pf` only. `/pf` also
+  shows the Lite card ($300, ₹6,000 credit) and a six-month pack ($270, ₹8,550
+  credit): the six-month pack is only ever shown as its pack price, never as
+  the $45 a month it works out at.
 - **Do not name the household limit as a restriction.** "Create up to 2 groups"
   reads as an allowance; "only 2 groups" creates the objection.
 - Emergency SLA numbers stay scoped to the six launch cities, on the page.

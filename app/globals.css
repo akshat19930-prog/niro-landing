@@ -1947,12 +1947,12 @@
   padding-bottom: 2px;
 }
 
-/* ---- pricing: two tiers ---- */
-/* Membership and Niro Lite, with the monthly/quarterly choice nested inside
-   the membership card. The two cards match on purpose: nothing about either
-   should read as the recommendation. */
+/* ---- pricing: the membership card ---- */
+/* Home: one membership card since 4 Nov 2026, centred by .tier-solo. /pf adds
+   the Niro Lite card beside it, as a pair. */
 .tier-pair { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 18px; }
 @media (min-width: 680px) { .tier-pair { grid-template-columns: 1fr 1fr; align-items: stretch; } }
+.tier-pair.tier-solo { grid-template-columns: 1fr; max-width: 460px; margin-left: auto; margin-right: auto; }
 .tier {
   border-radius: var(--radius-lg);
   padding: 22px 24px;
@@ -1995,7 +1995,7 @@
 }
 .tier-list svg { flex-shrink: 0; margin-top: 2px; color: var(--brand); }
 /* The excluded lines carry a muted cross rather than a red one: this is the
-   honest shape of the cheaper tier, not a warning. */
+   honest shape of the Lite pack (on /pf), not a warning. */
 .tier-no { color: var(--text-muted) !important; }
 /* A highlighted first line (the PF Recovery Credit on /pf). */
 .tier-lead {
@@ -2032,6 +2032,7 @@
   color: var(--text-muted);
 }
 .tier-note a { color: var(--brand); font-weight: 600; white-space: nowrap; }
+
 .tier-more {
   display: inline-block;
   margin-top: 16px;

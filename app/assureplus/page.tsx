@@ -114,7 +114,7 @@ const SHARED = [
   "Unlimited tasks for you or your family",
   "WhatsApp group chat for tasks",
   "Niro Assure emergency response",
-  "One free booked on-demand Niro visit",
+  "On-demand Niro visits, from $25 per visit",
   "Create up to 2 groups",
 ];
 
@@ -352,10 +352,10 @@ export default function AssurePlusPage() {
                   The membership as it works today.
                 </p>
                 <div className="ap-price">
-                  <b>$83</b>
+                  <b>$49</b>
                   <span>/ month</span>
                 </div>
-                <p className="ap-billed">Billed quarterly, $250 every 3 months</p>
+                <p className="ap-billed">Billed quarterly, $147 every 3 months</p>
                 <ul className="ap-feats">
                   {SHARED.map((f) => (
                     <li key={f}>
@@ -378,10 +378,10 @@ export default function AssurePlusPage() {
                   Everything above, plus sensing in the house.
                 </p>
                 <div className="ap-price">
-                  <b>$119</b>
+                  <b>$85</b>
                   <span>/ month</span>
                 </div>
-                <p className="ap-billed">Billed quarterly, $357 every 3 months</p>
+                <p className="ap-billed">Billed quarterly, $255 every 3 months</p>
                 <ul className="ap-feats">
                   {SHARED.map((f) => (
                     <li key={f}>
