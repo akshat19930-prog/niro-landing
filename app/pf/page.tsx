@@ -25,9 +25,10 @@ import "./pf.css";
  *  1. The free audit: review, diagnosis, action plan. No purchase needed.
  *     Delivered within 24 to 48 hours of receiving the records it needs.
  *  2. Optional paid execution, through the Niro membership paid every 3
- *     months, which carries a ₹5,000 PF Recovery Credit (PF_CREDIT in
- *     lib/content.ts). Niro Lite and the six-month plan, which also carried
- *     credits, were retired on 4 Nov 2026. The credit goes towards the
+ *     months, which carries a one-time ₹5,000 PF Recovery Credit as a welcome
+ *     benefit (PF_CREDIT in lib/content.ts). Niro Lite (unlisted, /lite
+ *     only) and the retired six-month plan are not pitched here. The credit
+ *     goes towards the
  *     specialist's fee; anything above it is the partner's exact cost,
  *     charged once the money is recovered. Month to month carries no credit
  *     and is not pitched here.
@@ -186,8 +187,8 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
         <span className="pf-faq-p">
           Join the Niro membership, paid every 3 months ({MEMBERSHIP_QUARTER.price}
           a month, billed {PRICE_QUARTER_TOTAL}). It includes a ₹5,000 PF
-          Recovery Credit towards the specialist&rsquo;s fee, renewed every
-          quarter.
+          Recovery Credit towards the specialist&rsquo;s fee, as a welcome
+          benefit.
         </span>
         <span className="pf-faq-p">
           There is no flat fee: it depends on how many issues your case has and
@@ -442,7 +443,7 @@ export default function PfMoneyPage() {
             </p>
             <PricingTiers
               membershipFeatures={MEMBERSHIP_FEATURES}
-              memberLead="Paid every 3 months, it includes a ₹5,000 PF Recovery Credit, renewed each quarter"
+              memberLead="Paid every 3 months, it includes a ₹5,000 PF Recovery Credit as a welcome benefit"
             />
             <p className="pf-p pf-p-wide pf-recovery-cost">
               <b>Your total</b> is the membership, plus any specialist fee above

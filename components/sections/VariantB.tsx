@@ -556,7 +556,9 @@ function TrustB({ c }: { c: ArmCopy }) {
  *
  * One membership since 4 Nov 2026: $49 a month billed $147 every 3 months as
  * the headline, $65 month to month named in the same card (PricingTiers).
- * Niro Lite and the six-month plan are retired.
+ * Niro Lite is off the page (unlisted, /lite only) and the six-month plan is
+ * retired. The PF Recovery Credit is not mentioned here: it lives on /pf
+ * only until the PF campaign resumes.
  *
  * No guarantee band: the site makes no written guarantees (Paarth, Sept 2026).
  */
@@ -570,15 +572,6 @@ function PricingB({ c }: { c: ArmCopy }) {
         </h2>
 
         <PricingTiers membershipFeatures={c.membershipFeatures} />
-
-        {/* Under the card rather than in its list, so the list stays about the
-            service. Month to month carries no PF credit, which the sentence
-            states by naming the payment that does. */}
-        <p className="tier-note">
-          Paying every 3 months includes a ₹5,000 PF Recovery Credit towards
-          EPFO casework.{" "}
-          <a href="/pf/#pricing">How it works &rarr;</a>
-        </p>
 
         {/* Directly above the CTA, so it is the last thing read before the tap.
             The objection it answers is risk, not price, and risk is what stops

@@ -482,8 +482,9 @@ export type Plan = {
  * so this list is shown once, on the single pricing card.
  *
  * No visit is included any more: visits are booked on demand at $25 per visit
- * of up to four hours (founders, 4 Nov 2026). A longer visit is priced in
- * multiples of that, which the site does not spell out.
+ * of up to four hours (founders, 4 Nov 2026). Visits can run longer, priced in
+ * multiples of that, which the site does not spell out; so the card line says
+ * "from $25 per visit", and the four-hour unit is stated in the FAQ and terms.
  *
  * "Create up to 2 groups" states the multi-household allowance on the page.
  * Read as a positive allowance rather than a ceiling, it pre-empts the in-laws
@@ -493,7 +494,7 @@ export const MEMBERSHIP_FEATURES: string[] = [
   "Unlimited tasks for you or your family",
   "WhatsApp group chat for tasks",
   "Niro assured emergency response",
-  "On-demand Niro visits, $25 per visit of up to four hours",
+  "On-demand Niro visits, from $25 per visit",
   "Create up to 2 groups",
   "Request a pause, say when the family is travelling",
 ];
@@ -533,14 +534,91 @@ export const MEMBERSHIP_QUARTER: Plan = {
   highlight: true,
 };
 
+/**
+ * Niro Lite - a light annual entry point, re-introduced after the single-SKU
+ * period. Three deliberate choices, because a cheap second tier is the easiest
+ * way to damage a trust-led proposition:
+ *
+ * 1. Priced and displayed as $250/YEAR, never as its $20.83/month equivalent.
+ *    Six research respondents said unprompted that a sub-$50/mo price makes
+ *    them suspect the service isn't staffed by real people ("I would be
+ *    suspicious it's basically a glorified wrapper"). An annual number sits
+ *    outside that monthly comparison; a per-month figure would sit inside it.
+ * 2. The emergency line says exactly what it is. Emergency response is the #1
+ *    requested capability (68.9% of task picks) and the least believed one -
+ *    so the partner-ambulance version must not borrow the credibility of the
+ *    Niro-Assistant-on-the-ground version. It names the absence.
+ * 3. It carries no badge and is not the dark card. Lite is the step down, not
+ *    the recommendation.
+ *
+ * Off the pricing card since 4 Nov 2026 (one membership on the page), but
+ * still sold: /lite stays live and unlisted, for sales to share on a call.
+ */
+export const NIRO_LITE: Plan = {
+  id: "lite",
+  name: "Niro Lite",
+  price: "$300",
+  per: "for 20 tasks",
+  sub: "For a few specific things, not ongoing care",
+  // Shown on the public pricing grid in Oct 2026; unlisted again since
+  // 4 Nov 2026 (only /lite shows it).
+  //
+  // The headline is the PACK price. It is never shown as the $25 a month it
+  // works out at, not even as a grey line: six research respondents said
+  // unprompted that a sub-$50 monthly figure made them suspect the service
+  // is not staffed by real people, and a $25 figure re-anchors the page so
+  // $99 stops reading as the price and starts reading as four times the
+  // cheap one.
+  features: [
+    "20 tasks, used any time in 12 months",
+    "The same WhatsApp chat, the same vetted Niro Assistants",
+    "A task is one thing run to completion. Bigger jobs count as more, agreed before we start",
+    // A tick, not a cross: Lite members can book a Visit. Listing Visits as
+    // excluded read as "no one will come to the door". Since 29 Oct 2026 a
+    // Lite visit is priced per visit on top of its task count (the rates are
+    // in NIRO_LITE_COUNTS), priced so that a family needing a visit most
+    // months is better off on the membership. The dollar figure stays off
+    // the card so a small number never sits beside the pack price.
+    "Niro Visits on request, charged per visit",
+  ],
+  highlight: false,
+};
+
+/** How a Niro Lite task is counted. Printed on /lite and quoted on the
+ *  family guide. The ceiling is the point: "up to 6" without a ceiling
+ *  becomes "so what stops you calling everything six tasks". The count is
+ *  told before the work starts and never changes afterwards. */
+export const NIRO_LITE_COUNTS: { what: string; count: string }[] = [
+  { what: "Most tasks: a bill corrected, a cab booked, a refund chased through four follow-ups", count: "1 task" },
+  { what: "A Niro Visit, up to four hours", count: "1 task + $40" },
+  { what: "A full-day visit (up to 8-10 hours): a hospital day, a registration, a visa centre", count: "2 tasks + $60" },
+  // EPFO cases are worked with a specialist partner. Per the PF credit sheet
+  // (Oct 2026) Lite's ₹6,000 PF Recovery Credit is counted as 4 tasks, and
+  // the fee above it is passed through at cost (PF_CREDIT below).
+  { what: "Recovering EPF money, with a ₹6,000 PF Recovery Credit towards the specialist's fee", count: "4 tasks" },
+  { what: "Finding a tenant, or a buyer or seller for something (a car, a property, anything else)", count: "Up to 5 tasks" },
+  { what: "Property registration, start to finish", count: "Up to 6 tasks" },
+];
+
+/** Stated on the card next to what IS included, with x marks, because the
+ *  pack is defined as much by its exclusions as by its tasks. Niro Assure is
+ *  a membership thing, and a buyer who assumes otherwise finds out at the
+ *  worst moment. */
+export const NIRO_LITE_EXCLUDES: string[] = [
+  "Niro Assure emergency response",
+  "A dedicated family manager, or a second family group",
+];
+
 /** Price strings used in running copy, so a price change is one edit. */
 export const PRICE_QUARTER_TOTAL = "$147";
 
 /**
- * The PF Recovery Credit. Since Niro Lite and the six-month plan were retired
- * (4 Nov 2026) it comes with one thing only: paying every 3 months. ₹5,000
- * towards the specialist partner's fee for EPFO and PF casework, renewed with
- * every paid quarter. The fee itself is set per case (how many separate
+ * The PF Recovery Credit, as /pf shows it. Since 4 Nov 2026 /pf offers one
+ * thing: the membership paid every 3 months, with a ₹5,000 credit towards the
+ * specialist partner's fee for EPFO and PF casework as a one-time welcome
+ * benefit, not renewed. (Niro Lite's ₹6,000 credit lives on /lite only; the
+ * six-month plan is retired.) The credit is mentioned on /pf only, not on the
+ * home page, until the PF campaign resumes. The fee itself is set per case (how many separate
  * issues, how complex each one is), confirmed after the free audit, and runs
  * from a few thousand rupees to about ₹65,000. Above the credit, the member
  * pays the partner's exact cost with no markup, charged only once the money
@@ -1389,7 +1467,7 @@ export const SORT_OUT_OPTIONS: string[] = [
 
 /** Who the membership is for. "My India needs" is the own-admin wedge - the
  *  segment that refused monthly billing and wanted a task pack instead (Niro
- *  Lite, retired 4 Nov 2026).
+ *  Lite, unlisted since 4 Nov 2026, on /lite).
  *
  *  SUPERSEDED Oct 2026 by SORT_OUT_USAGE below, which asks the same thing with
  *  enough resolution to read the positioning test. Kept because rows written
@@ -1778,7 +1856,7 @@ export const GUIDE_ASSURE: { title: string; body: string; tag?: string }[] = [
    per-purpose rate card from the Visits ops doc is deliberately NOT here, and
    neither are its service targets: the site makes no written guarantees. */
 export const GUIDE_VISIT_PRICE = {
-  included: "Booked when you need one, for up to four hours.",
+  included: "Booked when you need one.",
   extra: "Every visit is $25 for up to four hours, booked on demand.",
 };
 
@@ -2036,7 +2114,7 @@ export const ARM_COPY: Record<"A" | "B2", ArmCopy> = {
       "Unlimited tasks for you or your family",
       "24x7 1:1 WhatsApp assistant",
       "Niro assured emergency response",
-      "On-demand Niro visits, $25 per visit of up to four hours",
+      "On-demand Niro visits, from $25 per visit",
       "Optional family group chats - up to 2 groups",
     ],
   },

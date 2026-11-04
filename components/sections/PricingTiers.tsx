@@ -6,7 +6,8 @@ import { MEMBERSHIP_QUARTER, MEMBERSHIP_SINGLE } from "@/lib/content";
  * pricing story.
  *
  * One card since 4 Nov 2026: a single membership with two ways to pay for it.
- * Niro Lite and the six-month plan are retired. The 3-month rate ($49 a
+ * Niro Lite is off the card (unlisted, /lite only) and the six-month plan is
+ * retired. The 3-month rate ($49 a
  * month, billed $147) is the headline and month to month ($65) is named in
  * the billing line, because the billing period is a payment choice, not a
  * product choice.

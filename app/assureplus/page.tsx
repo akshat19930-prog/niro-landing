@@ -114,7 +114,7 @@ const SHARED = [
   "Unlimited tasks for you or your family",
   "WhatsApp group chat for tasks",
   "Niro Assure emergency response",
-  "On-demand Niro visits, $25 per visit of up to four hours",
+  "On-demand Niro visits, from $25 per visit",
   "Create up to 2 groups",
 ];
 

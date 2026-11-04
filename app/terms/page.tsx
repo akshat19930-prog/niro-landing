@@ -64,13 +64,14 @@ export default function TermsPage() {
 
         <h2>PF Recovery Credit</h2>
         <p>
-          The membership paid quarterly includes a{" "}
-          <strong>PF Recovery Credit</strong> of ₹5,000, applied to our
-          specialist partner&rsquo;s fee for EPFO and PF casework and renewed
-          with each paid quarter. The membership paid monthly does not include
-          a PF Recovery Credit. Credits already issued with the six-month
-          membership or Niro Lite, both no longer sold, stay valid for the
-          period they were bought for.
+          The membership paid quarterly includes a one-time{" "}
+          <strong>PF Recovery Credit</strong> of ₹5,000 as a welcome benefit,
+          and Niro Lite includes one of ₹6,000, counted as 4 of the
+          pack&rsquo;s 20 tasks. The credit is applied to our specialist
+          partner&rsquo;s fee for EPFO and PF casework. The membership paid
+          monthly does not include a PF Recovery Credit. Credits already issued
+          with the six-month membership, which is no longer sold, stay valid
+          for the period it was bought for.
         </p>
         <p>
           The partner&rsquo;s fee depends on the case and is confirmed after a
@@ -82,10 +83,14 @@ export default function TermsPage() {
         <h2>Niro Visits</h2>
         <p>
           Niro Visits are booked on demand and are not included in the
-          membership fee. Each visit is charged at{" "}
+          membership fee. On the membership, each visit is charged at{" "}
           <strong>US $25 per visit of up to four hours</strong>; a longer visit
-          is quoted before it is booked. Visit charges are billed monthly,
-          together with any third-party costs you approved.
+          is quoted before it is booked. On Niro Lite, a Niro Visit counts
+          towards the pack&rsquo;s tasks and is also charged per visit: one
+          task and <strong>US $40</strong> for a visit of up to four hours, or
+          two tasks and <strong>US $60</strong> for a visit of up to a full day
+          (up to 8-10 hours). Visit charges are billed monthly, together with
+          any third-party costs you approved.
         </p>
 
         <h2>What your membership fee covers</h2>
