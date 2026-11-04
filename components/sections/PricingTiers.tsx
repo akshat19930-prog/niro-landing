@@ -14,9 +14,8 @@ import {
  * /pf (`withPacks`): the Niro Lite card comes back beside the membership, and
  * the membership's billing line also names the six-month pack. Both carry a
  * PF Recovery Credit there, which is why they are offered on /pf only. The
- * six-month pack is shown as its pack price ($270), never as the $45 a month
- * it works out at: nothing on the site goes below $49 a month. Neither card
- * is styled as preferred.
+ * six-month pack ($294) is the same $49 a month as the quarter, shown as its
+ * pack price. Neither card is styled as preferred.
  *
  * `liteLead` / `memberLead` put one highlighted line at the top of each list.
  * /pf uses them for the PF Recovery Credit; the home page leaves them out.
