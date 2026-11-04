@@ -30,7 +30,7 @@ export default function TermsPage() {
           Niro is sold as one membership, paid in one of three ways:{" "}
           <strong>US $49 per month billed quarterly</strong>, charged as US $147
           every three months; <strong>US $65 per month</strong>, billed
-          monthly; or <strong>US $270 every six months</strong>. Each renews at
+          monthly; or <strong>US $294 every six months</strong>. Each renews at
           the same rate, charged to the card you have on file, until you
           cancel. The quarterly and six-month rates are not introductory prices
           and do not change after the first period. Members who joined

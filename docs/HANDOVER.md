@@ -210,8 +210,8 @@ Change these only deliberately - each one cost a test or an interview to learn.
 - **One membership, two ways to pay** (4 Nov 2026). $49 a month billed $147
   every 3 months is the headline; $65 month to month is named on the same card.
   Lite went off the home page card (still on `/lite` and on `/pf`), and the
-  six-month pack ($270) is offered on `/pf` only, as a pack price, never per
-  month. No visit is included: visits are
+  six-month pack ($294, the same $49 a month) is offered on `/pf` only, for
+  its larger PF credit. No visit is included: visits are
   from $25 ($25 covers up to four hours), booked on demand.
 - **The city field is a checker, not a gate.** Out-of-area leads are captured
   and waitlisted by city - that list decides which city opens next. Hiding the

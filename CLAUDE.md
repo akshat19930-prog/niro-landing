@@ -53,9 +53,8 @@ backend, deploys, and the decisions that look arbitrary but are not.
   Visits are not included: from $25 per visit, booked on demand ($25 covers up
   to four hours; the card line says "from $25 per visit"). The PF Recovery
   Credit is a one-time welcome benefit, mentioned on `/pf` only. `/pf` also
-  shows the Lite card ($300, ₹6,000 credit) and a six-month pack ($270, ₹8,550
-  credit): the six-month pack is only ever shown as its pack price, never as
-  the $45 a month it works out at.
+  shows the Lite card ($300, ₹6,000 credit) and a six-month pack ($294, the
+  same $49 a month, ₹8,550 credit), shown as its pack price.
 - **Do not name the household limit as a restriction.** "Create up to 2 groups"
   reads as an allowance; "only 2 groups" creates the objection.
 - Emergency SLA numbers stay scoped to the six launch cities, on the page.

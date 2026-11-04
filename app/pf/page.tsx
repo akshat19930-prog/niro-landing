@@ -30,8 +30,8 @@ import "./pf.css";
  *     founders, 4 Nov 2026). The credit goes towards the specialist's fee;
  *     anything above it is the partner's exact cost, charged once the money
  *     is recovered. Month to month carries no credit and is not pitched here.
- *     The six-month pack ($270) is shown as a pack price only, never per
- *     month, because it works out below the $49 floor.
+ *     The six-month pack ($294, the same $49 a month as the quarter) is
+ *     shown as a pack price.
  *
  * Proof: the specialist partner's own record, 2,000+ EPFO cases resolved,
  * confirmed by the founders, and two NRI reviews of its work. Since 31 Oct

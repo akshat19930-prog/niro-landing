@@ -612,11 +612,10 @@ export const NIRO_LITE_EXCLUDES: string[] = [
 /** Price strings used in running copy, so a price change is one edit. */
 export const PRICE_QUARTER_TOTAL = "$147";
 
-/** The six-month pack: $270 for six months of the membership (founders,
- *  4 Nov 2026). Offered on /pf only, for its PF Recovery Credit. Always shown
- *  as the pack price, never as the $45 a month it works out at: nothing on the
- *  site goes below $49 a month. */
-export const MEMBERSHIP_HALF_PRICE = "$270";
+/** The six-month pack: $294 for six months of the membership, the same $49 a
+ *  month as the quarter (founders, 4 Nov 2026). Offered on /pf only, for its
+ *  larger PF Recovery Credit, and shown as the pack price. */
+export const MEMBERSHIP_HALF_PRICE = "$294";
 
 /**
  * The PF Recovery Credit, as /pf shows it (founders, 4 Nov 2026). Three packs
@@ -643,7 +642,7 @@ export const PF_CREDIT: {
 }[] = [
   { id: "quarter", name: "3-month membership", price: PRICE_QUARTER_TOTAL, inr: "₹13,965", credit: "₹5,000", note: "Plus unlimited tasks for 3 months" },
   { id: "lite", name: "Niro Lite", price: NIRO_LITE.price, inr: "₹28,500", credit: "₹6,000", note: "Counted as 4 of the pack's 20 tasks" },
-  { id: "half", name: "6-month membership", price: MEMBERSHIP_HALF_PRICE, inr: "₹25,650", credit: "₹8,550", note: "Plus unlimited tasks for 6 months" },
+  { id: "half", name: "6-month membership", price: MEMBERSHIP_HALF_PRICE, inr: "₹27,930", credit: "₹8,550", note: "Plus unlimited tasks for 6 months" },
 ];
 
 /** Reviews of our specialist partner's EPFO work, from the reviewers' own
