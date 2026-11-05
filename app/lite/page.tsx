@@ -5,8 +5,8 @@ import { Icon } from "@/components/ds/Icon";
 import { WhatsAppLink } from "@/components/ds/WhatsAppLink";
 
 /**
- * /lite - the detail page for Niro Lite. Unlisted since 4 Nov 2026: the
- * pricing card shows one membership, and sales share this page on calls.
+ * /lite - the detail page for Niro Lite, linked from the Lite card on the
+ * home page and /pf.
  *
  * UNLISTED until Oct 2026, to keep a sub-$50 monthly figure off the page:
  * six research respondents said unprompted that such a price made them

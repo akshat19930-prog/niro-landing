@@ -551,8 +551,8 @@ export const MEMBERSHIP_QUARTER: Plan = {
  * 3. It carries no badge and is not the dark card. Lite is the step down, not
  *    the recommendation.
  *
- * Off the pricing card since 4 Nov 2026 (one membership on the page), but
- * still sold: /lite stays live and unlisted, for sales to share on a call.
+ * On the home page as the second card, after the membership (5 Nov 2026), and
+ * first on /pf. /lite is its detail page.
  */
 export const NIRO_LITE: Plan = {
   id: "lite",
@@ -560,8 +560,8 @@ export const NIRO_LITE: Plan = {
   price: "$300",
   per: "for 20 tasks",
   sub: "For a few specific things, not ongoing care",
-  // Shown on the public pricing grid in Oct 2026; unlisted again since
-  // 4 Nov 2026 (only /lite shows it).
+  // On the public pricing grid: after the membership on the home page,
+  // before it on /pf.
   //
   // The headline is the PACK price. It is never shown as the $25 a month it
   // works out at, not even as a grey line: six research respondents said
@@ -1475,7 +1475,7 @@ export const SORT_OUT_OPTIONS: string[] = [
 
 /** Who the membership is for. "My India needs" is the own-admin wedge - the
  *  segment that refused monthly billing and wanted a task pack instead (Niro
- *  Lite, unlisted since 4 Nov 2026, on /lite).
+ *  Lite, on the pricing grid).
  *
  *  SUPERSEDED Oct 2026 by SORT_OUT_USAGE below, which asks the same thing with
  *  enough resolution to read the positioning test. Kept because rows written

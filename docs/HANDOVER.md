@@ -25,7 +25,7 @@ happens on a hosted checkout link that sales sends in the thread after a call.
 | `/niro-assure/` | Emergency response protocol, with the published SLA. Renamed from `/niro-assured/` (Sept 2026); that old path is a redirect stub, like `/emergency/`. |
 | `/what-we-do/` | The full India scope as a grid. Has an OG image, so it previews as a card when pasted into WhatsApp. |
 | `/careers/` | Open roles. A trust asset as much as a hiring one - see §6. |
-| `/lite/` | **Unlisted.** The Niro Lite pack ($300 for 20 tasks), off the pricing card since 4 Nov 2026, for sales to share on a call. |
+| `/lite/` | Detail page for the Niro Lite pack ($300 for 20 tasks), linked from the Lite card on the home page and `/pf`. |
 | `/terms/`, `/privacy/`, `/about/` | Legal and team. |
 | `/emergency/` | A noindex redirect stub to `/niro-assure/`. The old URL shipped to production, so it cannot just 404. |
 | `/gulf/`, `/us/`, `/us-v2/` | **Retired 26 Sept 2026.** noindex redirect stubs to `/`, like `/emergency/`. The pages live in git history and `UsPage.tsx` / `GulfPage.tsx` are still in the repo, unmounted. |
@@ -209,9 +209,9 @@ Change these only deliberately - each one cost a test or an interview to learn.
   respondents said so unprompted. That is why the headline is $49, never lower.
 - **One membership, two ways to pay** (4 Nov 2026). $49 a month billed $147
   every 3 months is the headline; $65 month to month is named on the same card.
-  Lite went off the home page card (still on `/lite` and on `/pf`), and the
-  six-month pack ($294, the same $49 a month) is offered on `/pf` only, for
-  its larger PF credit. No visit is included: visits are
+  Niro Lite ($300 for 20 tasks) is the second card on the home page, after
+  the membership. The six-month pack ($294, the same $49 a month) is offered
+  on `/pf` only, for its larger PF credit. No visit is included: visits are
   from $25 ($25 covers up to four hours), booked on demand.
 - **The city field is a checker, not a gate.** Out-of-area leads are captured
   and waitlisted by city - that list decides which city opens next. Hiding the

@@ -432,7 +432,7 @@ export default function PfMoneyPage() {
 
         {/* ------------------------------------------- 5b. pricing */}
         {/* The membership card from the home page plus the Niro Lite card
-            (PricingTiers withPacks), with the PF Recovery Credit as each
+            (PricingTiers, Lite first), with the PF Recovery Credit as each
             card's first line. The detailed fee examples live in the paid-help
             FAQ answer. */}
         <section className="pf-sec pf-inset" id="pricing" data-screen-label="PF pricing">
@@ -445,7 +445,8 @@ export default function PfMoneyPage() {
             </p>
             <PricingTiers
               membershipFeatures={MEMBERSHIP_FEATURES}
-              withPacks
+              lite="first"
+              withHalfPack
               liteLead="Includes a ₹6,000 PF Recovery Credit (counts as 4 of your 20 tasks)"
               memberLead="Includes a PF Recovery Credit as a welcome benefit: ₹5,000 with 3 months, ₹8,550 with 6 months"
             />
