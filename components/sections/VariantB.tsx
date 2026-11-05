@@ -554,10 +554,10 @@ function TrustB({ c }: { c: ArmCopy }) {
 /**
  * Pricing.
  *
- * One membership since 4 Nov 2026: $49 a month billed $147 every 3 months as
- * the headline, $65 month to month named in the same card (PricingTiers).
- * Niro Lite and the six-month pack are off this page (they are on /pf, with
- * the PF Recovery Credit, until the PF campaign resumes).
+ * The membership ($49 a month billed $147 every 3 months, or $65 month to
+ * month) and, after it, the Niro Lite pack ($300 for 20 tasks), back on this
+ * page since 5 Nov 2026 (PricingTiers lite="last"). The six-month pack and
+ * the PF Recovery Credit stay on /pf only, until the PF campaign resumes.
  *
  * No guarantee band: the site makes no written guarantees (Paarth, Sept 2026).
  */
@@ -567,10 +567,10 @@ function PricingB({ c }: { c: ArmCopy }) {
       <div style={{ maxWidth: "var(--container-narrow)", margin: "0 auto" }}>
         <Eyebrow style={{ justifyContent: "center" }}>Pricing</Eyebrow>
         <h2 style={{ ...h2Style, margin: "14px 0 26px", textAlign: "center" }}>
-          One membership. No cap on tasks.
+          One membership. Or just the tasks you need.
         </h2>
 
-        <PricingTiers membershipFeatures={c.membershipFeatures} />
+        <PricingTiers membershipFeatures={c.membershipFeatures} lite="last" />
 
         {/* Directly above the CTA, so it is the last thing read before the tap.
             The objection it answers is risk, not price, and risk is what stops
