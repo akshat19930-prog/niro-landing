@@ -106,7 +106,8 @@ export default function TasksPackPage() {
         <h2>EPF recovery</h2>
         <p>
           EPF recovery is worked with our specialist partner. The pack
-          includes a <strong>₹6,000 PF Recovery Credit</strong> towards
+          includes a <strong>$120 PF Recovery Credit</strong> (about
+          ₹11,400) towards
           their fee, counted as 4 of your 20 tasks, so 16 are left for
           everything else.
         </p>
@@ -114,7 +115,7 @@ export default function TasksPackPage() {
           There is no flat fee for EPF recovery, here or anywhere: the fee
           depends on how many separate issues need fixing and how complex each
           one is. It is confirmed after a free audit, before any work starts.
-          If it comes to more than ₹6,000, you pay the difference at the
+          If it comes to more than the credit, you pay the difference at the
           partner&rsquo;s exact cost, with no markup, and only once your money
           is recovered.{" "}
           <a href="/pf/#pricing">See worked examples</a>.

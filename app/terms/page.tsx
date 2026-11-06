@@ -67,7 +67,7 @@ export default function TermsPage() {
         <p>
           The membership paid quarterly, the six-month membership and Niro
           Lite each include a one-time <strong>PF Recovery Credit</strong> as a
-          welcome benefit: ₹5,000, ₹8,550 and ₹6,000 respectively. On Niro Lite
+          welcome benefit: $50, $100 and $120 respectively. On Niro Lite
           it counts as 4 of the pack&rsquo;s 20 tasks. The credit is applied to
           our specialist partner&rsquo;s fee for EPFO and PF casework. The
           membership paid monthly does not include a PF Recovery Credit.
