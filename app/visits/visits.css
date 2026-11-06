@@ -209,8 +209,10 @@
   padding: 22px 20px;
 }
 @media (max-width: 520px) { .vz-gate { padding: 18px 16px; } }
-.vz-recap {
-  margin: 0 0 9px;
+/* .pf-card p sets margin 0 and is one class more specific, so this rule
+   carries the card class too, like the others in this block. */
+.pf-card .vz-recap {
+  margin: 0 0 16px;
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   color: var(--accent-strong);
