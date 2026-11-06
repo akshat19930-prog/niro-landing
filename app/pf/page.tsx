@@ -189,7 +189,8 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
           12 months), or the Niro membership for 3 months ({PRICE_QUARTER_TOTAL})
           or 6 months ({MEMBERSHIP_HALF_PRICE}). Each includes a PF Recovery
           Credit towards the specialist&rsquo;s fee as a welcome benefit:
-          ₹6,000, ₹5,000 or ₹8,550.
+          $120 with Lite (about ₹11,400), $50 with 3 months (about ₹4,750)
+          or $100 with 6 months (about ₹9,500).
         </span>
         <span className="pf-faq-p">
           There is no flat fee: it depends on how many issues your case has and
@@ -447,8 +448,8 @@ export default function PfMoneyPage() {
               membershipFeatures={MEMBERSHIP_FEATURES}
               lite="first"
               withHalfPack
-              liteLead="Includes a ₹6,000 PF Recovery Credit (counts as 4 of your 20 tasks)"
-              memberLead="Includes a PF Recovery Credit as a welcome benefit: ₹5,000 with 3 months, ₹8,550 with 6 months"
+              liteLead="Includes a $120 PF Recovery Credit (counts as 4 of your 20 tasks)"
+              memberLead="Includes a PF Recovery Credit as a welcome benefit: $50 with 3 months, $100 with 6 months"
             />
             <p className="pf-p pf-p-wide pf-recovery-cost">
               <b>Your total</b> is the pack price, plus any specialist fee above

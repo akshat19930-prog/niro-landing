@@ -592,10 +592,10 @@ export const NIRO_LITE_COUNTS: { what: string; count: string }[] = [
   { what: "Most tasks: a bill corrected, a cab booked, a refund chased through four follow-ups", count: "1 task" },
   { what: "A Niro Visit, up to four hours", count: "1 task + $40" },
   { what: "A full-day visit (up to 8-10 hours): a hospital day, a registration, a visa centre", count: "2 tasks + $60" },
-  // EPFO cases are worked with a specialist partner. Per the PF credit sheet
-  // (Oct 2026) Lite's ₹6,000 PF Recovery Credit is counted as 4 tasks, and
+  // EPFO cases are worked with a specialist partner. Lite's $120 PF Recovery
+  // Credit (founders, 6 Nov 2026) is counted as 4 tasks, and
   // the fee above it is passed through at cost (PF_CREDIT below).
-  { what: "Recovering EPF money, with a ₹6,000 PF Recovery Credit towards the specialist's fee", count: "4 tasks" },
+  { what: "Recovering EPF money, with a $120 PF Recovery Credit towards the specialist's fee", count: "4 tasks" },
   { what: "Finding a tenant, or a buyer or seller for something (a car, a property, anything else)", count: "Up to 5 tasks" },
   { what: "Property registration, start to finish", count: "Up to 6 tasks" },
 ];
@@ -620,9 +620,10 @@ export const MEMBERSHIP_HALF_PRICE = "$294";
 /**
  * The PF Recovery Credit, as /pf shows it (founders, 4 Nov 2026). Three packs
  * carry one, each a one-time welcome benefit towards the specialist partner's
- * fee for EPFO and PF casework: the membership paid every 3 months (₹5,000),
- * Niro Lite (₹6,000, counted as 4 of its 20 tasks) and the six-month pack
- * (₹8,550, which is $90 at ₹95 to the dollar). Month to month carries none.
+ * fee for EPFO and PF casework: the membership paid every 3 months ($50),
+ * Niro Lite ($120, counted as 4 of its 20 tasks) and the six-month pack
+ * ($100). Amounts set in dollars by the founders on 6 Nov 2026 (were ₹5,000,
+ * ₹6,000 and ₹8,550). Month to month carries none.
  * The credit and the two extra packs are on /pf only, not on the home page,
  * until the PF campaign resumes. The fee itself is set per case (how many separate
  * issues, how complex each one is), confirmed after the free audit, and runs
@@ -630,7 +631,8 @@ export const MEMBERSHIP_HALF_PRICE = "$294";
  * pays the partner's exact cost with no markup, charged only once the money
  * is recovered. Month to month carries no credit.
  *
- * Rupee figures at ₹95 to the dollar, shown on /pf only.
+ * Rupee figures (inr, creditInr) at ₹95 to the dollar: the partner's fees are
+ * quoted in rupees, so the worked examples subtract creditInr.
  */
 export const PF_CREDIT: {
   id: string;
@@ -638,11 +640,12 @@ export const PF_CREDIT: {
   price: string;
   inr: string;
   credit: string;
+  creditInr: string;
   note: string;
 }[] = [
-  { id: "quarter", name: "3-month membership", price: PRICE_QUARTER_TOTAL, inr: "₹13,965", credit: "₹5,000", note: "Plus unlimited tasks for 3 months" },
-  { id: "lite", name: "Niro Lite", price: NIRO_LITE.price, inr: "₹28,500", credit: "₹6,000", note: "Counted as 4 of the pack's 20 tasks" },
-  { id: "half", name: "6-month membership", price: MEMBERSHIP_HALF_PRICE, inr: "₹27,930", credit: "₹8,550", note: "Plus unlimited tasks for 6 months" },
+  { id: "quarter", name: "3-month membership", price: PRICE_QUARTER_TOTAL, inr: "₹13,965", credit: "$50", creditInr: "₹4,750", note: "Plus unlimited tasks for 3 months" },
+  { id: "lite", name: "Niro Lite", price: NIRO_LITE.price, inr: "₹28,500", credit: "$120", creditInr: "₹11,400", note: "Counted as 4 of the pack's 20 tasks" },
+  { id: "half", name: "6-month membership", price: MEMBERSHIP_HALF_PRICE, inr: "₹27,930", credit: "$100", creditInr: "₹9,500", note: "Plus unlimited tasks for 6 months" },
 ];
 
 /** Reviews of our specialist partner's EPFO work, from the reviewers' own
@@ -675,8 +678,8 @@ export const PF_PARTNER_REVIEWS: { name: string; location: string; photo?: strin
  *  what is left to pay after each pack's credit, in PF_CREDIT order. */
 export const PF_CREDIT_EXAMPLES: { name: string; what: string; fee: string; pay: string[] }[] = [
   { name: "Simple", what: "one fix", fee: "₹4,000", pay: ["Covered", "Covered", "Covered"] },
-  { name: "Standard", what: "a couple of fixes", fee: "₹16,000", pay: ["₹11,000", "₹10,000", "₹7,450"] },
-  { name: "Complex", what: "six tangled issues", fee: "₹64,000", pay: ["₹59,000", "₹58,000", "₹55,450"] },
+  { name: "Standard", what: "a couple of fixes", fee: "₹16,000", pay: ["₹11,250", "₹4,600", "₹6,500"] },
+  { name: "Complex", what: "six tangled issues", fee: "₹64,000", pay: ["₹59,250", "₹52,600", "₹54,500"] },
 ];
 
 /** The one public membership, in display order: the 3-month rate is the
