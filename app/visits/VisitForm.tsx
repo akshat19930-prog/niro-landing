@@ -351,7 +351,7 @@ export function VisitForm({
             onChange={(e) => pick("date", e.target.value)}
           />
           {errs.date && <p className="pf-error" id="vz-date-err" role="alert">{errs.date}</p>}
-          <p className="pf-help">Most visits need three working days&rsquo; notice. Hospital visits are faster.</p>
+          <p className="pf-help">Most visits need three working days&rsquo; notice.</p>
         </div>
 
         <RadioGroup
