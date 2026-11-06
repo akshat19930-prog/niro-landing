@@ -195,7 +195,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: "How much notice do you need?",
-    a: "Three working days for most visits. Hospital and emergency visits are faster. Tell us the slot in the form and we will confirm it or offer the nearest one.",
+    a: "Three working days for most visits. Tell us the slot in the form and we will confirm it or offer the nearest one.",
   },
   {
     q: "What does $25 cover?",
