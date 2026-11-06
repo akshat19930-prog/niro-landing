@@ -258,12 +258,9 @@ export function VisitForm({
         <div className="vz-gate">
           <p className="vz-recap">{line}</p>
           <h3 className="vz-gate-h" ref={gateHeading} tabIndex={-1}>
-            Your visit is ready. Become a member and we schedule it.
+            Niro Visits are only for members. Become one and we&rsquo;ll
+            schedule it within 24 hours.
           </h3>
-          <p className="vz-gate-p">
-            Niro Visits are for members. The free 30-day trial does not include
-            them, because a visit puts a person in a cab.
-          </p>
 
           <div className="vz-plan vz-plan-lead">
             <div className="vz-price">$49 <small>a month</small></div>
@@ -292,9 +289,7 @@ export function VisitForm({
             <Icon name="message-circle" size={17} />
           </a>
           <p className="vz-gate-fine">
-            This opens WhatsApp with your visit already written out. Not ready?
-            Say so in the same message and we will start your free 30-day trial
-            instead, and do everything on this task that can be done remotely.
+            This opens WhatsApp with your visit already written out.
           </p>
         </div>
       </div>
