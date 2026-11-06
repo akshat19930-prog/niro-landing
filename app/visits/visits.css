@@ -95,7 +95,8 @@
 .vz-covers h3 { font-size: var(--text-base) !important; margin-bottom: 10px; }
 .vz-covers ul {
   margin: 0;
-  padding-left: 18px;
+  list-style: disc;
+  padding-left: 20px;
   font-size: 0.9rem;
   line-height: 1.5;
   color: var(--text-body);
@@ -187,6 +188,11 @@
 }
 
 /* ---------------------------------------------------------- the gate */
+/* Ivory, like the rest of the page. It was forest-on-dark, where
+   .pf-card h3 and .pf-card p (one class more specific than .vz-gate-h and
+   .vz-gate-fine) won the cascade and painted ink text on a near-black
+   panel. Light also suits what this fold is: the good news that the visit
+   is ready, not a warning. */
 .vz-ok {
   margin: 8px 0 0;
   font-size: var(--text-sm);
@@ -197,8 +203,8 @@
 }
 .vz-gate-wrap { display: block; }
 .vz-gate {
-  background: var(--forest-950);
-  color: var(--forest-100);
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
   border-radius: var(--radius-xl);
   padding: 22px 20px;
 }
@@ -207,29 +213,29 @@
   margin: 0 0 9px;
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
-  color: var(--accent);
+  color: var(--accent-strong);
 }
-.vz-gate-h {
+.pf-card .vz-gate-h {
   margin: 0;
   font-family: var(--font-display);
   font-size: var(--text-xl);
   font-weight: 600;
   line-height: 1.2;
-  color: #fff;
+  color: var(--text-strong);
 }
-.vz-gate-h:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.vz-gate-p { margin: 10px 0 0; font-size: 0.9375rem; line-height: 1.55; color: var(--forest-200); }
+.vz-gate-h:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+.pf-card .vz-gate-p { margin: 10px 0 0; font-size: 0.9375rem; line-height: 1.55; color: var(--text-body); }
 .vz-plan {
   margin-top: 14px;
   padding: 14px;
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: var(--surface-card);
+  border: 1px solid var(--border);
 }
 .vz-plan-lead { border-color: var(--accent); }
-.vz-price { font-family: var(--font-display); font-size: var(--text-xl); line-height: 1; color: #fff; }
-.vz-price small { font-family: var(--font-sans); font-size: var(--text-sm); font-weight: 500; color: var(--forest-200); }
-.vz-bill { margin-top: 5px; font-size: var(--text-sm); color: var(--forest-200); }
-.vz-perk { margin-top: 8px; font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--accent); }
+.vz-price { font-family: var(--font-display); font-size: var(--text-xl); line-height: 1; color: var(--text-strong); }
+.vz-price small { font-family: var(--font-sans); font-size: var(--text-sm); font-weight: 500; color: var(--text-muted); }
+.vz-bill { margin-top: 5px; font-size: var(--text-sm); color: var(--text-body); }
+.vz-perk { margin-top: 8px; font-size: var(--text-sm); font-weight: var(--weight-semibold); color: var(--accent-strong); }
 .vz-gate .btn { margin-top: 18px; }
-.vz-gate-fine { margin: 11px 0 0; font-size: var(--text-xs); line-height: 1.5; color: var(--forest-400); }
+.pf-card .vz-gate-fine { margin: 11px 0 0; font-size: var(--text-xs); line-height: 1.5; color: var(--text-muted); }

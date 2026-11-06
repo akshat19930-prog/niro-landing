@@ -318,7 +318,7 @@ export function VisitForm({
         />
 
         <div className="pf-field">
-          <label htmlFor="vz-city" id="vz-city-label">Which city are your parents in?</label>
+          <label htmlFor="vz-city" id="vz-city-label">Which city do you need it in?</label>
           <Input
             id="vz-city"
             autoComplete="off"
@@ -366,7 +366,6 @@ export function VisitForm({
         <button type="submit" className="btn btn-primary btn-lg btn-full">
           See my visit
         </button>
-        <p className="pf-fine">No payment on this page.</p>
       </form>
     );
   }

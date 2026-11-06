@@ -230,8 +230,8 @@ export default function VisitsPage() {
                 You can&rsquo;t fly down every time someone has to be there.
               </h1>
               <p className="pf-lead pf-lead-strong">
-                So we go. The passport appointment, the doctor consultation,
-                the flat that needs checking.
+                So we go - the passport appointment, the doctor
+                consultation, the flat that needs checking.
               </p>
               <p className="pf-lead pf-lead-strong">
                 A Niro Assistant turns up in person in 79 cities, and you get
@@ -396,8 +396,7 @@ export default function VisitsPage() {
               <Eyebrow>Schedule a visit</Eyebrow>
               <h2 className="pf-form-h">Schedule a Niro Visit today</h2>
               <p className="pf-form-sub">
-                Your name and WhatsApp number first, then three quick taps. No
-                payment on this page.
+                Your name and WhatsApp number first, then three quick taps.
               </p>
               <VisitForm />
             </div>
