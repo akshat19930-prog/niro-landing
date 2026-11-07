@@ -139,7 +139,7 @@ const COVERS: { icon: IconName; title: string; items: string[] }[] = [
 const STEPS: { h: string; body: string }[] = [
   {
     h: "You tell us the visit",
-    body: "Purpose, city, date and a time window. Three minutes in the form below.",
+    body: "What it is for, which city, and whether it is one job or an ongoing need. Two minutes in the form below.",
   },
   {
     h: "We confirm the assistant",
@@ -188,6 +188,33 @@ const REPORT: { t: string; d: React.ReactNode }[] = [
   },
 ];
 
+/** Who turns up. The single biggest objection to sending a stranger to your
+ *  parents' house, answered in the body of the page rather than left to the
+ *  FAQ. Every line here is a standing operating rule, not a marketing claim:
+ *  if one of them stops being true, this fold has to change. */
+const WHO: { icon: IconName; title: string; body: string }[] = [
+  {
+    icon: "shield-check",
+    title: "Verified before their first visit",
+    body: "Government ID, address and a police record check through a licensed verification agency. Nobody reaches a member's family on the strength of an application form.",
+  },
+  {
+    icon: "users",
+    title: "On Niro's rolls, not a marketplace",
+    body: "Assistants are engaged and paid by Niro, and carry employees' compensation cover while they are on a visit. You never pay, tip or settle anything with the person who turns up.",
+  },
+  {
+    icon: "graduation-cap",
+    title: "Trained on the visit protocol",
+    body: "What to photograph, what goes in the report, and the three things an assistant never does: give medical or legal advice, handle your parents' cash, or take a decision without calling you first.",
+  },
+  {
+    icon: "user-check",
+    title: "You meet them before they arrive",
+    body: "Name, photo and phone number in your family group the day before, and you can speak to them first. They turn up in a Niro shirt, carrying a Niro ID.",
+  },
+];
+
 const FAQ: { q: string; a: React.ReactNode }[] = [
   {
     q: "Who actually turns up?",
@@ -195,7 +222,7 @@ const FAQ: { q: string; a: React.ReactNode }[] = [
   },
   {
     q: "How much notice do you need?",
-    a: "Three working days for most visits. Tell us the slot in the form and we will confirm it or offer the nearest one.",
+    a: "Three working days for most visits. Tell us what you need in the form and we come back on WhatsApp within 24 hours with a day and the assistant's name.",
   },
   {
     q: "What does $25 cover?",
@@ -233,7 +260,10 @@ export default function VisitsPage() {
                 So we go - the passport appointment, the doctor
                 consultation, the flat that needs checking.
               </p>
-              <p className="pf-lead pf-lead-strong">
+              {/* Sub-text, not a second claim: it sits a shade lighter than
+                  the lead above it so the hero reads as one statement with a
+                  line of detail under it, not two headlines. */}
+              <p className="pf-lead vz-subtext">
                 A Niro Assistant turns up in person in 79 cities, and you get
                 photos, bills and a written report the same day.
               </p>
@@ -336,7 +366,33 @@ export default function VisitsPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------- 5. about Niro */}
+        {/* ------------------------------------------- 5. who turns up */}
+        {/* After the report, before the company: a reader who has just seen
+            what lands at the end of the day asks who produced it. */}
+        <section className="pf-sec" data-screen-label="Visits assistants">
+          <div className="pf-wrap">
+            <Eyebrow>Who turns up</Eyebrow>
+            <h2 className="pf-h2">A Niro Assistant, not a gig worker off an app.</h2>
+            <p className="pf-p">
+              We keep our own bench in each city. The same people do the
+              hospital sit-in, the passport queue and the locked-up flat, which
+              is why they get better at it.
+            </p>
+            <ul className="vz-who">
+              {WHO.map((w) => (
+                <li key={w.title} className="pf-card">
+                  <span className="pf-ico">
+                    <Icon name={w.icon} size={22} />
+                  </span>
+                  <h3>{w.title}</h3>
+                  <p>{w.body}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        {/* ------------------------------------------- 6. about Niro */}
         {/* The /pf fold, unchanged: the home page's six categories, titles
             only, then Niro Diaries and the catalogue link. Shared across the
             campaign pages on purpose. */}
@@ -367,7 +423,7 @@ export default function VisitsPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------- 6. pricing */}
+        {/* ------------------------------------------- 7. pricing */}
         {/* The membership card alone: Lite has no visits and the six-month
             pack is a /pf offer, so neither belongs on this page. The welcome
             benefit sits where /pf puts the PF Recovery Credit. */}
@@ -389,21 +445,21 @@ export default function VisitsPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------- 7. intake */}
+        {/* ------------------------------------------- 8. intake */}
         <section className="pf-sec" id="book" data-screen-label="Visits form">
           <div className="pf-wrap pf-form-wrap">
             <div className="pf-card pf-form-card">
               <Eyebrow>Schedule a visit</Eyebrow>
               <h2 className="pf-form-h">Schedule a Niro Visit today</h2>
               <p className="pf-form-sub">
-                Your name and WhatsApp number first, then three quick taps.
+                Your name and WhatsApp number first, then two quick questions.
               </p>
               <VisitForm />
             </div>
           </div>
         </section>
 
-        {/* ------------------------------------------- 8. faq */}
+        {/* ------------------------------------------- 9. faq */}
         <section className="pf-sec pf-inset" data-screen-label="Visits FAQ">
           <div className="pf-wrap">
             <Eyebrow>Questions</Eyebrow>
@@ -422,7 +478,7 @@ export default function VisitsPage() {
           </div>
         </section>
 
-        {/* ------------------------------------------- 9. final CTA */}
+        {/* ------------------------------------------- 10. final CTA */}
         <section className="pf-sec pf-close" data-screen-label="Visits close">
           <div className="pf-wrap">
             <h2 className="pf-h2">Your family&rsquo;s personal assistant in India.</h2>

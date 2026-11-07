@@ -2,7 +2,7 @@
    Niro / Leo design tokens - canonical source of truth.
    Ported verbatim from design/_ds/…/tokens/*.css. Do not invent values
    outside this file; add a token instead. Font families resolve to the
-   self-hosted next/font variables (--font-newsreader / --font-hanken).
+   self-hosted faces declared in fonts.css (--font-newsreader / --font-hanken).
    ===================================================================== */
 
 :root {
@@ -54,6 +54,10 @@
 
   --text-strong: var(--ink-900);
   --text-body: var(--ink-700);
+  /* One step lighter than body, still 4.5:1 on ivory: for a line that
+     should read as supporting detail rather than a second claim.
+     --text-muted is for labels and fine print, too light at 18px. */
+  --text-soft: var(--ink-500);
   --text-muted: var(--ink-400);
   --text-on-brand: var(--ivory);
   --text-on-accent: var(--forest-950);
@@ -156,6 +160,7 @@
 
   --text-strong: #f3eee2;
   --text-body: #cbd4cb;
+  --text-soft: #adb8ae;
   --text-muted: #8f9c92;
   --text-on-brand: #f3eee2;
   --text-on-accent: var(--forest-950);
@@ -196,6 +201,10 @@
 
   --text-strong: var(--ink-900);
   --text-body: var(--ink-700);
+  /* One step lighter than body, still 4.5:1 on ivory: for a line that
+     should read as supporting detail rather than a second claim.
+     --text-muted is for labels and fine print, too light at 18px. */
+  --text-soft: var(--ink-500);
   --text-muted: var(--ink-400);
   --text-on-brand: var(--ivory);
   --text-on-accent: var(--forest-950);

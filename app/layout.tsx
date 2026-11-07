@@ -1,31 +1,10 @@
 import { SHARE_CARD } from "@/lib/content";
 import type { Metadata, Viewport } from "next";
-import { Newsreader, Hanken_Grotesk } from "next/font/google";
 import { MetaPixel } from "@/components/MetaPixel";
 import { PostHog } from "@/components/PostHog";
 import { VariantInit } from "@/components/VariantInit";
 import { HeroInit } from "@/components/HeroInit";
 import "./globals.css";
-
-/**
- * Fonts are self-hosted: next/font downloads the woff2 files at build time and
- * serves them from our own origin - no runtime Google Fonts request, best LCP
- * on mobile. Each exposes a CSS variable that tokens.css maps to --font-*.
- */
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-newsreader",
-});
-
-const hanken = Hanken_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-  variable: "--font-hanken",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tellniro.com"),
@@ -50,7 +29,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${newsreader.variable} ${hanken.variable}`}>
+    <html lang="en">
+      <head>
+        {/* The two faces above the fold. Same origin, so they still need
+            crossOrigin: a font fetch is CORS-mode either way, and without
+            it the browser downloads the file twice. The italic face is not
+            preloaded; almost nothing on the site uses it. */}
+        <link
+          rel="preload"
+          href="/fonts/hanken-grotesk-latin.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/newsreader-latin.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body>
         {/* Before the pixel, which fires PageView at parse time: that event
             has to carry the arm or the test's top-of-funnel number is blind. */}

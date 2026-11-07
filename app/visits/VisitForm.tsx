@@ -18,8 +18,8 @@ import { getLpVariant } from "@/lib/variant";
 import { validateContact, looksLikeWhatsAppId } from "@/lib/cities";
 import { ASSISTANT_WHATSAPP } from "@/lib/config";
 import {
-  PURPOSE_OPTIONS, SLOT_OPTIONS, matchCity,
-  type Step2, type Step2Errors, type VisitPurpose, type VisitSlot,
+  PURPOSE_OPTIONS, TIMING_OPTIONS, matchCity,
+  type Step2, type Step2Errors, type VisitPurpose, type VisitTiming,
   nameError, validateStep2, toE164, step2Fields, summaryLine, whatsappMessage,
 } from "./visitIntake";
 
@@ -28,7 +28,8 @@ import {
  *
  * Step 1 is name and WhatsApp number and nothing else: the row is POSTed
  * before step 2 appears, so someone who drops out mid-form is still a lead
- * sales can reach. Step 2 asks the three things ops needs to quote a slot.
+ * sales can reach. Step 2 asks the three things ops needs in order to answer:
+ * what, where, and whether this is one job or a standing need.
  *
  * Step 3 is the gate, not a confirmation. Visits are a paid benefit and the
  * trial does not include them, so the page never promises a visit it cannot
@@ -122,14 +123,6 @@ function RadioGroup<T extends string>({
   );
 }
 
-/** Tomorrow, as the earliest date the picker offers: today is never a real
- *  slot, and three working days is the usual notice. */
-function minDate(): string {
-  const d = new Date();
-  d.setDate(d.getDate() + 1);
-  return d.toISOString().slice(0, 10);
-}
-
 export function VisitForm({
   page = "/visits/",
   placement = "visit_form",
@@ -144,7 +137,7 @@ export function VisitForm({
   const [phoneErr, setPhoneErr] = useState<string | undefined>();
   const [lead, setLead] = useState<{ name: string; phone: string } | null>(null);
 
-  const [s2, setS2] = useState<Step2>({ purpose: "", city: "", date: "", slot: "" });
+  const [s2, setS2] = useState<Step2>({ purpose: "", city: "", timing: "" });
   const [errs, setErrs] = useState<Step2Errors>({});
 
   const [eventId] = useState(() => newEventId());
@@ -237,7 +230,7 @@ export function VisitForm({
     const found = validateStep2(s2);
     setErrs(found);
     if (Object.keys(found).length || !fields || !lead) {
-      const first = (["purpose", "city", "date", "slot"] as const).find((k) => found[k]);
+      const first = (["purpose", "city", "timing"] as const).find((k) => found[k]);
       document.getElementById(`vz-${first}-label`)?.scrollIntoView({ block: "center", behavior: "smooth" });
       if (first === "city") document.getElementById("vz-city")?.focus();
       return;
@@ -334,28 +327,15 @@ export function VisitForm({
           )}
         </div>
 
-        <div className="pf-field">
-          <label htmlFor="vz-date" id="vz-date-label">Which day?</label>
-          <Input
-            id="vz-date"
-            type="date"
-            min={minDate()}
-            value={s2.date}
-            aria-invalid={errs.date ? true : undefined}
-            aria-describedby={errs.date ? "vz-date-err" : undefined}
-            onChange={(e) => pick("date", e.target.value)}
-          />
-          {errs.date && <p className="pf-error" id="vz-date-err" role="alert">{errs.date}</p>}
-          <p className="pf-help">Most visits need three working days&rsquo; notice.</p>
-        </div>
-
         <RadioGroup
-          id="vz-slot"
-          label="What time of day?"
-          options={SLOT_OPTIONS}
-          value={s2.slot}
-          onChange={(v: VisitSlot) => pick("slot", v)}
-          error={errs.slot}
+          id="vz-timing"
+          label="When do you need someone there?"
+          helper="We fix the actual day with you on WhatsApp, once we know an assistant in that city is free."
+          options={TIMING_OPTIONS}
+          value={s2.timing}
+          onChange={(v: VisitTiming) => pick("timing", v)}
+          error={errs.timing}
+          variant="cards"
         />
 
         <button type="submit" className="btn btn-primary btn-lg btn-full">

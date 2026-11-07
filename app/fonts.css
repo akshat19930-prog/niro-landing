@@ -1,0 +1,45 @@
+/* =====================================================================
+   Self-hosted webfonts. The woff2 files live in /public/fonts and are
+   committed to the repo, so a build needs no network: next/font/google
+   used to fetch them from Google at build time, which failed the deploy
+   roughly one run in three with "Cannot read properties of null".
+
+   Both faces are variable, so one file covers every weight the design
+   uses (Newsreader 400 to 600, Hanken Grotesk 400 to 700) and the
+   browser downloads three files instead of seven.
+
+   Latin only, the same subset next/font was configured for. A character
+   outside it, the rupee sign for instance, falls through to the next
+   family in the stack exactly as it did before.
+   ===================================================================== */
+
+@font-face {
+  font-family: "Hanken Grotesk";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/fonts/hanken-grotesk-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Newsreader";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/newsreader-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Newsreader";
+  font-style: italic;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/newsreader-italic-latin.woff2") format("woff2");
+}
+
+/* The names tokens.css reads. They were next/font's generated class
+   variables; now they are plain family names. */
+:root {
+  --font-newsreader: "Newsreader";
+  --font-hanken: "Hanken Grotesk";
+}
