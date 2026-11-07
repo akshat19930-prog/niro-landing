@@ -269,9 +269,8 @@ export default function VisitsPage() {
                   one objection worth spending the hero on: you are letting a
                   stranger into your parents' day. */}
               <p className="pf-lead vz-subtext">
-                Not a stranger off an app. A Niro Assistant from our own bench
-                in that city, verified, and you get their name and photo the
-                day before.
+                A Niro Assistant turns up on the ground. Verified, trained and
+                on our payroll. You get their name and photo the day before.
               </p>
               <PfLink href="#book" kind="cta" placement="hero" className="btn btn-primary btn-lg pf-hero-btn">
                 Schedule a Niro Visit
