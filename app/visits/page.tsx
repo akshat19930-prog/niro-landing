@@ -262,10 +262,16 @@ export default function VisitsPage() {
               </p>
               {/* Sub-text, not a second claim: it sits a shade lighter than
                   the lead above it so the hero reads as one statement with a
-                  line of detail under it, not two headlines. */}
+                  line of detail under it, not two headlines.
+
+                  The line above says "so we go". This one answers the
+                  question that follows, which is who exactly, and it is the
+                  one objection worth spending the hero on: you are letting a
+                  stranger into your parents' day. */}
               <p className="pf-lead vz-subtext">
-                A Niro Assistant turns up in person in 79 cities, and you get
-                photos, bills and a written report the same day.
+                Not a stranger off an app. A Niro Assistant from our own bench
+                in that city, verified, and you get their name and photo the
+                day before.
               </p>
               <PfLink href="#book" kind="cta" placement="hero" className="btn btn-primary btn-lg pf-hero-btn">
                 Schedule a Niro Visit
@@ -372,7 +378,7 @@ export default function VisitsPage() {
         <section className="pf-sec" data-screen-label="Visits assistants">
           <div className="pf-wrap">
             <Eyebrow>Who turns up</Eyebrow>
-            <h2 className="pf-h2">A Niro Assistant, not a gig worker off an app.</h2>
+            <h2 className="pf-h2">You know who is coming before they knock.</h2>
             <p className="pf-p">
               We keep our own bench in each city. The same people do the
               hospital sit-in, the passport queue and the locked-up flat, which
