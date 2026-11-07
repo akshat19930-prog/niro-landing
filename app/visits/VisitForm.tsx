@@ -17,6 +17,7 @@ import { readPageArm } from "@/lib/abtest";
 import { getLpVariant } from "@/lib/variant";
 import { validateContact, looksLikeWhatsAppId } from "@/lib/cities";
 import { ASSISTANT_WHATSAPP } from "@/lib/config";
+import { AskNiroCta } from "@/components/ds/WhatsAppLink";
 import {
   PURPOSE_OPTIONS, TIMING_OPTIONS, matchCity,
   type Step2, type Step2Errors, type VisitPurpose, type VisitTiming,
@@ -284,6 +285,13 @@ export function VisitForm({
           <p className="vz-gate-fine">
             This opens WhatsApp with your visit already written out.
           </p>
+          <AskNiroCta
+            placement="visits_gate"
+            prompt="Have questions for us?"
+            label="Ask Niro on WhatsApp"
+            align="center"
+            marginTop={14}
+          />
         </div>
       </div>
     );
@@ -318,7 +326,7 @@ export function VisitForm({
           />
           {cityHit && (
             <p className="vz-ok" id="vz-city-ok" role="status">
-              Yes, we visit in {cityHit.name}, {cityHit.state}.
+              {cityHit.name}, {cityHit.state} is serviceable.
             </p>
           )}
           {errs.city && <p className="pf-error" id="vz-city-err" role="alert">{errs.city}</p>}
@@ -339,8 +347,15 @@ export function VisitForm({
         />
 
         <button type="submit" className="btn btn-primary btn-lg btn-full">
-          See my visit
+          Schedule my visit
         </button>
+        <AskNiroCta
+          placement="visits_form_step2"
+          prompt="Have questions for us?"
+          label="Ask Niro on WhatsApp"
+          align="center"
+          marginTop={0}
+        />
       </form>
     );
   }
@@ -406,6 +421,13 @@ export function VisitForm({
         We use this to send the assistant&rsquo;s details and the report. We
         never call you unprompted.
       </p>
+      <AskNiroCta
+        placement="visits_form_step1"
+        prompt="Have questions for us?"
+        label="Ask Niro on WhatsApp"
+        align="center"
+        marginTop={0}
+      />
     </form>
   );
 }

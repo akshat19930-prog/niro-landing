@@ -9,6 +9,7 @@ import { GUIDE_SCOPE, MEMBERSHIP_FEATURES } from "@/lib/content";
 import { PricingTiers } from "@/components/sections/PricingTiers";
 import { VisitForm } from "./VisitForm";
 import { VisitStickyCta } from "./VisitStickyCta";
+import { AskNiroCta } from "@/components/ds/WhatsAppLink";
 import { PfLink } from "../pf/PfLink";
 import "../pf/pf.css";
 import "./visits.css";
@@ -279,6 +280,17 @@ export default function VisitsPage() {
                 We come back with a slot and the assistant&rsquo;s name, within
                 24 hours.
               </p>
+              {/* Under the support line, not between it and the button: that
+                  line answers "what happens if I tap this" and has to stay
+                  attached to the button it describes. Same two-line treatment
+                  as the home hero, so the escape hatch reads the same way on
+                  both pages. */}
+              <AskNiroCta
+                placement="visits_hero"
+                prompt="Have questions for us?"
+                label="Ask Niro on WhatsApp"
+                marginTop={14}
+              />
             </div>
           </div>
         </section>
