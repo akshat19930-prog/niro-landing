@@ -5,8 +5,13 @@ import { VISIT_CITIES } from "./cities79";
  * validators here, the component in VisitForm.tsx.
  *
  * Step 1 takes name and WhatsApp number and writes the lead. Step 2 asks what
- * the visit is for, which city and when. Step 3 is the gate: visits are a paid
- * benefit, so the page does not promise one until the family is a member.
+ * the visit is for, which city, and whether this is one thing coming up or an
+ * ongoing need. Step 3 is the gate: visits are a paid benefit, so the page
+ * does not promise one until the family is a member.
+ *
+ * Deliberately no date and no time window. Asking for them turned the page
+ * into a one-off errand request; a membership sells the standing arrangement,
+ * and the actual date is settled in the WhatsApp thread.
  */
 
 export type VisitPurpose =
@@ -22,20 +27,25 @@ export const PURPOSE_OPTIONS: { value: VisitPurpose; label: string; sub: string 
   { value: "other", label: "Something else", sub: "Tell us in one line and we will say whether a visit is the right answer." },
 ];
 
-export type VisitSlot = "morning" | "afternoon" | "evening" | "any";
+export type VisitTiming = "upcoming" | "ongoing";
 
-export const SLOT_OPTIONS: { value: VisitSlot; label: string }[] = [
-  { value: "morning", label: "Morning, 9 to 12" },
-  { value: "afternoon", label: "Afternoon, 12 to 4" },
-  { value: "evening", label: "Evening, 4 to 7" },
-  { value: "any", label: "Any time that day" },
+export const TIMING_OPTIONS: { value: VisitTiming; label: string; sub: string }[] = [
+  {
+    value: "upcoming",
+    label: "Something specific coming up",
+    sub: "One thing already in the diary, or about to be. We settle the day and the time window with you on WhatsApp.",
+  },
+  {
+    value: "ongoing",
+    label: "On an ongoing basis",
+    sub: "Someone there whenever it comes up through the year: appointments, offices, the flat. No single date.",
+  },
 ];
 
 export type Step2 = {
   purpose: VisitPurpose | "";
   city: string;
-  date: string;
-  slot: VisitSlot | "";
+  timing: VisitTiming | "";
 };
 export type Step2Errors = Partial<Record<keyof Step2, string>>;
 
@@ -68,8 +78,7 @@ export function validateStep2(s: Step2): Step2Errors {
       ? "We do not visit this city yet. Try the nearest large city."
       : "Please tell us the city.";
   }
-  if (!s.date) e.date = "Please pick a date.";
-  if (!s.slot) e.slot = "Please pick a time window.";
+  if (!s.timing) e.timing = "Please tell us when you need this.";
   return e;
 }
 
@@ -86,27 +95,12 @@ export function step2Fields(s: Step2) {
     visit_purpose: PURPOSE_OPTIONS.find((p) => p.value === s.purpose)?.label || "",
     visit_city: city ? city.name : s.city.trim(),
     visit_state: city ? city.state : "",
-    visit_date: s.date,
-    visit_slot: SLOT_OPTIONS.find((o) => o.value === s.slot)?.label || "",
+    visit_timing: TIMING_OPTIONS.find((o) => o.value === s.timing)?.label || "",
   };
 }
 
-/** "Wed 11 Nov" rather than "2026-11-11": the ISO value stays in the
- *  visit_date column, this is only what a person reads. */
-export function prettyDate(iso: string): string {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return iso;
-  const [y, m, d] = iso.split("-").map(Number);
-  const dt = new Date(Date.UTC(y, m - 1, d));
-  if (Number.isNaN(dt.getTime())) return iso;
-  return dt.toLocaleDateString("en-GB", {
-    weekday: "short", day: "numeric", month: "short", timeZone: "UTC",
-  });
-}
-
 export function summaryLine(f: ReturnType<typeof step2Fields>): string {
-  return [f.visit_purpose, f.visit_city, prettyDate(f.visit_date), f.visit_slot]
-    .filter(Boolean)
-    .join(", ");
+  return [f.visit_purpose, f.visit_city, f.visit_timing].filter(Boolean).join(", ");
 }
 
 /** What the member sends us on WhatsApp from the gate. Written as the
@@ -118,7 +112,7 @@ export function whatsappMessage(name: string, f: ReturnType<typeof step2Fields> 
     `${who}I would like to book a Niro Visit.\n\n` +
     `What for: ${f.visit_purpose}\n` +
     `City: ${f.visit_city}${f.visit_state ? `, ${f.visit_state}` : ""}\n` +
-    `When: ${prettyDate(f.visit_date)}, ${f.visit_slot}\n\n` +
+    `When: ${f.visit_timing}\n\n` +
     `Please tell me how to start the membership.`
   );
 }

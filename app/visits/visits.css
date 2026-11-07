@@ -6,6 +6,27 @@
    Every value is a token from app/tokens.css.
    ===================================================================== */
 
+/* ---------------------------------------------------------- hero sub-text */
+/* The second hero line. Same size as the lead above it, one step lighter,
+   so the hero reads as a statement with detail under it. */
+.vz-subtext { color: var(--text-soft); }
+
+/* ---------------------------------------------------------- who turns up */
+/* Two columns, not the three the scope grid uses: these cards carry a
+   sentence each, and three of them run too narrow to read. */
+.vz-who {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 900px;
+}
+@media (max-width: 760px) { .vz-who { grid-template-columns: 1fr; } }
+.vz-who .pf-card { min-width: 0; }
+.vz-who h3 { font-size: var(--text-base) !important; margin-bottom: 8px; }
+
 /* ---------------------------------------------------------- real stories */
 /* Two cards whose photo, heading, body and outcome line sit on the same
    four rows, so the pair reads as one block however long the copy runs.
