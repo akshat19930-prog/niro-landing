@@ -201,7 +201,7 @@ const WHO: { icon: IconName; title: string; body: string }[] = [
   {
     icon: "users",
     title: "On Niro's rolls, not a marketplace",
-    body: "Assistants are engaged and paid by Niro, and carry employees' compensation cover while they are on a visit. You never pay, tip or settle anything with the person who turns up.",
+    body: "Assistants are employed by Niro and paid by us, and carry employees' compensation cover while they are on a visit. You never pay, tip or settle anything with the person who turns up.",
   },
   {
     icon: "graduation-cap",
