@@ -377,7 +377,10 @@ export default function VisitsPage() {
         <section className="pf-sec" data-screen-label="Visits assistants">
           <div className="pf-wrap">
             <Eyebrow>Who turns up</Eyebrow>
-            <h2 className="pf-h2">You know who is coming before they knock.</h2>
+            <h2 className="pf-h2">
+              Niro Assistants are background verified, trained and on our
+              payroll.
+            </h2>
             <p className="pf-p">
               We keep our own bench in each city. The same people do the
               hospital sit-in, the passport queue and the locked-up flat, which
